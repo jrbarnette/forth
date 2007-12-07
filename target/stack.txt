@@ -1,0 +1,50 @@
+Primitive permuters:
+DUP OVER
+SWAP ROT
+DROP
+
+Duplication:
+( x -- x x )			DUP
+( x1 x2 -- x1 x2 x1 )		OVER
+( x1 x2 -- x2 x1 x2 )		TUCK
+				SWAP OVER
+( x1 x2 -- x1 x2 x1 x2 )	OVER OVER
+				2OVER
+
+Removal:
+( x1 -- )			DROP
+( x1 x2 -- x2 )			NIP
+				SWAP DROP
+( x1 x2 x3 -- x2 x3 )		ROT DROP
+
+Stack permutations:
+
+( x1 x2 -- x2 x1 )		SWAP
+( x1 x2 x3 -- x2 x3 x1 )	ROT
+( x1 x2 x3 -- x2 x1 x3 )	ROT SWAP
+( x1 x2 x3 -- x3 x2 x1 )	SWAP ROT
+( x1 x2 x3 -- x3 x1 x2 )	ROT ROT
+
+( x1 x2 x3 x4 -- x3 x4 x1 x2 )	2SWAP
+
+( x1 x2 x3 x4 -- x2 x1 x3 x4 )	2SWAP SWAP 2SWAP
+( x1 x2 x3 x4 -- x2 x1 x4 x3 )	SWAP 2SWAP SWAP 2SWAP
+				2SWAP SWAP 2SWAP SWAP
+( x1 x2 x3 x4 -- x2 x3 x1 x4 )	ROT ROT 2SWAP
+( x1 x2 x3 x4 -- x2 x3 x4 x1 )	ROT ROT 2SWAP SWAP
+				ROT SWAP 2SWAP SWAP
+( x1 x2 x3 x4 -- x2 x4 x1 x3 )	ROT SWAP 2SWAP
+( x1 x2 x3 x4 -- x2 x4 x3 x1 )	ROT 2SWAP SWAP
+
+( x1 x2 x3 x4 -- x3 x1 x2 x4 )	2SWAP ROT
+( x1 x2 x3 x4 -- x3 x1 x4 x2 )	2SWAP ROT SWAP
+( x1 x2 x3 x4 -- x3 x2 x1 x4 )	2SWAP SWAP ROT
+( x1 x2 x3 x4 -- x3 x2 x4 x1 )	2SWAP ROT ROT
+( x1 x2 x3 x4 -- x3 x4 x2 x1 )	2SWAP SWAP
+
+( x1 x2 x3 x4 -- x4 x1 x2 x3 )	SWAP 2SWAP ROT
+( x1 x2 x3 x4 -- x4 x1 x3 x2 )	SWAP 2SWAP ROT SWAP
+( x1 x2 x3 x4 -- x4 x2 x1 x3 )	SWAP 2SWAP SWAP ROT
+( x1 x2 x3 x4 -- x4 x2 x3 x1 )	SWAP 2SWAP ROT ROT
+( x1 x2 x3 x4 -- x4 x3 x1 x2 )	SWAP 2SWAP
+( x1 x2 x3 x4 -- x4 x3 x2 x1 )	SWAP 2SWAP SWAP

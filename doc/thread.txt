@@ -1,0 +1,88 @@
+definition:
+    header
+    pointer to machine code
+    definition data
+
+xt is pointer into definition after header
+
+VM - each VM instructions starts with this info:
+    IP - pointer to next xt in currently executing colon definition
+    XT - xt to be executed
+    SP - pointer to top of stack
+    TOS - result of SP @
+    RSP - pointer to top of return stack
+
+Colon definition data:
+    xt ...
+
+CREATE definition data:
+    xt
+    body
+
+CONSTANT definition data:
+    : CONSTANT CREATE , DOES> @ ;
+
+VALUE definition data:
+    : VALUE CREATE , DOES> @ ;
+    : TO
+	WORD FIND IF
+	    \ ... require created by VALUE
+	    >BODY STATE @ IF
+		POSTPONE LITERAL POSTPONE !
+	    ELSE
+		!
+	    THEN
+	ELSE
+	    \ error
+	THEN
+    ; IMMEDIATE
+
+VARIABLE definition data:
+    : VARIABLE CREATE [ 1 CELLS ] LITERAL ALLOT ;
+
+special tokens (CORE maximal list):
+
+DO loops:
+    X-+LOOP
+    X-?DO
+    X-DO
+    X-LEAVE
+    X-LOOP
+    X-UNLOOP
+
+Colon definitions:
+    X-:
+	IP R> XT IP!
+
+CREATE definitions:
+    X-CREATE
+	IP R> XT >BODY DUP 1 XTS - @ IP!  
+
+Control flow:
+    X-ELSE
+    	IP XT@ IP + IP!
+
+    X-IF
+	IF 1 XTS ELSE IP XT@ THEN IP + IP!
+
+    X-REPEAT
+    X-THEN
+    X-UNTIL
+    X-WHILE
+    X-AGAIN
+
+Embedded literal values:
+    X-."
+    X-ABORT"
+    X-C"
+    X-LITERAL
+
+CASE statements:
+    X-CASE
+    X-ENDCASE
+    X-ENDOF
+    X-OF
+
+VALUE definitions:
+    X-TO
+    X-VALUE

@@ -2,7 +2,7 @@
  * Copyright 2007, by J. Richard Barnette
  */
 
-#include "vm.h"
+#include "forth.h"
 
 /* -------------------------------------------------------------- */
 static cell_t

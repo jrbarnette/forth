@@ -2,7 +2,9 @@
  * Copyright 2007, by J. Richard Barnette
  */
 
-/*
+#include "forth.h"
+
+#if 0
     :                 6.1.0450 CORE                   30
     ;                 6.1.0460 CORE                   30
     >BODY             6.1.0550 CORE                   31
@@ -21,17 +23,4 @@
     TO                6.2.2295 CORE EXT               59
     VALUE             6.2.2405 CORE EXT               60
     [COMPILE]         6.2.2530 CORE EXT               60
-*/
-
-/* -------------------------------------------------------------- */
-void
-init_definers()
-{
-    /* '                 6.1.0070 CORE */
-    /* : ' BL WORD FIND 0= IF DROP -32 THROW THEN ; */
-    COLON(tick);
-	LIT(' '); XT(word); XT(find); XT(zero_equal); IF();
-	    LIT(-32); XT(throw);
-	THEN();
-    SEMICOLON();
-}
+#endif

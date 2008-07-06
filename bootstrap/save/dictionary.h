@@ -10,10 +10,14 @@
 #include "forth.h"
 #include "vm.h"
 
+#define NAME_IMMEDIATE		0x80
 #define NAME_MAX_LENGTH		31
-#define NAME_IDENT_LENGTH(nm)	((nm)->len & 0x1f)
+#define NAME_LENGTH(nm)		((nm)->len & 0x1f)
+#define NAME_IDENT_ALIGN	\
+	    (CELL_ALIGNMENT + offsetof(struct name_header, ident))
 #define NAME_CFA_OFFSET(nm)	\
-	ALIGNED(NAME_IDENT_LENGTH(nm) + offsetof(struct name_header, ident))
+	    (((nm)->len + NAME_IDENT_ALIGN) & (-CELL_ALIGNMENT & 0x1f))
+#define NAME_CFA(nm)		((xt_ft)((char *)(nm) + NAME_CFA_OFFSET(nm)))
 
 typedef struct name_header *	name_p;
 
@@ -34,5 +38,16 @@ typedef struct {
 extern addr_ft allot(cell_ft);
 extern xt_ft lookup(char *);
 extern name_p addname(char *, vminstr_fn);
+
+typedef void (*definer_fn)(void *);
+
+typedef struct defn {
+    char *		name;
+    vminstr_fn		fn;
+    definer_fn		definer;
+    void *		datap;
+} defn_dt;
+
+extern defn_dt primitives[];
 
 #endif

@@ -25,7 +25,7 @@ struct vmstate {
     cell_ft	rstack[RSTACK_SIZE];
 };
 
-typedef cell_ft (*vminstr_fn)(cell_ft, addr_ft, vmstate_p);
+typedef cell_ft (*vminstr_fn)(cell_ft, vmstate_p, addr_ft);
 
 struct vminstr {
     vminstr_fn		handler;
@@ -35,9 +35,9 @@ struct vminstr {
 extern void overflow(vmstate_p);
 extern void underflow(vmstate_p);
 
-#define CHECK_UNDERFLOW(vm, n)	\
+#define CHECK_POP(vm, n)	\
 	    (((vm)->sp + (n) < STACK_SIZE) || (underflow(vm), 0))
-#define CHECK_OVERFLOW(vm, n)	\
+#define CHECK_PUSH(vm, n)	\
 	    (((vm)->sp >= (n)) || (overflow(vm), 0))
 #define CHECK_RPOP(vm, n)	\
 	    (((vm)->rsp + (n) < RSTACK_SIZE) || (underflow(vm), 0))

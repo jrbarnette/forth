@@ -1,53 +1,44 @@
 /*
- * Copyright 2007, by J. Richard Barnette
+ * Copyright 2008, by J. Richard Barnette
  */
 
-/* -------------------------------------------------------------- */
-static cell_t
-x_store(xt ignore, cell_t tos, vmstate_p vm)
+#include "forth.h"
+
+/* ! ( x a-addr -- ) */
+static cell_ft
+x_store(cell_ft tos, vmstate_p vm, addr_ft ignore)
 {
-    /* ( x a-addr -- ) */
-    CHECK_SPOP(vm, 2);
-    *(cell_t *)tos = POP(vm);
+    CHECK_POP(vm, 2);
+    *(cell_ft *)tos = POP(vm);
     return POP(vm);
 }
-static definition
-store = { "!", x_store };
 
-static cell_t
-x_fetch(xt ignore, cell_t tos, vmstate_p vm)
+/* @ ( a-addr -- x ) */
+static cell_ft
+x_fetch(cell_ft tos, vmstate_p vm, addr_ft ignore)
 {
     /* ( a-addr -- x ) */
-    CHECK_SPOP(vm, 1);
-    return *(cell_t *)tos;
+    CHECK_POP(vm, 1);
+    return *(cell_ft *)tos;
 }
-static definition
-fetch = { "@", x_fetch };
 
-/* -------------------------------------------------------------- */
-static cell_t
-x_plus(xt ignore, cell_t tos, vmstate_p vm)
+/* + ( x1 x2 -- x ) */
+static cell_ft
+x_plus(cell_ft tos, vmstate_p vm, addr_ft ignore)
 {
-    /* ( x1 x2 -- x ) */
-    CHECK_SPOP(vm, 1);
+    CHECK_POP(vm, 2);
     return tos + POP(vm);
 }
-definition
-plus = { "+", x_plus };
 
+defn_dt
+primitive_defns[] = {
+    { "!",     x_store },
+    { "@",     x_fetch },
+    { "+",     x_plus },
+    { NULL }
+};
 
-/* -------------------------------------------------------------- */
-void
-init_primitives()
-{
-    /* !                 6.1.0010 CORE */
-    DEF(store);
-    /* +                 6.1.0120 CORE */
-    DEF(plus);
-    /* *                 6.1.0090 CORE */
-}
-
-
+#if 0
 !                     6.1.0010 CORE                   25
 #                     6.1.0030 CORE                   25
 #>                    6.1.0040 CORE                   25
@@ -419,3 +410,4 @@ CMOVE>             17.6.1.0920 STRING                126
 COMPARE            17.6.1.0935 STRING                127
 SEARCH             17.6.1.2191 STRING                127
 SLITERAL           17.6.1.2212 STRING                127
+#endif

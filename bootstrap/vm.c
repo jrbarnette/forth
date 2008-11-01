@@ -34,28 +34,6 @@ interpret(vmstate_p vm, xt_ft entry_xt)
     }
 }
 
-/*  */
-static cell_ft
-x_colon(cell_ft tos, vmstate_p vm, addr_ft newip)
-{
-    CHECK_RPUSH(vm, 1);
-    RPUSH(vm, vm->ip);
-    vm->ip = (xt_ft *) newip;
-    return tos;
-}
-
-/* EXECUTE ( ... xt -- ... ) */
-static cell_ft
-execute(cell_ft tos, vmstate_p vm, addr_ft ignore)
-{
-    xt_ft	xtok = (xt_ft) tos;
-
-    CHECK_POP(vm, 1);
-    return xtok->handler(POP(vm), vm, xtok->data);
-}
-
-/* -------------------------------------------------------------- */
-
 void
 overflow(vmstate_p vm)
 {
@@ -70,4 +48,16 @@ underflow(vmstate_p vm)
     (void) fprintf(stderr, "underflow\n");
     abort();	/* XXX -4 THROW */
     /*longjmp(vm->interp_loop, 1);*/
+}
+
+/* -------------------------------------------------------------- */
+
+/* EXECUTE ( ... xt -- ... ) */
+static cell_ft
+execute(cell_ft tos, vmstate_p vm, addr_ft ignore)
+{
+    xt_ft	xtok = (xt_ft) tos;
+
+    CHECK_POP(vm, 1);
+    return xtok->handler(POP(vm), vm, xtok->data);
 }

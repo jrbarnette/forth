@@ -1,5 +1,2 @@
-outer interp loop
-'
-.
-+
--
+Target:
+    a program that correctly executes "test.fth"

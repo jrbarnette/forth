@@ -9,9 +9,15 @@
 
 #include "forth.h"
 
+/*
+ * dictionary.c - Implementation of C internal and Forth standard
+ *   words for allocating and managing dictionary space.  Includes
+ *   "data space" and "name space", as defined in the Forth
+ *   standard.
+ */
+
+
 #define	HERE		dict_here
-#define NAME_ALIGNMENT	sizeof (cell_ft)
-#define ALIGN(n)	((void) (HERE = (HERE + (n)-1) & -(n)))
 #define NAUNITS(n)	(((n) + sizeof (addr_unit_ft) - 1) / sizeof (addr_unit_ft))
 
 union dict dictionary = {
@@ -28,11 +34,11 @@ addr_ft
 allot(size_t n)
 {
     cell_ft	h = HERE;
-    cell_ft	nh = HERE + NAUNITS(n);
+    cell_ft	nh = h + NAUNITS(n);
 
     if (nh >= DICTIONARY_SIZE) {
 	(void) fprintf(stderr, "out of dictionary space\n");
-	abort();
+	abort();	/* XXX -8 THROW */
     }
     HERE = nh;
 
@@ -44,7 +50,7 @@ allot(size_t n)
  * token.  Return NULL if not found.
  */
 name_p
-lookup(char *nm, size_t len)
+lookup(c_addr_ft nm, size_t len)
 {
     name_p	cur;
 
@@ -115,7 +121,7 @@ x_allot(cell_ft tos, vmstate_p vm, addr_ft ignore)
 static cell_ft
 x_align(cell_ft tos, vmstate_p vm, addr_ft ignore)
 {
-    ALIGN(CELL_ALIGNMENT);
+    HERE = ALIGNED(HERE);
     return tos;
 }
 
@@ -182,6 +188,8 @@ x_tick(cell_ft tos, vmstate_p vm, addr_ft ignore)
     CHECK_PUSH(vm, 1);
     PUSH(vm, tos);
 
+    /* XXX ' - parse name */
+
     return 0;
 }
 
@@ -193,11 +201,45 @@ x_immediate(cell_ft tos, vmstate_p vm, addr_ft ignore)
     return tos;
 }
 
+#if 0
+'                     6.1.0070 CORE                   25
+,                     6.1.0150 CORE                   27
+ALIGN                 6.1.0705 CORE                   33
+ALLOT                 6.1.0710 CORE                   33
+C,                    6.1.0860 CORE                   34
+FIND                  6.1.1550 CORE                   39
+HERE                  6.1.1650 CORE                   40
+IMMEDIATE             6.1.1710 CORE                   41
+COMPILE,              6.2.0945 CORE EXT               54
+MARKER                6.2.1850 CORE EXT               56
+PAD                   6.2.2000 CORE EXT               56
+UNUSED                6.2.2395 CORE EXT               59
+ALLOCATE           14.6.1.0707 MEMORY                111
+FREE               14.6.1.1605 MEMORY                112
+RESIZE             14.6.1.2145 MEMORY                112
+SEE                15.6.1.2194 TOOLS                 115
+WORDS              15.6.1.2465 TOOLS                 116
+DEFINITIONS        16.6.1.1180 SEARCH                122
+FIND               16.6.1.1550 SEARCH                122
+FORTH-WORDLIST     16.6.1.1595 SEARCH                122
+GET-CURRENT        16.6.1.1643 SEARCH                122
+GET-ORDER          16.6.1.1647 SEARCH                122
+SEARCH-WORDLIST    16.6.1.2192 SEARCH                123
+SET-CURRENT        16.6.1.2195 SEARCH                123
+SET-ORDER          16.6.1.2197 SEARCH                123
+WORDLIST           16.6.1.2460 SEARCH                123
+ALSO               16.6.2.0715 SEARCH EXT            123
+FORTH              16.6.2.1590 SEARCH EXT            123
+ONLY               16.6.2.1965 SEARCH EXT            124
+ORDER              16.6.2.1985 SEARCH EXT            124
+PREVIOUS           16.6.2.2037 SEARCH EXT            124
+#endif
+
 defn_dt
 dictionary_defns[] = {
     { "HERE",      x_here },
-    { "ALLOT",     x_allot },
     { "ALIGN",     x_align },
+    { "ALLOT",     x_allot },
     { ",",         x_comma },
     { "C,",        x_c_comma },
 

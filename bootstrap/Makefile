@@ -1,15 +1,17 @@
 SOURCES =			\
 	compile.c		\
 	dictionary.c		\
-	init.c			\
+	forth.c			\
 	primitives.c		\
 	termio.c		\
 	vm.c
 
 OBJECTS = $(SOURCES:.c=.o)
 
-forth: forth.o $(OBJECTS)
-	$(CC) -o $@  forth.o $(OBJECTS)
+all: forth tags
 
-test: test.o $(OBJECTS)
-	$(CC) -o $@  forth.o $(OBJECTS)
+forth: $(OBJECTS)
+	$(CC) -o $@ $(OBJECTS)
+
+tags: $(SOURCES)
+	ctags $(SOURCES)

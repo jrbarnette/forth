@@ -122,7 +122,7 @@ struct name_header {
     unsigned char	ident[NAME_MAX_LENGTH];
 };
 
-extern name_p lookup(char *, size_t);
+extern name_p lookup(c_addr_ft, size_t);
 extern name_p addname(char *, vminstr_fn);
 
 
@@ -164,6 +164,8 @@ typedef struct defn {
 extern defn_dt primitive_defns[];
 extern defn_dt dictionary_defns[];
 extern defn_dt compile_defns[];
+
+extern xt_ft noname(void);
 
 extern void init_forth(void);
 

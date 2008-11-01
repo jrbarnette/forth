@@ -70,4 +70,5 @@ termio_defs[] = {
 #if 0
     { "BASE", x_base },			/* 6.1.0750 CORE p. 34 */
 #endif
+    { NULL }
 };

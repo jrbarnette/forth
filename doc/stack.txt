@@ -1,0 +1,49 @@
+Primitive permuters:
+DUP OVER
+SWAP ROT 2SWAP
+DROP
+
+Duplication:
+( 1 -- 1 1 )		DUP
+( 2 1 -- 2 1 2 )	OVER
+( 2 1 -- 1 2 1 )	TUCK
+			SWAP OVER
+( 2 1 -- 2 1 2 1 )	2OVER
+			OVER OVER
+
+Removal:
+( 1 -- )		DROP
+( 2 1 -- 1 )		NIP
+			SWAP DROP
+( 3 2 1 -- 2 1 )	ROT DROP
+
+Stack permutations:
+
+( 2 1 -- 1 2 )		SWAP
+( 3 2 1 -- 1 2 3 )	SWAP ROT
+( 3 2 1 -- 1 3 2 )	ROT ROT
+( 3 2 1 -- 2 1 3 )	ROT
+( 3 2 1 -- 2 3 1 )	ROT SWAP
+
+( 4 3 2 1 -- 1 2 3 4 )	SWAP 2SWAP SWAP
+( 4 3 2 1 -- 1 2 4 3 )	SWAP 2SWAP
+( 4 3 2 1 -- 1 3 2 4 )	ROT 2SWAP SWAP
+( 4 3 2 1 -- 1 3 4 2 )	ROT 2SWAP
+( 4 3 2 1 -- 1 4 2 3 )	ROT 2SWAP ROT
+( 4 3 2 1 -- 1 4 3 2 )	SWAP 2SWAP ROT
+( 4 3 2 1 -- 2 1 3 4 )	2SWAP SWAP
+( 4 3 2 1 -- 2 1 4 3 )	2SWAP
+( 4 3 2 1 -- 2 3 1 4 )	2SWAP ROT ROT
+( 4 3 2 1 -- 2 3 4 1 )	2SWAP SWAP ROT
+			SWAP ROT 2SWAP
+( 4 3 2 1 -- 2 4 1 3 )	2SWAP ROT SWAP
+( 4 3 2 1 -- 2 4 3 1 )	2SWAP ROT
+( 4 3 2 1 -- 3 1 2 4 )	ROT SWAP 2SWAP SWAP
+( 4 3 2 1 -- 3 1 4 2 )	ROT SWAP 2SWAP
+( 4 3 2 1 -- 3 2 1 4 )	ROT ROT 2SWAP SWAP
+( 4 3 2 1 -- 3 2 4 1 )	ROT ROT 2SWAP
+( 4 3 2 1 -- 3 4 1 2 )	2SWAP SWAP 2SWAP SWAP
+			SWAP 2SWAP SWAP 2SWAP
+			ROT ROT 2SWAP ROT
+( 4 3 2 1 -- 3 4 2 1 )	2SWAP SWAP 2SWAP
+			ROT SWAP 2SWAP ROT

@@ -9,11 +9,52 @@
 /*
  * compile.c - Implementation of Forth standard words relating
  *   to compilation.  Includes management of things related to
- *   "code space" as defined in the Forth standard.
+ *   "code space" as defined in the Forth standard, anything
+ *   that knows about the compilation stack, and STATE.
  */
 
 
-/* EXIT ( R: nest-sys -- ) no interpretation semantics */
+/* : 6.1.0450 CORE, p. 30 */
+/* interpretation semantics undefined */
+/* ( R: -- nest-sys ) initiation semantics */
+cell_ft
+do_colon(cell_ft tos, vmstate_p vm, addr_ft newip)
+{
+    CHECK_RPUSH(vm, 1);
+    RPUSH(vm, vm->ip);
+    vm->ip = (xt_ft *) newip;
+    return tos;
+}
+
+/* ( C: "<spaces> name" -- colon-sys ) compilation semantics */
+static cell_ft
+x_colon(cell_ft tos, vmstate_p vm, addr_ft colon_xt)
+{
+    /* XXX : - enforce compilation state */
+    /* XXX : - parse name, start definition */
+    ((xt_ft) allot(vm, CELL_SIZE))->handler = do_colon;
+    return tos;
+}
+
+
+/* ELSE 6.1.1310 CORE, p. 38 */
+/* ( -- ) runtime semantics */
+cell_ft
+do_else(cell_ft tos, vmstate_p vm, addr_ft ignore)
+{
+    vm->ip += (*vm->ip)->snum;
+    return tos;
+}
+
+
+/* interpration semantics undefined */
+/* ( C: orig1 -- orig2 ) compilation semantics */
+/* XXX x_else() implementation */
+
+
+/* EXIT 6.1.1380 CORE, p. 39 */
+/* interpretation semantics undefined */
+/* ( R: nest-sys -- ) execution semantics */
 static cell_ft
 x_exit(cell_ft tos, vmstate_p vm, addr_ft ignore)
 {
@@ -22,74 +63,60 @@ x_exit(cell_ft tos, vmstate_p vm, addr_ft ignore)
     return tos;
 }
 
-/* ( R: -- nest-sys ) initiation semantics */
-static cell_ft
-do_colon(cell_ft tos, vmstate_p vm, addr_ft newip)
-{
-    CHECK_RPUSH(vm, 1);
-    RPUSH(vm, (cell_ft) vm->ip);
-    vm->ip = (xt_ft *) newip;
-    return tos;
-}
 
-/* : ( C: "<spaces> name" -- colon-sys ) compile state only */
-static cell_ft
-x_colon(cell_ft tos, vmstate_p vm, addr_ft colon_xt)
+/* IF 6.1.1700 CORE, p. 40 */
+/* ( x -- ) runtime semantics */
+cell_ft
+do_if(cell_ft tos, vmstate_p vm, addr_ft ignore)
 {
-    /* XXX : - enforce compilation state */
-    /* XXX : - parse name, start definition */
-    ((xt_ft) allot(CELL_SIZE))->handler = do_colon;
-    return tos;
-}
-
-/* C equivalent to :NONAME */
-xt_ft
-noname(void)
-{
-    xt_ft	xt = (xt_ft) allot(CELL_SIZE);
-
-    xt->handler = do_colon;
-    return xt;
-}
-
-/* LITERAL ( x -- ) compile state only */
-static cell_ft
-x_literal(cell_ft tos, vmstate_p vm, addr_ft do_lit_xt)
-{
-    /* XXX LITERAL - enforce compilation state */
     CHECK_POP(vm, 1);
-    *(a_addr_ft) allot(CELL_SIZE) = (cell_ft) do_lit_xt;
-    *(a_addr_ft) allot(CELL_SIZE) = tos;
+    if (tos == 0) vm->ip += (*vm->ip)->snum;
     return POP(vm);
 }
 
-/* ( -- x ) runtime semantics */
-static cell_ft
-do_literal(cell_ft tos, vmstate_p vm, addr_ft ignore)
+/* interpration semantics undefined */
+/* ( C: -- orig ) compilation semantics */
+/* XXX x_if() implementation */
+
+
+/* VARIABLE 6.1.2410 CORE, p. 48 */
+/* ( -- a-addr ) runtime semantics */
+cell_ft
+do_variable(cell_ft tos, vmstate_p vm, addr_ft varaddr)
 {
     CHECK_PUSH(vm, 1);
     PUSH(vm, tos);
-    return *(a_addr_ft) vm->ip++;
+    return (cell_ft) varaddr;
 }
 
-static void
-def_literal(name_p lit, void *ignore)
+/* ( "<spaces>name" -- ) execution semantics */
+/* XXX x_variable() implementation */
+
+static cell_ft
+define_special(cell_ft tos, vmstate_p vm, addr_ft data)
 {
-    lit->len |= NAME_IMMEDIATE;
-    ((xt_ft) allot(CELL_SIZE))->handler = do_literal;
+    tos = define_name(tos, vm, data);
+    COMMA(vm, ((a_addr_ft) data)[2]);
+    IMMEDIATE();
+    return tos;
 }
+
+
+defn_dt
+compile_defns[] =
+{
+    { define_name, "STATE",	do_variable },
+    { define_name, "EXIT",	x_exit, (void *) NAME_TYPE_NO_INTERPRET },
+    { NULL }
+};
 
 #if 0
     +LOOP                 6.1.0140 CORE                   27
-    :                     6.1.0450 CORE                   30
     ;                     6.1.0460 CORE                   30
     >BODY                 6.1.0550 CORE                   31
     BEGIN                 6.1.0760 CORE                   34
     DO                    6.1.1240 CORE                   37
-    ELSE                  6.1.1310 CORE                   38
-    EXIT                  6.1.1380 CORE                   39
     I                     6.1.1680 CORE                   40
-    IF                    6.1.1700 CORE                   40
     J                     6.1.1730 CORE                   41
     LEAVE                 6.1.1760 CORE                   41
     LITERAL               6.1.1780 CORE                   42
@@ -116,10 +143,3 @@ def_literal(name_p lit, void *ignore)
     ENDOF                 6.2.1343 CORE EXT               55
     [COMPILE]             6.2.2530 CORE EXT               60
 #endif
-
-defn_dt
-compile_defns[] = {
-    { "LITERAL", x_literal, def_literal, NULL },
-    { "EXIT",    x_exit },
-    { NULL }
-};

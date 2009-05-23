@@ -1,0 +1,103 @@
+immediate word:  a Forth word whose compilation semantics are to
+    perform its execution semantics.
+default interpretation semantics are execution semantics
+default compilation semantics are to append execution semantics
+
+Words that depend on name semantics
+
+Four kinds of definition semantics:
+		| I  | C  | P  | [] |
+default		| X  | A  | AA | A  |
+no-interpret	| U  | A  | AA | A  |
+immediate	| X  | X  | A  | A  |
+[		| U  | X  | A  | A  |
+compilation	| U  | S  | AS | AS |
+
+(*) [ is immediate, but has undefined interpretation semantics
+
+name flags
+    NOINTERP	Error when interpreting
+    IMMEDIATE	Execute when compiling
+    SPECIAL	Non-default compilation semantics
+(if SPECIAL is execute, then it implies IMMEDIATE)
+
+interpretation action based on flags:
+ S | I | N | action 
+ I | F | F | EXECUTE
+ I | F | T | -14 THROW
+ I | T | F | EXECUTE
+ I | T | T | -14 THROW
+ C | F | F | COMPILE,
+ C | F | T | COMPILE,
+ C | T | F | EXECUTE
+ C | T | T | EXECUTE
+
+\ interpret as for QUIT
+: do-interpret ( xt flags -- )
+    STATE @ IF
+	nf-immediate AND IF EXECUTE ELSE COMPILE, THEN
+    ELSE
+	nf-nointerp AND IF -14 THROW ELSE EXECUTE THEN
+    THEN
+;
+
+: do-postpone ( xt flags -- )
+    nf-immediate AND IF
+	COMPILE,
+    ELSE 
+	['] LITERAL EXECUTE ['] COMPILE, COMPILE,
+    THEN
+;
+
+: do-[compile] ( xt flags -- ) DROP COMPILE, ;
+
+Immediate words:
+(                     6.1.0080 CORE                   26
+[                     6.1.2500 CORE                   49
+.(                    6.2.0200 CORE EXT               51
+\                     6.2.2535 CORE EXT               60
+
+Execution semantics only:
+>R                    6.1.0580 CORE                   32
+EXIT                  6.1.1380 CORE                   39
+I                     6.1.1680 CORE                   40
+J                     6.1.1730 CORE                   41
+LEAVE                 6.1.1760 CORE                   41
+R>                    6.1.2060 CORE                   44
+R@                    6.1.2070 CORE                   44
+UNLOOP                6.1.2380 CORE                   48
+2>R                   6.2.0340 CORE EXT               51
+2R>                   6.2.0410 CORE EXT               52
+2R@                   6.2.0415 CORE EXT               52
+COMPILE,              6.2.0945 CORE EXT               54
+
+Special compilation semantics:
++LOOP                 6.1.0140 CORE                   27
+."                    6.1.0190 CORE                   28
+;                     6.1.0460 CORE                   30
+ABORT"                6.1.0680 CORE                   32
+BEGIN                 6.1.0760 CORE                   34
+DO                    6.1.1240 CORE                   37
+DOES>                 6.1.1250 CORE                   37
+ELSE                  6.1.1310 CORE                   38
+IF                    6.1.1700 CORE                   40
+LITERAL               6.1.1780 CORE                   42
+LOOP                  6.1.1800 CORE                   42
+POSTPONE              6.1.2033 CORE                   43
+RECURSE               6.1.2120 CORE                   44
+REPEAT                6.1.2140 CORE                   45
+S"                    6.1.2165 CORE                   45
+THEN                  6.1.2270 CORE                   47
+UNTIL                 6.1.2390 CORE                   48
+WHILE                 6.1.2430 CORE                   49
+[']                   6.1.2510 CORE                   50
+[CHAR]                6.1.2520 CORE                   50
+?DO                   6.2.0620 CORE EXT               53
+AGAIN                 6.2.0700 CORE EXT               53
+C"                    6.2.0855 CORE EXT               53
+CASE                  6.2.0873 CORE EXT               54
+ENDCASE               6.2.1342 CORE EXT               54
+ENDOF                 6.2.1343 CORE EXT               55
+OF                    6.2.1950 CORE EXT               56
+TO                    6.2.2295 CORE EXT               59
+[COMPILE]             6.2.2530 CORE EXT               60

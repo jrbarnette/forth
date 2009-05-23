@@ -17,6 +17,7 @@ Colon definition data:
 
 CREATE definition data:
     xt
+    DOES> pointer
     body
 
 CONSTANT definition data:

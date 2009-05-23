@@ -1,5 +1,5 @@
 /*
- * Copyright 2008, by J. Richard Barnette
+ * Copyright 2009, by J. Richard Barnette
  */
 
 #include <stdio.h>
@@ -16,48 +16,39 @@
  *   standard.
  */
 
+union dict dictionary;
 
-#define	HERE		dict_here
-#define NAUNITS(n)	(((n) + sizeof (addr_unit_ft) - 1) / sizeof (addr_unit_ft))
-
-union dict dictionary = {
-    .dict_static_data = {
-	sizeof (dictionary.dict_static_data)
-    }
-};
 
 /*
  * Allocate "n" character units of dictionary space.  Return a
  * pointer to the allocated space.
  */
 addr_ft
-allot(size_t n)
+allot(vmstate_p vm, size_t n)
 {
-    cell_ft	h = HERE;
-    cell_ft	nh = h + NAUNITS(n);
+    cell_ft	h = DICT.here;
+    cell_ft	nh = h + n;
 
-    if (nh >= DICTIONARY_SIZE) {
-	(void) fprintf(stderr, "out of dictionary space\n");
-	abort();	/* XXX -8 THROW */
-    }
-    HERE = nh;
+    if (nh >= DICTIONARY_SIZE)	THROW(vm, -8);
+    DICT.here = nh;
 
     return dictionary.dict_space + h;
 }
+
 
 /*
  * Look up a definition in the dictionary, and return its execution
  * token.  Return NULL if not found.
  */
 name_p
-lookup(c_addr_ft nm, size_t len)
+lookup(c_addr_ft id, size_t len)
 {
     name_p	cur;
 
-    for (cur = dict_namelist; cur != NULL; cur = cur->prev) {
+    for (cur = DICT.namelist; cur != NULL; cur = cur->prev) {
 	if (len != NAME_LENGTH(cur))
 	    continue;
-	if (memcmp(nm, cur->ident, len) != 0)
+	if (memcmp(id, cur->ident, len) != 0)
 	    continue;
 
 	return cur;
@@ -66,98 +57,116 @@ lookup(c_addr_ft nm, size_t len)
     return NULL;
 }
 
-/*
- * Add a definition into the dictionary and store the given function
- * pointer in the code field.
- */
-name_p
-addname(char *n, vminstr_fn cf_fn)
+
+xt_ft
+find(c_addr_ft id, size_t len)
 {
+    name_p nm = lookup(id, len);
+    return (nm == NULL) ? NULL : NAME_XT(nm);
+}
+
+
+/*
+ * Routines for adding named definitions into the dictionary.
+ */
+static name_p
+addname(vmstate_p vm, void **data)
+{
+    char *	id = (char *) data[0];
+    vminstr_fn	hdlr = (vminstr_fn) data[1];
+    cell_ft	type = (cell_ft) data[2];
+    size_t	len = strlen(id);
     name_p	cur;
-    size_t	len = strlen(n);
     xt_ft	xtok;
 
-    assert(len > 0 && len <= NAME_MAX_LENGTH);
+    if (len == 0)		THROW(vm, -16);
+    if (len > NAME_MAX_LENGTH)	THROW(vm, -19);
 
-    cur = (name_p) ALIGNED(HERE);
-    cur->prev = dict_namelist;
-    cur->len = len;
-    (void) memcpy(cur->ident, n, len + 1);
-    xtok = NAME_CFA(cur);
-    xtok->handler = cf_fn;
-    HERE = (cell_ft) (xtok->data - dictionary.dict_space);
+    ALIGN(vm);
+    cur = (name_p) allot(vm, NAME_SIZE(len) + CELL_SIZE);
+    cur->prev = NULL;
+    cur->flags = len;
+    NAME_SET_TYPE(cur, type);
+    (void) memcpy(cur->ident, id, len);
+    xtok = NAME_XT(cur);
+    xtok->handler = hdlr;
+    assert(HERE == xtok[1].data);
 
-    return dict_namelist = cur;
+    return cur;
 }
+
+
+cell_ft
+define_name(cell_ft tos, vmstate_p vm, addr_ft data)
+{
+    name_p nm = addname(vm, (void **) data);
+    nm->prev = DICT.namelist;
+    DICT.namelist = nm;
+    return tos;
+}
+
 
 /* -------------------------------------------------------------- */
 
-/* HERE ( -- addr ) */
+/* ' "tick"		6.1.0070 CORE, p. 25 */
+/* ( "<spaces>name" -- xt ) */
 static cell_ft
-x_here(cell_ft tos, vmstate_p vm, addr_ft ignore)
+x_tick(cell_ft tos, vmstate_p vm, addr_ft ignore)
 {
     CHECK_PUSH(vm, 1);
     PUSH(vm, tos);
 
-    return (cell_ft)(dictionary.dict_space + HERE);
+    /* XXX ' - parse name */
+
+    return 0;
 }
 
-/* ALLOT ( n -- ) */
-static cell_ft
-x_allot(cell_ft tos, vmstate_p vm, addr_ft ignore)
-{
-    CHECK_POP(vm, 1);
-    HERE += tos;
 
-    if (HERE >= DICTIONARY_SIZE) {
-	(void) fprintf(stderr, "out of dictionary space\n");
-	abort();	/* XXX -8 THROW */
-    }
-
-    return POP(vm);
-}
-
-/* ALIGN ( -- ) */
-static cell_ft
-x_align(cell_ft tos, vmstate_p vm, addr_ft ignore)
-{
-    HERE = ALIGNED(HERE);
-    return tos;
-}
-
-/* , ( x -- ) */
+/* , "comma"		6.1.0150 CORE, p. 27 */
+/* ( x -- ) */
 static cell_ft
 x_comma(cell_ft tos, vmstate_p vm, addr_ft ignore)
 {
     CHECK_POP(vm, 1);
-    *(cell_ft *)(dictionary.dict_space + HERE) = tos;
-    HERE += CELL_SIZE;
-
-    if (HERE >= DICTIONARY_SIZE) {
-	(void) fprintf(stderr, "out of dictionary space\n");
-	abort();	/* XXX -8 THROW */
-    }
-
+    *(a_addr_ft)allot(vm, CELL_SIZE) = tos;
     return POP(vm);
 }
 
-/* C, ( char -- ) */
+
+/* ALIGN		6.1.0705 CORE, p. 33 */
+/* ( -- ) */
+static cell_ft
+x_align(cell_ft tos, vmstate_p vm, addr_ft ignore)
+{
+    ALIGN(vm);
+    return tos;
+}
+
+
+/* ALLOT		6.1.0710 CORE, p. 33 */
+/* ( n -- ) */
+static cell_ft
+x_allot(cell_ft tos, vmstate_p vm, addr_ft ignore)
+{
+    CHECK_POP(vm, 1);
+    (void) allot(vm, tos);
+    return POP(vm);
+}
+
+
+/* C, "c-comma"		6.1.0860 CORE, p. 34 */
+/* ( char -- ) */
 static cell_ft
 x_c_comma(cell_ft tos, vmstate_p vm, addr_ft ignore)
 {
     CHECK_POP(vm, 1);
-    *(char_ft *)(dictionary.dict_space + HERE) = (char_ft)tos;
-    HERE += sizeof (char_ft);
-
-    if (HERE >= DICTIONARY_SIZE) {
-	(void) fprintf(stderr, "out of dictionary space\n");
-	abort();	/* XXX -8 THROW */
-    }
-
+    *(c_addr_ft)allot(vm, sizeof (char_ft)) = (char_ft) tos;
     return POP(vm);
 }
 
-/* FIND ( c-addr -- c-addr 0 | xt 1 | xt -1 ) */
+
+/* FIND			6.1.1550 CORE, p. 39 */
+/* ( c-addr -- c-addr 0 | xt 1 | xt -1 ) */
 static cell_ft
 x_find(cell_ft tos, vmstate_p vm, addr_ft ignore)
 {
@@ -172,80 +181,62 @@ x_find(cell_ft tos, vmstate_p vm, addr_ft ignore)
 	PUSH(vm, tos);
 	return 0;
     } else {
-	PUSH(vm, NAME_CFA(nm));
-	if (nm->len & NAME_IMMEDIATE) {
-	    return 1;
-	} else {
-	    return -1;
-	}
+	PUSH(vm, NAME_XT(nm));
+	return NAME_IS_IMMEDIATE(nm) ? 1 : -1;
     }
 }
 
-/* ' ( "<spaces>name" -- xt ) */
+
+/* HERE			6.1.1650 CORE, p. 40 */
+/* ( -- addr ) */
 static cell_ft
-x_tick(cell_ft tos, vmstate_p vm, addr_ft ignore)
+x_here(cell_ft tos, vmstate_p vm, addr_ft ignore)
 {
     CHECK_PUSH(vm, 1);
     PUSH(vm, tos);
-
-    /* XXX ' - parse name */
-
-    return 0;
+    return (cell_ft)HERE;
 }
 
-/* IMMEDIATE ( -- ) */
+
+/* IMMEDIATE		6.1.1710 CORE, p. 41 */
+/* ( -- ) */
 static cell_ft
 x_immediate(cell_ft tos, vmstate_p vm, addr_ft ignore)
 {
-    dict_namelist->len |= NAME_IMMEDIATE;
+    NAME_SET_TYPE(DICT.namelist, NAME_TYPE_IMMEDIATE);
     return tos;
 }
 
+
+static cell_ft
+initialize_dictionary(cell_ft tos, vmstate_p vm, addr_ft ignore)
+{
+    DICT.here = sizeof (dictionary.dict_static_data);
+    DICT.literal_instr.handler = do_literal;
+    DICT.skip_instr.handler = do_else;
+    DICT.fskip_instr.handler = do_if;
+    DICT.base = 10;
+    return tos;
+}
+
+
+defn_dt
+dictionary_defns[] = {
+    { initialize_dictionary },
+/*  { define_name, "'",         x_tick }, */
+    { define_name, ",",         x_comma },
+    { define_name, "ALIGN",     x_align },
+    { define_name, "ALLOT",     x_allot },
+    { define_name, "C,",        x_c_comma },
+    { define_name, "FIND",      x_find },
+    { define_name, "HERE",      x_here },
+    { define_name, "IMMEDIATE", x_immediate },
+    { NULL }
+};
+
 #if 0
-'                     6.1.0070 CORE                   25
-,                     6.1.0150 CORE                   27
-ALIGN                 6.1.0705 CORE                   33
-ALLOT                 6.1.0710 CORE                   33
-C,                    6.1.0860 CORE                   34
-FIND                  6.1.1550 CORE                   39
-HERE                  6.1.1650 CORE                   40
-IMMEDIATE             6.1.1710 CORE                   41
 COMPILE,              6.2.0945 CORE EXT               54
 MARKER                6.2.1850 CORE EXT               56
 PAD                   6.2.2000 CORE EXT               56
 UNUSED                6.2.2395 CORE EXT               59
-ALLOCATE           14.6.1.0707 MEMORY                111
-FREE               14.6.1.1605 MEMORY                112
-RESIZE             14.6.1.2145 MEMORY                112
-SEE                15.6.1.2194 TOOLS                 115
-WORDS              15.6.1.2465 TOOLS                 116
-DEFINITIONS        16.6.1.1180 SEARCH                122
-FIND               16.6.1.1550 SEARCH                122
-FORTH-WORDLIST     16.6.1.1595 SEARCH                122
-GET-CURRENT        16.6.1.1643 SEARCH                122
-GET-ORDER          16.6.1.1647 SEARCH                122
-SEARCH-WORDLIST    16.6.1.2192 SEARCH                123
-SET-CURRENT        16.6.1.2195 SEARCH                123
-SET-ORDER          16.6.1.2197 SEARCH                123
-WORDLIST           16.6.1.2460 SEARCH                123
-ALSO               16.6.2.0715 SEARCH EXT            123
-FORTH              16.6.2.1590 SEARCH EXT            123
-ONLY               16.6.2.1965 SEARCH EXT            124
-ORDER              16.6.2.1985 SEARCH EXT            124
-PREVIOUS           16.6.2.2037 SEARCH EXT            124
 #endif
-
-defn_dt
-dictionary_defns[] = {
-    { "HERE",      x_here },
-    { "ALIGN",     x_align },
-    { "ALLOT",     x_allot },
-    { ",",         x_comma },
-    { "C,",        x_c_comma },
-
-/*  { "'",         x_tick }, */
-    { "FIND",      x_find },
-
-    { "IMMEDIATE", x_immediate },
-    { NULL }
-};

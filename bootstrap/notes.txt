@@ -8,23 +8,19 @@ example
     x_colon	function executed for : by interpreter
     do_colon	xt handler assigned to colon definitions
     def_literal	internal function used at startup
+    allot	allocate dictionary space; roughly HERE SWAP ALLOT
 
 Unimplemented standard words
 #if 0
-    !                     6.1.0010 CORE                   25
     #                     6.1.0030 CORE                   25
     #>                    6.1.0040 CORE                   25
     #S                    6.1.0050 CORE                   25
-    '                     6.1.0070 CORE                   25
     (                     6.1.0080 CORE                   26
     *                     6.1.0090 CORE                   26
     */                    6.1.0100 CORE                   26
     */MOD                 6.1.0110 CORE                   26
-    +                     6.1.0120 CORE                   26
     +!                    6.1.0130 CORE                   27
     +LOOP                 6.1.0140 CORE                   27
-    ,                     6.1.0150 CORE                   27
-    -                     6.1.0160 CORE                   27
     .                     6.1.0180 CORE                   27
     ."                    6.1.0190 CORE                   28
     /                     6.1.0230 CORE                   28
@@ -43,30 +39,13 @@ Unimplemented standard words
     2SWAP                 6.1.0430 CORE                   30
     :                     6.1.0450 CORE                   30
     ;                     6.1.0460 CORE                   30
-    <                     6.1.0480 CORE                   30
     <#                    6.1.0490 CORE                   31
-    =                     6.1.0530 CORE                   31
-    >                     6.1.0540 CORE                   31
     >BODY                 6.1.0550 CORE                   31
-    >IN                   6.1.0560 CORE                   31
-    >NUMBER               6.1.0570 CORE                   31
     >R                    6.1.0580 CORE                   32
-    ?DUP                  6.1.0630 CORE                   32
-    @                     6.1.0650 CORE                   32
-    ABORT                 6.1.0670 CORE                   32
-    ABORT"                6.1.0680 CORE                   32
     ABS                   6.1.0690 CORE                   32
-    ACCEPT                6.1.0695 CORE                   33
-    ALIGN                 6.1.0705 CORE                   33
     ALIGNED               6.1.0706 CORE                   33
-    ALLOT                 6.1.0710 CORE                   33
-    AND                   6.1.0720 CORE                   33
-    BASE                  6.1.0750 CORE                   34
     BEGIN                 6.1.0760 CORE                   34
     BL                    6.1.0770 CORE                   34
-    C!                    6.1.0850 CORE                   34
-    C,                    6.1.0860 CORE                   34
-    C@                    6.1.0870 CORE                   34
     CELL+                 6.1.0880 CORE                   35
     CELLS                 6.1.0890 CORE                   35
     CHAR                  6.1.0895 CORE                   35
@@ -74,62 +53,38 @@ Unimplemented standard words
     CHARS                 6.1.0898 CORE                   35
     CONSTANT              6.1.0950 CORE                   35
     COUNT                 6.1.0980 CORE                   36
-    CR                    6.1.0990 CORE                   36
     CREATE                6.1.1000 CORE                   36
     DECIMAL               6.1.1170 CORE                   36
-    DEPTH                 6.1.1200 CORE                   36
     DO                    6.1.1240 CORE                   37
     DOES>                 6.1.1250 CORE                   37
-    DROP                  6.1.1260 CORE                   37
-    DUP                   6.1.1290 CORE                   38
     ELSE                  6.1.1310 CORE                   38
-    EMIT                  6.1.1320 CORE                   38
     ENVIRONMENT?          6.1.1345 CORE                   38
-    EVALUATE              6.1.1360 CORE                   39
-    EXECUTE               6.1.1370 CORE                   39
     EXIT                  6.1.1380 CORE                   39
     FILL                  6.1.1540 CORE                   39
-    FIND                  6.1.1550 CORE                   39
     FM/MOD                6.1.1561 CORE                   40
-    HERE                  6.1.1650 CORE                   40
     HOLD                  6.1.1670 CORE                   40
     I                     6.1.1680 CORE                   40
     IF                    6.1.1700 CORE                   40
-    IMMEDIATE             6.1.1710 CORE                   41
-    INVERT                6.1.1720 CORE                   41
     J                     6.1.1730 CORE                   41
-    KEY                   6.1.1750 CORE                   41
     LEAVE                 6.1.1760 CORE                   41
     LITERAL               6.1.1780 CORE                   42
     LOOP                  6.1.1800 CORE                   42
-    LSHIFT                6.1.1805 CORE                   42
     M*                    6.1.1810 CORE                   42
     MAX                   6.1.1870 CORE                   42
     MIN                   6.1.1880 CORE                   42
     MOD                   6.1.1890 CORE                   43
     MOVE                  6.1.1900 CORE                   43
-    NEGATE                6.1.1910 CORE                   43
-    OR                    6.1.1980 CORE                   43
-    OVER                  6.1.1990 CORE                   43
     POSTPONE              6.1.2033 CORE                   43
     QUIT                  6.1.2050 CORE                   44
     R>                    6.1.2060 CORE                   44
     R@                    6.1.2070 CORE                   44
     RECURSE               6.1.2120 CORE                   44
     REPEAT                6.1.2140 CORE                   45
-    ROT                   6.1.2160 CORE                   45
-    RSHIFT                6.1.2162 CORE                   45
     S"                    6.1.2165 CORE                   45
     S>D                   6.1.2170 CORE                   45
     SIGN                  6.1.2210 CORE                   46
     SM/REM                6.1.2214 CORE                   46
-    SOURCE                6.1.2216 CORE                   46
-    SPACE                 6.1.2220 CORE                   46
-    SPACES                6.1.2230 CORE                   46
-    STATE                 6.1.2250 CORE                   46
-    SWAP                  6.1.2260 CORE                   46
     THEN                  6.1.2270 CORE                   47
-    TYPE                  6.1.2310 CORE                   47
     U.                    6.1.2320 CORE                   47
     U<                    6.1.2340 CORE                   47
     UM*                   6.1.2360 CORE                   47
@@ -138,13 +93,10 @@ Unimplemented standard words
     UNTIL                 6.1.2390 CORE                   48
     VARIABLE              6.1.2410 CORE                   48
     WHILE                 6.1.2430 CORE                   49
-    WORD                  6.1.2450 CORE                   49
-    XOR                   6.1.2490 CORE                   49
     [                     6.1.2500 CORE                   49
     [']                   6.1.2510 CORE                   50
     [CHAR]                6.1.2520 CORE                   50
     ]                     6.1.2540 CORE                   50
-    #TIB                  6.2.0060 CORE EXT               51
     .(                    6.2.0200 CORE EXT               51
     .R                    6.2.0210 CORE EXT               51
     0<>                   6.2.0260 CORE EXT               51
@@ -170,16 +122,10 @@ Unimplemented standard words
     NIP                   6.2.1930 CORE EXT               56
     OF                    6.2.1950 CORE EXT               56
     PAD                   6.2.2000 CORE EXT               56
-    PARSE                 6.2.2008 CORE EXT               57
     PICK                  6.2.2030 CORE EXT               57
     QUERY                 6.2.2040 CORE EXT               57
-    REFILL                6.2.2125 CORE EXT               57
-    RESTORE-INPUT         6.2.2148 CORE EXT               57
     ROLL                  6.2.2150 CORE EXT               58
-    SAVE-INPUT            6.2.2182 CORE EXT               58
-    SOURCE-ID             6.2.2218 CORE EXT               58
     SPAN                  6.2.2240 CORE EXT               58
-    TIB                   6.2.2290 CORE EXT               58
     TO                    6.2.2295 CORE EXT               59
     TRUE                  6.2.2298 CORE EXT               59
     TUCK                  6.2.2300 CORE EXT               59

@@ -1,0 +1,115 @@
+words affecting/creating definitions
+    :		starts current definition (do_colon)
+    :NONAME	starts current definition (do_colon)
+    ;		ends current definition
+    CONSTANT	creates a definition (do_constant)
+    CREATE	creates a definition (do_create)
+    DOES>	alters the most recent definition if by CREATE
+    IMMEDIATE	makes most recent definition immediate
+    MARKER	creates a definition
+    VALUE	creates a definition (do_value)
+    VARIABLE	creates a definition (do_variable)
+
+operating on defintions or names
+    '		parses name and finds definition
+    >BODY	requires definition from CREATE
+    FIND	finds definition
+    POSTPONE	parses name; must know semantics
+    TO		requires name created by VALUE
+    [']		parses name and finds definition
+    [COMPILE]	parses name; must know semantics
+
+create a definition:
+:                     6.1.0450 CORE                   30
+;                     6.1.0460 CORE                   30
+CONSTANT              6.1.0950 CORE                   35
+CREATE                6.1.1000 CORE                   36
+VARIABLE              6.1.2410 CORE                   48
+:NONAME               6.2.0455 CORE EXT               52
+MARKER                6.2.1850 CORE EXT               56
+VALUE                 6.2.2405 CORE EXT               60
+
+parses a name but doesn't create a definition:
+'                     6.1.0070 CORE                   25
+CHAR                  6.1.0895 CORE                   35
+POSTPONE              6.1.2033 CORE                   43
+[']                   6.1.2510 CORE                   50
+[CHAR]                6.1.2520 CORE                   50
+TO                    6.2.2295 CORE EXT               59
+[COMPILE]             6.2.2530 CORE EXT               60
+
+operate on a definition:
+>BODY                 6.1.0550 CORE                   31
+DOES>                 6.1.1250 CORE                   37
+IMMEDIATE             6.1.1710 CORE                   41
+
+append alternate semantics:
+."                    6.1.0190 CORE                   28
++LOOP                 6.1.0140 CORE                   27
+ABORT"                6.1.0680 CORE                   32
+BEGIN                 6.1.0760 CORE                   34
+DO                    6.1.1240 CORE                   37
+ELSE                  6.1.1310 CORE                   38
+EXIT                  6.1.1380 CORE                   39
+I                     6.1.1680 CORE                   40
+IF                    6.1.1700 CORE                   40
+J                     6.1.1730 CORE                   41
+LEAVE                 6.1.1760 CORE                   41
+LOOP                  6.1.1800 CORE                   42
+LITERAL               6.1.1780 CORE                   42
+RECURSE               6.1.2120 CORE                   44
+REPEAT                6.1.2140 CORE                   45
+S"                    6.1.2165 CORE                   45
+THEN                  6.1.2270 CORE                   47
+UNLOOP                6.1.2380 CORE                   48
+UNTIL                 6.1.2390 CORE                   48
+WHILE                 6.1.2430 CORE                   49
+?DO                   6.2.0620 CORE EXT               53
+AGAIN                 6.2.0700 CORE EXT               53
+C"                    6.2.0855 CORE EXT               53
+CASE                  6.2.0873 CORE EXT               54
+COMPILE,              6.2.0945 CORE EXT               54
+ENDCASE               6.2.1342 CORE EXT               54
+ENDOF                 6.2.1343 CORE EXT               55
+OF                    6.2.1950 CORE EXT               56
+TO                    6.2.2295 CORE EXT               59
+[COMPILE]             6.2.2530 CORE EXT               60
+
+other than default semantics:
+(                     6.1.0080 CORE                   26
+>R                    6.1.0580 CORE                   32
+R>                    6.1.2060 CORE                   44
+R@                    6.1.2070 CORE                   44
+[                     6.1.2500 CORE                   49
+.(                    6.2.0200 CORE EXT               51
+2>R                   6.2.0340 CORE EXT               51
+2R>                   6.2.0410 CORE EXT               52
+2R@                   6.2.0415 CORE EXT               52
+\                     6.2.2535 CORE EXT               60
+
+refers to static storage:
+#                     6.1.0030 CORE                   25
+#>                    6.1.0040 CORE                   25
+#S                    6.1.0050 CORE                   25
+,                     6.1.0150 CORE                   27
+<#                    6.1.0490 CORE                   31
+>IN                   6.1.0560 CORE                   31
+>NUMBER               6.1.0570 CORE                   31
+ALIGN                 6.1.0705 CORE                   33
+ALLOT                 6.1.0710 CORE                   33
+BASE                  6.1.0750 CORE                   34
+C,                    6.1.0860 CORE                   34
+DECIMAL               6.1.1170 CORE                   36
+HERE                  6.1.1650 CORE                   40
+HOLD                  6.1.1670 CORE                   40
+SIGN                  6.1.2210 CORE                   46
+SOURCE                6.1.2216 CORE                   46
+STATE                 6.1.2250 CORE                   46
+WORD                  6.1.2450 CORE                   49
+[                     6.1.2500 CORE                   49
+]                     6.1.2540 CORE                   50
+HEX                   6.2.1660 CORE EXT               55
+PAD                   6.2.2000 CORE EXT               56
+PARSE                 6.2.2008 CORE EXT               57
+REFILL                6.2.2125 CORE EXT               57
+SOURCE-ID             6.2.2218 CORE EXT               58

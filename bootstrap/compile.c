@@ -15,7 +15,6 @@
 
 
 /* : 6.1.0450 CORE, p. 30 */
-/* interpretation semantics undefined */
 /* ( R: -- nest-sys ) initiation semantics */
 cell_ft
 do_colon(cell_ft tos, vmstate_p vm, addr_ft newip)
@@ -26,14 +25,29 @@ do_colon(cell_ft tos, vmstate_p vm, addr_ft newip)
     return tos;
 }
 
-/* ( C: "<spaces> name" -- colon-sys ) compilation semantics */
+/* ( C: "<spaces> name" -- colon-sys ) */
 static cell_ft
 x_colon(cell_ft tos, vmstate_p vm, addr_ft colon_xt)
 {
-    /* XXX : - enforce compilation state */
-    /* XXX : - parse name, start definition */
-    ((xt_ft) allot(vm, CELL_SIZE))->handler = do_colon;
-    return tos;
+    c_addr_ft id = PARSE_AREA_PTR;
+    cell_ft len = parse(' ', id, PARSE_AREA_LEN);
+    CHECK_PUSH(vm, 1);
+    PUSH(vm, tos);
+    DICT.state = STATE_COMPILE;
+    return (cell_ft) addname(vm, id, len, do_colon);
+}
+
+
+/* ; "semicolon" 6.1.0460 CORE, p. 30 */
+/* ( C: colon-sys -- ) compilation semantics */
+static cell_ft
+x_semicolon(cell_ft tos, vmstate_p vm, addr_ft colon_xt)
+{
+    CHECK_POP(vm, 1);
+    compile_xt(vm, EXIT_XT);
+    linkname((name_p) tos);
+    DICT.state = STATE_INTERP;
+    return POP(vm);
 }
 
 
@@ -90,14 +104,21 @@ do_variable(cell_ft tos, vmstate_p vm, addr_ft varaddr)
 }
 
 /* ( "<spaces>name" -- ) execution semantics */
-/* XXX x_variable() implementation */
+static cell_ft
+x_variable(cell_ft tos, vmstate_p vm, addr_ft ignore)
+{
+    c_addr_ft id = PARSE_AREA_PTR;
+    cell_ft len = parse(' ', id, PARSE_AREA_LEN);
+    linkname(addname(vm, id, len, do_variable));
+    (void) allot(vm, CELL_SIZE);
+    return tos;
+}
+
 
 static cell_ft
-define_special(cell_ft tos, vmstate_p vm, addr_ft data)
+initialize_compile(cell_ft tos, vmstate_p vm, addr_ft ignore)
 {
-    tos = define_name(tos, vm, data);
-    COMMA(vm, ((a_addr_ft) data)[2]);
-    IMMEDIATE();
+    DICT.exit_instr.handler = x_exit;
     return tos;
 }
 
@@ -105,14 +126,16 @@ define_special(cell_ft tos, vmstate_p vm, addr_ft data)
 defn_dt
 compile_defns[] =
 {
-    { define_name, "STATE",	do_variable },
+    { initialize_compile },
+    { define_name, ":",		x_colon },
+    { define_name, ";",		x_semicolon, (void *) NAME_TYPE_COMPILE },
     { define_name, "EXIT",	x_exit, (void *) NAME_TYPE_NO_INTERPRET },
+    { define_name, "VARIABLE",	x_variable },
     { NULL }
 };
 
 #if 0
     +LOOP                 6.1.0140 CORE                   27
-    ;                     6.1.0460 CORE                   30
     >BODY                 6.1.0550 CORE                   31
     BEGIN                 6.1.0760 CORE                   34
     DO                    6.1.1240 CORE                   37

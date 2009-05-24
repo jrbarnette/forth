@@ -1,2 +1,3 @@
-Target:
-    a program that correctly executes "test.fth"
++ performance - change vm primitive interface to pass ip instead of tos
++ module organization - get things where they belong
++ more standard words

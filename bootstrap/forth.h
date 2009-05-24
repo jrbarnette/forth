@@ -74,8 +74,8 @@ typedef struct vmstate *	vmstate_p;
 struct vmstate {
     jmp_buf	interp_loop;
     xt_ft *	ip;
-    size_t	sp;
-    size_t	rsp;
+    a_addr_ft	sp;
+    a_addr_ft	rsp;
     cell_ft	stack[STACK_SIZE];
     cell_ft	rstack[RSTACK_SIZE];
 };
@@ -89,27 +89,40 @@ union vminstr {
     cell_ft		cell;
 };
 
-#define CLEAR_STACK(vm)		((vm)->sp = STACK_SIZE)
-#define CLEAR_RSTACK(vm)	((vm)->rsp = RSTACK_SIZE)
-#define DEPTH(vm)		(STACK_SIZE - (vm)->sp)
-#define EMPTY(vm)		((vm)->sp == STACK_SIZE)
-#define PICK(vm, n)		((vm)->stack[(vm)->sp + (n)])
-#define SP(vm)			(&(vm)->stack[(vm)->sp])
+#define CLEAR_STACK(vm)		((vm)->sp = vm->stack + STACK_SIZE)
+#define CLEAR_RSTACK(vm)	((vm)->rsp = vm->rstack + RSTACK_SIZE)
+#define DEPTH(vm)		(STACK_SIZE - ((vm)->sp - (vm)->stack))
+#define EMPTY(vm)		((vm)->sp == (vm)->stack)
+#define PICK(vm, n)		((vm)->sp[(n)])
+#define SP(vm)			((vm)->sp)
 
 #define THROW(vm, n)		(longjmp((vm)->interp_loop, (n)))
-#define CHECK_PUSH(vm, n)	\
-	    (((vm)->sp >= (n)) || (THROW(vm, -3), 0))
-#define CHECK_POP(vm, n)	\
-	    (((vm)->sp + (n) <= STACK_SIZE) || (THROW(vm, -4), 0))
-#define CHECK_RPUSH(vm, n)	\
-	    (((vm)->rsp >= (n)) || (THROW(vm, -5), 0))
-#define CHECK_RPOP(vm, n)	\
-	    (((vm)->rsp + (n) <= RSTACK_SIZE) || (THROW(vm, -6), 0))
 
-#define POP(vm)		((vm)->stack[(vm)->sp++])
-#define PUSH(vm, c)	((vm)->stack[--(vm)->sp] = (cell_ft)(c))
-#define RPOP(vm)	((vm)->rstack[(vm)->rsp++])
-#define RPUSH(vm, c)	((vm)->rstack[--(vm)->rsp] = (cell_ft)(c))
+#ifdef CHECKMODE
+#if CHECKMODE == 1
+#define CHECK(vm, t, x)	{ if (!(t)) return (THROW(vm, (x)), 0); }
+#elif CHECKMODE == 2
+#define CHECK(vm, t, x)	((t) || (THROW(vm, (x)), 0))
+#endif
+#endif
+
+#ifndef CHECK
+#define CHECK(vm, t, x)
+#endif
+
+#define CHECK_PUSH(vm, n)	\
+	    CHECK(vm, (vm)->sp >= (vm)->stack + (n), -3)
+#define CHECK_POP(vm, n)	\
+	    CHECK(vm, (vm)->sp <= (vm)->stack + STACK_SIZE - (n), -4)
+#define CHECK_RPUSH(vm, n)	\
+	    CHECK(vm, (vm)->rsp >= (vm)->rstack + (n), -5)
+#define CHECK_RPOP(vm, n)	\
+	    CHECK(vm, (vm)->rsp <= (vm)->rstack + RSTACK_SIZE - (n), -6)
+
+#define POP(vm)		(*(vm)->sp++)
+#define PUSH(vm, c)	(*--(vm)->sp = (cell_ft)(c))
+#define RPOP(vm)	(*(vm)->rsp++)
+#define RPUSH(vm, c)	(*--(vm)->rsp = (cell_ft)(c))
 
 #define SAVEDTOS(vm)	((vm)->stack[STACK_SIZE-1])
 
@@ -144,7 +157,10 @@ struct name_header {
 };
 
 extern name_p lookup(c_addr_ft, size_t);
-extern xt_ft find(c_addr_ft, size_t);
+extern name_p addname(vmstate_p, c_addr_ft, cell_ft, vminstr_fn);
+extern void linkname(name_p);
+
+extern cell_ft parse(char_ft, c_addr_ft, cell_ft);
 
 
 /*
@@ -168,6 +184,7 @@ extern union dict {
 	union vminstr	skip_instr;	/* for ELSE runtime xt */
 	union vminstr	fskip_instr;	/* for IF runtime xt */
 	union vminstr	tskip_instr;	/* for IF runtime xt */
+	union vminstr	exit_instr;	/* for EXIT runtime xt */
 
 	cell_ft		state;		/* STATE */
 
@@ -200,6 +217,7 @@ extern union dict {
 #define SKIP_XT			(&DICT.skip_instr)
 #define FSKIP_XT		(&DICT.fskip_instr)
 #define TSKIP_XT		(&DICT.tskip_instr)
+#define EXIT_XT			(&DICT.exit_instr)
 
 extern addr_ft allot(vmstate_p, cell_ft);
 

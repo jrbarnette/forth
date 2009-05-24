@@ -46,36 +46,29 @@ lookup(c_addr_ft id, size_t len)
     name_p	cur;
 
     for (cur = DICT.namelist; cur != NULL; cur = cur->prev) {
+	int i;
+
 	if (len != NAME_LENGTH(cur))
 	    continue;
-	if (memcmp(id, cur->ident, len) != 0)
-	    continue;
 
-	return cur;
+	i = 0;
+	while (toupper(id[i]) == toupper(cur->ident[i])) {
+	    i++;
+	    if (i == len)
+		return cur;
+	}
     }
 
     return NULL;
 }
 
 
-xt_ft
-find(c_addr_ft id, size_t len)
-{
-    name_p nm = lookup(id, len);
-    return (nm == NULL) ? NULL : NAME_XT(nm);
-}
-
-
 /*
  * Routines for adding named definitions into the dictionary.
  */
-static name_p
-addname(vmstate_p vm, void **data)
+name_p
+addname(vmstate_p vm, c_addr_ft id, cell_ft len, vminstr_fn hdlr)
 {
-    char *	id = (char *) data[0];
-    vminstr_fn	hdlr = (vminstr_fn) data[1];
-    cell_ft	type = (cell_ft) data[2];
-    size_t	len = strlen(id);
     name_p	cur;
     xt_ft	xtok;
 
@@ -86,7 +79,6 @@ addname(vmstate_p vm, void **data)
     cur = (name_p) allot(vm, NAME_SIZE(len) + CELL_SIZE);
     cur->prev = NULL;
     cur->flags = len;
-    NAME_SET_TYPE(cur, type);
     (void) memcpy(cur->ident, id, len);
     xtok = NAME_XT(cur);
     xtok->handler = hdlr;
@@ -95,13 +87,24 @@ addname(vmstate_p vm, void **data)
     return cur;
 }
 
+void
+linkname(name_p name)
+{
+    name->prev = DICT.namelist;
+    DICT.namelist = name;
+}
 
 cell_ft
 define_name(cell_ft tos, vmstate_p vm, addr_ft data)
 {
-    name_p nm = addname(vm, (void **) data);
-    nm->prev = DICT.namelist;
-    DICT.namelist = nm;
+    c_addr_ft	id = (c_addr_ft) ((void **) data)[0];
+    vminstr_fn	hdlr = (vminstr_fn) ((void **) data)[1];
+    cell_ft	type = (cell_ft) ((void **) data)[2];
+    cell_ft	len = strlen((char *) id);
+
+    name_p nm = addname(vm, id, len, hdlr);
+    linkname(nm);
+    NAME_SET_TYPE(nm, type);
     return tos;
 }
 
@@ -113,12 +116,16 @@ define_name(cell_ft tos, vmstate_p vm, addr_ft data)
 static cell_ft
 x_tick(cell_ft tos, vmstate_p vm, addr_ft ignore)
 {
+    c_addr_ft id = PARSE_AREA_PTR;
+    cell_ft len = parse(' ', id, PARSE_AREA_LEN);
+    name_p nm = lookup(id, len);
+
+    if (nm == NULL)
+	THROW(vm, -13);
+
     CHECK_PUSH(vm, 1);
     PUSH(vm, tos);
-
-    /* XXX ' - parse name */
-
-    return 0;
+    return (cell_ft) NAME_XT(nm);
 }
 
 
@@ -223,7 +230,7 @@ initialize_dictionary(cell_ft tos, vmstate_p vm, addr_ft ignore)
 defn_dt
 dictionary_defns[] = {
     { initialize_dictionary },
-/*  { define_name, "'",         x_tick }, */
+    { define_name, "'",         x_tick },
     { define_name, ",",         x_comma },
     { define_name, "ALIGN",     x_align },
     { define_name, "ALLOT",     x_allot },

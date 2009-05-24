@@ -7,8 +7,14 @@ SOURCES =			\
 	primitives.c		\
 	termio.c
 
+CHECKNONE = 0
+CHECKSTMT = 1
+CHECKEXPR = 2
+CHECKMODE = EXPR
+CHECKFLAG = -DCHECKMODE=$(CHECK$(CHECKMODE))
+
 OBJECTS = $(SOURCES:.c=.o)
-CFLAGS = -O -g
+CFLAGS = -O -g $(CHECKFLAG)
 
 all: forth tags
 

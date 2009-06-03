@@ -62,32 +62,56 @@ typedef struct {
 
 
 /*
- * VM specific definitions not directly visible to Forth code.
+ * Virtual Machine State
+ *
+ * The virtual machine interpreter uses a more-or-less traditional
+ * indirect threaded approach:  A Forth definition consists of a
+ * pointer to a handler function that executes the defintion,
+ * followed by definition data.  The definition is invoked by
+ * calling the handler with the VM state and the address of the
+ * definition data.
+ *
+ * The "execution token" for a definition is simply its address.
+ * The execution token also serves as the representation of a
+ * virtual machine instruction.
+ *
+ * The defintion data for a colon definition is an array of
+ * virtual machine instructions (execution tokens) to be executed in
+ * order.  The execution logic and the data structures come together
+ * in these key functions: execute(), do_colon(), do_exit().
  */
 
 #define STACK_SIZE	2048
 #define RSTACK_SIZE	64
 
-typedef union vminstr *		xt_ft;
+typedef union defn_data *	xt_ft;
+typedef union instr_data *	vm_instr_p;
 typedef struct vmstate *	vmstate_p;
 
+typedef cell_ft (*vminstr_fn)(cell_ft, vmstate_p, addr_ft);
+
 struct vmstate {
-    jmp_buf	interp_loop;
-    xt_ft *	ip;
+    vm_instr_p	ip;
     a_addr_ft	sp;
     a_addr_ft	rsp;
     cell_ft	stack[STACK_SIZE];
     cell_ft	rstack[RSTACK_SIZE];
+    jmp_buf	interp_loop;
 };
 
-typedef cell_ft (*vminstr_fn)(cell_ft, vmstate_p, addr_ft);
+union instr_data {
+    xt_ft		xtok;
+    cell_ft		cell;
+    snumber_ft		offset;
+    char_ft		cdata[1];
+};
 
-union vminstr {
+union defn_data {
     vminstr_fn		handler;
     addr_unit_ft	data[1];
-    snumber_ft		snum;
-    cell_ft		cell;
 };
+
+extern void execute(vmstate_p, xt_ft);
 
 #define CLEAR_STACK(vm)		((vm)->sp = vm->stack + STACK_SIZE)
 #define CLEAR_RSTACK(vm)	((vm)->rsp = vm->rstack + RSTACK_SIZE)
@@ -95,6 +119,7 @@ union vminstr {
 #define EMPTY(vm)		((vm)->sp == (vm)->stack)
 #define PICK(vm, n)		((vm)->sp[(n)])
 #define SP(vm)			((vm)->sp)
+#define RSP(vm)			((vm)->rsp)
 
 #define THROW(vm, n)		(longjmp((vm)->interp_loop, (n)))
 
@@ -160,8 +185,6 @@ extern name_p lookup(c_addr_ft, size_t);
 extern name_p addname(vmstate_p, c_addr_ft, cell_ft, vminstr_fn);
 extern void linkname(name_p);
 
-extern cell_ft parse(char_ft, c_addr_ft, cell_ft);
-
 
 /*
  * C definitions and declarations relating to the Forth dictionary,
@@ -180,11 +203,11 @@ extern union dict {
 	cell_ft		here;		/* HERE */
 	name_p		namelist;	/* internal */
 
-	union vminstr	literal_instr;	/* for LITERAL runtime xt */
-	union vminstr	skip_instr;	/* for ELSE runtime xt */
-	union vminstr	fskip_instr;	/* for IF runtime xt */
-	union vminstr	tskip_instr;	/* for IF runtime xt */
-	union vminstr	exit_instr;	/* for EXIT runtime xt */
+	union defn_data	literal_instr;	/* for LITERAL runtime xt */
+	union defn_data	skip_instr;	/* for ELSE runtime xt */
+	union defn_data	fskip_instr;	/* for IF runtime xt */
+	union defn_data	tskip_instr;	/* for IF runtime xt */
+	union defn_data	does_instr;	/* for IF runtime xt */
 
 	cell_ft		state;		/* STATE */
 
@@ -217,38 +240,38 @@ extern union dict {
 #define SKIP_XT			(&DICT.skip_instr)
 #define FSKIP_XT		(&DICT.fskip_instr)
 #define TSKIP_XT		(&DICT.tskip_instr)
-#define EXIT_XT			(&DICT.exit_instr)
+#define DOES_XT			(&DICT.does_instr)
 
 extern addr_ft allot(vmstate_p, cell_ft);
 
-typedef void (*definer_fn)(name_p, void *);
-
 typedef struct defn {
     vminstr_fn		fn;
-    void *		data[3];
+    void *		data[2];
+    cell_ft		flags;
 } defn_dt;
 
-extern defn_dt primitive_defns[];
+extern defn_dt arithops_defns[];
+extern defn_dt control_defns[];
 extern defn_dt dictionary_defns[];
 extern defn_dt format_defns[];
-extern defn_dt compile_defns[];
+extern defn_dt interpret_defns[];
+extern defn_dt memops_defns[];
+extern defn_dt multops_defns[];
+extern defn_dt names_defns[];
+extern defn_dt stackops_defns[];
 
 extern cell_ft define_name(cell_ft, vmstate_p, addr_ft);
-
-extern cell_ft do_colon(cell_ft, vmstate_p, addr_ft);
-extern cell_ft do_variable(cell_ft, vmstate_p, addr_ft);
-extern cell_ft do_constant(cell_ft, vmstate_p, addr_ft);
-
-extern cell_ft do_else(cell_ft, vmstate_p, addr_ft);
-extern cell_ft do_if(cell_ft, vmstate_p, addr_ft);
-extern cell_ft do_literal(cell_ft, vmstate_p, addr_ft);
 
 
 /*
  */
 
-extern void execute(vmstate_p, xt_ft);
 extern cell_ft parse(char_ft, c_addr_ft, cell_ft);
+
+extern void compile_literal(vmstate_p, cell_ft);
+extern void compile_xt(vmstate_p, xt_ft);
+extern vm_instr_p compile_skip(vmstate_p, xt_ft);
+extern void patch(vm_instr_p, vm_instr_p);
 
 #define COMMA(vm, x)	(*(a_addr_ft)allot((vm), CELL_SIZE) = (cell_ft) (x))
 #define ALIGN(vm)	(DICT.here = ALIGNED(DICT.here))

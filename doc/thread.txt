@@ -5,7 +5,7 @@ definition:
 
 xt is pointer into definition after header
 
-VM - each VM instructions starts with this info:
+VM - each VM instruction starts with this info:
     IP - pointer to next xt in currently executing colon definition
     XT - xt to be executed
     SP - pointer to top of stack
@@ -16,8 +16,7 @@ Colon definition data:
     xt ...
 
 CREATE definition data:
-    xt
-    DOES> pointer
+    DOES> xt
     body
 
 CONSTANT definition data:

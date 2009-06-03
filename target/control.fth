@@ -19,11 +19,58 @@
 \ ENDOF                 6.2.1343 CORE EXT               55
 \ OF                    6.2.1950 CORE EXT               56
 
-BEGIN	( C: -- dest )
-THEN	( C: orig -- )
-IF	( C: -- orig )
-ELSE	( C: orig1 -- orig2 )
-WHILE	( C: dest -- orig dest )
-REPEAT	( C: orig dest -- )
-UNTIL	( C: dest -- )
-AGAIN	( C: dest -- )
+\ BEGIN		( C: -- dest )
+\ THEN		( C: orig -- )
+\ IF		( C: -- orig )
+\ ELSE		( C: orig1 -- orig2 )
+\ WHILE		( C: dest -- orig dest )
+\ REPEAT	( C: orig dest -- )
+\ UNTIL		( C: dest -- )
+\ AGAIN		( C: dest -- )
+
+: REPEAT POSTPONE AGAIN POSTPONE THEN ;
+
+\     BEGIN a AGAIN
+\ L0:
+\ 	a
+\ 	goto L0
+\ 
+\     BEGIN a UNTIL
+\ L0:
+\ 	a
+\ 	IF-FALSE goto L0
+\ 
+\     BEGIN a WHILE b REPEAT
+\ L0:
+\ 	a
+\ 	IF-FALSE goto L1
+\ 	b
+\ 	goto L0
+\ L1:
+\ 
+\     BEGIN a WHILE b UNTIL c THEN
+\ L0:
+\ 	a
+\ 	IF-FALSE goto L1
+\ 	b
+\ 	IF goto L0
+\ 	c
+\ L1:
+\ 
+\     BEGIN a WHILE b WHILE c REPEAT d THEN
+\ L0:
+\ 	a
+\ 	IF-FALSE goto L1
+\ 	b
+\ 	IF-FALSE goto L2
+\ 	c
+\ 	goto L0
+\ L2:
+\ 	d
+\ L1:
+\ 
+\ 
+\ DO - Run-time
+\     ( limit index -- )
+\ LOOP - Run-time
+\     index++

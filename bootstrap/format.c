@@ -6,6 +6,15 @@
 
 #include "forth.h"
 
+/*
+ * format.c - Forth standard words for formatted output and number
+ *   conversion.
+ */
+
+#define MAXBASE			36
+
+static char digits[MAXBASE] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
 /* . "dot"		6.1.0180 CORE, p. 27 */
 /* ( n -- ) */
 cell_ft
@@ -28,19 +37,17 @@ x_dot(cell_ft tos, vmstate_p vm, addr_ft ignore)
 	sign = '-';
     }
     do {
+	cell_ft n = tos / base;
 	char c;
-	int dig = tos % base;
-	tos /= base;
 
-	if (dig < 10) {
-	    c = '0' + dig;
-	} else if (dig < 36) {
-	    c = 'A' - 10 + dig;
+	if (base <= MAXBASE) {
+	    c = digits[tos % base];
 	} else {
 	    /* implementation defined */
 	    c = '#';
 	}
 	*--cp = c;
+	tos = n;
     } while (tos != 0);
     if (sign == '-') {
 	*--cp = sign;
@@ -91,6 +98,7 @@ format_defns[] =
     SIGN                  6.1.2210 CORE                   46
     U.                    6.1.2320 CORE                   47
     .R                    6.2.0210 CORE EXT               51
+    CONVERT               6.2.0970 CORE EXT               54
     HEX                   6.2.1660 CORE EXT               55
     U.R                   6.2.2330 CORE EXT               59
 #endif

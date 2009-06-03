@@ -31,11 +31,14 @@
 \ TRUE                  6.2.2298 CORE EXT               59
 \ WITHIN                6.2.2440 CORE EXT               60
 
-: ABS DUP 0< IF NEGATE THEN ;
-VARIABLE BASE 10 BASE !
-20 CONSTANT BL
-0 0< CONSTANT FALSE
-0 0= CONSTANT TRUE
-: COUNT DUP CHAR+ SWAP C@ ;
-: MAX 2DUP < IF SWAP THEN DROP ;
-: MIN 2DUP > IF SWAP THEN DROP ;
+: 2SWAP ( x4 x3 x2 x1 -- x2 x1 x4 x3 ) rot >r rot r> ;
+: +! ( n a-addr -- ) dup >r @ + r> ! ;
+: ABS ( n -- u ) dup 0< if negate then ;
+variable BASE 10 base !
+20 constant BL
+: DECIMAL 10 base ! ;
+1 0= constant FALSE
+0 0= constant TRUE
+: COUNT ( c-addr -- c-addr u ) dup char+ swap c@ ;
+: MAX ( n1 n2 -- n1 | n2 ) 2dup < if swap then drop ;
+: MIN ( n1 n2 -- n1 | n2 ) 2dup > if swap then drop ;

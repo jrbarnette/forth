@@ -121,9 +121,14 @@ init_forth(vmstate_p vm)
     init_vm(vm);
 
     interpret_defs(vm, dictionary_defns);
-    interpret_defs(vm, primitive_defns);
+    interpret_defs(vm, stackops_defns);
+    interpret_defs(vm, arithops_defns);
+    interpret_defs(vm, memops_defns);
+    interpret_defs(vm, multops_defns);
+    interpret_defs(vm, names_defns);
+    interpret_defs(vm, control_defns);
     interpret_defs(vm, format_defns);
-    interpret_defs(vm, compile_defns);
+    interpret_defs(vm, interpret_defns);
 }
 
 

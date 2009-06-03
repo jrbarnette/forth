@@ -4,6 +4,11 @@
 
 #include "forth.h"
 
+/*
+ * termio.c - Standard Forth words for user terminal I/O.
+ */
+
+
 static defn_dt
 termio_defs[] = {
     { NULL }
@@ -17,4 +22,7 @@ termio_defs[] = {
     SPACE                 6.1.2220 CORE                   46
     SPACES                6.1.2230 CORE                   46
     TYPE                  6.1.2310 CORE                   47
+    EXPECT                6.2.1390 CORE EXT               55
+    QUERY                 6.2.2040 CORE EXT               57
+    SPAN                  6.2.2240 CORE EXT               58
 #endif

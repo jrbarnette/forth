@@ -1,3 +1,10 @@
 + performance - change vm primitive interface to pass ip instead of tos
-+ module organization - get things where they belong
-+ more standard words
++ CONSTANT
++ the remaining stackops words
++ the remaining memops words
++ do loop words
++ literal generation words
++ CORE EXT words
++ multi-cell multiply and divide
++ pictured output (needs multi-cell divide)
++ termio words

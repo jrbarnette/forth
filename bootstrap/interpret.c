@@ -9,24 +9,9 @@
 #include "forth.h"
 
 /*
- * interpret.c - outer (interactive) interpreter
+ * interpret.c - Outer (interactive) interpreter, and related Forth
+ *   words.
  */
-
-void
-execute(vmstate_p vm, xt_ft entry_xt)
-{
-    cell_ft tos;
-
-    tos = entry_xt->handler(SAVEDTOS(vm), vm, entry_xt[1].data);
-
-    while (vm->ip != NULL) {
-	xt_ft xtok = *vm->ip++;
-	tos = xtok->handler(tos, vm, xtok[1].data);
-    }
-
-    SAVEDTOS(vm) = tos;
-}
-
 
 void
 compile_literal(vmstate_p vm, cell_ft n)
@@ -43,17 +28,49 @@ compile_xt(vmstate_p vm, xt_ft xtok)
 }
 
 
+vm_instr_p
+compile_skip(vmstate_p vm, xt_ft skip)
+{
+    compile_xt(vm, skip);
+    return (vm_instr_p) allot(vm, CELL_SIZE);
+}
+
+
+void
+patch(vm_instr_p orig, vm_instr_p dest)
+{
+    orig->offset = dest - orig - 1;
+}
+
+
 cell_ft
 parse(char_ft c, c_addr_ft s, cell_ft len)
 {
     c_addr_ft ns = memchr(s, (char) c, len);
+
     if (ns != NULL) {
-	len = (cell_ft) (ns - s);
-	DICT.to_in += len + 1;
+	DICT.to_in = ns - DICT.source.c_addr + 1;
+	return (cell_ft) (ns - s);
     } else {
-	DICT.to_in += len;
+	DICT.to_in = DICT.source.len;
+	return len;
     }
-    return len;
+}
+
+
+void
+execute(vmstate_p vm, xt_ft entry_xt)
+{
+    cell_ft tos;
+
+    tos = entry_xt->handler(SAVEDTOS(vm), vm, entry_xt[1].data);
+
+    while (vm->ip != NULL) {
+	xt_ft xtok = (vm->ip++)->xtok;
+	tos = xtok->handler(tos, vm, xtok[1].data);
+    }
+
+    SAVEDTOS(vm) = tos;
 }
 
 
@@ -203,7 +220,35 @@ quit(vmstate_p vm)
 
 /* -------------------------------------------------------------- */
 
-/* >IN "to-in"		6.1.0560 CORE, p. 31 8/
+static cell_ft
+do_skip(cell_ft tos, vmstate_p vm, addr_ft ignore)
+{
+    vm->ip += vm->ip->offset + 1;
+    return tos;
+}
+
+static cell_ft
+do_fskip(cell_ft tos, vmstate_p vm, addr_ft ignore)
+{
+    CHECK_POP(vm, 1);
+    if (tos == 0) vm->ip += vm->ip->offset;
+    vm->ip++;
+    return POP(vm);
+}
+
+
+/* ( "paren"		6.1.0080 CORE, p. 26 */
+/* ( “ccc<paren>” -- ) execution semantics */
+static cell_ft
+x_paren(cell_ft tos, vmstate_p vm, addr_ft ignore)
+{
+    (void) parse(')', PARSE_AREA_PTR, PARSE_AREA_LEN);
+    return tos;
+}
+
+
+
+/* >IN "to-in"		6.1.0560 CORE, p. 31 */
 /* ( -- a-addr ) */
 static cell_ft
 x_to_in(cell_ft tos, vmstate_p vm, addr_ft ignore)
@@ -268,6 +313,15 @@ x_execute(cell_ft tos, vmstate_p vm, addr_ft ignore)
 
 
 /* LITERAL		6.1.1780 CORE, p. 42 */
+/* ( -- x ) runtime semantics */
+static cell_ft
+do_literal(cell_ft tos, vmstate_p vm, addr_ft ignore)
+{
+    CHECK_PUSH(vm, 1);
+    PUSH(vm, tos);
+    return (vm->ip++)->cell;
+}
+
 /* interpration semantics undefined */
 /* ( x -- ) compilation semantics */
 static cell_ft
@@ -276,15 +330,6 @@ x_literal(cell_ft tos, vmstate_p vm, addr_ft ignore)
     CHECK_POP(vm, 1);
     compile_literal(vm, tos);
     return POP(vm);
-}
-
-/* ( -- x ) runtime semantics */
-cell_ft
-do_literal(cell_ft tos, vmstate_p vm, addr_ft ignore)
-{
-    CHECK_PUSH(vm, 1);
-    PUSH(vm, tos);
-    return (*vm->ip++)->cell;
 }
 
 
@@ -332,26 +377,87 @@ x_parse(cell_ft tos, vmstate_p vm, addr_ft ignore)
 }
 
 
+/* [ "left-bracket"	6.1.2500 CORE, p. 49 */
+/* interpration semantics undefined */
+/* ( -- ) compilation semantics */
+static cell_ft
+x_left_bracket(cell_ft tos, vmstate_p vm, addr_ft ignore)
+{
+    DICT.state = STATE_INTERP;
+    return tos;
+}
+
+
+/* ] "right-bracket"	6.1.2540 CORE, p. 50 */
+/* ( -- ) */
+static cell_ft
+x_right_bracket(cell_ft tos, vmstate_p vm, addr_ft ignore)
+{
+    DICT.state = STATE_COMPILE;
+    return tos;
+}
+
+
+/* \ "backslash"	6.2.2535 CORE EXT, p. 60 */
+/* ( “ccc<eol>” -- ) execution semantics */
+static cell_ft
+x_backslash(cell_ft tos, vmstate_p vm, addr_ft ignore)
+{
+    DICT.to_in = DICT.source.len;
+    return tos;
+}
+
+
+static cell_ft
+initialize_xtokens(cell_ft tos, vmstate_p vm, addr_ft ignore)
+{
+    DICT.literal_instr.handler = do_literal;
+    DICT.skip_instr.handler = do_skip;
+    DICT.fskip_instr.handler = do_fskip;
+
+    return tos;
+}
+
+
 defn_dt
 interpret_defns[] = {
+    { initialize_xtokens },
+    { define_name, "(",		x_paren, NAME_TYPE_IMMEDIATE },
     { define_name, ">IN",	x_to_in },
     { define_name, "ABORT",	x_abort },
     { define_name, "EVALUATE",	x_evaluate },
     { define_name, "EXECUTE",	x_execute },
-    { define_name, "LITERAL",	x_literal, (void *) NAME_TYPE_COMPILE },
+    { define_name, "LITERAL",	x_literal, NAME_TYPE_COMPILE },
     { define_name, "QUIT",	x_quit },
     { define_name, "SOURCE",	x_source },
     { define_name, "STATE",	x_state },
+    { define_name, "[",		x_left_bracket, NAME_TYPE_COMPILE },
+    { define_name, "]",		x_right_bracket },
+    { define_name, "\\",	x_backslash, NAME_TYPE_IMMEDIATE },
     { NULL }
 };
 
 #if 0
+    ."                    6.1.0190 CORE                   28
     ABORT"                6.1.0680 CORE                   32
+    BL                    6.1.0770 CORE                   34
+    CHAR                  6.1.0895 CORE                   35
+    COUNT                 6.1.0980 CORE                   36
+    ENVIRONMENT?          6.1.1345 CORE                   38
+    POSTPONE              6.1.2033 CORE                   43
+    S"                    6.1.2165 CORE                   45
     WORD                  6.1.2450 CORE                   49
+    [']                   6.1.2510 CORE                   50
+    [CHAR]                6.1.2520 CORE                   50
     #TIB                  6.2.0060 CORE EXT               51
+    C"                    6.2.0855 CORE EXT               53
+    COMPILE,              6.2.0945 CORE EXT               54
+    FALSE                 6.2.1485 CORE EXT               55
     REFILL                6.2.2125 CORE EXT               57
     RESTORE-INPUT         6.2.2148 CORE EXT               57
     SAVE-INPUT            6.2.2182 CORE EXT               58
     SOURCE-ID             6.2.2218 CORE EXT               58
     TIB                   6.2.2290 CORE EXT               58
+    TRUE                  6.2.2298 CORE EXT               59
+    [COMPILE]             6.2.2530 CORE EXT               60
 #endif

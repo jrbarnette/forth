@@ -1,11 +1,15 @@
 SOURCES =			\
-	compile.c		\
-	dictionary.c		\
-	format.c		\
-	forth.c			\
-	interpret.c		\
-	primitives.c		\
-	termio.c
+	    arithops.c		\
+	    control.c		\
+	    dictionary.c	\
+	    format.c		\
+	    forth.c		\
+	    interpret.c		\
+	    memops.c		\
+	    multops.c		\
+	    names.c		\
+	    stackops.c		\
+	    termio.c
 
 CHECKNONE = 0
 CHECKSTMT = 1

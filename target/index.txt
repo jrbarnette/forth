@@ -126,7 +126,7 @@ S"                    6.1.2165 CORE                   45
 [CHAR]                6.1.2520 CORE                   50
 C"                    6.2.0855 CORE EXT               53
 
-control:
+execution flow of control:
 +LOOP                 6.1.0140 CORE                   27
 BEGIN                 6.1.0760 CORE                   34
 DO                    6.1.1240 CORE                   37

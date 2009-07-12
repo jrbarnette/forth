@@ -91,12 +91,11 @@ x_here(cell_ft tos, vmstate_p vm, addr_ft ignore)
 }
 
 
-static cell_ft
-initialize_dictionary(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static void
+initialize_dictionary(vmstate_p vm, defn_data_p ignore)
 {
     DICT.here = sizeof (dictionary.dict_static_data);
     DICT.base = 10;
-    return tos;
 }
 
 

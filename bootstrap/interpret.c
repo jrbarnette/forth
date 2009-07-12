@@ -408,14 +408,12 @@ x_backslash(cell_ft tos, vmstate_p vm, addr_ft ignore)
 }
 
 
-static cell_ft
-initialize_xtokens(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static void
+initialize_xtokens(vmstate_p vm, defn_data_p ignore)
 {
     DICT.literal_instr.handler = do_literal;
     DICT.skip_instr.handler = do_skip;
     DICT.fskip_instr.handler = do_fskip;
-
-    return tos;
 }
 
 

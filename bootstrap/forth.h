@@ -244,8 +244,12 @@ extern union dict {
 
 extern addr_ft allot(vmstate_p, cell_ft);
 
+typedef struct defn *defn_data_p;
+
+typedef void (*defn_fn)(vmstate_p, defn_data_p);
+
 typedef struct defn {
-    vminstr_fn		fn;
+    defn_fn		fn;
     void *		data[2];
     cell_ft		flags;
 } defn_dt;
@@ -260,7 +264,7 @@ extern defn_dt multops_defns[];
 extern defn_dt names_defns[];
 extern defn_dt stackops_defns[];
 
-extern cell_ft define_name(cell_ft, vmstate_p, addr_ft);
+extern void define_name(vmstate_p, defn_data_p);
 
 
 /*

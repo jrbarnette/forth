@@ -74,18 +74,16 @@ linkname(name_p name)
     DICT.namelist = name;
 }
 
-cell_ft
-define_name(cell_ft tos, vmstate_p vm, addr_ft data)
+void
+define_name(vmstate_p vm, defn_data_p data)
 {
-    c_addr_ft	id = (c_addr_ft) ((void **) data)[0];
-    vminstr_fn	hdlr = (vminstr_fn) ((void **) data)[1];
-    cell_ft	type = (cell_ft) ((void **) data)[2];
+    c_addr_ft	id = (c_addr_ft) data->data[0];
+    vminstr_fn	hdlr = (vminstr_fn) data->data[1];
     cell_ft	len = strlen((char *) id);
 
     name_p nm = addname(vm, id, len, hdlr);
     linkname(nm);
-    NAME_SET_TYPE(nm, type);
-    return tos;
+    NAME_SET_TYPE(nm, data->flags);
 }
 
 
@@ -146,13 +144,12 @@ x_semicolon(cell_ft tos, vmstate_p vm, addr_ft exit_xt_ptr)
 }
 
 
-static cell_ft
-define_semicolon(cell_ft tos, vmstate_p vm, addr_ft data)
+static void
+define_semicolon(vmstate_p vm, defn_data_p data)
 {
     name_p exit_nm = lookup((c_addr_ft) "EXIT", 4);
-    tos = define_name(tos, vm, data);
+    define_name(vm, data);
     COMMA(vm, NAME_XT(exit_nm));
-    return tos;
 }
 
 
@@ -289,11 +286,10 @@ x_variable(cell_ft tos, vmstate_p vm, addr_ft ignore)
 }
 
 
-static cell_ft
-initialize_does(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static void
+initialize_does(vmstate_p vm, defn_data_p ignore)
 {
     DICT.does_instr.handler = do_does;
-    return tos;
 }
 
 

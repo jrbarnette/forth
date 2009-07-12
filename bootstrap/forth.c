@@ -91,7 +91,7 @@ static void
 interpret_defs(vmstate_p vm, defn_dt *dp)
 {
     while (dp->fn != NULL) {
-	execute(vm, (xt_ft) dp);
+	dp->fn(vm, dp);
 	dp++;
     }
 }

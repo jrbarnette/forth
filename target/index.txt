@@ -43,6 +43,7 @@ NEGATE                6.1.1910 CORE                   43
 OR                    6.1.1980 CORE                   43
 RSHIFT                6.1.2162 CORE                   45
 U<                    6.1.2340 CORE                   47
+XOR                   6.1.2490 CORE                   49
 0<>                   6.2.0260 CORE EXT               51
 0>                    6.2.0280 CORE EXT               51
 <>                    6.2.0500 CORE EXT               52
@@ -62,7 +63,6 @@ S>D                   6.1.2170 CORE                   45
 SM/REM                6.1.2214 CORE                   46
 UM*                   6.1.2360 CORE                   47
 UM/MOD                6.1.2370 CORE                   48
-XOR                   6.1.2490 CORE                   49
 
 memory operations:
 !                     6.1.0010 CORE                   25

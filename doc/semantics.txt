@@ -13,6 +13,13 @@ immediate	| X  | X  | A  | A  |
 [		| U  | X  | A  | A  |
 compilation	| U  | S  | AS | AS |
 
+X - EXECUTE
+S - execute special compilation semantics
+U - undefined; ambiguous condition; -14 THROW
+A - append execution semantics; COMPILE,
+AA - append semantics that append execution semantics
+AS - append the special compilation semantics
+
 (*) [ is immediate, but has undefined interpretation semantics
 
 name flags
@@ -45,7 +52,7 @@ interpretation action based on flags:
     nf-immediate AND IF
 	COMPILE,
     ELSE 
-	['] LITERAL EXECUTE ['] COMPILE, COMPILE,
+	[COMPILE] LITERAL [COMPILE] COMPILE,
     THEN
 ;
 

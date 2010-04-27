@@ -2,8 +2,11 @@ Primitive permuters:
 DUP OVER
 DROP
 SWAP ROT
+>R R>
 
 Derivable permuters:
+: OVER >R DUP R> SWAP ;
+: ROT >R SWAP R> SWAP ;
 : TUCK SWAP OVER ;
 : NIP SWAP DROP ;
 : 2OVER OVER OVER ;
@@ -27,45 +30,61 @@ Stack permutations:
 
 ( 2 1 -- 1 2 )		SWAP
 
-( 3 2 1 -- 1 2 3 )	SWAP ROT
-			3REVERSE
-( 3 2 1 -- 1 3 2 )	ROT ROT
+( 3 2 1 -- 1 2 3 )	SWAP >R SWAP R> SWAP
+			SWAP ROT
+			-ROT SWAP
+( 3 2 1 -- 1 3 2 )	SWAP >R SWAP R>
+			ROT ROT
 			-ROT
-( 3 2 1 -- 2 1 3 )	ROT
-( 3 2 1 -- 2 3 1 )	ROT SWAP
-			>R SWAP R>
+( 3 2 1 -- 2 1 3 )	>R SWAP R> SWAP
+			ROT
+( 3 2 1 -- 2 3 1 )	>R SWAP R>
+			ROT SWAP
 
-( 4 3 2 1 -- 1 2 3 4 )	ROT >R SWAP ROT R> SWAP
+( 4 3 2 1 -- 1 2 3 4 )	>R SWAP R> SWAP >R SWAP >R SWAP R> SWAP R> SWAP
+			SWAP >R SWAP >R SWAP R> R> SWAP >R SWAP R> SWAP
+			SWAP >R SWAP >R SWAP R> SWAP R> SWAP >R SWAP R>
+			SWAP >R SWAP R> SWAP >R >R SWAP R> SWAP R> SWAP
+			SWAP >R SWAP >R SWAP R> R> SWAP ROT
+			SWAP >R SWAP ROT R> SWAP >R SWAP R>
+			ROT >R SWAP ROT R> SWAP
+			SWAP ROT >R ROT R> SWAP
 			SWAP 2SWAP SWAP
-( 4 3 2 1 -- 1 2 4 3 )	ROT >R SWAP ROT R>
+( 4 3 2 1 -- 1 2 4 3 )	>R SWAP R> SWAP >R SWAP >R SWAP R> SWAP R>
+			SWAP >R SWAP >R SWAP R> R> SWAP >R SWAP R>
+			SWAP >R SWAP R> SWAP >R >R SWAP R> SWAP R>
+			ROT >R SWAP ROT R>
 			SWAP ROT >R ROT R>
 			SWAP 2SWAP
-( 4 3 2 1 -- 1 3 2 4 )	SWAP >R SWAP ROT R> SWAP
-			ROT 2SWAP SWAP
-( 4 3 2 1 -- 1 3 4 2 )	SWAP >R SWAP ROT R>
-			ROT 2SWAP
-( 4 3 2 1 -- 1 4 2 3 )	ROT >R ROT ROT R>
-			ROT 2SWAP ROT
-( 4 3 2 1 -- 1 4 3 2 )	SWAP >R ROT ROT R>
-			SWAP 2SWAP ROT
-( 4 3 2 1 -- 2 1 3 4 )	ROT >R ROT R> SWAP
+( 4 3 2 1 -- 1 3 2 4 )	SWAP >R SWAP >R SWAP R> SWAP R> SWAP
+			SWAP >R SWAP ROT R> SWAP
+( 4 3 2 1 -- 1 3 4 2 )	SWAP >R SWAP >R SWAP R> SWAP R>
+			SWAP >R SWAP ROT R>
+( 4 3 2 1 -- 1 4 2 3 )	SWAP >R SWAP >R SWAP R> R> SWAP
+( 4 3 2 1 -- 1 4 3 2 )	SWAP >R SWAP >R SWAP R> R>
+( 4 3 2 1 -- 2 1 3 4 )	>R SWAP >R SWAP R> R> SWAP >R SWAP R> SWAP
+			>R SWAP >R SWAP R> SWAP R> SWAP >R SWAP R>
+			>R SWAP R> SWAP >R >R SWAP R> SWAP R> SWAP
+			>R SWAP >R SWAP R> R> SWAP ROT
+			>R SWAP ROT R> SWAP >R SWAP R>
+			ROT >R ROT R> SWAP
 			2SWAP SWAP
-( 4 3 2 1 -- 2 1 4 3 )	ROT >R ROT R>
+( 4 3 2 1 -- 2 1 4 3 )	>R SWAP >R SWAP R> R> SWAP >R SWAP R>
 			2SWAP
-( 4 3 2 1 -- 2 3 1 4 )	>R ROT ROT R> ROT
-			2SWAP ROT ROT
-( 4 3 2 1 -- 2 3 4 1 )	>R SWAP ROT R>
-( 4 3 2 1 -- 2 4 1 3 )	>R ROT ROT R> SWAP
-			ROT >R ROT SWAP R>
-			2SWAP ROT SWAP
-( 4 3 2 1 -- 2 4 3 1 )	>R ROT ROT R>
-			2SWAP ROT
-( 4 3 2 1 -- 3 1 2 4 )	SWAP >R ROT R> SWAP
-( 4 3 2 1 -- 3 1 4 2 )	SWAP >R ROT R>
-( 4 3 2 1 -- 3 2 1 4 )	>R ROT R> SWAP
-( 4 3 2 1 -- 3 2 4 1 )	>R ROT R>
-( 4 3 2 1 -- 3 4 1 2 )	>R ROT R> ROT
-			>R >R SWAP R> R> SWAP
+( 4 3 2 1 -- 2 3 1 4 )	>R SWAP >R SWAP R> SWAP R> SWAP
+			>R SWAP ROT R> SWAP
+( 4 3 2 1 -- 2 3 4 1 )	>R SWAP >R SWAP R> SWAP R>
+			>R SWAP ROT R>
+( 4 3 2 1 -- 2 4 1 3 )	>R SWAP >R SWAP R> R> SWAP
+( 4 3 2 1 -- 2 4 3 1 )	>R SWAP >R SWAP R> R>
+( 4 3 2 1 -- 3 1 2 4 )	SWAP >R >R SWAP R> SWAP R> SWAP
+			SWAP >R ROT R> SWAP
+( 4 3 2 1 -- 3 1 4 2 )	SWAP >R >R SWAP R> SWAP R>
+			SWAP >R ROT R>
+( 4 3 2 1 -- 3 2 1 4 )	>R >R SWAP R> SWAP R> SWAP
+			>R ROT R> SWAP
+( 4 3 2 1 -- 3 2 4 1 )	>R >R SWAP R> SWAP R>
+			>R ROT R>
+( 4 3 2 1 -- 3 4 1 2 )	>R >R SWAP R> R> SWAP
 			SWAP >R >R SWAP R> R>
-( 4 3 2 1 -- 3 4 2 1 )	>R ROT SWAP R>
-			>R >R SWAP R> R>
+( 4 3 2 1 -- 3 4 2 1 )	>R >R SWAP R> R>

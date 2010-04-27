@@ -21,7 +21,6 @@ operating on defintions or names
 
 create a definition:
 :                     6.1.0450 CORE                   30
-;                     6.1.0460 CORE                   30
 CONSTANT              6.1.0950 CORE                   35
 CREATE                6.1.1000 CORE                   36
 VARIABLE              6.1.2410 CORE                   48
@@ -39,6 +38,7 @@ TO                    6.2.2295 CORE EXT               59
 [COMPILE]             6.2.2530 CORE EXT               60
 
 operate on a definition:
+;                     6.1.0460 CORE                   30
 >BODY                 6.1.0550 CORE                   31
 DOES>                 6.1.1250 CORE                   37
 IMMEDIATE             6.1.1710 CORE                   41

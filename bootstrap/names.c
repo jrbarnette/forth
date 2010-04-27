@@ -175,8 +175,34 @@ x_exit(cell_ft tos, vmstate_p vm, addr_ft ignore)
 }
 
 
+/* CONSTANT		6.1.0950 CORE, p. 35 */
+/* ( -- x ) name execution semantics */
+static cell_ft
+do_constant(cell_ft tos, vmstate_p vm, addr_ft data_ptr)
+{
+    CHECK_PUSH(vm, 1);
+    PUSH(vm, tos);
+    return *(cell_ft *)data_ptr;
+}
+
+/* ( “<spaces>name” -- ) */
+static cell_ft
+x_constant(cell_ft tos, vmstate_p vm, addr_ft ignore)
+{
+    c_addr_ft id = PARSE_AREA_PTR;
+    cell_ft len;
+
+    CHECK_POP(vm, 1);
+    len = parse(' ', id, PARSE_AREA_LEN);
+    linkname(addname(vm, id, len, do_constant));
+    COMMA(vm, tos);
+    return POP(vm);
+}
+
+
+
 /* CREATE		6.1.1000 CORE, p. 36 */
-/* ( -- a-addr ) */
+/* ( -- a-addr ) name execution semantics */
 static cell_ft
 do_create(cell_ft tos, vmstate_p vm, addr_ft data_ptr)
 {
@@ -205,6 +231,7 @@ x_create(cell_ft tos, vmstate_p vm, addr_ft ignore)
 
 
 /* DOES> "does"		6.1.1250 CORE, p. 37 */
+/* ( -- ) ( R: nest-sys -- ) runtime semantics */
 static cell_ft
 do_does(cell_ft tos, vmstate_p vm, addr_ft data_ptr)
 {
@@ -265,7 +292,7 @@ x_immediate(cell_ft tos, vmstate_p vm, addr_ft ignore)
 
 
 /* VARIABLE		6.1.2410 CORE, p. 48 */
-/* ( -- a-addr ) runtime semantics */
+/* ( -- a-addr ) name execution semantics */
 static cell_ft
 do_variable(cell_ft tos, vmstate_p vm, addr_ft varaddr)
 {
@@ -304,6 +331,7 @@ names_defns[] = {
     { define_semicolon, ";",	x_semicolon, NAME_TYPE_COMPILE },
 
     { define_name, ">BODY",	x_to_body },
+    { define_name, "CONSTANT",	x_constant },
     { define_name, "CREATE",	x_create },
     { define_name, "DOES>",	x_does, NAME_TYPE_COMPILE },
     { define_name, "FIND",	x_find },
@@ -313,7 +341,6 @@ names_defns[] = {
 };
 
 #if 0
-    CONSTANT              6.1.0950 CORE                   35
     :NONAME               6.2.0455 CORE EXT               52
     MARKER                6.2.1850 CORE EXT               56
     TO                    6.2.2295 CORE EXT               59

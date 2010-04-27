@@ -204,6 +204,7 @@ extern union dict {
 	name_p		namelist;	/* internal */
 
 	union defn_data	literal_instr;	/* for LITERAL runtime xt */
+	union defn_data	postpone_instr;	/* for POSTPONE non-immediate */
 	union defn_data	skip_instr;	/* for ELSE runtime xt */
 	union defn_data	fskip_instr;	/* for IF runtime xt */
 	union defn_data	tskip_instr;	/* for IF runtime xt */
@@ -237,6 +238,7 @@ extern union dict {
 #define PARSE_AREA_LEN		(DICT.source.len - DICT.to_in)
 
 #define DO_LITERAL_XT		(&DICT.literal_instr)
+#define DO_POSTPONE_XT		(&DICT.postpone_instr)
 #define SKIP_XT			(&DICT.skip_instr)
 #define FSKIP_XT		(&DICT.fskip_instr)
 #define TSKIP_XT		(&DICT.tskip_instr)
@@ -263,6 +265,7 @@ extern defn_dt memops_defns[];
 extern defn_dt multops_defns[];
 extern defn_dt names_defns[];
 extern defn_dt stackops_defns[];
+extern defn_dt termio_defns[];
 
 extern void define_name(vmstate_p, defn_data_p);
 

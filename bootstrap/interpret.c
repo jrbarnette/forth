@@ -22,6 +22,14 @@ compile_literal(vmstate_p vm, cell_ft n)
 
 
 void
+compile_postpone(vmstate_p vm, xt_ft xtok)
+{
+    COMMA(vm, DO_POSTPONE_XT);
+    COMMA(vm, xtok);
+}
+
+
+void
 compile_xt(vmstate_p vm, xt_ft xtok)
 {
     COMMA(vm, xtok);
@@ -322,7 +330,7 @@ do_literal(cell_ft tos, vmstate_p vm, addr_ft ignore)
     return (vm->ip++)->cell;
 }
 
-/* interpration semantics undefined */
+/* interpretation semantics undefined */
 /* ( x -- ) compilation semantics */
 static cell_ft
 x_literal(cell_ft tos, vmstate_p vm, addr_ft ignore)
@@ -330,6 +338,29 @@ x_literal(cell_ft tos, vmstate_p vm, addr_ft ignore)
     CHECK_POP(vm, 1);
     compile_literal(vm, tos);
     return POP(vm);
+}
+
+
+/* S" "s-quote"			6.1.2165 CORE, p. 45 */
+/* ( -- c-addr u ) runtime semantics */
+static cell_ft
+do_s_quote(cell_ft tos, vmstate_p vm, addr_ft ignore)
+{
+    cell_ft len;
+
+    CHECK_PUSH(vm, 2);
+    PUSH(vm, tos);
+    PUSH(vm, vm->ip->str_addr);
+    return (vm->ip++)->str_len;
+}
+
+
+/* interpretation semantics undefined */
+/* ( "ccc<quote>" -- ) compilation semantics */
+static cell_ft
+x_s_quote(cell_ft tos, vmstate_p vm, addr_ft ignore)
+{
+    return tos;
 }
 
 
@@ -369,16 +400,39 @@ x_state(cell_ft tos, vmstate_p vm, addr_ft ignore)
 }
 
 
-/* PARSE		6.2.2008 CORE EXT, p. 57 */
-/* ( char -- ) */
+/* POSTPONE		6.1.2033 CORE, p. 43 */
+/* ( -- ) execution semantics for default compilation semantics */
 static cell_ft
-x_parse(cell_ft tos, vmstate_p vm, addr_ft ignore)
+do_postpone(cell_ft tos, vmstate_p vm, addr_ft ignore)
 {
+    compile_xt(vm, (vm->ip++)->xtok);
+    return tos;
+}
+
+/* ( "<spaces>name" -- ) compilation semantics */
+static cell_ft
+x_postpone(cell_ft tos, vmstate_p vm, addr_ft ignore)
+{
+    c_addr_ft	namestr = PARSE_AREA_PTR;
+    size_t	len = parse(' ', namestr, PARSE_AREA_LEN);
+    name_p	name = lookup(namestr, len);
+    xt_ft	xtok;
+
+    if (name == NULL) {
+	THROW(vm, -58);
+    }
+
+    xtok = NAME_XT(name);
+    if (NAME_IS_IMMEDIATE(name)) {
+	compile_xt(vm, xtok);
+    } else {
+	compile_postpone(vm, xtok);
+    }
 }
 
 
 /* [ "left-bracket"	6.1.2500 CORE, p. 49 */
-/* interpration semantics undefined */
+/* interpretation semantics undefined */
 /* ( -- ) compilation semantics */
 static cell_ft
 x_left_bracket(cell_ft tos, vmstate_p vm, addr_ft ignore)
@@ -398,6 +452,14 @@ x_right_bracket(cell_ft tos, vmstate_p vm, addr_ft ignore)
 }
 
 
+/* PARSE		6.2.2008 CORE EXT, p. 57 */
+/* ( char -- ) */
+static cell_ft
+x_parse(cell_ft tos, vmstate_p vm, addr_ft ignore)
+{
+}
+
+
 /* \ "backslash"	6.2.2535 CORE EXT, p. 60 */
 /* ( “ccc<eol>” -- ) execution semantics */
 static cell_ft
@@ -412,6 +474,7 @@ static void
 initialize_xtokens(vmstate_p vm, defn_data_p ignore)
 {
     DICT.literal_instr.handler = do_literal;
+    DICT.literal_instr.handler = do_postpone;
     DICT.skip_instr.handler = do_skip;
     DICT.fskip_instr.handler = do_fskip;
 }
@@ -426,6 +489,7 @@ interpret_defns[] = {
     { define_name, "EVALUATE",	x_evaluate },
     { define_name, "EXECUTE",	x_execute },
     { define_name, "LITERAL",	x_literal, NAME_TYPE_COMPILE },
+    { define_name, "POSTPONE",	x_postpone, NAME_TYPE_COMPILE },
     { define_name, "QUIT",	x_quit },
     { define_name, "SOURCE",	x_source },
     { define_name, "STATE",	x_state },
@@ -442,8 +506,6 @@ interpret_defns[] = {
     CHAR                  6.1.0895 CORE                   35
     COUNT                 6.1.0980 CORE                   36
     ENVIRONMENT?          6.1.1345 CORE                   38
-    POSTPONE              6.1.2033 CORE                   43
-    S"                    6.1.2165 CORE                   45
     WORD                  6.1.2450 CORE                   49
     [']                   6.1.2510 CORE                   50
     [CHAR]                6.1.2520 CORE                   50

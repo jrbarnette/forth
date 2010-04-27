@@ -128,6 +128,7 @@ init_forth(vmstate_p vm)
     interpret_defs(vm, names_defns);
     interpret_defs(vm, control_defns);
     interpret_defs(vm, format_defns);
+    interpret_defs(vm, termio_defns);
     interpret_defs(vm, interpret_defns);
 }
 

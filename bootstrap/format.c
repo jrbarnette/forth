@@ -15,6 +15,29 @@
 
 static char digits[MAXBASE] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
+static char *
+printunum(char *cp, cell_ft uval, cell_ft base)
+{
+    *cp = '\0';
+    *--cp = ' ';
+    do {
+	cell_ft n = uval / base;
+	char c;
+
+	if (base <= MAXBASE) {
+	    c = digits[uval % base];
+	} else {
+	    /* implementation defined */
+	    c = '#';
+	}
+	*--cp = c;
+	uval = n;
+    } while (uval != 0);
+
+    return cp;
+}
+
+
 /* . "dot"		6.1.0180 CORE, p. 27 */
 /* ( n -- ) */
 cell_ft
@@ -22,33 +45,15 @@ x_dot(cell_ft tos, vmstate_p vm, addr_ft ignore)
 {
     char	tbuf[CELL_SIZE * 8 + 3];
     char *	cp;
-    cell_ft	base;
     char	sign = '+';
 
     CHECK_POP(vm, 1);
 
-    base = DICT.base;
-
-    cp = &tbuf[sizeof (tbuf) - 1];
-    *cp = '\0';
-    *--cp = ' ';
     if ((snumber_ft) tos < 0) {
 	tos = -tos;
 	sign = '-';
     }
-    do {
-	cell_ft n = tos / base;
-	char c;
-
-	if (base <= MAXBASE) {
-	    c = digits[tos % base];
-	} else {
-	    /* implementation defined */
-	    c = '#';
-	}
-	*--cp = c;
-	tos = n;
-    } while (tos != 0);
+    cp = printunum(&tbuf[sizeof (tbuf) - 1], tos, DICT.base);
     if (sign == '-') {
 	*--cp = sign;
     }
@@ -79,12 +84,39 @@ x_decimal(cell_ft tos, vmstate_p vm, addr_ft ignore)
 }
 
 
+/* U.			6.1.2320 CORE, p. 47 *
+/* ( u -- ) */
+cell_ft
+x_udot(cell_ft tos, vmstate_p vm, addr_ft ignore)
+{
+    char	tbuf[CELL_SIZE * 8 + 3];
+
+    CHECK_POP(vm, 1);
+
+    fputs(printunum(&tbuf[sizeof (tbuf) - 1], tos, DICT.base), stdout);
+
+    return POP(vm);
+}
+
+
+/* HEX			6.2.1660 CORE EXT, p. 55 */
+/* ( -- ) */
+cell_ft
+x_hex(cell_ft tos, vmstate_p vm, addr_ft ignore)
+{
+    DICT.base = 0x10;
+    return tos;
+}
+
+
 defn_dt
 format_defns[] =
 {
     { define_name, ".",		x_dot },
     { define_name, "BASE",	x_base },
     { define_name, "DECIMAL",	x_decimal },
+    { define_name, "U.",	x_udot },
+    { define_name, "HEX",	x_hex },
     { NULL }
 };
 
@@ -96,9 +128,7 @@ format_defns[] =
     >NUMBER               6.1.0570 CORE                   31
     HOLD                  6.1.1670 CORE                   40
     SIGN                  6.1.2210 CORE                   46
-    U.                    6.1.2320 CORE                   47
     .R                    6.2.0210 CORE EXT               51
     CONVERT               6.2.0970 CORE EXT               54
-    HEX                   6.2.1660 CORE EXT               55
     U.R                   6.2.2330 CORE EXT               59
 #endif

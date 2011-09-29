@@ -91,8 +91,8 @@ define_name(vmstate_p vm, defn_data_p data)
 
 /* ' "tick"		6.1.0070 CORE, p. 25 */
 /* ( "<spaces>name" -- xt ) */
-static cell_ft
-x_tick(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_tick(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
     c_addr_ft id = PARSE_AREA_PTR;
     cell_ft len = parse(' ', id, PARSE_AREA_LEN);
@@ -102,45 +102,44 @@ x_tick(cell_ft tos, vmstate_p vm, addr_ft ignore)
 	THROW(vm, -13);
 
     CHECK_PUSH(vm, 1);
-    PUSH(vm, tos);
-    return (cell_ft) NAME_XT(nm);
+    PUSH(vm, (cell_ft) NAME_XT(nm));
+    return ip;
 }
 
 
 /* : "colon"		6.1.0450 CORE, p. 30 */
 /* ( R: -- nest-sys ) initiation semantics */
-static cell_ft
-do_colon(cell_ft tos, vmstate_p vm, addr_ft newip)
+static vminstr_p
+do_colon(vminstr_p ip, vmstate_p vm, addr_ft newip)
 {
     CHECK_RPUSH(vm, 1);
-    RPUSH(vm, vm->ip);
-    vm->ip = (vm_instr_p) newip;
-    return tos;
+    RPUSH(vm, (cell_ft)ip);
+    return (vminstr_p)newip;
 }
 
 /* ( C: "<spaces> name" -- colon-sys ) */
-static cell_ft
-x_colon(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_colon(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
     c_addr_ft id = PARSE_AREA_PTR;
     cell_ft len = parse(' ', id, PARSE_AREA_LEN);
     CHECK_PUSH(vm, 1);
-    PUSH(vm, tos);
+    PUSH(vm, (cell_ft) addname(vm, id, len, do_colon));
     DICT.state = STATE_COMPILE;
-    return (cell_ft) addname(vm, id, len, do_colon);
+    return ip;
 }
 
 
 /* ; "semicolon"	6.1.0460 CORE, p. 30 */
 /* ( C: colon-sys -- ) compilation semantics */
-static cell_ft
-x_semicolon(cell_ft tos, vmstate_p vm, addr_ft exit_xt_ptr)
+static vminstr_p
+x_semicolon(vminstr_p ip, vmstate_p vm, addr_ft exit_xt_ptr)
 {
     CHECK_POP(vm, 1);
     compile_xt(vm, *(xt_ft *) exit_xt_ptr);
-    linkname((name_p) tos);
+    linkname((name_p) POP(vm));
     DICT.state = STATE_INTERP;
-    return POP(vm);
+    return ip;
 }
 
 
@@ -155,39 +154,42 @@ define_semicolon(vmstate_p vm, defn_data_p data)
 
 /* >BODY "to-body"	6.1.0550 CORE, p. 31 */
 /* ( xt -- a-addr ) */
-static cell_ft
-x_to_body(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_to_body(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
+    xt_ft xt;
     CHECK_POP(vm, 1);
-    return (cell_ft) ((xt_ft) tos + 2);
+    xt = (xt_ft) POP(vm);
+    /* XXX - if xt is not a CREATE def'n, THROW(-31) */
+    PUSH(vm, (cell_ft) (xt + 2));	/* XXX - hard-coded "+ 2" */
+    return ip;
 }
 
 
 /* EXIT			6.1.1380 CORE, p. 39 */
 /* interpretation semantics undefined */
 /* ( R: nest-sys -- ) execution semantics */
-static cell_ft
-x_exit(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_exit(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
     CHECK_RPOP(vm, 1);
-    vm->ip = (vm_instr_p) RPOP(vm);
-    return tos;
+    return (vminstr_p)RPOP(vm);
 }
 
 
 /* CONSTANT		6.1.0950 CORE, p. 35 */
 /* ( -- x ) name execution semantics */
-static cell_ft
-do_constant(cell_ft tos, vmstate_p vm, addr_ft data_ptr)
+static vminstr_p
+do_constant(vminstr_p ip, vmstate_p vm, addr_ft data_ptr)
 {
     CHECK_PUSH(vm, 1);
-    PUSH(vm, tos);
-    return *(cell_ft *)data_ptr;
+    PUSH(vm, *(cell_ft *)data_ptr);
+    return ip;
 }
 
 /* ( “<spaces>name” -- ) */
-static cell_ft
-x_constant(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_constant(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
     c_addr_ft id = PARSE_AREA_PTR;
     cell_ft len;
@@ -195,45 +197,45 @@ x_constant(cell_ft tos, vmstate_p vm, addr_ft ignore)
     CHECK_POP(vm, 1);
     len = parse(' ', id, PARSE_AREA_LEN);
     linkname(addname(vm, id, len, do_constant));
-    COMMA(vm, tos);
-    return POP(vm);
+    COMMA(vm, POP(vm));
+    return ip;
 }
 
 
 
 /* CREATE		6.1.1000 CORE, p. 36 */
 /* ( -- a-addr ) name execution semantics */
-static cell_ft
-do_create(cell_ft tos, vmstate_p vm, addr_ft data_ptr)
+static vminstr_p
+do_create(vminstr_p ip, vmstate_p vm, addr_ft data_ptr)
 {
-    vm_instr_p does_xt = *(vm_instr_p *)data_ptr;
+    vminstr_p does_xt = *(vminstr_p *)data_ptr;
 
     CHECK_PUSH(vm, 1);
-    PUSH(vm, tos);
+    PUSH(vm, (cell_ft) ((a_addr_ft)data_ptr + 1));  /* XXX - hard-coded */
     if (does_xt != NULL) {
 	CHECK_RPUSH(vm, 1);
-	RPUSH(vm, vm->ip);
-	vm->ip = does_xt;
+	RPUSH(vm, ip);
+	ip = does_xt;
     }
-    return (cell_ft) ((a_addr_ft) data_ptr + 1);
+    return ip;
 }
 
 /* ( “<spaces>name” -- ) */
-static cell_ft
-x_create(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_create(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
     c_addr_ft id = PARSE_AREA_PTR;
     cell_ft len = parse(' ', id, PARSE_AREA_LEN);
     linkname(addname(vm, id, len, do_create));
     COMMA(vm, (xt_ft) NULL);
-    return tos;
+    return ip;
 }
 
 
 /* DOES> "does"		6.1.1250 CORE, p. 37 */
 /* ( -- ) ( R: nest-sys -- ) runtime semantics */
-static cell_ft
-do_does(cell_ft tos, vmstate_p vm, addr_ft data_ptr)
+static vminstr_p
+do_does(vminstr_p ip, vmstate_p vm, addr_ft data_ptr)
 {
     xt_ft create_def = NAME_XT(DICT.namelist);
 
@@ -242,74 +244,74 @@ do_does(cell_ft tos, vmstate_p vm, addr_ft data_ptr)
 	THROW(vm, -31);
     }
 
-    ((vm_instr_p *) create_def)[1] = vm->ip;
+    ((vminstr_p *) create_def)[1] = ip;
     CHECK_RPOP(vm, 1);
-    vm->ip = (vm_instr_p) RPOP(vm);
-    return tos;
+    return (vminstr_p)RPOP(vm);
 }
 
 /* interpretation semantics undefined */
 /* ( C: colon-sys1 -- colon-sys2 ) compilation semantics */
-static cell_ft
-x_does(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_does(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
     CHECK_POP(vm, 1);
     compile_xt(vm, DOES_XT);
-    return tos;
+    return ip;
 }
 
 
 /* FIND			6.1.1550 CORE, p. 39 */
 /* ( c-addr -- c-addr 0 | xt 1 | xt -1 ) */
-static cell_ft
-x_find(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_find(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
-    c_addr_ft caddr = (c_addr_ft) tos;
+    c_addr_ft caddr;
     name_p    nm;
 
     CHECK_POP(vm, 1);
     CHECK_PUSH(vm, 1);
-
+    caddr = (c_addr_ft)POP(vm);
     nm = lookup(caddr + 1, (size_t) *caddr);
     if (nm == NULL) {
-	PUSH(vm, tos);
-	return 0;
+	PUSH(vm, caddr);
+	PUSH(vm, 0);
     } else {
 	PUSH(vm, NAME_XT(nm));
-	return NAME_IS_IMMEDIATE(nm) ? 1 : -1;
+	PUSH(vm, NAME_IS_IMMEDIATE(nm) ? 1 : -1);
     }
+    return ip;
 }
 
 
 /* IMMEDIATE		6.1.1710 CORE, p. 41 */
 /* ( -- ) */
-static cell_ft
-x_immediate(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_immediate(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
     NAME_SET_TYPE(DICT.namelist, NAME_TYPE_IMMEDIATE);
-    return tos;
+    return ip;
 }
 
 
 /* VARIABLE		6.1.2410 CORE, p. 48 */
 /* ( -- a-addr ) name execution semantics */
-static cell_ft
-do_variable(cell_ft tos, vmstate_p vm, addr_ft varaddr)
+static vminstr_p
+do_variable(vminstr_p ip, vmstate_p vm, addr_ft varaddr)
 {
     CHECK_PUSH(vm, 1);
-    PUSH(vm, tos);
-    return (cell_ft) varaddr;
+    PUSH(vm, (cell_ft)varaddr);
+    return ip;
 }
 
 /* ( "<spaces>name" -- ) execution semantics */
-static cell_ft
-x_variable(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_variable(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
     c_addr_ft id = PARSE_AREA_PTR;
     cell_ft len = parse(' ', id, PARSE_AREA_LEN);
     linkname(addname(vm, id, len, do_variable));
     (void) allot(vm, CELL_SIZE);
-    return tos;
+    return ip;
 }
 
 

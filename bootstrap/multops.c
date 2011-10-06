@@ -1,5 +1,5 @@
 /*
- * Copyright 2009, by J. Richard Barnette
+ * Copyright 2011, by J. Richard Barnette
  */
 
 #include "forth.h"
@@ -12,11 +12,14 @@
 
 /* * "star"		6.1.0090 CORE, p. 26 */
 /* ( x1 x2 -- x ) */
-static cell_ft
-x_star(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_star(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
+    cell_ft *sp = SP(vm);
     CHECK_POP(vm, 2);
-    return tos * POP(vm);
+    PICK(sp, 1) = PICK(sp, 1) * PICK(sp, 0);
+    SET_SP(vm, sp, 1);
+    return ip;
 }
 
 

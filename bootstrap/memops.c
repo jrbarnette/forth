@@ -1,5 +1,5 @@
 /*
- * Copyright 2009, by J. Richard Barnette
+ * Copyright 2011, by J. Richard Barnette
  */
 
 #include "forth.h"
@@ -12,43 +12,51 @@
 
 /* ! "store"		6.1.0010 CORE, p. 25 */
 /* ( x a-addr -- ) */
-static cell_ft
-x_store(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_store(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
+    cell_ft *sp = SP(vm);
     CHECK_POP(vm, 2);
-    *(a_addr_ft)tos = POP(vm);
-    return POP(vm);
+    *(cell_ft *)PICK(sp, 0) = PICK(sp, 1);
+    SET_SP(vm, sp, 2);
+    return ip;
 }
 
 
 /* @ "fetch" 		6.1.0650 CORE, p. 32 */
 /* ( a-addr -- x ) */
-static cell_ft
-x_fetch(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_fetch(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
+    cell_ft *sp = SP(vm);
     CHECK_POP(vm, 1);
-    return *(a_addr_ft)tos;
+    PICK(sp, 0) = *(cell_ft *)PICK(sp, 0);
+    return ip;
 }
 
 
 /* C! "c-store" 	6.1.0850 CORE, p. 34 */
 /* ( char c-addr -- ) */
-static cell_ft
-x_c_store(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_c_store(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
+    cell_ft *sp = SP(vm);
     CHECK_POP(vm, 2);
-    *(c_addr_ft)tos = (char_ft) POP(vm);
-    return POP(vm);
+    *(char_ft *)PICK(sp, 0) = PICK(sp, 1);
+    SET_SP(vm, sp, 2);
+    return ip;
 }
 
 
 /* C@ "c-fetch" 	6.1.0870 CORE, p. 34 */
 /* ( c-addr -- char ) */
-static cell_ft
-x_c_fetch(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_c_fetch(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
+    cell_ft *sp = SP(vm);
     CHECK_POP(vm, 1);
-    return *(c_addr_ft)tos;
+    PICK(sp, 0) = *(char_ft *)PICK(sp, 0);
+    return ip;
 }
 
 

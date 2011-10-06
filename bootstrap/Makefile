@@ -1,3 +1,5 @@
+# Copyright 2010, by J. Richard Barnette
+
 SOURCES =			\
 	    arithops.c		\
 	    control.c		\

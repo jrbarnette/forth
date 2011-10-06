@@ -1,5 +1,5 @@
 /*
- * Copyright 2009, by J. Richard Barnette
+ * Copyright 2011, by J. Richard Barnette
  */
 
 #include <stdio.h>
@@ -40,72 +40,74 @@ printunum(char *cp, cell_ft uval, cell_ft base)
 
 /* . "dot"		6.1.0180 CORE, p. 27 */
 /* ( n -- ) */
-cell_ft
-x_dot(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_dot(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
     char	tbuf[CELL_SIZE * 8 + 3];
     char *	cp;
     char	sign = '+';
+    snumber_ft	n;
 
     CHECK_POP(vm, 1);
+    n = (snumber_ft) POP(vm);
 
-    if ((snumber_ft) tos < 0) {
-	tos = -tos;
+    if (n < 0) {
+	n = -n;
 	sign = '-';
     }
-    cp = printunum(&tbuf[sizeof (tbuf) - 1], tos, DICT.base);
+    cp = printunum(&tbuf[sizeof (tbuf) - 1], n, DICT.base);
     if (sign == '-') {
 	*--cp = sign;
     }
     fputs(cp, stdout);
 
-    return POP(vm);
+    return ip;
 }
 
 
 /* BASE			6.1.0750 CORE, p. 34 */
 /* ( -- a-addr ) */
-cell_ft
-x_base(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_base(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
     CHECK_PUSH(vm, 1);
-    PUSH(vm, tos);
-    return (cell_ft) &DICT.base;
+    PUSH(vm, (cell_ft) &DICT.base);
+    return ip;
 }
 
 
 /* DECIMAL		6.1.1170 CORE, p. 36 */
 /* ( -- ) */
-cell_ft
-x_decimal(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_decimal(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
     DICT.base = 10;
-    return tos;
+    return ip;
 }
 
 
 /* U.			6.1.2320 CORE, p. 47 *
 /* ( u -- ) */
-cell_ft
-x_udot(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_udot(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
     char	tbuf[CELL_SIZE * 8 + 3];
 
     CHECK_POP(vm, 1);
 
-    fputs(printunum(&tbuf[sizeof (tbuf) - 1], tos, DICT.base), stdout);
+    fputs(printunum(&tbuf[sizeof (tbuf) - 1], POP(vm), DICT.base), stdout);
 
-    return POP(vm);
+    return ip;
 }
 
 
 /* HEX			6.2.1660 CORE EXT, p. 55 */
 /* ( -- ) */
-cell_ft
-x_hex(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_hex(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
-    DICT.base = 0x10;
-    return tos;
+    DICT.base = 16;
+    return ip;
 }
 
 

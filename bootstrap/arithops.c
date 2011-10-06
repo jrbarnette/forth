@@ -1,5 +1,5 @@
 /*
- * Copyright 2009, by J. Richard Barnette
+ * Copyright 2011, by J. Richard Barnette
  */
 
 #include "forth.h"
@@ -12,225 +12,286 @@
 
 /* + "plus" 		6.1.0120 CORE, p. 26 */
 /* ( x1 x2 -- x ) */
-static cell_ft
-x_plus(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_plus(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
+    cell_ft *sp = SP(vm);
     CHECK_POP(vm, 2);
-    return POP(vm) + tos;
+    PICK(sp, 1) = PICK(sp, 1) + PICK(sp, 0);
+    SET_SP(vm, sp, 1);
+    return ip;
 }
 
 
 /* - "minus" 		6.1.0160 CORE, p. 27 */
 /* ( x1 x2 -- x ) */
-static cell_ft
-x_minus(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_minus(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
+    cell_ft *sp = SP(vm);
     CHECK_POP(vm, 2);
-    return POP(vm) - tos;
+    PICK(sp, 1) = PICK(sp, 1) - PICK(sp, 0);
+    SET_SP(vm, sp, 1);
+    return ip;
 }
 
 
 /* 0< "zero-less"	6.1.0250 CORE, p. 28 */
 /* ( n -- flag ) */
-static cell_ft
-x_zero_less(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_zero_less(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
+    cell_ft *sp = SP(vm);
     CHECK_POP(vm, 1);
-    return -((snumber_ft) tos < 0);
+    PICK(sp, 0) = -((snumber_ft) PICK(sp, 0) < 0);
+    return ip;
 }
 
 
-/* 0= "zero-quals"	6.1.0270 CORE, p. 28 */
+/* 0= "zero-equals"	6.1.0270 CORE, p. 28 */
 /* ( x -- flag ) */
-static cell_ft
-x_zero_equals(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_zero_equals(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
+    cell_ft *sp = SP(vm);
     CHECK_POP(vm, 1);
-    return -(tos == 0);
+    PICK(sp, 0) = -((snumber_ft) PICK(sp, 0) == 0);
+    return ip;
 }
 
 
 /* 1+ "one-plus"	6.1.0290 CORE, p. 28 */
 /* ( n1 -- n2 ) */
-static cell_ft
-x_one_plus(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_one_plus(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
+    cell_ft *sp = SP(vm);
     CHECK_POP(vm, 1);
-    return tos + 1;
+    PICK(sp, 0) = PICK(sp, 0) + 1;
+    return ip;
 }
 
 
 /* 1- "one-minus"	6.1.0300 CORE, p. 29 */
 /* ( n1 -- n2 ) */
-static cell_ft
-x_one_minus(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_one_minus(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
+    cell_ft *sp = SP(vm);
     CHECK_POP(vm, 1);
-    return tos - 1;
+    PICK(sp, 0) = PICK(sp, 0) - 1;
+    return ip;
 }
 
 
 /* 2* "two-star"	6.1.0320 CORE, p. 29 */
 /* ( n1 -- n2 ) */
-static cell_ft
-x_two_star(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_two_star(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
+    cell_ft *sp = SP(vm);
     CHECK_POP(vm, 1);
-    return (snumber_ft) tos << 1;
+    PICK(sp, 0) = (snumber_ft) PICK(sp, 0) << 1;
+    return ip;
 }
 
 
 /* 2/ "two-slash"	6.1.0330 CORE, p. 29 */
 /* ( n1 -- n2 ) */
-static cell_ft
-x_two_slash(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_two_slash(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
+    cell_ft *sp = SP(vm);
     CHECK_POP(vm, 1);
-    return (snumber_ft) tos >> 1;
+    PICK(sp, 0) = (snumber_ft) PICK(sp, 0) >> 1;
+    return ip;
 }
 
 
 /* < "less-than" 	6.1.0480 CORE, p. 30 */
 /* ( n1 n2 -- flag ) */
-static cell_ft
-x_less_than(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_less_than(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
+    cell_ft *sp = SP(vm);
     CHECK_POP(vm, 2);
-    return -((snumber_ft) POP(vm) < (snumber_ft) tos);
+    PICK(sp, 1) = -((snumber_ft) PICK(sp, 1) < (snumber_ft) PICK(sp, 0));
+    SET_SP(vm, sp, 1);
+    return ip;
 }
 
 
 /* = "equals" 		6.1.0530 CORE, p. 31 */
-/* ( n1 n2 -- flag ) */
-static cell_ft
-x_equals(cell_ft tos, vmstate_p vm, addr_ft ignore)
+/* ( x1 x2 -- flag ) */
+static vminstr_p
+x_equals(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
+    cell_ft *sp = SP(vm);
     CHECK_POP(vm, 2);
-    return -(POP(vm) == tos);
+    PICK(sp, 1) = -(PICK(sp, 1) == PICK(sp, 0));
+    SET_SP(vm, sp, 1);
+    return ip;
 }
 
 
 /* > "greater-than" 	6.1.0540 CORE, p. 31 */
 /* ( n1 n2 -- flag ) */
-static cell_ft
-x_greater_than(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_greater_than(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
+    cell_ft *sp = SP(vm);
     CHECK_POP(vm, 2);
-    return -((snumber_ft) POP(vm) > (snumber_ft) tos);
+    PICK(sp, 1) = -((snumber_ft) PICK(sp, 1) > (snumber_ft) PICK(sp, 0));
+    SET_SP(vm, sp, 1);
+    return ip;
 }
 
 
 /* ABS			6.1.0690 CORE, p. 32 */
 /* ( n -- u ) */
-static cell_ft
-x_abs(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_abs(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
+    cell_ft *sp = SP(vm);
+    snumber_ft n;
     CHECK_POP(vm, 1);
-    return ((snumber_ft) tos >= 0) ? tos : -tos;
+    n = (snumber_ft) PICK(sp, 0);
+    PICK(sp, 0) = (n >= 0) ? n : -n;
+    return ip;
 }
 
 
 /* AND 			6.1.0720 CORE, p. 33 */
 /* ( x1 x2 -- x ) */
-static cell_ft
-x_and(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_and(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
+    cell_ft *sp = SP(vm);
     CHECK_POP(vm, 2);
-    return POP(vm) & tos;
+    PICK(sp, 1) = PICK(sp, 1) & PICK(sp, 0);
+    SET_SP(vm, sp, 1);
+    return ip;
 }
 
 
 /* INVERT		6.1.1720 CORE, p. 41 */
 /* ( x1 -- x2 ) */
-static cell_ft
-x_invert(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_invert(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
+    cell_ft *sp = SP(vm);
     CHECK_POP(vm, 1);
-    return ~tos;
+    PICK(sp, 0) = ~PICK(sp, 0);
+    return ip;
 }
 
 
 /* LSHIFT		6.1.1805 CORE, p. 42 */
 /* ( x1 u -- x ) */
-static cell_ft
-x_lshift(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_lshift(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
+    cell_ft *sp = SP(vm);
     CHECK_POP(vm, 2);
-    return POP(vm) << tos;
+    PICK(sp, 1) = PICK(sp, 1) << PICK(sp, 0);
+    SET_SP(vm, sp, 1);
+    return ip;
 }
 
 
 /* MAX			6.1.1870 CORE, p. 42 */
 /* ( n1 n2 -- n ) */
-static cell_ft
-x_max(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_max(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
-    snumber_ft s1;
+    cell_ft *sp = SP(vm);
+    snumber_ft n1, n2;
     CHECK_POP(vm, 2);
-    s1 = (snumber_ft) POP(vm);
-    return (s1 > (snumber_ft) tos) ? (cell_ft) s1 : tos;
+    n1 = PICK(sp, 1);
+    n2 = PICK(sp, 0);
+    PICK(sp, 1) = (cell_ft) ((n1 > n2) ? n1 : n2);
+    SET_SP(vm, sp, 1);
+    return ip;
 }
 
 
 /* MIN			6.1.1880 CORE, p. 42 */
 /* ( n1 n2 -- n ) */
-static cell_ft
-x_min(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_min(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
-    snumber_ft s1;
+    cell_ft *sp = SP(vm);
+    snumber_ft n1, n2;
     CHECK_POP(vm, 2);
-    s1 = (snumber_ft) POP(vm);
-    return (s1 < (snumber_ft) tos) ? (cell_ft) s1 : tos;
+    n1 = PICK(sp, 1);
+    n2 = PICK(sp, 0);
+    PICK(sp, 1) = (cell_ft) ((n1 < n2) ? n1 : n2);
+    SET_SP(vm, sp, 1);
+    return ip;
 }
 
 
 /* NEGATE		6.1.1910 CORE, p. 43 */
 /* ( x1 -- x2 ) */
-static cell_ft
-x_negate(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_negate(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
+    cell_ft *sp = SP(vm);
     CHECK_POP(vm, 1);
-    return -tos;
+    PICK(sp, 0) = -PICK(sp, 0);
+    return ip;
 }
 
 
 /* OR			6.1.1980 CORE, p. 43 */
 /* ( x1 x2 -- x ) */
-static cell_ft
-x_or(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_or(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
+    cell_ft *sp = SP(vm);
     CHECK_POP(vm, 2);
-    return POP(vm) | tos;
+    PICK(sp, 1) = PICK(sp, 1) | PICK(sp, 0);
+    SET_SP(vm, sp, 1);
+    return ip;
 }
 
 
 /* RSHIFT		6.1.2162 CORE, p. 45 */
 /* ( x1 u -- x ) */
-static cell_ft
-x_rshift(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_rshift(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
+    cell_ft *sp = SP(vm);
     CHECK_POP(vm, 2);
-    return POP(vm) >> tos;
+    PICK(sp, 1) = PICK(sp, 1) >> PICK(sp, 0);
+    SET_SP(vm, sp, 1);
+    return ip;
 }
 
 
 /* U<			6.1.2340 CORE, p. 47 */
 /* ( u1 u2 -- flag ) */
-static cell_ft
-x_u_less(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_u_less(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
+    cell_ft *sp = SP(vm);
     CHECK_POP(vm, 2);
-    return -(POP(vm) < tos);
+    PICK(sp, 1) = -(PICK(sp, 1) < PICK(sp, 0));
+    SET_SP(vm, sp, 1);
+    return ip;
 }
 
 
 /* XOR			6.1.2490 CORE, p. 49 */
 /* ( x1 x2 -- x ) */
-static cell_ft
-x_xor(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_xor(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
+    cell_ft *sp = SP(vm);
     CHECK_POP(vm, 2);
-    return POP(vm) ^ tos;
+    PICK(sp, 1) = PICK(sp, 1) ^ PICK(sp, 0);
+    SET_SP(vm, sp, 1);
+    return ip;
 }
 
 

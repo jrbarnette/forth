@@ -1,5 +1,5 @@
 /*
- * Copyright 2009, by J. Richard Barnette
+ * Copyright 2011, by J. Richard Barnette
  */
 
 #include <stdio.h>
@@ -12,62 +12,65 @@
 
 /* CR			6.1.0990 CORE, p. 36 */
 /* ( -- ) */
-cell_ft
-x_cr(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_cr(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
     putc('\n', stdout);
-    return tos;
+    return ip;
 }
 
 
 /* EMIT			6.1.1320 CORE, p. 38 */
 /* ( x -- ) */
-cell_ft
-x_emit(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_emit(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
     CHECK_POP(vm, 1);
-    putc((char_ft) tos, stdout);
-    return POP(vm);
+    putc((char_ft) POP(vm), stdout);
+    return ip;
 }
 
 
 /* SPACE		6.1.2220 CORE, p. 46 */
 /* ( -- ) */
-cell_ft
-x_space(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_space(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
     putc(' ', stdout);
-    return tos;
+    return ip;
 }
 
 
 /* SPACES		6.1.2230 CORE, p. 46 */
 /* ( n -- ) */
-cell_ft
-x_spaces(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_spaces(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
-    snumber_ft	n = (snumber_ft) tos;
+    snumber_ft	n;
 
     CHECK_POP(vm, 1);
+    n = POP(vm);
     while (n-- > 0) {
 	putc(' ', stdout);
     }
-    return POP(vm);
+    return ip;
 }
 
 
 /* TYPE			6.1.2310 CORE, p. 47 */
 /* ( c-addr u -- ) */
-cell_ft
-x_type(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_type(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
     c_addr_ft	cp;
+    size_t	count;
 
     CHECK_POP(vm, 2);
+    count = (size_t) POP(vm);
     cp = (c_addr_ft) POP(vm);
-    if (tos > 0)
-	fwrite(cp, sizeof (*cp), tos, stdout);
-    return POP(vm);
+    if (count != 0)
+	fwrite(cp, sizeof (*cp), count, stdout);
+    return ip;
 }
 
 

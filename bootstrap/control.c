@@ -1,5 +1,5 @@
 /*
- * Copyright 2009, by J. Richard Barnette
+ * Copyright 2011, by J. Richard Barnette
  */
 
 #include <stddef.h>
@@ -15,96 +15,104 @@
 /* BEGIN		6.1.0760 CORE, p. 34 */
 /* interpretation semantics undefined */
 /* ( C: -- dest ) compilation semantics */
-static cell_ft
-x_begin(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_begin(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
     CHECK_PUSH(vm, 1);
-    PUSH(vm, tos);
-    return (cell_ft) HERE;
+    PUSH(vm, (cell_ft) HERE);
+    return ip;
 }
 
 
 /* ELSE			6.1.1310 CORE, p. 38 */
 /* interpretation semantics undefined */
 /* ( C: orig1 -- orig2 ) compilation semantics */
-static cell_ft
-x_else(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_else(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
-    vm_instr_p orig1 = (vm_instr_p) tos;
-    vm_instr_p orig2;
+    vminstr_p orig1;
+    vminstr_p orig2;
 
     CHECK_POP(vm, 1);
+    orig1 = (vminstr_p)POP(vm);
     orig2 = compile_skip(vm, SKIP_XT);
-    patch(orig1, (vm_instr_p) HERE);
-    return (cell_ft) orig2;
+    patch(orig1, (vminstr_p)HERE);
+    PUSH(vm, (cell_ft)orig2);
+    return ip;
 }
 
 
 /* IF			6.1.1700 CORE, p. 40 */
 /* interpretation semantics undefined */
 /* ( C: -- orig ) compilation semantics */
-static cell_ft
-x_if(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_if(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
     CHECK_PUSH(vm, 1);
-    PUSH(vm, tos);
-    return (cell_ft) compile_skip(vm, FSKIP_XT);
+    PUSH(vm, (cell_ft) compile_skip(vm, FSKIP_XT));
+    return ip;
 }
 
 
 /* REPEAT		6.1.2140 CORE, p. 45 */
 /* interpretation semantics undefined */
 /* ( C: orig dest -- ) compilation semantics */
-static cell_ft
-x_repeat(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_repeat(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
-    vm_instr_p dest = (vm_instr_p) tos;
-    vm_instr_p orig;
+    vminstr_p dest;
+    vminstr_p orig;
 
     CHECK_POP(vm, 2);
-    orig = (vm_instr_p) POP(vm);
+    dest = (vminstr_p) POP(vm);
+    orig = (vminstr_p) POP(vm);
     patch(compile_skip(vm, SKIP_XT), dest);
-    patch(orig, (vm_instr_p) HERE);
-    return (cell_ft) POP(vm);
+    patch(orig, (vminstr_p) HERE);
+    return ip;
 }
 
 
 /* THEN			6.1.2270 CORE, p. 47 */
 /* interpretation semantics undefined */
 /* ( C: orig -- ) compilation semantics */
-static cell_ft
-x_then(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_then(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
     CHECK_POP(vm, 1);
-    patch((vm_instr_p) tos, (vm_instr_p) HERE);
-    return (cell_ft) POP(vm);
+    patch((vminstr_p) POP(vm), (vminstr_p) HERE);
+    return ip;
 }
 
 
 /* UNTIL		6.1.2390 CORE, p. 48 */
 /* interpretation semantics undefined */
 /* ( C: dest -- ) compilation semantics */
-static cell_ft
-x_until(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_until(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
-    vm_instr_p dest = (vm_instr_p) tos;
+    vminstr_p dest;
 
     CHECK_POP(vm, 1);
+    dest = (vminstr_p) POP(vm);
     patch(compile_skip(vm, FSKIP_XT), dest);
-    return POP(vm);
+    return ip;
 }
 
 
 /* WHILE		6.1.2430 CORE, p. 49 */
 /* interpretation semantics undefined */
 /* ( C: dest -- orig dest ) compilation semantics */
-static cell_ft
-x_while(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_while(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
+    cell_ft dest;
+
     CHECK_PUSH(vm, 1);
     CHECK_POP(vm, 1);
-    PUSH(vm, compile_skip(vm, FSKIP_XT));
-    return tos;
+    dest = POP(vm);
+    PUSH(vm, (cell_ft) compile_skip(vm, FSKIP_XT));
+    PUSH(vm, dest);
+    return ip;
 }
 
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2009, by J. Richard Barnette
+ * Copyright 2011, by J. Richard Barnette
  */
 
 #include "forth.h"
@@ -12,126 +12,138 @@
 /* >R "to-r"		6.1.0580 CORE, p. 32 */
 /* interpretation semantics undefined */
 /* ( x -- ) ( R:  -- x ) execution semantics */
-static cell_ft
-x_to_r(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_to_r(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
     CHECK_POP(vm, 1);
     CHECK_RPUSH(vm, 1);
-    RPUSH(vm, tos);
-    return POP(vm);
+    RPUSH(vm, POP(vm));
+    return ip;
 }
 
 
 /* ?DUP "question-dup" 	6.1.0630 CORE, p. 32 */
 /* ( x -- 0 | x x ) */
-static cell_ft
-x_question_dup(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_question_dup(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
+    cell_ft *sp = SP(vm);
+    cell_ft x;
     CHECK_POP(vm, 1);
-    if (tos != 0) {
+    x = PICK(sp, 0);
+    if (x != 0) {
 	CHECK_PUSH(vm, 1);
-	PUSH(vm, tos);
+	PUSH(vm, x);
     }
-    return tos;
+    return ip;
 }
 
 
 /* DEPTH		6.1.1200 CORE, p. 36 */
 /* ( -- +n ) */
-static cell_ft
-x_depth(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_depth(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
+    cell_ft depth = DEPTH(vm);
     CHECK_PUSH(vm, 1);
-    PUSH(vm, tos);
-    return DEPTH(vm) - 1;
+    PUSH(vm, depth);
+    return ip;
 }
 
 
 /* DROP 		6.1.1260 CORE, p. 37 */
 /* ( x -- ) */
-static cell_ft
-x_drop(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_drop(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
     CHECK_POP(vm, 1);
-    return POP(vm);
+    POP(vm);
+    return ip;
 }
 
 
 /* DUP			6.1.1290 CORE, p. 38 */
 /* ( x -- x x ) */
-static cell_ft
-x_dup(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_dup(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
+    cell_ft *sp = SP(vm);
     CHECK_POP(vm, 1);
     CHECK_PUSH(vm, 1);
-    PUSH(vm, tos);
-    return tos;
+    PUSH(vm, PICK(sp, 0));
+    return ip;
 }
 
 
 /* OVER			6.1.1990 CORE, p. 43 */
 /* ( x1 x2 -- x1 x2 x1 ) */
-static cell_ft
-x_over(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_over(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
+    cell_ft *sp = SP(vm);
     CHECK_POP(vm, 2);
     CHECK_PUSH(vm, 1);
-    PUSH(vm, tos);
-    return PICK(vm, 1);
+    PUSH(vm, PICK(sp, 1));
+    return ip;
 }
 
 
 /* R> "r-from"		6.1.2060 CORE, p. 44 */
 /* interpretation semantics undefined */
 /* ( -- x ) ( R: x -- ) execution semantics */
-static cell_ft
-x_r_from(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_r_from(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
-    CHECK_PUSH(vm, 1);
     CHECK_RPOP(vm, 1);
-    PUSH(vm, tos);
-    return RPOP(vm);
+    CHECK_PUSH(vm, 1);
+    PUSH(vm, RPOP(vm));
+    return ip;
 }
 
 
 /* R@ "r-fetch"		6.1.2070 CORE, p. 44 */
 /* interpretation semantics undefined */
 /* ( -- x ) ( R: x -- x ) execution semantics */
-static cell_ft
-x_r_fetch(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_r_fetch(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
-    CHECK_PUSH(vm, 1);
     CHECK_RPOP(vm, 1);
-    PUSH(vm, tos);
-    return RSP(vm)[0];
+    CHECK_PUSH(vm, 1);
+    PUSH(vm, PICK(RSP(vm), 0));
+    return ip;
 }
 
 
 /* ROT			6.1.2160 CORE, p. 45 */
 /* ( x1 x2 x3 -- x2 x3 x1 ) */
-static cell_ft
-x_rot(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_rot(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
     a_addr_ft sp = SP(vm);
     cell_ft t;
 
     CHECK_POP(vm, 3);
-    t = sp[1]; sp[1] = sp[0]; sp[0] = tos;
-    return t;
+    t = PICK(sp, 0);
+    PICK(sp, 0) = PICK(sp, 1);
+    PICK(sp, 1) = PICK(sp, 2);
+    PICK(sp, 2) = t;
+    return ip;
 }
 
 
 /* SWAP			6.1.2260 CORE, p. 46 */
 /* ( x1 x2 -- x2 x1 ) */
-static cell_ft
-x_swap(cell_ft tos, vmstate_p vm, addr_ft ignore)
+static vminstr_p
+x_swap(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
     a_addr_ft sp = SP(vm);
     cell_ft t;
 
     CHECK_POP(vm, 2);
-    t = sp[0]; sp[0] = tos;
-    return t;
+    t = PICK(sp, 0);
+    PICK(sp, 0) = PICK(sp, 1);
+    PICK(sp, 1) = t;
+    return ip;
 }
 
 

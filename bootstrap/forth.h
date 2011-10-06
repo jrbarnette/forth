@@ -1,5 +1,5 @@
 /*
- * Copyright 2009, by J. Richard Barnette
+ * Copyright 2011, by J. Richard Barnette
  */
 
 #ifndef FORTH_H
@@ -85,13 +85,13 @@ typedef struct {
 #define RSTACK_SIZE	64
 
 typedef union defn_data *	xt_ft;
-typedef union instr_data *	vm_instr_p;
+typedef union instr_data *	vminstr_p;
 typedef struct vmstate *	vmstate_p;
 
-typedef cell_ft (*vminstr_fn)(cell_ft, vmstate_p, addr_ft);
+typedef vminstr_p (*vminstr_fn)(vminstr_p, vmstate_p, addr_ft);
 
 struct vmstate {
-    vm_instr_p	ip;
+    vminstr_p	ip;
     a_addr_ft	sp;
     a_addr_ft	rsp;
     cell_ft	stack[STACK_SIZE];
@@ -117,9 +117,10 @@ extern void execute(vmstate_p, xt_ft);
 #define CLEAR_RSTACK(vm)	((vm)->rsp = vm->rstack + RSTACK_SIZE)
 #define DEPTH(vm)		(STACK_SIZE - ((vm)->sp - (vm)->stack))
 #define EMPTY(vm)		((vm)->sp == (vm)->stack)
-#define PICK(vm, n)		((vm)->sp[(n)])
 #define SP(vm)			((vm)->sp)
 #define RSP(vm)			((vm)->rsp)
+#define PICK(sp, n)		((sp)[(n)])
+#define SET_SP(vm, nsp, n)	((vm)->sp = (nsp) + (n))
 
 #define THROW(vm, n)		(longjmp((vm)->interp_loop, (n)))
 
@@ -209,6 +210,7 @@ extern union dict {
 	union defn_data	fskip_instr;	/* for IF runtime xt */
 	union defn_data	tskip_instr;	/* for IF runtime xt */
 	union defn_data	does_instr;	/* for IF runtime xt */
+	union defn_data	s_quote_instr;	/* for S" runtime xt */
 
 	cell_ft		state;		/* STATE */
 
@@ -243,6 +245,7 @@ extern union dict {
 #define FSKIP_XT		(&DICT.fskip_instr)
 #define TSKIP_XT		(&DICT.tskip_instr)
 #define DOES_XT			(&DICT.does_instr)
+#define S_QUOTE_XT		(&DICT.s_quote_instr)
 
 extern addr_ft allot(vmstate_p, cell_ft);
 
@@ -277,8 +280,8 @@ extern cell_ft parse(char_ft, c_addr_ft, cell_ft);
 
 extern void compile_literal(vmstate_p, cell_ft);
 extern void compile_xt(vmstate_p, xt_ft);
-extern vm_instr_p compile_skip(vmstate_p, xt_ft);
-extern void patch(vm_instr_p, vm_instr_p);
+extern vminstr_p compile_skip(vmstate_p, xt_ft);
+extern void patch(vminstr_p, vminstr_p);
 
 #define COMMA(vm, x)	(*(a_addr_ft)allot((vm), CELL_SIZE) = (cell_ft) (x))
 #define ALIGN(vm)	(DICT.here = ALIGNED(DICT.here))

@@ -1,6 +1,7 @@
-VARIABLE STATE FALSE STATE !
+VARIABLE STATE
 : [ FALSE STATE ! ; IMMEDIATE
 : ] TRUE  STATE ! ;
+[
 
 : error ." Error: " . ABORT ;
 \ require-interpret - signal an error if not in interpretation state

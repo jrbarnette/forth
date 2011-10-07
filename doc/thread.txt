@@ -76,6 +76,7 @@ Embedded literal values:
     X-ABORT"
     X-C"
     X-LITERAL
+    X-S"
 
 CASE statements:
     X-CASE

@@ -1,10 +1,28 @@
-: CR 10 EMIT ;
-: SPACE 20 EMIT ;
-: SPACES 0 ?DO SPACE LOOP ;
+\ ------  ------  ------  ------  ------  ------  ------
+\ index:
+\ ."                    6.1.0190 CORE                   28
+\ ACCEPT                6.1.0695 CORE                   33
+\ CR                    6.1.0990 CORE                   36
+\ EMIT                  6.1.1320 CORE                   38
+\ KEY                   6.1.1750 CORE                   41
+\ SPACE                 6.1.2220 CORE                   46
+\ SPACES                6.1.2230 CORE                   46
+\ TYPE                  6.1.2310 CORE                   47
+
+\ ------  ------  ------  ------  ------  ------  ------
+\ terminal I/O primitives - required
+\ EMIT ( char -- )
+\ KEY ( -- char )
+
+: CR ( -- ) 10 EMIT ;
+: SPACE ( -- ) BL EMIT ;
+: SPACES ( n -- ) 0 ?DO SPACE LOOP ;
 : TYPE ( c-addr u -- )
     CHARS OVER + SWAP ?DO I C@ EMIT [ 1 CHARS ] LITERAL +LOOP
 ;
+: ." POSTPONE S" TYPE ; IMMEDIATE
 
+\ XXX - does this really work?  what about backspace, etc.?
 : ACCEPT ( c-addr +n1 -- +n2 )
     DUP >R CHARS OVER + SWAP		( end start ) ( R: +n1 )
     BEGIN				( end cur ) ( R: +n1 )

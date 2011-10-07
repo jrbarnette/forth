@@ -1,0 +1,25 @@
+xt -> def'n
+
+def'n formats
+    general
+	fn-ptr, data ...
+
+    : definition
+	do_colon, instr ..., ' EXIT
+
+    CREATE definition
+	do_create, xt, byte ...
+
+    CONSTANT definition
+	do_constant, cell
+
+    VARIABLE definition
+	do_variable, cell
+
+instr formats:
+    xt
+    do_literal xt, cell
+    do_skip xt, offset
+    do_fskip xt, offset
+    do_s_quote xt, len, byte * len
+    do_c_quote xt, len, byte * len

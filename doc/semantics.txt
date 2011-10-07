@@ -25,11 +25,9 @@ AS - append the special compilation semantics
 name flags
     NOINTERP	Error when interpreting
     IMMEDIATE	Execute when compiling
-    SPECIAL	Non-default compilation semantics
-(if SPECIAL is execute, then it implies IMMEDIATE)
 
 interpretation action based on flags:
- S | I | N | action 
+ S | I | N | action
  I | F | F | EXECUTE
  I | F | T | -14 THROW
  I | T | F | EXECUTE
@@ -51,7 +49,7 @@ interpretation action based on flags:
 : do-postpone ( xt flags -- )
     nf-immediate AND IF
 	COMPILE,
-    ELSE 
+    ELSE
 	[COMPILE] LITERAL [COMPILE] COMPILE,
     THEN
 ;

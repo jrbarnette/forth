@@ -57,7 +57,7 @@ static vminstr_p
 x_drop(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
     CHECK_POP(vm, 1);
-    POP(vm);
+    (void) POP(vm);
     return ip;
 }
 

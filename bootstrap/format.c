@@ -86,7 +86,7 @@ x_decimal(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 }
 
 
-/* U.			6.1.2320 CORE, p. 47 *
+/* U.			6.1.2320 CORE, p. 47 */
 /* ( u -- ) */
 static vminstr_p
 x_udot(vminstr_p ip, vmstate_p vm, addr_ft ignore)

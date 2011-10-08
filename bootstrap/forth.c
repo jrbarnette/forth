@@ -109,7 +109,7 @@ handle_exception(int throwcode, vmstate_p vm)
     } 
 }
 
-static xt_ft
+static void
 init_forth(vmstate_p vm)
 {
     volatile int	throwcode;

@@ -255,7 +255,8 @@ typedef void (*defn_fn)(vmstate_p, defn_data_p);
 
 typedef struct defn {
     defn_fn		fn;
-    void *		data[2];
+    void *		data0;
+    void *		data1;
     cell_ft		flags;
 } defn_dt;
 
@@ -282,6 +283,7 @@ extern void compile_literal(vmstate_p, cell_ft);
 extern void compile_xt(vmstate_p, xt_ft);
 extern vminstr_p compile_skip(vmstate_p, xt_ft);
 extern void patch(vminstr_p, vminstr_p);
+extern void quit(vmstate_p);
 
 #define COMMA(vm, x)	(*(a_addr_ft)allot((vm), CELL_SIZE) = (cell_ft) (x))
 #define ALIGN(vm)	(DICT.here = ALIGNED(DICT.here))

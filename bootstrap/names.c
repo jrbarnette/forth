@@ -77,8 +77,8 @@ linkname(name_p name)
 void
 define_name(vmstate_p vm, defn_data_p data)
 {
-    c_addr_ft	id = (c_addr_ft) data->data[0];
-    vminstr_fn	hdlr = (vminstr_fn) data->data[1];
+    c_addr_ft	id = (c_addr_ft) data->data0;
+    vminstr_fn	hdlr = (vminstr_fn) data->data1;
     cell_ft	len = strlen((char *) id);
 
     name_p nm = addname(vm, id, len, hdlr);

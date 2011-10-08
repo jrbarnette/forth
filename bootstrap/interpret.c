@@ -110,7 +110,7 @@ evaluate_number(c_addr_ft s, cell_ft len, vmstate_p vm)
     int		sign = 1;
     unsigned	i = 0;
     cell_ft	n = 0;
-    
+
     if (len == 0 || base > 'Z' - 'A' + 11)
 	return 0;
 
@@ -235,7 +235,7 @@ static vminstr_p
 do_fskip(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
     cell_ft tos;
-    
+
     CHECK_POP(vm, 1);
     tos = POP(vm);
     if (tos == 0) ip += vm->ip->offset;
@@ -433,6 +433,7 @@ x_postpone(vminstr_p ip, vmstate_p vm, addr_ft ignore)
     } else {
 	compile_postpone(vm, xtok);
     }
+    return ip;
 }
 
 

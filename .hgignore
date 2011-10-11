@@ -1,1 +1,3 @@
 \.o$
+bootstrap/tags
+bootstrap/forth

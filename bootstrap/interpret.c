@@ -458,12 +458,14 @@ x_right_bracket(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 }
 
 
+#if 0
 /* PARSE		6.2.2008 CORE EXT, p. 57 */
 /* ( char -- ) */
 static vminstr_p
 x_parse(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
 }
+#endif
 
 
 /* \ "backslash"	6.2.2535 CORE EXT, p. 60 */

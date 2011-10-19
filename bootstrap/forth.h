@@ -270,6 +270,7 @@ extern defn_dt multops_defns[];
 extern defn_dt names_defns[];
 extern defn_dt stackops_defns[];
 extern defn_dt termio_defns[];
+extern defn_dt fileops_defns[];
 
 extern void define_name(vmstate_p, defn_data_p);
 

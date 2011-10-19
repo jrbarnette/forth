@@ -4,6 +4,7 @@ SOURCES =			\
 	    arithops.c		\
 	    control.c		\
 	    dictionary.c	\
+	    fileops.c		\
 	    format.c		\
 	    forth.c		\
 	    interpret.c		\

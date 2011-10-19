@@ -21,19 +21,17 @@
 \ UM* ( u1 u2 -- ud )
 \ UM/MOD ( ud u1 -- u2 u3 )
 
-: * ( n1 n2 -- n3 ) m* drop ;
-: S>D ( n -- d ) dup 0< ;
+: * ( n1 n2 -- n3 ) M* DROP ;
+: S>D ( n -- d ) DUP 0< ;
 
-\ : */MOD ( n1 n2 -- n3 n4 ) >r m* r> sm/rem ;
-: */MOD ( n1 n2 -- n3 n4 ) >r m* r> fm/mod ;
+: */MOD ( n1 n2 -- n3 n4 ) >R M* R> FM/MOD ;
+: */ ( n1 n2 n3 -- n4 ) >R M* R> FM/MOD DROP ;
+: /MOD ( n1 n2 -- n3 n4 ) >R S>D R> FM/MOD SWAP ;
+: / ( n1 n2 -- n3 ) >R S>D R> FM/MOD SWAP DROP ;
+: MOD ( n1 n2 -- n3 ) >R S>D R> FM/MOD DROP ;
 
-\ : / ( n1 n2 -- n3 ) >r s>d r> sm/rem swap drop ;
-: / ( n1 n2 -- n3 ) >r s>d r> fm/mod swap drop ;
-
-\ : /MOD ( n1 n2 -- n3 n4 ) >r s>d r> sm/rem swap ;
-: /MOD ( n1 n2 -- n3 n4 ) >r s>d r> fm/mod swap ;
-
-\ : MOD ( n1 n2 -- n3 ) >r s>d r> sm/rem drop ;
-: MOD ( n1 n2 -- n3 ) >r s>d r> fm/mod drop ;
-
-: */ ( n1 n2 n3 -- n4 ) */mod drop ;
+\ : */MOD ( n1 n2 -- n3 n4 ) >R M* R> SM/REM ;
+\ : */ ( n1 n2 n3 -- n4 ) >R M* R> SM/REM DROP ;
+\ : /MOD ( n1 n2 -- n3 n4 ) >R S>D R> SM/REM SWAP ;
+\ : / ( n1 n2 -- n3 ) >R S>D R> SM/REM SWAP DROP ;
+\ : MOD ( n1 n2 -- n3 ) >R S>D R> SM/REM DROP ;

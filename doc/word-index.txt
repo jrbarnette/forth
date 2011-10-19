@@ -65,103 +65,103 @@ CR                    6.1.0990 CORE                   36
 CREATE                6.1.1000 CORE                   36
 DECIMAL               6.1.1170 CORE                   36
 DEPTH                 6.1.1200 CORE                   36
-DO                    6.1.1240 CORE                   37
+DO                    6.1.1240 CORE                   36
 DOES>                 6.1.1250 CORE                   37
 DROP                  6.1.1260 CORE                   37
-DUP                   6.1.1290 CORE                   38
-ELSE                  6.1.1310 CORE                   38
+DUP                   6.1.1290 CORE                   37
+ELSE                  6.1.1310 CORE                   37
 EMIT                  6.1.1320 CORE                   38
 ENVIRONMENT?          6.1.1345 CORE                   38
-EVALUATE              6.1.1360 CORE                   39
-EXECUTE               6.1.1370 CORE                   39
-EXIT                  6.1.1380 CORE                   39
+EVALUATE              6.1.1360 CORE                   38
+EXECUTE               6.1.1370 CORE                   38
+EXIT                  6.1.1380 CORE                   38
 FILL                  6.1.1540 CORE                   39
 FIND                  6.1.1550 CORE                   39
-FM/MOD                6.1.1561 CORE                   40
-HERE                  6.1.1650 CORE                   40
-HOLD                  6.1.1670 CORE                   40
-I                     6.1.1680 CORE                   40
+FM/MOD                6.1.1561 CORE                   39
+HERE                  6.1.1650 CORE                   39
+HOLD                  6.1.1670 CORE                   39
+I                     6.1.1680 CORE                   39
 IF                    6.1.1700 CORE                   40
-IMMEDIATE             6.1.1710 CORE                   41
-INVERT                6.1.1720 CORE                   41
-J                     6.1.1730 CORE                   41
-KEY                   6.1.1750 CORE                   41
+IMMEDIATE             6.1.1710 CORE                   40
+INVERT                6.1.1720 CORE                   40
+J                     6.1.1730 CORE                   40
+KEY                   6.1.1750 CORE                   40
 LEAVE                 6.1.1760 CORE                   41
-LITERAL               6.1.1780 CORE                   42
-LOOP                  6.1.1800 CORE                   42
-LSHIFT                6.1.1805 CORE                   42
-M*                    6.1.1810 CORE                   42
+LITERAL               6.1.1780 CORE                   41
+LOOP                  6.1.1800 CORE                   41
+LSHIFT                6.1.1805 CORE                   41
+M*                    6.1.1810 CORE                   41
 MAX                   6.1.1870 CORE                   42
 MIN                   6.1.1880 CORE                   42
-MOD                   6.1.1890 CORE                   43
-MOVE                  6.1.1900 CORE                   43
-NEGATE                6.1.1910 CORE                   43
-OR                    6.1.1980 CORE                   43
-OVER                  6.1.1990 CORE                   43
+MOD                   6.1.1890 CORE                   42
+MOVE                  6.1.1900 CORE                   42
+NEGATE                6.1.1910 CORE                   42
+OR                    6.1.1980 CORE                   42
+OVER                  6.1.1990 CORE                   42
 POSTPONE              6.1.2033 CORE                   43
-QUIT                  6.1.2050 CORE                   44
-R>                    6.1.2060 CORE                   44
-R@                    6.1.2070 CORE                   44
-RECURSE               6.1.2120 CORE                   44
-REPEAT                6.1.2140 CORE                   45
-ROT                   6.1.2160 CORE                   45
-RSHIFT                6.1.2162 CORE                   45
-S"                    6.1.2165 CORE                   45
-S>D                   6.1.2170 CORE                   45
-SIGN                  6.1.2210 CORE                   46
-SM/REM                6.1.2214 CORE                   46
-SOURCE                6.1.2216 CORE                   46
-SPACE                 6.1.2220 CORE                   46
-SPACES                6.1.2230 CORE                   46
-STATE                 6.1.2250 CORE                   46
-SWAP                  6.1.2260 CORE                   46
-THEN                  6.1.2270 CORE                   47
-TYPE                  6.1.2310 CORE                   47
-U.                    6.1.2320 CORE                   47
-U<                    6.1.2340 CORE                   47
-UM*                   6.1.2360 CORE                   47
-UM/MOD                6.1.2370 CORE                   48
-UNLOOP                6.1.2380 CORE                   48
-UNTIL                 6.1.2390 CORE                   48
-VARIABLE              6.1.2410 CORE                   48
-WHILE                 6.1.2430 CORE                   49
-WORD                  6.1.2450 CORE                   49
-XOR                   6.1.2490 CORE                   49
-[                     6.1.2500 CORE                   49
-[']                   6.1.2510 CORE                   50
-[CHAR]                6.1.2520 CORE                   50
-]                     6.1.2540 CORE                   50
-#TIB                  6.2.0060 CORE EXT               51
-.(                    6.2.0200 CORE EXT               51
-.R                    6.2.0210 CORE EXT               51
-0<>                   6.2.0260 CORE EXT               51
-0>                    6.2.0280 CORE EXT               51
-2>R                   6.2.0340 CORE EXT               51
-2R>                   6.2.0410 CORE EXT               52
-2R@                   6.2.0415 CORE EXT               52
-:NONAME               6.2.0455 CORE EXT               52
-<>                    6.2.0500 CORE EXT               52
-?DO                   6.2.0620 CORE EXT               53
-AGAIN                 6.2.0700 CORE EXT               53
-C"                    6.2.0855 CORE EXT               53
-CASE                  6.2.0873 CORE EXT               54
-COMPILE,              6.2.0945 CORE EXT               54
-CONVERT               6.2.0970 CORE EXT               54
-ENDCASE               6.2.1342 CORE EXT               54
-ENDOF                 6.2.1343 CORE EXT               55
-ERASE                 6.2.1350 CORE EXT               55
-EXPECT                6.2.1390 CORE EXT               55
-FALSE                 6.2.1485 CORE EXT               55
-HEX                   6.2.1660 CORE EXT               55
+QUIT                  6.1.2050 CORE                   43
+R>                    6.1.2060 CORE                   43
+R@                    6.1.2070 CORE                   43
+RECURSE               6.1.2120 CORE                   43
+REPEAT                6.1.2140 CORE                   44
+ROT                   6.1.2160 CORE                   44
+RSHIFT                6.1.2162 CORE                   44
+S"                    6.1.2165 CORE                   44
+S>D                   6.1.2170 CORE                   44
+SIGN                  6.1.2210 CORE                   45
+SM/REM                6.1.2214 CORE                   45
+SOURCE                6.1.2216 CORE                   45
+SPACE                 6.1.2220 CORE                   45
+SPACES                6.1.2230 CORE                   45
+STATE                 6.1.2250 CORE                   45
+SWAP                  6.1.2260 CORE                   45
+THEN                  6.1.2270 CORE                   46
+TYPE                  6.1.2310 CORE                   46
+U.                    6.1.2320 CORE                   46
+U<                    6.1.2340 CORE                   46
+UM*                   6.1.2360 CORE                   46
+UM/MOD                6.1.2370 CORE                   46
+UNLOOP                6.1.2380 CORE                   47
+UNTIL                 6.1.2390 CORE                   47
+VARIABLE              6.1.2410 CORE                   47
+WHILE                 6.1.2430 CORE                   47
+WORD                  6.1.2450 CORE                   48
+XOR                   6.1.2490 CORE                   48
+[                     6.1.2500 CORE                   48
+[']                   6.1.2510 CORE                   49
+[CHAR]                6.1.2520 CORE                   49
+]                     6.1.2540 CORE                   49
+#TIB                  6.2.0060 CORE EXT               49
+.(                    6.2.0200 CORE EXT               49
+.R                    6.2.0210 CORE EXT               49
+0<>                   6.2.0260 CORE EXT               49
+0>                    6.2.0280 CORE EXT               50
+2>R                   6.2.0340 CORE EXT               50
+2R>                   6.2.0410 CORE EXT               50
+2R@                   6.2.0415 CORE EXT               50
+:NONAME               6.2.0455 CORE EXT               50
+<>                    6.2.0500 CORE EXT               51
+?DO                   6.2.0620 CORE EXT               51
+AGAIN                 6.2.0700 CORE EXT               51
+C"                    6.2.0855 CORE EXT               52
+CASE                  6.2.0873 CORE EXT               52
+COMPILE,              6.2.0945 CORE EXT               52
+CONVERT               6.2.0970 CORE EXT               52
+ENDCASE               6.2.1342 CORE EXT               53
+ENDOF                 6.2.1343 CORE EXT               53
+ERASE                 6.2.1350 CORE EXT               53
+EXPECT                6.2.1390 CORE EXT               53
+FALSE                 6.2.1485 CORE EXT               56
+HEX                   6.2.1660 CORE EXT               56
 MARKER                6.2.1850 CORE EXT               56
 NIP                   6.2.1930 CORE EXT               56
 OF                    6.2.1950 CORE EXT               56
-PAD                   6.2.2000 CORE EXT               56
+PAD                   6.2.2000 CORE EXT               57
 PARSE                 6.2.2008 CORE EXT               57
 PICK                  6.2.2030 CORE EXT               57
 QUERY                 6.2.2040 CORE EXT               57
 REFILL                6.2.2125 CORE EXT               57
-RESTORE-INPUT         6.2.2148 CORE EXT               57
+RESTORE-INPUT         6.2.2148 CORE EXT               58
 ROLL                  6.2.2150 CORE EXT               58
 SAVE-INPUT            6.2.2182 CORE EXT               58
 SOURCE-ID             6.2.2218 CORE EXT               58

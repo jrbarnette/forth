@@ -2,6 +2,7 @@
 
 SOURCES =			\
 	    arithops.c		\
+	    cmdline.c		\
 	    control.c		\
 	    dictionary.c	\
 	    fileops.c		\

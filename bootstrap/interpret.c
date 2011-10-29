@@ -189,17 +189,17 @@ evaluate(vmstate_p vm)
 
 
 static cell_ft
-refill(void)
+refill(FILE *input)
 {
     char *	s;
     cell_ft	len;
 
-    if (DICT.state == STATE_INTERP) {
+    if (DICT.state == STATE_INTERP && IS_INTERACTIVE()) {
 	(void) fputs("ok ", stdout);
     }
 
     s = (char *) DICT.source.c_addr;
-    if (fgets(s, DICT.source_max_len, stdin) == NULL) {
+    if (fgets(s, DICT.source_max_len, input) == NULL) {
 	return F_FALSE;
     }
 
@@ -213,7 +213,7 @@ refill(void)
 
 
 void
-quit(vmstate_p vm)
+quit(vmstate_p vm, FILE *input)
 {
     DICT.source_id = SOURCE_ID_TERMINAL;
     DICT.source.c_addr = DICT.tib;
@@ -221,7 +221,7 @@ quit(vmstate_p vm)
 
     DICT.state = STATE_INTERP;
 
-    while (refill()) {
+    while (refill(input)) {
 	evaluate(vm);
     }
 }

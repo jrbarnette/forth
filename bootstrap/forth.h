@@ -5,10 +5,12 @@
 #ifndef FORTH_H
 #define FORTH_H
 
-#include <stdint.h>
 #include <setjmp.h>
-#include <stdlib.h>
+#include <stdbool.h>
 #include <stddef.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 
 /*
@@ -285,9 +287,23 @@ extern void compile_literal(vmstate_p, cell_ft);
 extern void compile_xt(vmstate_p, xt_ft);
 extern vminstr_p compile_skip(vmstate_p, xt_ft);
 extern void patch(vminstr_p, vminstr_p);
-extern void quit(vmstate_p);
+extern void quit(vmstate_p, FILE *);
 
 #define COMMA(vm, x)	(*(a_addr_ft)allot((vm), CELL_SIZE) = (cell_ft) (x))
 #define ALIGN(vm)	(DICT.here = ALIGNED(DICT.here))
+
+/*
+ */
+
+struct options {
+    bool	is_interactive;
+    char       *startup_file;
+};
+
+extern struct options forth_options;
+
+#define IS_INTERACTIVE()	(forth_options.is_interactive)
+
+extern void process_args(int, char *[], struct options *);
 
 #endif

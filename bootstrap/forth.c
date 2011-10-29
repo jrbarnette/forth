@@ -2,9 +2,11 @@
  * Copyright 2009, by J. Richard Barnette
  */
 
+#include <errno.h>
 #include <setjmp.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "forth.h"
 
@@ -133,6 +135,7 @@ init_forth(vmstate_p vm)
     interpret_defs(vm, fileops_defns);
 }
 
+struct options forth_options;
 
 int
 main(int argc, char *argv[])
@@ -140,12 +143,33 @@ main(int argc, char *argv[])
     struct vmstate	vmstate;
     volatile int	throwcode;
 
+    process_args(argc, argv, &forth_options);
+
     init_forth(&vmstate);
 
     init_vm(&vmstate);
+
+    if (forth_options.startup_file != NULL) {
+	FILE *startup = fopen(forth_options.startup_file, "r");
+	if (startup != NULL) {
+	    if ((throwcode = setjmp(vmstate.interp_loop)) == 0) {
+		quit(&vmstate, startup);
+	    } else {
+		handle_exception(throwcode, &vmstate);
+	    }
+	} else {
+	    fprintf(stderr,
+		    "Can't open startup file %s for reading: %s\n",
+		    forth_options.startup_file,
+		    strerror(errno));
+	}
+	(void) fclose(startup);
+    }
+
     while ((throwcode = setjmp(vmstate.interp_loop)) != 0) {
 	handle_exception(throwcode, &vmstate);
     }
-    quit(&vmstate);
+
+    quit(&vmstate, stdin);
     return EXIT_SUCCESS;
 }

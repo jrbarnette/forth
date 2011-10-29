@@ -176,25 +176,14 @@ evaluate_number(c_addr_ft s, cell_ft len, vmstate_p vm)
 static void
 evaluate(vmstate_p vm)
 {
-    c_addr_ft	parse_area = PARSE_AREA_PTR;
-    cell_ft	parse_len = PARSE_AREA_LEN;
+    while (PARSE_AREA_LEN != 0) {
+	cell_ft len;
+	c_addr_ft id = parse_name(&len);
 
-    while (parse_len != 0) {
-	size_t len;
-
-	if (*parse_area == ' ') {
-	    parse_area++;
-	    parse_len--;
-	    continue;
-	}
-
-	len = parse(' ', parse_area, parse_len);
-	if (!evaluate_name(parse_area, len, vm) &&
-		!evaluate_number(parse_area, len, vm)) {
+	if (!evaluate_name(id, len, vm) &&
+		!evaluate_number(id, len, vm)) {
 	    THROW(vm, -13);
 	}
-	parse_area = PARSE_AREA_PTR;
-	parse_len = PARSE_AREA_LEN;
     }
 }
 

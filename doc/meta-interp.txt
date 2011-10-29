@@ -1,0 +1,74 @@
+registers: Rx, x=0-7
+addressing modes:
+	Rx -> (--Ry)
+	Rx -> (Ry)
+	(Rx) -> Ry
+	(Rx++) -> Ry
+	Rx -> Ry
+
+VM registers
+    IP - instruction pointer
+    SP - data stack pointer
+    RP - return stack pointer
+    DP - execution token data pointer
+    T0-T3 - temporary working registers
+
+operations:
+	+ - and or xor lshift rshift ashift
+	mov
+	* /
+
+primitive operations
+	( -- )
+	( x x -- x x )		swap
+	( x -- x )		invert negate
+	( x -- flag )		0= 0< 0> 0<>
+	( x x -- x )		+ - and or xor lshift rshift arshift
+	( x x -- x )		* /
+	( x x -- flag )		< > <> = U> U<
+	( d n -- n n )		fm/mod sm/rem um/mod m* um*
+	( -- x )		get literal
+	( x -- )		put drop
+	( addr -- x )		@ c@
+	( x addr -- )		!  c!
+
+   IP
+    |
+    v
+ | xt0  | xt1  |
+    |
+    v
+ | do-: | xt0  | xt1  |
+
+next
+    DP = *IP++
+    goto *DP++
+
+do-:
+    *--RP = IP
+    IP = DP
+    DP = *IP++
+    goto *DP++
+
+x-exit
+    IP = *RP++
+    DP = *IP++
+    goto *DP++
+
+do-skip
+    IP += *IP
+    DP = *IP++
+    goto *DP++
+
+do-fskip
+    if *SP++ != 0
+	IP += *IP
+	DP = *IP++
+	goto *DP++
+    else
+	IP++
+	DP = *IP++
+	goto *DP++
+
+do-variable
+    *--SP = DP

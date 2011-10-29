@@ -1,0 +1,32 @@
+CORE and CORE EXT words performing double cell arithmetic:
+    #
+    #S
+    */
+    */MOD
+    >NUMBER
+    FM/MOD
+    M*
+    S>D
+    SM/REM
+    UM*
+    UM/MOD
+
+divide 2=2/1:
+    Q = (B * H + L) / D
+      = B * (H / D) + B * (H % D) / D + L / D
+    H' = H / D
+    L' = B * (H % D) / D + L / D
+       = (H % D) * (B / D) + L / D
+	  + ((H % D) * (B % D) + L % D) / D
+
+*/MOD
+    P = A * B
+    return (A * B) / D, (A * B) % D
+
+multiply 2=1x1
+
+dmult(
+    p3 = a.h * b.h
+    p2 = a.h * b.l + a.l * b.h
+    p1 = a.l * b.l
+    p.h = 

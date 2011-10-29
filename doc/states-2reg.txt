@@ -1,0 +1,67 @@
+0 registers: 1 state -> 1
+( ) ( R: )
+
+1 register: 2 states -> 2
+( r0 ) ( R: )
+( ) ( R: r0 )
+
+2 registers: 6 states -> 4
+( r0 r1 ) ( R: )
+( r1 r0 ) ( R: )
+( r0 ) ( R: r1 )
+( r1 ) ( R: r0 )
+( ) ( R: r0 r1 ) x
+( ) ( R: r1 r0 ) x
+
+3 registers: 24 states - 14 = 10
+( r0 r1 r2 ) ( R: ) x
+( r0 r2 r1 ) ( R: ) x
+( r1 r0 r2 ) ( R: ) x
+( r1 r2 r0 ) ( R: ) x
+( r2 r0 r1 ) ( R: ) x
+( r2 r1 r0 ) ( R: ) x
+( r0 r1 ) ( R: r2 )
+( r0 r2 ) ( R: r1 )
+( r1 r0 ) ( R: r2 )
+( r1 r2 ) ( R: r0 )
+( r2 r0 ) ( R: r1 )
+( r2 r1 ) ( R: r0 )
+( r0 ) ( R: r1 r2 ) x
+( r0 ) ( R: r2 r1 ) x
+( r1 ) ( R: r0 r2 ) x
+( r1 ) ( R: r2 r0 ) x
+( r2 ) ( R: r0 r1 ) x
+( r2 ) ( R: r1 r0 ) x
+( ) ( R: r0 r1 r2 ) x
+( ) ( R: r0 r2 r1 ) x
+( ) ( R: r1 r0 r2 ) x
+( ) ( R: r1 r2 r0 ) x
+( ) ( R: r2 r0 r1 ) x
+( ) ( R: r2 r1 r0 ) x
+
+operator types:
+  produce:	( -- x )
+  binary:	( x1 x2 -- x3 )
+  drop:		( x -- )
+  swap:		( x1 x2 -- x2 x1 )
+  rot:		( x1 x2 x3 -- x2 x3 x1 )
+  >R:		( x1 -- ) ( R: -- x1 )
+  R>:		( -- x1 ) ( R: x1 -- )
+
+states
+( ) ( R: )
+( ) ( R: r3 )
+( r0 ) ( R: )
+( r0 ) ( R: r3 )
+( r0 r1 ) ( R: )
+( r0 r1 ) ( R: r3 )
+( r0 r2 ) ( R: )
+( r0 r2 ) ( R: r3 )
+( r1 r0 ) ( R: )
+( r1 r0 ) ( R: r3 )
+( r1 r2 ) ( R: )
+( r1 r2 ) ( R: r3 )
+( r2 r0 ) ( R: )
+( r2 r0 ) ( R: r3 )
+( r2 r1 ) ( R: )
+( r2 r1 ) ( R: r3 )

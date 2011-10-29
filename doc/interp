@@ -1,0 +1,81 @@
+#!/bin/bash
+
+interp() {
+    stack=(1 2 3 4)
+    rstack=()
+    while [ $# -gt 0 ]
+    do
+	code=("$@")
+	case ${code[0]} in
+	    '>R')
+		set -- "${stack[@]}"
+		rstack=($1 "${rstack[@]}")
+		shift
+		stack=("$@")
+	    ;;
+	    'R>')
+		set -- "${rstack[@]}"
+		stack=($1 "${stack[@]}")
+		shift
+		rstack=("$@")
+	    ;;
+	    SWAP)
+		set -- "${stack[@]}"
+		stack=($2 $1 $3 $4)
+	    ;;
+	    ROT)
+		set -- "${stack[@]}"
+		stack=($3 $1 $2 $4)
+	    ;;
+	    2SWAP)
+		set -- "${stack[@]}"
+		stack=($3 $4 $1 $2)
+	    ;;
+	esac
+	set -- "${code[@]}"
+	shift
+    done
+    echo ${stack[3]} ${stack[2]} ${stack[1]} ${stack[0]}
+}
+
+for i0 in '' 'SWAP'
+do
+    for i1 in '' 'SWAP'
+    do
+	for i2 in '' 'SWAP'
+	do
+	    for i3 in '' 'SWAP'
+	    do
+		CMD="$i0 >R $i1 >R SWAP R> $i2 R> $i3"
+		echo "( 4 3 2 1 -- `interp $CMD` )" $CMD
+		CMD="$i0 >R $i1 >R SWAP R> $i2 R> SWAP >R SWAP R> $i3"
+		echo "( 4 3 2 1 -- `interp $CMD` )" $CMD
+		CMD="$i0 >R SWAP R> SWAP >R $i1 >R SWAP R> $i2 R> $i3"
+		echo "( 4 3 2 1 -- `interp $CMD` )" $CMD
+	    done
+	done
+    done
+done | sed 's=)=)	=' | sort
+echo
+
+for i0 in '' 'SWAP' 'SWAP ROT' 'ROT ROT' 'ROT' 'ROT SWAP'
+do
+    for i1 in 'SWAP ROT' 'ROT ROT' 'ROT' 'ROT SWAP'
+    do
+	for i2 in '' 'SWAP' 'SWAP ROT' 'ROT ROT' 'ROT' 'ROT SWAP'
+	do
+	    CMD="$i0 >R $i1 R> $i2"
+	    echo "( 4 3 2 1 -- `interp $CMD` )" $CMD
+	done
+    done
+done | sed 's=)=)	=' | sort
+echo
+
+for i0 in '' 'SWAP' 'SWAP ROT' 'ROT ROT' 'ROT' 'ROT SWAP'
+do
+    for i1 in '' 'SWAP' 'SWAP ROT' 'ROT ROT' 'ROT' 'ROT SWAP'
+    do
+	CMD="$i0 2SWAP $i1"
+	echo "( 4 3 2 1 -- `interp $CMD` )" $CMD
+    done
+done | sed 's=)=)	=' | sort

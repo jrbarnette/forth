@@ -1,4 +1,8 @@
-xt -> def'n
+definition: function pointer followed by data
+execution token: pointer to definition
+--
+xt ->
+    function, datum, ...
 
 def'n formats
     general

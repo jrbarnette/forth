@@ -291,6 +291,20 @@ x_abort(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 }
 
 
+/* CHAR			6.1.0895 CORE, p. 35 */
+/* ( "<spaces>name" -- char ) */
+static vminstr_p
+x_char(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+{
+    cell_ft len;
+    c_addr_ft id = parse_name(&len);
+
+    CHECK_PUSH(vm, 1);
+    PUSH(vm, (cell_ft) *id);
+    return ip;
+}
+
+
 /* EVALUATE		6.1.1360 CORE, p. 39 */
 /* ( i*x c-addr u -- j*x ) */
 static vminstr_p
@@ -473,14 +487,22 @@ x_right_bracket(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 }
 
 
-#if 0
 /* PARSE		6.2.2008 CORE EXT, p. 57 */
-/* ( char -- ) */
+/* ( char "ccc<char>" -- c-addr u ) */
 static vminstr_p
 x_parse(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
+    size_t	len;
+    c_addr_ft	parse_ptr = PARSE_AREA_PTR;
+    CHECK_POP(vm, 1);
+    CHECK_PUSH(vm, 1);
+
+    len = parse((char_ft) POP(vm), parse_ptr, PARSE_AREA_LEN);
+    PUSH(vm, (cell_ft) parse_ptr);
+    PUSH(vm, (cell_ft) len);
+
+    return ip;
 }
-#endif
 
 
 /* \ "backslash"	6.2.2535 CORE EXT, p. 60 */
@@ -510,6 +532,7 @@ interpret_defns[] = {
     { define_name, "(",		x_paren, NAME_TYPE_IMMEDIATE },
     { define_name, ">IN",	x_to_in },
     { define_name, "ABORT",	x_abort },
+    { define_name, "CHAR",	x_char },
     { define_name, "EVALUATE",	x_evaluate },
     { define_name, "EXECUTE",	x_execute },
     { define_name, "LITERAL",	x_literal, NAME_TYPE_COMPILE },
@@ -520,6 +543,7 @@ interpret_defns[] = {
     { define_name, "STATE",	x_state },
     { define_name, "[",		x_left_bracket, NAME_TYPE_COMPILE },
     { define_name, "]",		x_right_bracket },
+    { define_name, "PARSE",	x_parse },
     { define_name, "\\",	x_backslash, NAME_TYPE_IMMEDIATE },
     { NULL }
 };
@@ -528,7 +552,6 @@ interpret_defns[] = {
     ."                    6.1.0190 CORE                   28
     ABORT"                6.1.0680 CORE                   32
     BL                    6.1.0770 CORE                   34
-    CHAR                  6.1.0895 CORE                   35
     COUNT                 6.1.0980 CORE                   36
     ENVIRONMENT?          6.1.1345 CORE                   38
     WORD                  6.1.2450 CORE                   49

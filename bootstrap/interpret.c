@@ -66,6 +66,21 @@ parse(char_ft c, c_addr_ft s, cell_ft len)
 }
 
 
+c_addr_ft
+parse_name(cell_ft *p_len)
+{
+    c_addr_ft	parse_area = PARSE_AREA_PTR;
+    cell_ft	parse_len = PARSE_AREA_LEN;
+
+    while (parse_len > 0 && *parse_area == ' ') {
+	parse_area++;
+	parse_len--;
+    }
+    *p_len = parse(' ', parse_area, parse_len);
+    return parse_area;
+}
+
+
 void
 execute(vmstate_p vm, xt_ft entry_xt)
 {

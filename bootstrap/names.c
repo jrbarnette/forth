@@ -94,8 +94,8 @@ define_name(vmstate_p vm, defn_data_p data)
 static vminstr_p
 x_tick(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
-    c_addr_ft id = PARSE_AREA_PTR;
-    cell_ft len = parse(' ', id, PARSE_AREA_LEN);
+    cell_ft len;
+    c_addr_ft id = parse_name(&len);
     name_p nm = lookup(id, len);
 
     if (nm == NULL)
@@ -117,12 +117,12 @@ do_colon(vminstr_p ip, vmstate_p vm, addr_ft newip)
     return (vminstr_p)newip;
 }
 
-/* ( C: "<spaces> name" -- colon-sys ) */
+/* ( C: "<spaces>name" -- colon-sys ) */
 static vminstr_p
 x_colon(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
-    c_addr_ft id = PARSE_AREA_PTR;
-    cell_ft len = parse(' ', id, PARSE_AREA_LEN);
+    cell_ft len;
+    c_addr_ft id = parse_name(&len);
     CHECK_PUSH(vm, 1);
     PUSH(vm, (cell_ft) addname(vm, id, len, do_colon));
     DICT.state = STATE_COMPILE;
@@ -191,11 +191,10 @@ do_constant(vminstr_p ip, vmstate_p vm, addr_ft data_ptr)
 static vminstr_p
 x_constant(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
-    c_addr_ft id = PARSE_AREA_PTR;
     cell_ft len;
+    c_addr_ft id = parse_name(&len);
 
     CHECK_POP(vm, 1);
-    len = parse(' ', id, PARSE_AREA_LEN);
     linkname(addname(vm, id, len, do_constant));
     COMMA(vm, POP(vm));
     return ip;
@@ -224,8 +223,8 @@ do_create(vminstr_p ip, vmstate_p vm, addr_ft data_ptr)
 static vminstr_p
 x_create(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
-    c_addr_ft id = PARSE_AREA_PTR;
-    cell_ft len = parse(' ', id, PARSE_AREA_LEN);
+    cell_ft len;
+    c_addr_ft id = parse_name(&len);
     linkname(addname(vm, id, len, do_create));
     COMMA(vm, (xt_ft) NULL);
     return ip;
@@ -307,8 +306,8 @@ do_variable(vminstr_p ip, vmstate_p vm, addr_ft varaddr)
 static vminstr_p
 x_variable(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
-    c_addr_ft id = PARSE_AREA_PTR;
-    cell_ft len = parse(' ', id, PARSE_AREA_LEN);
+    cell_ft len;
+    c_addr_ft id = parse_name(&len);
     linkname(addname(vm, id, len, do_variable));
     (void) allot(vm, CELL_SIZE);
     return ip;

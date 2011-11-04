@@ -295,6 +295,18 @@ x_xor(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 }
 
 
+/* 0<> "zero-not-equals"	6.2.0260 CORE EXT, p. 49 */
+/* ( x -- flag ) */
+static vminstr_p
+x_zero_not_equals(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+{
+    cell_ft *sp = SP(vm);
+    CHECK_POP(vm, 1);
+    PICK(sp, 0) = -((snumber_ft) PICK(sp, 0) != 0);
+    return ip;
+}
+
+
 defn_dt
 arithops_defns[] = {
     { define_name, "+",		x_plus },
@@ -319,11 +331,11 @@ arithops_defns[] = {
     { define_name, "RSHIFT",	x_rshift },
     { define_name, "U<",	x_u_less },
     { define_name, "XOR",	x_xor },
+    { define_name, "0<>",	x_zero_not_equals },
     { NULL }
 };
 
 #if 0
-    0<>                   6.2.0260 CORE EXT               51
     0>                    6.2.0280 CORE EXT               51
     <>                    6.2.0500 CORE EXT               52
     U>                    6.2.2350 CORE EXT               59

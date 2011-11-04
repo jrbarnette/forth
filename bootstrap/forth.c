@@ -85,7 +85,6 @@ init_vm(vmstate_p vm)
 {
     CLEAR_STACK(vm);
     CLEAR_RSTACK(vm);
-    vm->ip = NULL;
 }
 
 
@@ -150,6 +149,8 @@ main(int argc, char *argv[])
     init_vm(&vmstate);
 
     if (forth_options.startup_file != NULL) {
+	bool saved_interactive = forth_options.is_interactive;
+	forth_options.is_interactive = false;
 	FILE *startup = fopen(forth_options.startup_file, "r");
 	if (startup != NULL) {
 	    if ((throwcode = setjmp(vmstate.interp_loop)) == 0) {
@@ -164,6 +165,7 @@ main(int argc, char *argv[])
 		    strerror(errno));
 	}
 	(void) fclose(startup);
+	forth_options.is_interactive = saved_interactive;
     }
 
     while ((throwcode = setjmp(vmstate.interp_loop)) != 0) {

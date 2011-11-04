@@ -93,7 +93,6 @@ typedef struct vmstate *	vmstate_p;
 typedef vminstr_p (*vminstr_fn)(vminstr_p, vmstate_p, addr_ft);
 
 struct vmstate {
-    vminstr_p	ip;
     a_addr_ft	sp;
     a_addr_ft	rsp;
     cell_ft	stack[STACK_SIZE];

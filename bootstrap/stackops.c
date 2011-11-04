@@ -124,9 +124,9 @@ x_rot(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 
     CHECK_POP(vm, 3);
     t = PICK(sp, 0);
-    PICK(sp, 0) = PICK(sp, 1);
-    PICK(sp, 1) = PICK(sp, 2);
-    PICK(sp, 2) = t;
+    PICK(sp, 0) = PICK(sp, 2);
+    PICK(sp, 2) = PICK(sp, 1);
+    PICK(sp, 1) = t;
     return ip;
 }
 

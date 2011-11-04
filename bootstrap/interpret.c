@@ -2,9 +2,10 @@
  * Copyright 2011, by J. Richard Barnette
  */
 
+#include <ctype.h>
+#include <setjmp.h>
 #include <stdio.h>
 #include <string.h>
-#include <setjmp.h>
 
 #include "forth.h"
 
@@ -54,14 +55,25 @@ patch(vminstr_p orig, vminstr_p dest)
 cell_ft
 parse(char_ft c, c_addr_ft s, cell_ft len)
 {
-    c_addr_ft ns = memchr(s, (char) c, len);
-
-    if (ns != NULL) {
-	DICT.to_in = ns - DICT.source.c_addr + 1;
-	return (cell_ft) (ns - s);
-    } else {
+    if (c == ' ') {
+	unsigned i;
+	for (i = 0; i < len; i++) {
+	    if (!isgraph(s[i])) {
+		DICT.to_in = s + i - DICT.source.c_addr + 1;
+		return (cell_ft) i;
+	    }
+	}
 	DICT.to_in = DICT.source.len;
 	return len;
+    } else {
+	c_addr_ft ns = memchr(s, (char) c, len);
+	if (ns != NULL) {
+	    DICT.to_in = ns - DICT.source.c_addr + 1;
+	    return (cell_ft) (ns - s);
+	} else {
+	    DICT.to_in = DICT.source.len;
+	    return len;
+	}
     }
 }
 
@@ -72,7 +84,7 @@ parse_name(cell_ft *p_len)
     c_addr_ft	parse_area = PARSE_AREA_PTR;
     cell_ft	parse_len = PARSE_AREA_LEN;
 
-    while (parse_len > 0 && *parse_area == ' ') {
+    while (parse_len > 0 && !isgraph(*parse_area)) {
 	parse_area++;
 	parse_len--;
     }
@@ -242,7 +254,7 @@ do_fskip(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 
     CHECK_POP(vm, 1);
     tos = POP(vm);
-    if (tos == 0) ip += vm->ip->offset;
+    if (tos == 0) ip += ip->offset;
     return ip + 1;
 }
 
@@ -274,10 +286,28 @@ x_to_in(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 static vminstr_p
 x_abort(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
+    CLEAR_STACK(vm);
+    CLEAR_RSTACK(vm);
     THROW(vm, -1);
     /* NOTREACHED */
     return NULL;
 }
+
+
+#if 0
+/* ABORT"		6.1.0680 CORE, p. 32 */
+/* ( i*x x -- | i*x ) ( R: j*x -- | j*x ) runtime semantics */
+static vminstr_p
+do_abort_quote(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+{
+}
+
+/* ( "ccc<quote" -- ) compilation semantics */
+static vminstr_p
+x_abort_quote(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+{
+}
+#endif
 
 
 /* CHAR			6.1.0895 CORE, p. 35 */
@@ -466,6 +496,20 @@ x_left_bracket(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 }
 
 
+/* [CHAR] "bracket-char"	6.1.2520 CORE, p. 49 */
+/* interpretation semantics undefined */
+/* ( "<spaces>name" -- ) compilation semantics */
+static vminstr_p
+x_bracket_char(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+{
+    cell_ft len;
+    c_addr_ft id = parse_name(&len);
+
+    compile_literal(vm, *id);
+    return ip;
+}
+
+
 /* ] "right-bracket"	6.1.2540 CORE, p. 50 */
 /* ( -- ) */
 static vminstr_p
@@ -531,6 +575,7 @@ interpret_defns[] = {
     { define_name, "SOURCE",	x_source },
     { define_name, "STATE",	x_state },
     { define_name, "[",		x_left_bracket, NAME_TYPE_COMPILE },
+    { define_name, "[CHAR]",	x_bracket_char, NAME_TYPE_COMPILE },
     { define_name, "]",		x_right_bracket },
     { define_name, "PARSE",	x_parse },
     { define_name, "\\",	x_backslash, NAME_TYPE_IMMEDIATE },
@@ -545,7 +590,6 @@ interpret_defns[] = {
     ENVIRONMENT?          6.1.1345 CORE                   38
     WORD                  6.1.2450 CORE                   49
     [']                   6.1.2510 CORE                   50
-    [CHAR]                6.1.2520 CORE                   50
     #TIB                  6.2.0060 CORE EXT               51
     C"                    6.2.0855 CORE EXT               53
     COMPILE,              6.2.0945 CORE EXT               54

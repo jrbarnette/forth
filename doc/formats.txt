@@ -25,5 +25,45 @@ instr formats:
     do_literal xt, cell
     do_skip xt, offset
     do_fskip xt, offset
-    do_s_quote xt, len, byte * len
-    do_c_quote xt, len, byte * len
+    do_s_quote xt, len cell, byte * len
+    do_c_quote xt, len byte, byte * len
+
+
+====
+indirect VM
+
+instr formats:
+    fn-ptr
+    do_literal, cell
+    do_skip, offset
+    do_fskip, offset
+    do_s_quote, len, byte * len
+    do_c_quote, count, byte * count
+
+: definition
+    vm-code-ptr, xt, ...
+
+
+interp loop
+    while (...)
+	ip = (*ip)(ip, vmptr);
+
+special instructions -
+    NEXT (indirect threaded):
+	T = *VIP
+	VIP++
+	DP = T + 1
+	goto *T
+
+    DO-COLON (indirect threaded):
+	RPUSH VIP
+	VIP = DP
+	NEXT
+
+    EXIT (indirect threaded)
+	RPOP VIP
+	NEXT
+
+    DO-VARIABLE (indirect threaded):
+	PUSH DP
+	NEXT

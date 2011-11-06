@@ -88,6 +88,7 @@ parse_name(cell_ft *p_len)
 	parse_area++;
 	parse_len--;
     }
+    /* XXX:  should THROW -16 if len == 0 */
     *p_len = parse(' ', parse_area, parse_len);
     return parse_area;
 }
@@ -191,6 +192,9 @@ evaluate(vmstate_p vm)
     while (PARSE_AREA_LEN != 0) {
 	cell_ft len;
 	c_addr_ft id = parse_name(&len);
+
+	if (len == 0)
+	    break;
 
 	if (!evaluate_name(id, len, vm) &&
 		!evaluate_number(id, len, vm)) {
@@ -466,13 +470,13 @@ do_postpone(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 static vminstr_p
 x_postpone(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
-    c_addr_ft	namestr = PARSE_AREA_PTR;
-    size_t	len = parse(' ', namestr, PARSE_AREA_LEN);
-    name_p	name = lookup(namestr, len);
+    cell_ft	len;
+    c_addr_ft	id = parse_name(&len);
+    name_p	name = lookup(id, len);
     xt_ft	xtok;
 
     if (name == NULL) {
-	THROW(vm, -58);
+	THROW(vm, -13);
     }
 
     xtok = NAME_XT(name);

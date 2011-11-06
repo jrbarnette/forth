@@ -2,6 +2,8 @@
  * Copyright 2011, by J. Richard Barnette
  */
 
+#include <string.h>
+
 #include "forth.h"
 
 /*
@@ -59,6 +61,22 @@ x_c_fetch(vminstr_p ip, vmstate_p vm, addr_ft ignore)
     return ip;
 }
 
+/* MOVE			6.1.1900 CORE, p. 42 */
+/* ( addr1 addr2 u -- ) */
+static vminstr_p
+x_move(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+{
+    char *src, *dst;
+    size_t len;
+
+    CHECK_POP(vm, 3);
+    len = (size_t) POP(vm);
+    dst = (char *) POP(vm);
+    src = (char *) POP(vm);
+    (void) memmove(dst, src, len);
+
+    return ip;
+}
 
 defn_dt
 memops_defns[] = {
@@ -66,6 +84,7 @@ memops_defns[] = {
     { define_name, "@",		x_fetch },
     { define_name, "C!",	x_c_store },
     { define_name, "C@",	x_c_fetch },
+    { define_name, "MOVE",	x_move },
     { NULL }
 };
 
@@ -79,6 +98,5 @@ memops_defns[] = {
     CHAR+                 6.1.0897 CORE                   35
     CHARS                 6.1.0898 CORE                   35
     FILL                  6.1.1540 CORE                   39
-    MOVE                  6.1.1900 CORE                   43
     ERASE                 6.2.1350 CORE EXT               55
 #endif

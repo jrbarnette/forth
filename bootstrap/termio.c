@@ -13,7 +13,7 @@
 /* CR			6.1.0990 CORE, p. 36 */
 /* ( -- ) */
 static vminstr_p
-x_cr(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_cr(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     putc('\n', stdout);
     return ip;
@@ -23,7 +23,7 @@ x_cr(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* EMIT			6.1.1320 CORE, p. 38 */
 /* ( x -- ) */
 static vminstr_p
-x_emit(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_emit(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_POP(vm, 1);
     putc((char_ft) POP(vm), stdout);
@@ -34,7 +34,7 @@ x_emit(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* SPACE		6.1.2220 CORE, p. 46 */
 /* ( -- ) */
 static vminstr_p
-x_space(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_space(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     putc(' ', stdout);
     return ip;
@@ -44,7 +44,7 @@ x_space(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* SPACES		6.1.2230 CORE, p. 46 */
 /* ( n -- ) */
 static vminstr_p
-x_spaces(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_spaces(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     snumber_ft	n;
 
@@ -60,7 +60,7 @@ x_spaces(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* TYPE			6.1.2310 CORE, p. 47 */
 /* ( c-addr u -- ) */
 static vminstr_p
-x_type(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_type(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     c_addr_ft	cp;
     size_t	count;

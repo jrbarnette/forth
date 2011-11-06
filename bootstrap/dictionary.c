@@ -40,7 +40,7 @@ allot(vmstate_p vm, size_t n)
 /* , "comma"		6.1.0150 CORE, p. 27 */
 /* ( x -- ) */
 static vminstr_p
-x_comma(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_comma(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_POP(vm, 1);
     *(a_addr_ft)allot(vm, CELL_SIZE) = POP(vm);
@@ -50,7 +50,7 @@ x_comma(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* ALIGN		6.1.0705 CORE, p. 33 */
 /* ( -- ) */
 static vminstr_p
-x_align(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_align(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     ALIGN(vm);
     return ip;
@@ -60,7 +60,7 @@ x_align(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* ALLOT		6.1.0710 CORE, p. 33 */
 /* ( n -- ) */
 static vminstr_p
-x_allot(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_allot(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_POP(vm, 1);
     (void) allot(vm, POP(vm));
@@ -71,7 +71,7 @@ x_allot(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* C, "c-comma"		6.1.0860 CORE, p. 34 */
 /* ( char -- ) */
 static vminstr_p
-x_c_comma(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_c_comma(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_POP(vm, 1);
     *(c_addr_ft)allot(vm, sizeof (char_ft)) = (char_ft) POP(vm);
@@ -82,7 +82,7 @@ x_c_comma(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* HERE			6.1.1650 CORE, p. 40 */
 /* ( -- addr ) */
 static vminstr_p
-x_here(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_here(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_PUSH(vm, 1);
     PUSH(vm, HERE);

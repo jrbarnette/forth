@@ -88,7 +88,7 @@ parse_name(cell_ft *p_len)
 	parse_area++;
 	parse_len--;
     }
-    *p_len = parse(' ', parse_area, (cell_ft) parse_len);
+    *p_len = parse(' ', parse_area, parse_len);
     return parse_area;
 }
 
@@ -98,11 +98,11 @@ execute(vmstate_p vm, xt_ft entry_xt)
 {
     vminstr_p ip;
 
-    ip = entry_xt->handler(NULL, vm, entry_xt[1].data);
+    ip = entry_xt->handler(NULL, vm, entry_xt[1].arg);
 
     while (ip != NULL) {
 	xt_ft xtok = ip->xtok;
-	ip = xtok->handler(ip + 1, vm, xtok[1].data);
+	ip = xtok->handler(ip + 1, vm, xtok[1].arg);
     }
 }
 
@@ -245,13 +245,13 @@ quit(vmstate_p vm, FILE *input)
 /* -------------------------------------------------------------- */
 
 static vminstr_p
-do_skip(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+do_skip(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     return ip + ip->offset + 1;
 }
 
 static vminstr_p
-do_fskip(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+do_fskip(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft tos;
 
@@ -265,7 +265,7 @@ do_fskip(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* ( "paren"		6.1.0080 CORE, p. 26 */
 /* ( “ccc<paren>” -- ) execution semantics */
 static vminstr_p
-x_paren(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_paren(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     (void) parse(')', PARSE_AREA_PTR, PARSE_AREA_LEN);
     return ip;
@@ -276,7 +276,7 @@ x_paren(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* >IN "to-in"		6.1.0560 CORE, p. 31 */
 /* ( -- a-addr ) */
 static vminstr_p
-x_to_in(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_to_in(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_PUSH(vm, 1);
     PUSH(vm, &DICT.to_in);
@@ -287,7 +287,7 @@ x_to_in(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* ABORT		6.1.0670 CORE, p. 32 */
 /* ( i*x -- ) ( R: j*x -- ) */
 static vminstr_p
-x_abort(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_abort(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CLEAR_STACK(vm);
     CLEAR_RSTACK(vm);
@@ -301,13 +301,13 @@ x_abort(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* ABORT"		6.1.0680 CORE, p. 32 */
 /* ( i*x x -- | i*x ) ( R: j*x -- | j*x ) runtime semantics */
 static vminstr_p
-do_abort_quote(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+do_abort_quote(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
 }
 
 /* ( "ccc<quote" -- ) compilation semantics */
 static vminstr_p
-x_abort_quote(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_abort_quote(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
 }
 #endif
@@ -316,7 +316,7 @@ x_abort_quote(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* CHAR			6.1.0895 CORE, p. 35 */
 /* ( "<spaces>name" -- char ) */
 static vminstr_p
-x_char(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_char(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft len;
     c_addr_ft id = parse_name(&len);
@@ -333,7 +333,7 @@ x_char(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* EVALUATE		6.1.1360 CORE, p. 39 */
 /* ( i*x c-addr u -- j*x ) */
 static vminstr_p
-x_evaluate(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_evaluate(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft	osource_id = DICT.source_id;
     c_addr_ft	osource_addr = DICT.source.c_addr;
@@ -361,20 +361,20 @@ x_evaluate(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* EXECUTE		6.1.1370 CORE, p. 39 */
 /* ( i*x xt -- i*j ) */
 static vminstr_p
-x_execute(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_execute(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     xt_ft xtok;
 
     CHECK_POP(vm, 1);
     xtok = (xt_ft)POP(vm);
-    return xtok->handler(ip, vm, xtok[1].data);
+    return xtok->handler(ip, vm, xtok[1].arg);
 }
 
 
 /* LITERAL		6.1.1780 CORE, p. 42 */
 /* ( -- x ) runtime semantics */
 static vminstr_p
-do_literal(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+do_literal(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_PUSH(vm, 1);
     PUSH(vm, ip->cell);
@@ -384,7 +384,7 @@ do_literal(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* interpretation semantics undefined */
 /* ( x -- ) compilation semantics */
 static vminstr_p
-x_literal(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_literal(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_POP(vm, 1);
     compile_literal(vm, POP(vm));
@@ -395,7 +395,7 @@ x_literal(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* S" "s-quote"		6.1.2165 CORE, p. 45 */
 /* ( -- c-addr u ) runtime semantics */
 static vminstr_p
-do_s_quote(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+do_s_quote(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft len = ip->cell;
 
@@ -409,7 +409,7 @@ do_s_quote(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* interpretation semantics undefined */
 /* ( "ccc<quote>" -- ) compilation semantics */
 static vminstr_p
-x_s_quote(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_s_quote(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     char_ft *str_src = PARSE_AREA_PTR;
     cell_ft len = parse('"', str_src, PARSE_AREA_LEN);
@@ -427,7 +427,7 @@ x_s_quote(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* SOURCE		6.1.2216 CORE, p. 46 */
 /* ( -- c-addr u ) */
 static vminstr_p
-x_source(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_source(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_PUSH(vm, 2);
     PUSH(vm, &DICT.source.c_addr);
@@ -439,7 +439,7 @@ x_source(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* QUIT			6.1.2050 CORE, p. 44 */
 /* ( -- )  ( R: i*x -- ) */
 static vminstr_p
-x_quit(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_quit(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CLEAR_RSTACK(vm);
     THROW(vm, -56);
@@ -451,7 +451,7 @@ x_quit(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* STATE		6.1.2250 CORE, p. 46 */
 /* ( -- a-addr ) */
 static vminstr_p
-x_state(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_state(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_PUSH(vm, 1);
     PUSH(vm, (cell_ft) &DICT.state);
@@ -462,7 +462,7 @@ x_state(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* POSTPONE		6.1.2033 CORE, p. 43 */
 /* ( -- ) execution semantics for default compilation semantics */
 static vminstr_p
-do_postpone(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+do_postpone(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     compile_xt(vm, ip->xtok);
     return ip + 1;
@@ -470,7 +470,7 @@ do_postpone(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 
 /* ( "<spaces>name" -- ) compilation semantics */
 static vminstr_p
-x_postpone(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_postpone(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft	len;
     c_addr_ft	id = parse_name(&len);
@@ -495,7 +495,7 @@ x_postpone(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* interpretation semantics undefined */
 /* ( -- ) compilation semantics */
 static vminstr_p
-x_left_bracket(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_left_bracket(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     DICT.state = STATE_INTERP;
     return ip;
@@ -506,7 +506,7 @@ x_left_bracket(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* interpretation semantics undefined */
 /* ( "<spaces>name" -- ) compilation semantics */
 static vminstr_p
-x_bracket_char(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_bracket_char(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft len;
     c_addr_ft id = parse_name(&len);
@@ -522,7 +522,7 @@ x_bracket_char(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* ] "right-bracket"	6.1.2540 CORE, p. 50 */
 /* ( -- ) */
 static vminstr_p
-x_right_bracket(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_right_bracket(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     DICT.state = STATE_COMPILE;
     return ip;
@@ -532,7 +532,7 @@ x_right_bracket(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* PARSE		6.2.2008 CORE EXT, p. 57 */
 /* ( char "ccc<char>" -- c-addr u ) */
 static vminstr_p
-x_parse(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_parse(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft	len;
     c_addr_ft	parse_ptr = PARSE_AREA_PTR;
@@ -550,7 +550,7 @@ x_parse(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* \ "backslash"	6.2.2535 CORE EXT, p. 60 */
 /* ( “ccc<eol>” -- ) execution semantics */
 static vminstr_p
-x_backslash(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_backslash(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     DICT.to_in = DICT.source.len;
     return ip;

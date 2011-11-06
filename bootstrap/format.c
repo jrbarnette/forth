@@ -41,7 +41,7 @@ printunum(char *cp, cell_ft uval, cell_ft base)
 /* . "dot"		6.1.0180 CORE, p. 27 */
 /* ( n -- ) */
 static vminstr_p
-x_dot(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_dot(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     char	tbuf[CELL_SIZE * 8 + 3];
     char *	cp;
@@ -68,7 +68,7 @@ x_dot(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* BASE			6.1.0750 CORE, p. 34 */
 /* ( -- a-addr ) */
 static vminstr_p
-x_base(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_base(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_PUSH(vm, 1);
     PUSH(vm, (cell_ft) &DICT.base);
@@ -79,7 +79,7 @@ x_base(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* DECIMAL		6.1.1170 CORE, p. 36 */
 /* ( -- ) */
 static vminstr_p
-x_decimal(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_decimal(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     DICT.base = 10;
     return ip;
@@ -89,7 +89,7 @@ x_decimal(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* U.			6.1.2320 CORE, p. 47 */
 /* ( u -- ) */
 static vminstr_p
-x_udot(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_udot(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     char	tbuf[CELL_SIZE * 8 + 3];
 
@@ -104,7 +104,7 @@ x_udot(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* HEX			6.2.1660 CORE EXT, p. 55 */
 /* ( -- ) */
 static vminstr_p
-x_hex(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_hex(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     DICT.base = 16;
     return ip;

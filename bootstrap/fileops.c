@@ -91,7 +91,7 @@ do_open_create(vmstate_p vm, bool is_open)
 /* BIN               11.6.1.0765 FILE, p. 80 */
 /* ( fam1 -- fam2 ) */
 static vminstr_p
-x_bin(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_bin(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
     CHECK_POP(vm, 1);
@@ -102,7 +102,7 @@ x_bin(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* CLOSE-FILE        11.6.1.0900 FILE, p. 80 */
 /* ( fileid -- ior ) */
 static vminstr_p
-x_close_file(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_close_file(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
     FILE *fp;
@@ -119,7 +119,7 @@ x_close_file(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* CREATE-FILE       11.6.1.1010 FILE, p. 81 */
 /* ( c-addr u fam -- fileid ior ) */
 static vminstr_p
-x_create_file(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_create_file(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     do_open_create(vm, false);
     return ip;
@@ -128,7 +128,7 @@ x_create_file(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* FILE-POSITION     11.6.1.1520 FILE, p. 81 */
 /* ( fileid -- ud ior ) */
 static vminstr_p
-x_file_position(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_file_position(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
     FILE *fp;
@@ -152,7 +152,7 @@ x_file_position(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* FILE-SIZE         11.6.1.1522 FILE, p. 81 */
 /* ( fileid -- ud ior ) */
 static vminstr_p
-x_file_size(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_file_size(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
     FILE *fp;
@@ -190,7 +190,7 @@ x_file_size(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* OPEN-FILE         11.6.1.1970 FILE, p. 82 */
 /* ( c-addr u fam -- fileid ior ) */
 static vminstr_p
-x_open_file(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_open_file(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     do_open_create(vm, true);
     return ip;
@@ -199,7 +199,7 @@ x_open_file(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* R/O               11.6.1.2054 FILE, p. 82 */
 /* ( -- fam ) */
 static vminstr_p
-x_r_o(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_r_o(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_PUSH(vm, 1);
     PUSH(vm, FILE_R_O);
@@ -209,7 +209,7 @@ x_r_o(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* R/W               11.6.1.2056 FILE, p. 83 */
 /* ( -- fam ) */
 static vminstr_p
-x_r_w(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_r_w(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_PUSH(vm, 1);
     PUSH(vm, FILE_R_W);
@@ -219,7 +219,7 @@ x_r_w(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* READ-FILE         11.6.1.2080 FILE, p. 83 */
 /* ( c-addr u1 fileid -- u2 ior ) */
 static vminstr_p
-x_read_file(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_read_file(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
     FILE *fp;
@@ -252,7 +252,7 @@ x_read_file(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* REPOSITION-FILE   11.6.1.2142 FILE, p. 84 */
 /* ( ud fileid -- ior ) */
 static vminstr_p
-x_reposition_file(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_reposition_file(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
     FILE *fp;
@@ -274,7 +274,7 @@ x_reposition_file(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* W/O               11.6.1.2425 FILE, p. 85 */
 /* ( -- fam ) */
 static vminstr_p
-x_w_o(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_w_o(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_PUSH(vm, 1);
     PUSH(vm, FILE_W_O);
@@ -284,7 +284,7 @@ x_w_o(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* WRITE-FILE        11.6.1.2480 FILE, p. 85 */
 /* ( c-addr u1 fileid -- ior ) */
 static vminstr_p
-x_write_file(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_write_file(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
     FILE *fp;

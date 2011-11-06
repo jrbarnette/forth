@@ -13,7 +13,7 @@
 /* * "star"		6.1.0090 CORE, p. 26 */
 /* ( x1 x2 -- x ) */
 static vminstr_p
-x_star(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_star(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
     CHECK_POP(vm, 2);
@@ -26,7 +26,7 @@ x_star(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* "star-slash"         6.1.0100 CORE, p. 26 */
 /* ( n1 n2 n3 -- n ) */
 static vminstr_p
-x_star_slash(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_star_slash(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
     CHECK_POP(vm, 3);
@@ -41,7 +41,7 @@ x_star_slash(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* "star-slash-mod"     6.1.0110 CORE, p. 26 */
 /* ( n1 n2 n3 -- n4 n5 ) */
 static vminstr_p
-x_star_slash_mod(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_star_slash_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
     CHECK_POP(vm, 3);
@@ -59,7 +59,7 @@ x_star_slash_mod(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* /                    6.1.0230 CORE, p. 28 */
 /* ( n1 n2 -- n ) */
 static vminstr_p
-x_slash(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_slash(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
     CHECK_POP(vm, 2);
@@ -73,7 +73,7 @@ x_slash(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* /MOD                 6.1.0240 CORE, p. 28 */
 /* ( n1 n2 -- n3 n4 ) */
 static vminstr_p
-x_slash_mod(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_slash_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
     CHECK_POP(vm, 2);
@@ -88,7 +88,7 @@ x_slash_mod(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* M*                   6.1.1810 CORE, p. 41 */
 /* ( n1 n2 -- d ) */
 static vminstr_p
-x_m_star(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_m_star(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
     CHECK_POP(vm, 2);
@@ -104,7 +104,7 @@ x_m_star(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* MOD                  6.1.1890 CORE, p. 43 */
 /* ( n1 n2 -- n ) */
 static vminstr_p
-x_mod(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
     CHECK_POP(vm, 2);
@@ -118,7 +118,7 @@ x_mod(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* S>D                  6.1.2170 CORE, p. 45 */
 /* ( n -- d ) */
 static vminstr_p
-x_s_to_d(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_s_to_d(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
     CHECK_POP(vm, 1);
@@ -132,7 +132,7 @@ x_s_to_d(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* UM*                  6.1.2360 CORE, p. 47 */
 /* ( u1 u2 -- ud ) */
 static vminstr_p
-x_u_m_star(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_u_m_star(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
     CHECK_POP(vm, 2);

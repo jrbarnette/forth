@@ -16,7 +16,7 @@
 /* interpretation semantics undefined */
 /* ( C: -- dest ) compilation semantics */
 static vminstr_p
-x_begin(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_begin(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_PUSH(vm, 1);
     PUSH(vm, (cell_ft) HERE);
@@ -28,7 +28,7 @@ x_begin(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* interpretation semantics undefined */
 /* ( C: orig1 -- orig2 ) compilation semantics */
 static vminstr_p
-x_else(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_else(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     vminstr_p orig1;
     vminstr_p orig2;
@@ -46,7 +46,7 @@ x_else(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* interpretation semantics undefined */
 /* ( C: -- orig ) compilation semantics */
 static vminstr_p
-x_if(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_if(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_PUSH(vm, 1);
     PUSH(vm, (cell_ft) compile_skip(vm, FSKIP_XT));
@@ -58,7 +58,7 @@ x_if(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* interpretation semantics undefined */
 /* ( C: orig dest -- ) compilation semantics */
 static vminstr_p
-x_repeat(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_repeat(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     vminstr_p dest;
     vminstr_p orig;
@@ -76,7 +76,7 @@ x_repeat(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* interpretation semantics undefined */
 /* ( C: orig -- ) compilation semantics */
 static vminstr_p
-x_then(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_then(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_POP(vm, 1);
     patch((vminstr_p) POP(vm), (vminstr_p) HERE);
@@ -88,7 +88,7 @@ x_then(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* interpretation semantics undefined */
 /* ( C: dest -- ) compilation semantics */
 static vminstr_p
-x_until(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_until(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     vminstr_p dest;
 
@@ -103,7 +103,7 @@ x_until(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* interpretation semantics undefined */
 /* ( C: dest -- orig dest ) compilation semantics */
 static vminstr_p
-x_while(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_while(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft dest;
 

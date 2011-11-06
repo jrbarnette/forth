@@ -61,6 +61,7 @@ typedef struct {
 #define CELL_ALIGNMENT	(sizeof (cell_ft))
 #define ALIGNED(n)	(((n) + CELL_ALIGNMENT - 1) & -CELL_ALIGNMENT)
 #define CELLS		* CELL_SIZE
+#define CHARS		* (sizeof (char_ft))
 
 
 /*
@@ -83,14 +84,18 @@ typedef struct {
  * in these key functions: execute(), do_colon(), do_exit().
  */
 
-#define STACK_SIZE	2048
+#define STACK_SIZE	32
 #define RSTACK_SIZE	64
 
-typedef union defn_data *	xt_ft;
-typedef union instr_data *	vminstr_p;
-typedef struct vmstate *	vmstate_p;
+typedef struct vmstate *		vmstate_p;
+typedef union definition_data		definition_d;
+typedef union definition_data *		xt_ft;
+typedef union instruction_data		vminstr_d;
+typedef union instruction_data *	vminstr_p;
+typedef union argument_data		vmarg_d;
+typedef union argument_data *		vmarg_p;
 
-typedef vminstr_p (*vminstr_fn)(vminstr_p, vmstate_p, addr_ft);
+typedef vminstr_p (*vminstr_fn)(vminstr_p, vmstate_p, vmarg_p);
 
 struct vmstate {
     a_addr_ft	sp;
@@ -100,16 +105,30 @@ struct vmstate {
     jmp_buf	interp_loop;
 };
 
-union instr_data {
+union instruction_data {
+    /* general purpose VM instructions */
     xt_ft		xtok;
     cell_ft		cell;
     snumber_ft		offset;
     char_ft		cdata[1];
+
+    /* initialization instructions only */
+    vminstr_fn		handler;
+    char *		id;
 };
 
-union defn_data {
-    vminstr_fn		handler;
+union argument_data {
+    vminstr_p		ip;
+    xt_ft		xtok;
+    cell_ft		cell;
+    char_ft		cdata[1];
     addr_unit_ft	data[1];
+    vminstr_d		vminstrs[1];
+};
+
+union definition_data {
+    vminstr_fn		handler;
+    vmarg_d		arg[1];
 };
 
 extern void execute(vmstate_p, xt_ft);
@@ -151,8 +170,6 @@ extern void execute(vmstate_p, xt_ft);
 #define RPOP(vm)	(*(vm)->rsp++)
 #define RPUSH(vm, c)	(*--(vm)->rsp = (cell_ft)(c))
 
-#define SAVEDTOS(vm)	((vm)->stack[STACK_SIZE-1])
-
 
 /*
  * C definitions and declarations relating to "name space" in the
@@ -179,8 +196,8 @@ typedef struct name_header *	name_p;
 
 struct name_header {
     name_p		prev;
-    unsigned char	flags;
-    unsigned char	ident[NAME_MAX_LENGTH];
+    char_ft		flags;
+    char_ft		ident[NAME_MAX_LENGTH];
 };
 
 extern name_p lookup(vmstate_p, c_addr_ft, cell_ft);
@@ -205,13 +222,13 @@ extern union dict {
 	cell_ft		here;		/* HERE */
 	name_p		namelist;	/* internal */
 
-	union defn_data	literal_instr;	/* for LITERAL runtime xt */
-	union defn_data	postpone_instr;	/* for POSTPONE non-immediate */
-	union defn_data	skip_instr;	/* for ELSE runtime xt */
-	union defn_data	fskip_instr;	/* for IF runtime xt */
-	union defn_data	tskip_instr;	/* for IF runtime xt */
-	union defn_data	does_instr;	/* for IF runtime xt */
-	union defn_data	s_quote_instr;	/* for S" runtime xt */
+	definition_d	literal_instr;	/* for LITERAL runtime xt */
+	definition_d	postpone_instr;	/* for POSTPONE non-immediate */
+	definition_d	skip_instr;	/* for ELSE runtime xt */
+	definition_d	fskip_instr;	/* for IF runtime xt */
+	definition_d	tskip_instr;	/* for IF runtime xt */
+	definition_d	does_instr;	/* for IF runtime xt */
+	definition_d	s_quote_instr;	/* for S" runtime xt */
 
 	cell_ft		state;		/* STATE */
 
@@ -296,7 +313,7 @@ extern void quit(vmstate_p, FILE *);
 
 struct options {
     bool	is_interactive;
-    char       *startup_file;
+    char *	startup_file;
 };
 
 extern struct options forth_options;

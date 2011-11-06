@@ -13,7 +13,7 @@
 /* interpretation semantics undefined */
 /* ( x -- ) ( R:  -- x ) execution semantics */
 static vminstr_p
-x_to_r(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_to_r(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_POP(vm, 1);
     CHECK_RPUSH(vm, 1);
@@ -25,7 +25,7 @@ x_to_r(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* ?DUP "question-dup" 	6.1.0630 CORE, p. 32 */
 /* ( x -- 0 | x x ) */
 static vminstr_p
-x_question_dup(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_question_dup(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
     cell_ft x;
@@ -42,7 +42,7 @@ x_question_dup(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* DEPTH		6.1.1200 CORE, p. 36 */
 /* ( -- +n ) */
 static vminstr_p
-x_depth(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_depth(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft depth = DEPTH(vm);
     CHECK_PUSH(vm, 1);
@@ -54,7 +54,7 @@ x_depth(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* DROP 		6.1.1260 CORE, p. 37 */
 /* ( x -- ) */
 static vminstr_p
-x_drop(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_drop(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_POP(vm, 1);
     (void) POP(vm);
@@ -65,7 +65,7 @@ x_drop(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* DUP			6.1.1290 CORE, p. 38 */
 /* ( x -- x x ) */
 static vminstr_p
-x_dup(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_dup(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
     CHECK_POP(vm, 1);
@@ -78,7 +78,7 @@ x_dup(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* OVER			6.1.1990 CORE, p. 43 */
 /* ( x1 x2 -- x1 x2 x1 ) */
 static vminstr_p
-x_over(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_over(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
     CHECK_POP(vm, 2);
@@ -92,7 +92,7 @@ x_over(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* interpretation semantics undefined */
 /* ( -- x ) ( R: x -- ) execution semantics */
 static vminstr_p
-x_r_from(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_r_from(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_RPOP(vm, 1);
     CHECK_PUSH(vm, 1);
@@ -105,7 +105,7 @@ x_r_from(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* interpretation semantics undefined */
 /* ( -- x ) ( R: x -- x ) execution semantics */
 static vminstr_p
-x_r_fetch(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_r_fetch(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_RPOP(vm, 1);
     CHECK_PUSH(vm, 1);
@@ -117,7 +117,7 @@ x_r_fetch(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* ROT			6.1.2160 CORE, p. 45 */
 /* ( x1 x2 x3 -- x2 x3 x1 ) */
 static vminstr_p
-x_rot(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_rot(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     a_addr_ft sp = SP(vm);
     cell_ft t;
@@ -134,7 +134,7 @@ x_rot(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 /* SWAP			6.1.2260 CORE, p. 46 */
 /* ( x1 x2 -- x2 x1 ) */
 static vminstr_p
-x_swap(vminstr_p ip, vmstate_p vm, addr_ft ignore)
+x_swap(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     a_addr_ft sp = SP(vm);
     cell_ft t;

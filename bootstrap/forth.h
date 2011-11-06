@@ -183,7 +183,7 @@ struct name_header {
     unsigned char	ident[NAME_MAX_LENGTH];
 };
 
-extern name_p lookup(c_addr_ft, size_t);
+extern name_p lookup(vmstate_p, c_addr_ft, cell_ft);
 extern name_p addname(vmstate_p, c_addr_ft, cell_ft, vminstr_fn);
 extern void linkname(name_p);
 

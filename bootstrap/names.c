@@ -21,9 +21,12 @@
  * token.  Return NULL if not found.
  */
 name_p
-lookup(c_addr_ft id, size_t len)
+lookup(vmstate_p vm, c_addr_ft id, cell_ft len)
 {
     name_p	cur;
+
+    if (len == 0)
+	THROW(vm, -16);
 
     for (cur = DICT.namelist; cur != NULL; cur = cur->prev) {
 	int i;
@@ -79,7 +82,7 @@ define_name(vmstate_p vm, defn_data_p data)
 {
     c_addr_ft	id = (c_addr_ft) data->data0;
     vminstr_fn	hdlr = (vminstr_fn) data->data1;
-    cell_ft	len = strlen((char *) id);
+    cell_ft	len = (cell_ft) strlen((char *) id);
 
     name_p nm = addname(vm, id, len, hdlr);
     linkname(nm);
@@ -96,7 +99,7 @@ x_tick(vminstr_p ip, vmstate_p vm, addr_ft ignore)
 {
     cell_ft len;
     c_addr_ft id = parse_name(&len);
-    name_p nm = lookup(id, len);
+    name_p nm = lookup(vm, id, len);
 
     if (nm == NULL)
 	THROW(vm, -13);
@@ -146,7 +149,7 @@ x_semicolon(vminstr_p ip, vmstate_p vm, addr_ft exit_xt_ptr)
 static void
 define_semicolon(vmstate_p vm, defn_data_p data)
 {
-    name_p exit_nm = lookup((c_addr_ft) "EXIT", 4);
+    name_p exit_nm = lookup(vm, (c_addr_ft) "EXIT", 4);
     define_name(vm, data);
     COMMA(vm, NAME_XT(exit_nm));
 }
@@ -270,7 +273,7 @@ x_find(vminstr_p ip, vmstate_p vm, addr_ft ignore)
     CHECK_POP(vm, 1);
     CHECK_PUSH(vm, 1);
     caddr = (c_addr_ft)POP(vm);
-    nm = lookup(caddr + 1, (size_t) *caddr);
+    nm = lookup(vm, caddr + 1, (cell_ft) *caddr);
     if (nm == NULL) {
 	PUSH(vm, caddr);
 	PUSH(vm, 0);

@@ -1,18 +1,18 @@
-definition: function pointer followed by data
 execution token: pointer to definition
---
-xt ->
-    function, datum, ...
+definition: function pointer followed by data
 
-def'n formats
+definition formats
     general
 	fn-ptr, data ...
+
+    primitive
+	fn-ptr
 
     : definition
 	do_colon, instr ..., ' EXIT
 
     CREATE definition
-	do_create, xt, byte ...
+	do_create, xt, byte ..., pad
 
     CONSTANT definition
 	do_constant, cell
@@ -25,8 +25,14 @@ instr formats:
     do_literal xt, cell
     do_skip xt, offset
     do_fskip xt, offset
-    do_s_quote xt, len cell, byte * len
-    do_c_quote xt, len byte, byte * len
+    do_s_quote xt, len cell, byte * len, pad
+    do_c_quote xt, len byte, byte * len, pad
+
+initialization instruction format
+    fn-ptr
+    do_literal, cell
+    create_name, string, fn-ptr, flags
+    tick_name, string
 
 
 ====

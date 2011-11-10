@@ -1,0 +1,93 @@
+vmstate:
+    ip -> vm code
+    vip -> xt
+    dp -> addr-unit
+    sp -> cell
+    rsp -> cell
+
+vm code:
+    fn-ptr, ...
+
+xt -> definition
+
+definitions:
+    in general
+	vm code ptr, data ...
+
+    : definition
+	compile-:, do-:, xt ...
+
+    CONSTANT definition
+	compile-constant, do-constant, cell
+
+    VARIABLE definition
+	compile-variable, do-variable, cell
+
+    CREATE definition
+	compile-:, do-create(<does>), data ...
+
+====
+compile-:
+    DP , NEXT
+
+do-:
+    VIP >R DP VIP! NEXT
+
+compile-constant
+    DO-LITERAL DO-LITERAL , DP 1 + , NEXT
+
+do-constant
+    DP @ NEXT
+
+compile-variable
+    DO-LITERAL DO-LITERAL DP DO-LITERAL [ 1 CELLS , ] + , NEXT
+
+do-variable
+    DP NEXT
+
+do-create(<does>)
+    DP DO-LITERAL <does> EXECUTE
+
+====
+x_next(ip, vm)
+{
+    vip = vm->vip;
+    xt = vip->xt;
+    ip = xt->ip;
+    vm->dp = xt + 1;
+    vm->vip = vip + 1;
+    return ip;
+}
+
+x_call(ip, vm)
+{
+    RPUSH(vm, ip);
+    return POP(vm);
+}
+
+x_callimm(ip, vm)
+{
+    RPUSH(vm, ip + 1);
+    return ip->ip;
+}
+
+x_exit(ip, vm)
+{
+    return RPOP(vm);
+}
+
+x_execute(ip, vm)
+{
+    return POP(vm);
+}
+
+x_jump(ip, vm)
+{
+    return ip->ip;
+}
+
+x_dp(ip, vm)
+{
+    PUSH(vm, vm->dp);
+    return ip;
+}

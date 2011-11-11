@@ -9,7 +9,7 @@ Derivable permuters:
 : ROT >R SWAP R> SWAP ;
 : TUCK SWAP OVER ;
 : NIP SWAP DROP ;
-: 2OVER OVER OVER ;
+: 2DUP OVER OVER ;
 : 2SWAP ROT >R ROT R> ;
 
 Duplication:

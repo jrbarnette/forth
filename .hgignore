@@ -1,3 +1,4 @@
-\.o$
-bootstrap/tags
-bootstrap/forth
+\.[so]$
+\.swp$
+^bootstrap/tags$
+^bootstrap/forth$

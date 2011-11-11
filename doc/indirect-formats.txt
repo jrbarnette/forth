@@ -12,7 +12,7 @@ definition formats
 	do_colon, instr ..., ' EXIT
 
     CREATE definition
-	do_create, xt, byte ..., pad
+	do_create, xt, data ..., pad
 
     CONSTANT definition
 	do_constant, cell
@@ -25,8 +25,8 @@ instr formats:
     do_literal xt, cell
     do_skip xt, offset
     do_fskip xt, offset
-    do_s_quote xt, len cell, byte * len, pad
-    do_c_quote xt, len byte, byte * len, pad
+    do_s_quote xt, len cell, char * len, pad
+    do_c_quote xt, len char, char * len, pad
 
 initialization instruction format
     fn-ptr
@@ -43,8 +43,8 @@ instr formats:
     do_literal, cell
     do_skip, offset
     do_fskip, offset
-    do_s_quote, len, byte * len
-    do_c_quote, count, byte * count
+    do_s_quote, len, char * len
+    do_c_quote, count, char * count
 
 : definition
     vm-code-ptr, xt, ...

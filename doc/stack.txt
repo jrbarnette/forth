@@ -15,15 +15,15 @@ Derivable permuters:
 Duplication:
 ( 1 -- 1 1 )		DUP
 ( 2 1 -- 2 1 2 )	OVER
-( 2 1 -- 1 2 1 )	TUCK
-			SWAP OVER
-( 2 1 -- 2 1 2 1 )	2OVER
+( 2 1 -- 1 2 1 )	SWAP OVER
+			TUCK
+( 2 1 -- 2 1 2 1 )	2DUP
 			OVER OVER
 
 Removal:
 ( 1 -- )		DROP
-( 2 1 -- 1 )		NIP
-			SWAP DROP
+( 2 1 -- 1 )		SWAP DROP
+			NIP
 ( 3 2 1 -- 2 1 )	ROT DROP
 
 Stack permutations:
@@ -40,6 +40,7 @@ Stack permutations:
 			ROT
 ( 3 2 1 -- 2 3 1 )	>R SWAP R>
 			ROT SWAP
+			SWAP -ROT
 
 ( 4 3 2 1 -- 1 2 3 4 )	>R SWAP R> SWAP >R SWAP >R SWAP R> SWAP R> SWAP
 			SWAP >R SWAP >R SWAP R> R> SWAP >R SWAP R> SWAP

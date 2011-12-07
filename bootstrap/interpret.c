@@ -197,6 +197,8 @@ evaluate(vmstate_p vm)
 
 	if (!evaluate_name(id, len, vm) &&
 		!evaluate_number(id, len, vm)) {
+	    fwrite(id, sizeof (*id), len, stderr);
+	    fputc(' ', stderr);
 	    THROW(vm, -13);
 	}
     }

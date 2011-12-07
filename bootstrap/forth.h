@@ -141,6 +141,7 @@ extern void execute(vmstate_p, xt_ft);
 #define RSP(vm)			((vm)->rsp)
 #define PICK(sp, n)		((sp)[(n)])
 #define SET_SP(vm, nsp, n)	((vm)->sp = (nsp) + (n))
+#define SET_RSP(vm, nsp, n)	((vm)->rsp = (nsp) + (n))
 
 #define THROW(vm, n)		(longjmp((vm)->interp_loop, (n)))
 
@@ -226,7 +227,8 @@ extern union dict {
 	definition_d	postpone_instr;	/* for POSTPONE non-immediate */
 	definition_d	skip_instr;	/* for ELSE runtime xt */
 	definition_d	fskip_instr;	/* for IF runtime xt */
-	definition_d	tskip_instr;	/* for IF runtime xt */
+	definition_d	do_instr;	/* for DO runtime xt */
+	definition_d	plus_loop_instr; /* for +LOOP runtime xt */
 	definition_d	does_instr;	/* for IF runtime xt */
 	definition_d	s_quote_instr;	/* for S" runtime xt */
 
@@ -261,7 +263,8 @@ extern union dict {
 #define DO_POSTPONE_XT		(&DICT.postpone_instr)
 #define SKIP_XT			(&DICT.skip_instr)
 #define FSKIP_XT		(&DICT.fskip_instr)
-#define TSKIP_XT		(&DICT.tskip_instr)
+#define DO_DO_XT		(&DICT.do_instr)
+#define PLUS_LOOP_XT		(&DICT.plus_loop_instr)
 #define DOES_XT			(&DICT.does_instr)
 #define S_QUOTE_XT		(&DICT.s_quote_instr)
 
@@ -291,6 +294,7 @@ extern defn_dt termio_defns[];
 extern defn_dt fileops_defns[];
 
 extern void define_name(vmstate_p, defn_data_p);
+extern void compile_name(vmstate_p, defn_data_p);
 
 
 /*

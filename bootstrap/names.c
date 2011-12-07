@@ -89,6 +89,16 @@ define_name(vmstate_p vm, defn_data_p data)
     NAME_SET_TYPE(nm, data->flags);
 }
 
+void
+compile_name(vmstate_p vm, defn_data_p data)
+{
+    c_addr_ft	id = (c_addr_ft) data->data0;
+    cell_ft	len = (cell_ft) strlen((char *) id);
+    name_p	nm = lookup(vm, id, len);
+
+    COMMA(vm, NAME_XT(nm));
+}
+
 
 /* -------------------------------------------------------------- */
 
@@ -145,15 +155,6 @@ x_semicolon(vminstr_p ip, vmstate_p vm, vmarg_p exit_xt_ptr)
     linkname((name_p) POP(vm));
     DICT.state = STATE_INTERP;
     return ip;
-}
-
-
-static void
-define_semicolon(vmstate_p vm, defn_data_p data)
-{
-    name_p exit_nm = lookup(vm, (c_addr_ft) "EXIT", 4);
-    define_name(vm, data);
-    COMMA(vm, NAME_XT(exit_nm));
 }
 
 
@@ -256,7 +257,7 @@ do_does(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
     create_def[1].arg->ip = ip;
     CHECK_RPOP(vm, 1);
-    return (vminstr_p)RPOP(vm);
+    return (vminstr_p) RPOP(vm);
 }
 
 /* interpretation semantics undefined */
@@ -338,9 +339,11 @@ names_defns[] = {
     { define_name, "'",         x_tick },
     { define_name, ":",		x_colon },
 
-    /* EXIT out of order because define_semicolon() needs it */
+    /* EXIT out of order for references below */
     { define_name, "EXIT",	x_exit, NAME_TYPE_NO_INTERPRET },
-    { define_semicolon, ";",	x_semicolon, NAME_TYPE_COMPILE },
+
+    { define_name, ";",		x_semicolon, NAME_TYPE_COMPILE },
+    { compile_name, "EXIT" },
 
     { define_name, ">BODY",	x_to_body },
     { define_name, "CONSTANT",	x_constant },

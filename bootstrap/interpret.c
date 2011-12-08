@@ -480,6 +480,9 @@ x_postpone(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     xt_ft	xtok;
 
     if (name == NULL) {
+	fputs("POSTPONE ", stderr);
+	fwrite(id, sizeof (*id), len, stderr);
+	fputc(' ', stderr);
 	THROW(vm, -13);
     }
 

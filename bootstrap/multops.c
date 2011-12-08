@@ -115,18 +115,6 @@ x_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     return ip;
 }
 
-/* S>D                  6.1.2170 CORE, p. 45 */
-/* ( n -- d ) */
-static vminstr_p
-x_s_to_d(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    cell_ft *sp = SP(vm);
-    CHECK_POP(vm, 1);
-    CHECK_PUSH(vm, 1);
-    snumber_ft n = PICK(sp, 0);
-    PUSH(vm, n >> (8 * sizeof (snumber_ft) - 1));
-    return ip;
-}
 
 #if 0
 /* UM*                  6.1.2360 CORE, p. 47 */
@@ -159,7 +147,6 @@ multops_defns[] = {
     { define_name, "M*",	x_m_star },
 #endif
     { define_name, "MOD",	x_mod },
-    { define_name, "S>D",	x_s_to_d },
 #if 0
     { define_name, "UM*",	x_u_m_star },
 #endif

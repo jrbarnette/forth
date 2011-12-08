@@ -12,7 +12,7 @@
  */
 
 
-/* ! "store"		6.1.0010 CORE, p. 25 */
+/* !                     6.1.0010 CORE                   25 */
 /* ( x a-addr -- ) */
 static vminstr_p
 x_store(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -25,7 +25,12 @@ x_store(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* @ "fetch" 		6.1.0650 CORE, p. 32 */
+/* +!                    6.1.0130 CORE                   27 */
+/* 2!                    6.1.0310 CORE                   29 */
+/* 2@                    6.1.0350 CORE                   29 */
+
+
+/* @                     6.1.0650 CORE                   32 */
 /* ( a-addr -- x ) */
 static vminstr_p
 x_fetch(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -37,7 +42,10 @@ x_fetch(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* C! "c-store" 	6.1.0850 CORE, p. 34 */
+/* ALIGNED               6.1.0706 CORE                   33 */
+
+
+/* C!                    6.1.0850 CORE                   34 */
 /* ( char c-addr -- ) */
 static vminstr_p
 x_c_store(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -50,7 +58,7 @@ x_c_store(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* C@ "c-fetch" 	6.1.0870 CORE, p. 34 */
+/* C@                    6.1.0870 CORE                   34 */
 /* ( c-addr -- char ) */
 static vminstr_p
 x_c_fetch(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -61,7 +69,15 @@ x_c_fetch(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     return ip;
 }
 
-/* MOVE			6.1.1900 CORE, p. 42 */
+
+/* CELL+                 6.1.0880 CORE                   35 */
+/* CELLS                 6.1.0890 CORE                   35 */
+/* CHAR+                 6.1.0897 CORE                   35 */
+/* CHARS                 6.1.0898 CORE                   35 */
+/* FILL                  6.1.1540 CORE                   39 */
+
+
+/* MOVE                  6.1.1900 CORE                   42 */
 /* ( addr1 addr2 u -- ) */
 static vminstr_p
 x_move(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -78,6 +94,10 @@ x_move(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     return ip;
 }
 
+
+/* ERASE                 6.2.1350 CORE EXT               53 */
+
+
 defn_dt
 memops_defns[] = {
     { define_name, "!",		x_store },
@@ -87,16 +107,3 @@ memops_defns[] = {
     { define_name, "MOVE",	x_move },
     { NULL }
 };
-
-#if 0
-    +!                    6.1.0130 CORE                   27
-    2!                    6.1.0310 CORE                   29
-    2@                    6.1.0350 CORE                   29
-    ALIGNED               6.1.0706 CORE                   33
-    CELL+                 6.1.0880 CORE                   35
-    CELLS                 6.1.0890 CORE                   35
-    CHAR+                 6.1.0897 CORE                   35
-    CHARS                 6.1.0898 CORE                   35
-    FILL                  6.1.1540 CORE                   39
-    ERASE                 6.2.1350 CORE EXT               55
-#endif

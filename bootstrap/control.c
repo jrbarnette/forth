@@ -12,15 +12,19 @@
  */
 
 
+static vminstr_p leavers;
+
 static void
 compile_plus_loop(vmstate_p vm, xt_ft unloop_xt)
 {
     CHECK_POP(vm, 1);
-    vminstr_p orig = (vminstr_p)POP(vm);
     vminstr_p dest = (vminstr_p)POP(vm);
     compile_xt(vm, PLUS_LOOP_XT);
     patch(compile_skip(vm, FSKIP_XT), dest);
 
+    vminstr_p oleavers = (vminstr_p)POP(vm);
+    vminstr_p orig = leavers;
+    leavers = oleavers;
     while (orig != NULL) {
 	vminstr_p new_orig = *(vminstr_p *)orig;
 	patch(orig, (vminstr_p)HERE);
@@ -92,8 +96,9 @@ x_do(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     CHECK_PUSH(vm, 1);
 
     compile_xt(vm, DO_DO_XT);
+    PUSH(vm, leavers);
+    leavers = 0;
     PUSH(vm, HERE);
-    PUSH(vm, 0);
     return ip;
 }
 
@@ -163,13 +168,10 @@ x_j(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 static vminstr_p
 c_leave(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
-    // XXX - the standard doesn't say we can depend on do-sys here;
-    // XXX - that would appear to be an oversight.
     CHECK_POP(vm, 2);
-    vminstr_p orig1 = (vminstr_p)POP(vm);
-    vminstr_p orig2 = compile_skip(vm, SKIP_XT);
-    *(vminstr_p *)orig2 = orig1;
-    PUSH(vm, orig2);
+    vminstr_p orig = compile_skip(vm, SKIP_XT);
+    *(vminstr_p *)orig = leavers;
+    leavers = orig;
     return ip;
 }
 

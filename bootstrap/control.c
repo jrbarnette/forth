@@ -18,8 +18,8 @@ static void
 compile_plus_loop(vmstate_p vm, xt_ft unloop_xt)
 {
     CHECK_POP(vm, 1);
-    vminstr_p dest = (vminstr_p)POP(vm);
     compile_xt(vm, PLUS_LOOP_XT);
+    vminstr_p dest = (vminstr_p)POP(vm);
     patch(compile_skip(vm, FSKIP_XT), dest);
 
     vminstr_p oleavers = (vminstr_p)POP(vm);
@@ -42,10 +42,11 @@ do_plus_loop(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     CHECK_POP(vm, 1);
     CHECK_RPOP(vm, 2);
     cell_ft *rsp = RSP(vm);
+    cell_ft *sp = SP(vm);
     cell_ft index = PICK(rsp, 0);
-    cell_ft newindex = index + POP(vm);
+    cell_ft newindex = index + PICK(sp, 0);
     PICK(rsp, 0) = newindex;
-    PUSH(vm, ((snumber_ft)(newindex ^ index) < 0));
+    PICK(sp, 0) = -((snumber_ft)(newindex ^ index) < 0);
     return ip;
 }
 

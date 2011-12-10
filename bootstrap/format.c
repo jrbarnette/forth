@@ -12,14 +12,16 @@
  */
 
 #define MAXBASE			36
+#define NUM_SIZE		(8 * CELL_SIZE + 1)
 
 static char digits[MAXBASE] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 static char *
-printunum(char *cp, cell_ft uval, cell_ft base)
+printunum(char *cp, cell_ft uval)
 {
+    cell_ft	base = DICT.base;
+
     *cp = '\0';
-    *--cp = ' ';
     do {
 	cell_ft n = uval / base;
 	char c;
@@ -38,14 +40,18 @@ printunum(char *cp, cell_ft uval, cell_ft base)
 }
 
 
-/* . "dot"		6.1.0180 CORE, p. 27 */
+/* #                     6.1.0030 CORE                   25 */
+/* #>                    6.1.0040 CORE                   25 */
+/* #S                    6.1.0050 CORE                   25 */
+
+
+/* .                     6.1.0180 CORE                   27 */
 /* ( n -- ) */
 static vminstr_p
 x_dot(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
-    char	tbuf[CELL_SIZE * 8 + 3];
+    char	tbuf[NUM_SIZE];
     char *	cp;
-    char	sign = '+';
     snumber_ft	n;
 
     CHECK_POP(vm, 1);
@@ -53,19 +59,20 @@ x_dot(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
     if (n < 0) {
 	n = -n;
-	sign = '-';
+	fputc('-', stdout);
     }
-    cp = printunum(&tbuf[sizeof (tbuf) - 1], n, DICT.base);
-    if (sign == '-') {
-	*--cp = sign;
-    }
+    cp = printunum(&tbuf[sizeof (tbuf) - 1], n);
     fputs(cp, stdout);
+    fputc(' ', stdout);
 
     return ip;
 }
 
 
-/* BASE			6.1.0750 CORE, p. 34 */
+/* <#                    6.1.0490 CORE                   31 */
+
+
+/* BASE                  6.1.0750 CORE                   34 */
 /* ( -- a-addr ) */
 static vminstr_p
 x_base(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -76,7 +83,7 @@ x_base(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* DECIMAL		6.1.1170 CORE, p. 36 */
+/* DECIMAL               6.1.1170 CORE                   36 */
 /* ( -- ) */
 static vminstr_p
 x_decimal(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -86,27 +93,91 @@ x_decimal(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* U.			6.1.2320 CORE, p. 47 */
+/* >NUMBER               6.1.0570 CORE                   31 */
+/* HOLD                  6.1.1670 CORE                   39 */
+/* SIGN                  6.1.2210 CORE                   45 */
+
+
+/* U.                    6.1.2320 CORE                   46 */
 /* ( u -- ) */
 static vminstr_p
 x_udot(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
-    char	tbuf[CELL_SIZE * 8 + 3];
+    char	tbuf[NUM_SIZE];
 
     CHECK_POP(vm, 1);
 
-    fputs(printunum(&tbuf[sizeof (tbuf) - 1], POP(vm), DICT.base), stdout);
+    fputs(printunum(&tbuf[sizeof (tbuf) - 1], POP(vm)), stdout);
+    fputc(' ', stdout);
 
     return ip;
 }
 
 
-/* HEX			6.2.1660 CORE EXT, p. 55 */
+/* .R                    6.2.0210 CORE EXT               49 */
+/* ( n1 n2 -- ) */
+static vminstr_p
+x_dot_r(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    char	tbuf[NUM_SIZE];
+
+    CHECK_POP(vm, 2);
+    cell_ft *sp = SP(vm);
+    snumber_ft r = PICK(sp, 0);
+    snumber_ft n = PICK(sp, 1);
+    SET_SP(vm, sp, 2);
+
+    char sign = '+';
+    if (n < 0) {
+	n = -n;
+	sign = '-';
+	r--;
+    }
+
+    char *cp = printunum(&tbuf[sizeof (tbuf) - 1], n);
+    int pad = cp - tbuf + r - sizeof (tbuf) + 1;
+    while (pad-- > 0) {
+	fputc(' ', stdout);
+    }
+    if (sign == '-') {
+	fputc('-', stdout);
+    }
+    fputs(cp, stdout);
+
+    return ip;
+}
+
+
+/* HEX                   6.2.1660 CORE EXT               54 */
 /* ( -- ) */
 static vminstr_p
 x_hex(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     DICT.base = 16;
+    return ip;
+}
+
+
+/* U.R                   6.2.2330 CORE EXT               57 */
+/* ( u n -- ) */
+static vminstr_p
+x_udot_r(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    char	tbuf[NUM_SIZE];
+
+    CHECK_POP(vm, 2);
+    cell_ft *sp = SP(vm);
+    snumber_ft n = PICK(sp, 0);
+    cell_ft u = PICK(sp, 1);
+    SET_SP(vm, sp, 2);
+
+    char *cp = printunum(&tbuf[sizeof (tbuf) - 1], u);
+    int pad = cp - tbuf + n - sizeof (tbuf) + 1;
+    while (pad-- > 0) {
+	fputc(' ', stdout);
+    }
+    fputs(cp, stdout);
+
     return ip;
 }
 
@@ -118,19 +189,9 @@ format_defns[] =
     { define_name, "BASE",	x_base },
     { define_name, "DECIMAL",	x_decimal },
     { define_name, "U.",	x_udot },
+
+    { define_name, ".R",	x_dot_r },
     { define_name, "HEX",	x_hex },
+    { define_name, "U.R",	x_udot_r },
     { NULL }
 };
-
-#if 0
-    #                     6.1.0030 CORE                   25
-    #>                    6.1.0040 CORE                   25
-    #S                    6.1.0050 CORE                   25
-    <#                    6.1.0490 CORE                   31
-    >NUMBER               6.1.0570 CORE                   31
-    HOLD                  6.1.1670 CORE                   40
-    SIGN                  6.1.2210 CORE                   46
-    .R                    6.2.0210 CORE EXT               51
-    CONVERT               6.2.0970 CORE EXT               54
-    U.R                   6.2.2330 CORE EXT               59
-#endif

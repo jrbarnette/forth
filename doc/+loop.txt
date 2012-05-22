@@ -1,0 +1,38 @@
+: within ( test low high -- flag ) over - >r - r> u< ;
+
+\    (unsigned)(test - low) < (unsigned)(high - low)
+
+\ true if loop should continue
+\ false if loop should terminate
+: check-+loop ( step idx bound -- flag )
+    >r swap over + swap r> over - >r - r> u< ;
+: check-+loop ( step limit index -- flag )
+    rot over + ( limit index index+step )
+    swap rot ( index+step index limit )
+    over - >r - r> u<
+    if s" keep going" else s" all done" then
+    type cr ;
+: check-+loop ( step limit index -- flag )
+    swap - + 0 > 0=
+    if s" stop" else s" continue" then
+    type cr ;
+
+    ((limit-index) > 0 && (limit-index-step) <= 0) ||
+	((limit-index) <= 0 && (limit-index-step) > 0)
+
+    (index < limit && index+step >= limit) ||
+	(index >= limit && index+step < limit)
+
+    stop if
+    (unsigned)step > (unsigned)(limit-index-1)
+
+----
+val lower upper
+    true if in range [ lower, upper )
+val upper lower
+    true if not in range [ lower, upper )
+
+val lower upper
+    true if in range [ lower, upper )
+val upper lower
+    true if not in range [ lower, upper )

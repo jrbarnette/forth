@@ -1,0 +1,47 @@
+Scheme 1 -
+: "name" "body w/ CREATE" DOES> "does code" ;
+
+compiles:
+    header for "name"
+	"body w/ CREATE"
+	code to assign xt to last CREATE
+	EXIT
+    xt:
+	do_colon
+	"does code"
+	EXIT
+
+CREATE "name"
+
+compiles:
+    header for "name"
+	do_create
+	    push body address
+	    execute does-xt
+	does-xt - by default a no-op
+	body allocated after CREATE
+
+Scheme 2 -
+: "name" "body w/ CREATE" DOES> "does code" ;
+
+compiles:
+    header for "name"
+	"body w/ CREATE"
+	code to assign xt to last CREATE
+	EXIT
+    xt:
+	do_create
+	    push ip to data stack
+	    next IP is "does code"
+	"does code"
+	EXIT
+
+CREATE "name"
+
+compiles:
+    header for "name"
+	do_colon
+	does-xt - by default, points to:
+	    do_create
+	    EXIT
+	body allocated after CREATE

@@ -1,0 +1,12 @@
+: within ( test low high -- flag) over - >r - r> u< ;
+
+( n1 n2 n3 )
+    if n2 < n3
+	return n2 <= n1 && n1 < n3
+    if n2 > n3
+	return n2 <= n1 || n1 < n3
+
+val lower upper
+    true if in range [ lower, upper )
+val upper lower
+    true if not in range [ lower, upper )

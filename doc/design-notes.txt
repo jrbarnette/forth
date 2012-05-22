@@ -1,0 +1,23 @@
+direct-threaded interpreter
+    easy to construct Forth in C
+    slower
+two-token interpreter
+    separate "interpret" and "compile" tokens
+    might make more sense with direct threaded
+    elegant
+vm assembler
+    easier to construct dictionary
+    more Forth-coded definitions
+    looks like duplicated work
+support for save/restore dictionary
+    a useful feature
+    more Forth-coded definitions
+    a nuisance to do indirect threaded
+native-code assembler
+    this is where to go
+    a lot of annoying details
+    a lot to bite off at once?
+more Forth in Forth
+    also where to go
+    the interesting bits
+    not testable w/o the other work

@@ -14,28 +14,6 @@
 
 base @ hex
 
-: ." postpone s" postpone type ; immediate
-: abort" postpone if postpone ." postpone abort postpone then ; immediate
-20 constant bl
-: within ( test low high -- flag) over - >r - r> u< ;
-
-create hex-digits
-  char 0 c, char 1 c, char 2 c, char 3 c,
-  char 4 c, char 5 c, char 6 c, char 7 c,
-  char 8 c, char 9 c, char a c, char b c,
-  char c c, char d c, char e c, char f c,
-
-: .x 0f and hex-digits + c@ emit ;
-variable db-col 0 db-col !
-
-: db, db-col @ if bl emit then
-      dup 4 rshift .x .x
-      db-col @ 1 + dup 10 = if cr drop 0 then db-col !
-;
-: dw, dup db, 8 rshift db, ;
-: dd, dup dw, 10 rshift dw, ;
-: newline cr 0 db-col ! ;
-
 \ operand layout
 \   XMIB-zzz ssxxxrrr
 \       X = have index?
@@ -59,12 +37,18 @@ variable db-col 0 db-col !
 \  f000  1111  disp[reg+reg*scale]
 
 1007 constant [b]-mask
+3000 constant .[.]-mask
 3007 constant .[b]-mask
 80c0 constant [.*s]-mask
 80f8 constant [x*s]-mask
 9007 constant [b+.*.]-mask
 9038 constant [.+x*.]-mask
 b0c7 constant .[b+.*s]-mask
+
+1000 constant reg-opd
+2000 constant imm-opd
+4000 constant mem-opd
+8000 constant idx-opd
 
 1004 constant [esp]-opd
 1005 constant [ebp]-opd
@@ -77,11 +61,6 @@ b0c7 constant .[b+.*s]-mask
 80c0 constant [.*8]-opd
 9005 constant [ebp+.*1]-opd
 9020 constant [.+esp*.]-opd
-
-1000 constant reg-opd
-2000 constant imm-opd
-4000 constant mem-opd
-8000 constant idx-opd
 
 5000 constant mem-indirect
 6000 constant mem-direct
@@ -99,7 +78,9 @@ f000 constant format-mask
 
 0004 constant reg-esp
 0005 constant reg-ebp
+0020 constant idx-esp
 0007 constant reg-mask
+0038 constant idx-mask
 00ff constant sib-mask
 
 \ : def-regs: ( size "names*8" -- )
@@ -113,26 +94,34 @@ size-byte  def-regs: %al  %cl  %dl  %bl  %ah  %ch  %dh  %bh
 size-word  def-regs: %ax  %cx  %dx  %bx  %sp  %bp  %si  %di
 size-dword def-regs: %eax %ecx %edx %ebx %esp %ebp %esi %edi
 
-: is-imm? ( operand -- flag ) imm-opd and 0<> ;
+: is-imm? ( operand -- flag ) format-mask and imm-opd = ;
 : is-reg? ( operand -- flag ) format-mask and reg-opd = ;
 : is-mem? ( operand -- flag ) mem-opd and 0<> ;
 : is-byte? ( operand -- flag ) size-mask and size-byte = ;
 : is-word? ( operand -- flag ) size-mask and size-word = ;
 : is-dword? ( operand -- flag ) size-mask and size-dword = ;
+: have-imm? ( operand -- flag ) imm-opd and 0<> ;
 : have-base? ( operand -- flag ) reg-opd and 0<> ;
 : have-idx? ( operand -- flag ) idx-opd and 0<> ;
 : base>idx ( operand -- operand ) 3 lshift ;
 : idx>base ( operand -- operand ) 3 rshift ;
-: base<->index dup dup idx>base xor [b]-mask and dup base>idx or xor ;
 
-imm-opd constant #
+\ swap base and index fields
+: base<->index ( operand -- operand )
+    dup dup idx>base xor [b]-mask and dup base>idx or xor ;
+
+: #
+    dup -80 80 within if size-byte imm-opd or exit then
+    dup -8000 8000 within if size-word imm-opd or exit then
+    size-dword imm-opd or
+;
+
 mem-direct constant #[]
 
 : check-addr ( operand -- operand )
     dup is-reg? 0= abort" [] operand must be a register"
     dup is-dword? 0= abort" only 32-bit addressing is supported"
-    reg-mask and
-;
+    reg-mask and ;
 : >scaled ( regop ss -- memop ) swap check-addr base>idx or ;
 
 : [] ( regop -- memop ) check-addr mem-indirect or ; 
@@ -142,20 +131,16 @@ mem-direct constant #[]
 
 : check-scaled ( memop regop ss )
     >scaled over have-idx? abort" can only scale one register"
-    or
-;
+    or ;
 
 : +[] ( memop regop -- memop )
-    over have-base? if
-	[.*1]-opd check-scaled
-    else
-	check-addr reg-opd or or
-    then
-;
+    over have-base?
+    if   [.*1]-opd check-scaled
+    else check-addr reg-opd or or
+    then ;
 : +#[] ( memop disp -- disp memop )
-    over is-imm? abort" can't apply +#[] to immediate or address"
-    swap #[] or
-;
+    over have-imm? abort" can't apply +#[] to immediate or address"
+    swap #[] or ;
 : +[*2] ( memop regop -- memop ) [.*2]-opd check-scaled ;
 : +[*4] ( memop regop -- memop ) [.*4]-opd check-scaled ;
 : +[*8] ( memop regop -- memop ) [.*8]-opd check-scaled ;
@@ -179,18 +164,10 @@ mem-direct constant #[]
     \ if indexed with scale *1, we may want to swap the base
     \ and index register fields
     dup [.*s]-mask and [.*1]-opd = if
-	\ if ESP*1, swap to avoid error
-	dup [x*s]-mask and [esp*1]-opd = if
-	    base<->index
-	else
-	    dup have-base? if
-		\ base = EBP (no displacement) - avoid adding displacement
-		dup reg-mask and reg-ebp = if base<->index then
-	    else
-		\ no base - avoid unnecessary sib
-		base<->index
-	    then
-	then
+	dup idx-mask and idx-esp =		\ [b+ESP*1] -> [ESP+b]
+	over have-base? 0= or			\ [EBP+x*1] -> [x+EBP*1]
+	over reg-mask and ebp-reg = or		\ [x*1] -> [x]
+	if base<->index then
     then
 
     \ ESP*n - ESP not allowed as index
@@ -200,11 +177,11 @@ mem-direct constant #[]
     \ EBP as base reg requires displacement
     dup .[b]-mask and [ebp]-opd = if 0 +#[] then
 
-    \ ESP as base reg requires sib
+    \ ESP as base reg without index requires sib
     dup [b+.*.]-mask and [esp]-opd = if [esp*1]-opd or then
 
     \ displacement without base register encodes as EBP
-    dup .[b]-mask and [ebp]-opd = if reg-ebp or then
+    dup .[.]-mask and imm-opd = if reg-ebp or then
 ;
 
 : >mod-r/m ( reg-byte operand -- )
@@ -214,7 +191,7 @@ mem-direct constant #[]
     check-memory-operand
 
     \ join mod and reg bits of mod-r/m
-    dup is-imm? if ( reg disp opd )
+    dup have-imm? if ( reg disp opd )
 	dup have-base? if
 	    over -80 80 within if 40 else 80 then rot or
 	else
@@ -232,7 +209,7 @@ mem-direct constant #[]
     then db,
 
     ( disp? opd )
-    dup is-imm? if
+    dup have-imm? if
 	have-base? if
 	    dup -80 80 within if db, else dd, then
 	else 

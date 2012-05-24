@@ -13,4 +13,4 @@
 
 : COUNT ( c-addr -- c-addr u ) DUP CHAR+ SWAP C@ ;
 
-\ ENVIRONMENT ( c-addr u -- false | i*x true )
+\ ENVIRONMENT? ( c-addr u -- false | i*x true )

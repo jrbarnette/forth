@@ -1,3 +1,4 @@
+\ Copyright 2011, by J. Richard Barnette
 \ ------  ------  ------  ------  ------  ------  ------
 \ index:
 \ (                     6.1.0080 CORE                   26

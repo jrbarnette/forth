@@ -21,6 +21,10 @@ PICK                  6.2.2030 CORE EXT               55
 ROLL                  6.2.2150 CORE EXT               56
 TUCK                  6.2.2300 CORE EXT               57
 
+execution primitives:
+EXECUTE               6.1.1370 CORE                   38
+EXIT                  6.1.1380 CORE                   38
+
 single cell arithmetic and logical:
 +                     6.1.0120 CORE                   26
 -                     6.1.0160 CORE                   27
@@ -77,6 +81,7 @@ CELL+                 6.1.0880 CORE                   35
 CELLS                 6.1.0890 CORE                   35
 CHAR+                 6.1.0897 CORE                   35
 CHARS                 6.1.0898 CORE                   35
+COUNT                 6.1.0980 CORE                   36
 FILL                  6.1.1540 CORE                   39
 MOVE                  6.1.1900 CORE                   42
 ERASE                 6.2.1350 CORE EXT               53
@@ -90,14 +95,18 @@ HERE                  6.1.1650 CORE                   39
 PAD                   6.2.2000 CORE EXT               55
 UNUSED                6.2.2395 CORE EXT               57
 
-parsing:
+parsing and input source management:
+(                     6.1.0080 CORE                   26
 >IN                   6.1.0560 CORE                   31
 SOURCE                6.1.2216 CORE                   45
 WORD                  6.1.2450 CORE                   48
+.(                    6.2.0200 CORE EXT               49
 PARSE                 6.2.2008 CORE EXT               55
+REFILL                6.2.2125 CORE EXT               55
 RESTORE-INPUT         6.2.2148 CORE EXT               56
 SAVE-INPUT            6.2.2182 CORE EXT               56
 SOURCE-ID             6.2.2218 CORE EXT               56
+\                     6.2.2535 CORE EXT               58
 
 compilation:
 CHAR                  6.1.0895 CORE                   35
@@ -143,7 +152,6 @@ name definition and lookup:
 CONSTANT              6.1.0950 CORE                   35
 CREATE                6.1.1000 CORE                   36
 DOES>                 6.1.1250 CORE                   37
-EXIT                  6.1.1380 CORE                   38
 FIND                  6.1.1550 CORE                   39
 IMMEDIATE             6.1.1710 CORE                   40
 VARIABLE              6.1.2410 CORE                   47
@@ -154,13 +162,9 @@ TO                    6.2.2295 CORE EXT               57
 VALUE                 6.2.2405 CORE EXT               58
 
 utility:
-(                     6.1.0080 CORE                   26
 BL                    6.1.0770 CORE                   34
-COUNT                 6.1.0980 CORE                   36
 ENVIRONMENT?          6.1.1345 CORE                   38
-.(                    6.2.0200 CORE EXT               49
 TRUE                  6.2.2298 CORE EXT               57
-\                     6.2.2535 CORE EXT               58
 FALSE                 6.2.1485 CORE EXT               54
 
 terminal:
@@ -172,7 +176,6 @@ KEY                   6.1.1750 CORE                   40
 SPACE                 6.1.2220 CORE                   45
 SPACES                6.1.2230 CORE                   45
 TYPE                  6.1.2310 CORE                   46
-REFILL                6.2.2125 CORE EXT               55
 
 formatted output:
 #                     6.1.0030 CORE                   25
@@ -194,7 +197,6 @@ interpretation:
 ABORT                 6.1.0670 CORE                   32
 ABORT"                6.1.0680 CORE                   32
 EVALUATE              6.1.1360 CORE                   38
-EXECUTE               6.1.1370 CORE                   38
 QUIT                  6.1.2050 CORE                   43
 
 obsolete:

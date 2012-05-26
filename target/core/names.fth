@@ -1,64 +1,78 @@
-\ ------  ------  ------  ------  ------  ------  ------
-\ index:
-\ '                     6.1.0070 CORE                   25
-\ :                     6.1.0450 CORE                   30
-\ ;                     6.1.0460 CORE                   30
-\ >BODY                 6.1.0550 CORE                   31
-\ CONSTANT              6.1.0950 CORE                   35
-\ CREATE                6.1.1000 CORE                   36
-\ DOES>                 6.1.1250 CORE                   37
-\ EXIT                  6.1.1380 CORE                   39
-\ FIND                  6.1.1550 CORE                   39
-\ RECURSE               6.1.2120 CORE                   44
-\ VARIABLE              6.1.2410 CORE                   48
-\ :NONAME               6.2.0455 CORE EXT               52
-\ MARKER                6.2.1850 CORE EXT               56
-\ TO                    6.2.2295 CORE EXT               59
-\ VALUE                 6.2.2405 CORE EXT               60
-
+\ Copyright 2012, by J. Richard Barnette
 \ ------  ------  ------  ------  ------  ------  ------
 
-\ EXIT ( -- ) ( R: nest-sys -- )
+\ also anonymous definitions
+: string, ( c-addr u -- ) chars here swap dup allot move ;
+: name, ( mcp c-addr u -- name )
+    parse-name get-current @ , dup c, string, align ,
+;
+
+: link-name get-current ! ;
+: create-name ( "<spaces>name" code-addr -- )
+    name, link-name
+;
 
 : sfind ( c-addr len -- 0 | xt 1 | xt -1 )
     \ FIXME - sfind
 ;
+\ previous definitions
 
-: FIND COUNT sfind ;
+\ FIND                  6.1.1550 CORE                   39
+: FIND ( c-addr -- c-addr 0 | xt 1 | xt -1 ) count sfind ;
 
-: ' BL WORD FIND 0= IF DROP -13 THROW THEN ;
+\ '                     6.1.0070 CORE                   25
+: ' ( "<spaces>name" -- xt ) bl word find 0= if drop -13 throw then ;
 
-: RECURSE
-    \ XXX RECURSE
-; IMMEDIATE
-
-: MARKER
-    \ XXX MARKER
+\ IMMEDIATE             6.1.1710 CORE                   40
+: IMMEDIATE ( -- )
 ;
 
-: : ( C: "name<space>" -- colon-sys )
-    BL PARSE
-    \ FIXME - :
-    \ enter name in dictionary; mark "incomplete"
-    \ PRIMITIVE DO-: ,
-    ] ;
-: ; ( C: colon-sys -- ) POSTPONE EXIT enddef [ ; IMMEDIATE
+\ [']                   6.1.2510 CORE                   48
+\ interpretation semantics undefined
+\ ( -- xt ) runtime semantics
+: ['] ( "<spaces>name" -- ) ' postpone literal ; immediate \ no-interpret
 
-: DOES> ( C: colon-sys1 -- colon-sys2 )
-    \ FIXME - DOES>
-    \ XXX get pointer to DOES> slot of last CREATE
-    HERE ! ; IMMEDIATE
-: CREATE ( "name<space>" -- )
-    \ FIXME - CREATE
-    \ PRIMITIVE DO-CREATE ,
-    [ HERE 2 CELLS + ] LITERAL , ;
+\ handler :-mcp
+\ :                     6.1.0450 CORE                   30
+: : ( C: "<spaces>name" -- colon-sys ) here mcp-: name, ] ;
 
-\ XXX >BODY should require xt created by CREATE
-: >BODY ( xt -- a-addr ) [ 2 CELLS ] LITERAL + ;
+\ ;                     6.1.0460 CORE                   30
+\ interpretation semantics undefined
+: ; ( C: colon-sys -- ) postpone exit postpone [ ;
+immediate \ compile-only
 
-: CONSTANT CREATE , DOES> @ ;
+\ handler constant-mcp
+\ CONSTANT              6.1.0950 CORE                   35
+: CONSTANT ( "<spaces>name" x -- )
+    here mcp-constant create-name ,
+;
 
+\ handler variable-mcp
+\ VARIABLE              6.1.2410 CORE                   47
+: VARIABLE ( "<spaces>name" -- )
+    here mcp-variable create-name [ 1 cells ] literal allot
+;
+
+\ handler create-mcp
+\ CREATE                6.1.1000 CORE                   36
+: CREATE ( "<spaces>name" -- )
+    here mcp-create create-name [ here 3 cells + ] literal ,
+;
+
+\ DOES>                 6.1.1250 CORE                   37
+: DOES>
+    postpone exit
+    get-current @ cell+ count 1f and chars aligned + cell+
+    here !
+; immediate
+
+\ >BODY                 6.1.0550 CORE                   31
+: >body ( xt -- a-addr ) [ 2 cells ] literal + ;
+
+\ VALUE                 6.2.2405 CORE EXT               58
 : VALUE CREATE , DOES> @ ;
+
+\ TO                    6.2.2295 CORE EXT               57
 \ XXX TO should require name created by VALUE
 : TO
     BL WORD FIND IF
@@ -68,4 +82,5 @@
     THEN
 ; IMMEDIATE
 
-: VARIABLE CREATE [ 1 CELLS ] LITERAL ALLOT ;
+\ :NONAME               6.2.0455 CORE EXT               51
+\ MARKER                6.2.1850 CORE EXT               54

@@ -95,13 +95,23 @@ HERE                  6.1.1650 CORE                   39
 PAD                   6.2.2000 CORE EXT               55
 UNUSED                6.2.2395 CORE EXT               57
 
+<<<<<<< local
+parsing:
+=======
 parsing and input source management:
+>>>>>>> other
 (                     6.1.0080 CORE                   26
 >IN                   6.1.0560 CORE                   31
 SOURCE                6.1.2216 CORE                   45
 WORD                  6.1.2450 CORE                   48
 .(                    6.2.0200 CORE EXT               49
 PARSE                 6.2.2008 CORE EXT               55
+<<<<<<< local
+\                     6.2.2535 CORE EXT               58
+
+input source dependent:
+=======
+>>>>>>> other
 REFILL                6.2.2125 CORE EXT               55
 RESTORE-INPUT         6.2.2148 CORE EXT               56
 SAVE-INPUT            6.2.2182 CORE EXT               56
@@ -164,8 +174,15 @@ VALUE                 6.2.2405 CORE EXT               58
 utility:
 BL                    6.1.0770 CORE                   34
 ENVIRONMENT?          6.1.1345 CORE                   38
-TRUE                  6.2.2298 CORE EXT               57
+<<<<<<< local
 FALSE                 6.2.1485 CORE EXT               54
+=======
+>>>>>>> other
+TRUE                  6.2.2298 CORE EXT               57
+<<<<<<< local
+=======
+FALSE                 6.2.1485 CORE EXT               54
+>>>>>>> other
 
 terminal:
 ."                    6.1.0190 CORE                   28
@@ -183,9 +200,9 @@ formatted output:
 #S                    6.1.0050 CORE                   25
 .                     6.1.0180 CORE                   27
 <#                    6.1.0490 CORE                   31
+>NUMBER               6.1.0570 CORE                   31
 BASE                  6.1.0750 CORE                   34
 DECIMAL               6.1.1170 CORE                   36
->NUMBER               6.1.0570 CORE                   31
 HOLD                  6.1.1670 CORE                   39
 SIGN                  6.1.2210 CORE                   45
 U.                    6.1.2320 CORE                   46
@@ -207,7 +224,34 @@ QUERY                 6.2.2040 CORE EXT               55
 SPAN                  6.2.2240 CORE EXT               56
 TIB                   6.2.2290 CORE EXT               56
 
----- uncategorized non-core
+file I/O:
+(                  11.6.1.0080 FILE                   80
+BIN                11.6.1.0765 FILE                   80
+CLOSE-FILE         11.6.1.0900 FILE                   80
+CREATE-FILE        11.6.1.1010 FILE                   81
+DELETE-FILE        11.6.1.1190 FILE                   81
+FILE-POSITION      11.6.1.1520 FILE                   81
+FILE-SIZE          11.6.1.1522 FILE                   81
+INCLUDE-FILE       11.6.1.1717 FILE                   81
+INCLUDED           11.6.1.1718 FILE                   82
+OPEN-FILE          11.6.1.1970 FILE                   82
+R/O                11.6.1.2054 FILE                   82
+R/W                11.6.1.2056 FILE                   83
+READ-FILE          11.6.1.2080 FILE                   83
+READ-LINE          11.6.1.2090 FILE                   83
+REPOSITION-FILE    11.6.1.2142 FILE                   84
+RESIZE-FILE        11.6.1.2147 FILE                   84
+S"                 11.6.1.2165 FILE                   84
+SOURCE-ID          11.6.1.2218 FILE                   84
+W/O                11.6.1.2425 FILE                   85
+WRITE-FILE         11.6.1.2480 FILE                   85
+WRITE-LINE         11.6.1.2485 FILE                   85
+FILE-STATUS        11.6.2.1524 FILE EXT               85
+FLUSH-FILE         11.6.2.1560 FILE EXT               85
+REFILL             11.6.2.2125 FILE EXT               86
+RENAME-FILE        11.6.2.2130 FILE EXT               86
+
+---- not categorized:
 BLK                 7.6.1.0790 BLOCK                  62
 BLOCK               7.6.1.0800 BLOCK                  62
 BUFFER              7.6.1.0820 BLOCK                  62
@@ -257,31 +301,6 @@ EKEY?              10.6.2.1307 FACILITY EXT           76
 EMIT?              10.6.2.1325 FACILITY EXT           76
 MS                 10.6.2.1905 FACILITY EXT           76
 TIME&DATE          10.6.2.2292 FACILITY EXT           76
-(                  11.6.1.0080 FILE                   80
-BIN                11.6.1.0765 FILE                   80
-CLOSE-FILE         11.6.1.0900 FILE                   80
-CREATE-FILE        11.6.1.1010 FILE                   81
-DELETE-FILE        11.6.1.1190 FILE                   81
-FILE-POSITION      11.6.1.1520 FILE                   81
-FILE-SIZE          11.6.1.1522 FILE                   81
-INCLUDE-FILE       11.6.1.1717 FILE                   81
-INCLUDED           11.6.1.1718 FILE                   82
-OPEN-FILE          11.6.1.1970 FILE                   82
-R/O                11.6.1.2054 FILE                   82
-R/W                11.6.1.2056 FILE                   83
-READ-FILE          11.6.1.2080 FILE                   83
-READ-LINE          11.6.1.2090 FILE                   83
-REPOSITION-FILE    11.6.1.2142 FILE                   84
-RESIZE-FILE        11.6.1.2147 FILE                   84
-S"                 11.6.1.2165 FILE                   84
-SOURCE-ID          11.6.1.2218 FILE                   84
-W/O                11.6.1.2425 FILE                   85
-WRITE-FILE         11.6.1.2480 FILE                   85
-WRITE-LINE         11.6.1.2485 FILE                   85
-FILE-STATUS        11.6.2.1524 FILE EXT               85
-FLUSH-FILE         11.6.2.1560 FILE EXT               85
-REFILL             11.6.2.2125 FILE EXT               86
-RENAME-FILE        11.6.2.2130 FILE EXT               86
 >FLOAT             12.6.1.0558 FLOATING               91
 D>F                12.6.1.1130 FLOATING               91
 F!                 12.6.1.1400 FLOATING               91

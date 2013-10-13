@@ -21,3 +21,60 @@ more Forth in Forth
     also where to go
     the interesting bits
     not testable w/o the other work
+====
+bootstrap strategies
+
+strategy #1
+    small bootstrap program reads not-quite-forth
+    builds dictionary to support minimal Standard Forth
+    saves dictionary
+    runs interpreter on saved dictionary
+    finishes building the Standard Forth target
+    saves dictionary
+pro:
+    portable bootstrap
+con:
+    want not-quite-forth twice:  once in C, once in Forth
+    lots of not-quite-forth code could likely have been Standard Forth
+    is not-quite-forth small enough to justify the effort?
+    assumes host equivalent to target; hard to cross-compile
+options:
+    not-quite-forth could be C with macros (or even assembly)
+    not-quite-forth could be simple text format with a simple interpreter
+	text form clarifies distinctions
+
+
+strategy #1a
+    not-quite-forth can call the code it creates
+    bootstrap Standard Forth dictionary, calling back to built code
+    save dictionary
+    separate interpreter w/o not-quite-forth can load dictionary
+pro:
+    portable bootstrap
+    maybe less duplication?
+    doesn't require target interpreter on host
+	maybe easier to adapt to cross-compilation?
+con:
+    not truly a cross-compilation solution
+	pre-supposes shared machine characteristics in host and target
+	    e.g. cell size, alignment, byte order
+	or else, need not-quite-forth cross-interpreter
+	    ... which we can also do with strategy #1?
+options:
+    not-quite-forth must be a text file format
+	maybe not, although notation is easier
+
+
+strategy #2
+    Standard Forth interpreter is extended with cross-compiler
+    cross-compiles complete target dictionary
+    saves dictionary
+pro:
+    no duplicated code
+con:
+    requires 2nd system for a hosted environment that doesn't need it
+challenge:
+    where to get that first Standard Forth interpreter?
+	maybe build it once, and include it in the source tree
+	e.g. initial dictionary binary (or binary in text format)
+	e.g. generated C code for an initial dictionary

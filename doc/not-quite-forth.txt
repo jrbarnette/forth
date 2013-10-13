@@ -1,0 +1,41 @@
+primitives:
+    memory:
+	!  @ C! C@ MOVE
+    arithmetic:
+	+ - 2* 2/ < <> = > AND INVERT LSHIFT NEGATE OR RSHIFT U< U> XOR
+    stack:
+	>R ?DUP DEPTH DROP DUP OVER R> R@ ROT SWAP
+	2SWAP 2OVER
+    execution:
+	EXECUTE EXIT
+	ABORT
+	CATCH THROW
+    dictionary:
+	address of HERE
+	head of current name list?
+    internal:
+	for private xt's: skip fskip do-literal do-s"
+	machine primitives: mcp-: mcp-constant mcp-create mcp-variable
+    terminal I/O
+    file I/O
+
+non-primitive:
+    something for parsing
+    something for to identify cell and char sizes
+	ALIGNED CELL+ CELLS CHAR+ CHARS
+    compilation state
+	[ ]
+    names
+	'
+    allocation
+	, C, ALLOT
+    names for machine code primitives (at least internal ones)
+
+possibly only function is to append to dictionary?
+    backward references to named objects
+    forward and backward relative references (e.g skip targets)
+    multiple data types
+	numbers
+	references
+	characters
+	machine-code references

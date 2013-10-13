@@ -95,28 +95,20 @@ HERE                  6.1.1650 CORE                   39
 PAD                   6.2.2000 CORE EXT               55
 UNUSED                6.2.2395 CORE EXT               57
 
-<<<<<<< local
 parsing:
-=======
-parsing and input source management:
->>>>>>> other
 (                     6.1.0080 CORE                   26
 >IN                   6.1.0560 CORE                   31
 SOURCE                6.1.2216 CORE                   45
 WORD                  6.1.2450 CORE                   48
 .(                    6.2.0200 CORE EXT               49
 PARSE                 6.2.2008 CORE EXT               55
-<<<<<<< local
 \                     6.2.2535 CORE EXT               58
 
 input source dependent:
-=======
->>>>>>> other
 REFILL                6.2.2125 CORE EXT               55
 RESTORE-INPUT         6.2.2148 CORE EXT               56
 SAVE-INPUT            6.2.2182 CORE EXT               56
 SOURCE-ID             6.2.2218 CORE EXT               56
-\                     6.2.2535 CORE EXT               58
 
 compilation:
 CHAR                  6.1.0895 CORE                   35
@@ -124,10 +116,7 @@ LITERAL               6.1.1780 CORE                   41
 POSTPONE              6.1.2033 CORE                   43
 RECURSE               6.1.2120 CORE                   43
 S"                    6.1.2165 CORE                   44
-STATE                 6.1.2250 CORE                   45
-[                     6.1.2500 CORE                   48
 [CHAR]                6.1.2520 CORE                   49
-]                     6.1.2540 CORE                   49
 C"                    6.2.0855 CORE EXT               52
 COMPILE,              6.2.0945 CORE EXT               52
 [COMPILE]             6.2.2530 CORE EXT               58
@@ -174,15 +163,8 @@ VALUE                 6.2.2405 CORE EXT               58
 utility:
 BL                    6.1.0770 CORE                   34
 ENVIRONMENT?          6.1.1345 CORE                   38
-<<<<<<< local
 FALSE                 6.2.1485 CORE EXT               54
-=======
->>>>>>> other
 TRUE                  6.2.2298 CORE EXT               57
-<<<<<<< local
-=======
-FALSE                 6.2.1485 CORE EXT               54
->>>>>>> other
 
 terminal:
 ."                    6.1.0190 CORE                   28
@@ -215,6 +197,9 @@ ABORT                 6.1.0670 CORE                   32
 ABORT"                6.1.0680 CORE                   32
 EVALUATE              6.1.1360 CORE                   38
 QUIT                  6.1.2050 CORE                   43
+STATE                 6.1.2250 CORE                   45
+[                     6.1.2500 CORE                   48
+]                     6.1.2540 CORE                   49
 
 obsolete:
 #TIB                  6.2.0060 CORE EXT               49

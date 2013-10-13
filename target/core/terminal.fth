@@ -1,16 +1,15 @@
-\ ------  ------  ------  ------  ------  ------  ------
-\ index:
+\ Copyright 2013, by J. Richard Barnette, All Rights Reserved.
+\ ------  ------  ------  ------  ------  ------  ------  ------
 \ ."                    6.1.0190 CORE                   28
 \ ACCEPT                6.1.0695 CORE                   33
 \ CR                    6.1.0990 CORE                   36
 \ EMIT                  6.1.1320 CORE                   38
-\ KEY                   6.1.1750 CORE                   41
-\ SPACE                 6.1.2220 CORE                   46
-\ SPACES                6.1.2230 CORE                   46
-\ TYPE                  6.1.2310 CORE                   47
+\ KEY                   6.1.1750 CORE                   40
+\ SPACE                 6.1.2220 CORE                   45
+\ SPACES                6.1.2230 CORE                   45
+\ TYPE                  6.1.2310 CORE                   46
+\ ------  ------  ------  ------  ------  ------  ------  ------
 
-\ ------  ------  ------  ------  ------  ------  ------
-\ terminal I/O primitives - required
 \ EMIT ( char -- )
 \ KEY ( -- char )
 

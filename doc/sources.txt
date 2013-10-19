@@ -1,0 +1,23 @@
+class input-source
+    abstract source-id
+    variable input-buffer
+    variable input-size
+    variable >in
+    abstract save-input
+    abstract restore-input
+    abstract real-refill
+    : refill real-refill ?dup if 0 >in ! then ;
+    : source buffer-pointer @ buffer-size @ ;
+
+class string-input extends input-source
+    -1 constant source-id
+    : real-refill false ;
+
+class terminal extends input-source
+    0 constant source-id
+    80 constant input-max
+    create input-data input-max chars allot
+    input-data input-buffer !
+
+class seekable-file extends terminal
+    file-offset

@@ -15,7 +15,7 @@ private xt labels
     do-literal
     do-s"
     do-skip
-    do-skipf
+    do-fskip
 
 private constants
     cell-size

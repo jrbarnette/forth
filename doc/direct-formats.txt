@@ -1,9 +1,9 @@
 vmstate:
     ip -> vm code
-    vip -> xt
-    dp -> addr-unit
     sp -> cell
     rsp -> cell
+    vip -> xt
+    dp -> addr-unit
 
 vm code:
     fn-ptr, ...

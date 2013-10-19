@@ -6,7 +6,7 @@ machine code primitives w/o standard names
 
 private labels
     here-addr
-    current-namelist
+    forth-wordlist
 
 private xt labels
     clearrstack
@@ -29,4 +29,6 @@ private constants
 could be in Forth
     skip-delimiters
     parse
-    lookup
+    search-wordlist
+    name,
+    link-name

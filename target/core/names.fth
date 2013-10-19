@@ -9,31 +9,47 @@
 \ DOES>                 6.1.1250 CORE                   37
 \ FIND                  6.1.1550 CORE                   39
 \ IMMEDIATE             6.1.1710 CORE                   40
+\ RECURSE               6.1.2120 CORE                   43
 \ VARIABLE              6.1.2410 CORE                   47
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
-\ also anonymous definitions
-\ parse-name ( -- c-addr u )
-: string, ( c-addr u -- ) chars here swap dup allot move ;
+\ GET-CURRENT
+\ anonymous skip-delimiters ( <char> "<chars>" -- )
+\ anonymous lookup ( c-addr u -- 0 | xt flags -1 )
+\ anonymous definitions
+: string, ( c-addr u -- ) here swap chars dup allot move ;
 : name, ( mcp -- name )
-    here swap current-name @ , parse-name dup c, string, align ,
+    align here swap get-current @ , parse-name dup c, string, align ,
 ;
-: link-name ( name -- ) current-name ! ;
+: link-name ( name -- ) get-current ! ;
 : create-name ( "<spaces>name" code-addr -- ) name, link-name ;
-: sfind ( c-addr len -- 0 | xt 1 | xt -1 ) FIXME ;
-\ previous definitions
+80 constant nf-immediate
+40 constant nf-no-interpret
+: no-interpret get-current @ cell+ dup c@ nf-no-interpret or swap c! ;
 
 \ handler :-mcp
 \ handler constant-mcp
 \ handler variable-mcp
 \ handler create-mcp
 
-: FIND ( c-addr -- c-addr 0 | xt 1 | xt -1 ) count sfind ;
+\ forth definitions
+: FIND ( c-addr -- c-addr 0 | xt 1 | xt -1 )
+    dup count lookup if
+	rot drop nf-immediate and 0= 1 or
+    else
+	0
+    then
+;
 : ' ( "<spaces>name" -- xt ) bl word find 0= if drop -13 throw then ;
-: IMMEDIATE ( -- ) FIXME ;
-: : ( C: "<spaces>name" -- colon-sys ) here mcp-: name, ] ;
-: ; ( C: colon-sys -- ) postpone exit postpone [ ;
+: IMMEDIATE ( -- ) get-current @ cell+ dup c@ nf-immediate or swap c! ;
+: : ( C: "<spaces>name" -- colon-sys ) mcp-: name, ] ;
+: ; ( C: colon-sys -- ) link-name postpone exit postpone [ ;
 immediate \ compile-only
+
+\ anonymous definitions
+: current-xt get-current @ cell+ count 1f and chars + aligned ;
+
+: RECURSE current-xt compile, ; immediate
 
 : CONSTANT ( "<spaces>name" x -- ) mcp-constant create-name , ;
 : VARIABLE ( "<spaces>name" -- )
@@ -41,9 +57,7 @@ immediate \ compile-only
 : CREATE ( "<spaces>name" -- )
     mcp-create create-name [ here 3 cells + ] literal , ;
 : DOES>
-    postpone exit
-    current-name @ cell+ count 1f and chars aligned + cell+
-    here !
+    postpone exit current-xt cell+ here !
 ; immediate
 : >BODY ( xt -- a-addr ) [ 2 cells ] literal + ;
 

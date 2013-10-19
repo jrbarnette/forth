@@ -9,31 +9,43 @@
 \ ]                     6.1.2540 CORE                   49
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
+\ anonymous definitions
+\ clearstack ( i*x -- )
+\ clearrstack ( R: i*x -- )
+\ require-interpret - signal an error if not in interpretation state
+: require-interpret ( -- ) state @    if -29 throw then ;
+
+\ require-compile   - signal an error if not in compilation state
+\                     or there is no current definition
+: require-compile   ( -- ) state @ 0= if -14 throw then ;
+
 variable STATE
 : [ false state ! ; immediate
 : ] true  state ! ;
 
-\ FIXME - circular definition error -> ABORT -> QUIT -> interpret -> error
-
-: error ." Error: " . ABORT ;
-\ require-interpret - signal an error if not in interpretation state
-\ require-compile   - signal an error if not in compilation state
-\                     or there is no current definition
-: require-interpret ( -- ) STATE @    IF -29 error THEN ;
-: require-compile   ( -- ) STATE @ 0= IF -14 error THEN ;
-
 : interpret
-    BEGIN
-    BL WORD DUP C@ WHILE	( c-addr )
+    begin parse-name dup while
+	2dup lookup if
+	    2drop state @ if
+		nf-immediate and if execute else compile, then
+	    else
+		nf-nointerp and if -14 throw else execute then
+	    then
+	else
+	    \ try to parse integer
+	    -13 throw
+	then
+    repeat
+;
+: interpret
+    BEGIN BL WORD DUP C@ WHILE	( c-addr )
 	FIND ?DUP IF		( xt -1 | xt 1 ) \ 1 means IMMEDIATE
 	    -1 = STATE @ AND IF COMPILE, ELSE EXECUTE THEN
 	ELSE			( c-addr )
-	    0 0 ROT		( ud c-addr )
-	    COUNT OVER		( ud c-addr u c-addr )
-	    C@ [CHAR] - = IF 1- SWAP 1+ SWAP -1 ELSE 0 THEN >R
-	    >NUMBER 2SWAP SWAP DROP R> IF NEGATE THEN
-	    SWAP IF -13 error THEN
-	    SWAP DROP
+	    0 0 ROT COUNT	( ud c-addr u )
+	    OVER C@ [CHAR] - = IF 1- SWAP 1+ SWAP -1 ELSE 0 THEN
+	    >R >NUMBER 2SWAP SWAP DROP R> IF NEGATE THEN
+	    SWAP IF -13 THROW THEN SWAP DROP
 	    STATE @ IF POSTPONE LITERAL THEN
 	THEN
     REPEAT
@@ -49,4 +61,4 @@ variable STATE
 ;
 
 : ABORT clearsp QUIT ;
-\ : ABORT" ... ;
+: ABORT" postpone if postpone ." postpone abort postpone then ; immediate

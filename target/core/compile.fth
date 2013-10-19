@@ -1,9 +1,7 @@
 \ Copyright 2013, by J. Richard Barnette, All Rights Reserved.
 \ ------  ------  ------  ------  ------  ------  ------  ------
-\ CHAR                  6.1.0895 CORE                   35
 \ LITERAL               6.1.1780 CORE                   41
 \ POSTPONE              6.1.2033 CORE                   43
-\ RECURSE               6.1.2120 CORE                   43
 \ S"                    6.1.2165 CORE                   44
 \ [']                   6.1.2510 CORE                   48
 \ [CHAR]                6.1.2520 CORE                   49
@@ -14,7 +12,6 @@
 \ target definitions
 
 : LITERAL ( x -- ) postpone do-literal , ; immediate \ no-interpret
-: CHAR ( "<spaces>name" --- char ) parse-name drop c@ ;
 : [CHAR] ( "<spaces>name" -- ) char postpone literal ;
 immediate \ no-interpret
 : ['] ( "<spaces>name" -- ) ' postpone literal ; immediate \ no-interpret
@@ -31,8 +28,6 @@ immediate \ no-interpret
 	drop -13 throw
     then
 ; immediate
-
-\ : RECURSE FIXME ; immediate
 
 
 \ ------  ------  ------  ------  ------  ------  ------  ------

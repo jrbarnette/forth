@@ -1,0 +1,32 @@
+machine code primitives w/o standard names
+    mcp-:
+    mcp-constant
+    mcp-create
+    mcp-variable
+
+private labels
+    here-addr
+    current-namelist
+
+private xt labels
+    clearrstack
+    clearstack
+    do-c"
+    do-literal
+    do-s"
+    do-skip
+    do-skipf
+
+private constants
+    cell-size
+    cell-shift
+    char-size
+    char-shift
+    nf-immediate
+    nf-no-interpret
+    nf-compile
+
+could be in Forth
+    skip-delimiters
+    parse
+    lookup

@@ -1,0 +1,90 @@
+dictionary entry layout
+    link
+    count char, name char*len
+    compile xt
+    interpret xt
+    code ptr, data ...
+
+call semantics for compile and interpret xt:
+    ( i*x xt -- j*x )
+    xt is execution semantics
+
+definitions:
+    primitive definition
+	compile xt does> ,
+	interpret xt does> internal-execute
+	execution semantics
+	    code ptr
+
+    no-interpret primitive definition
+	compile xt does> ,
+	interpret xt does> -14 throw
+	execution semantics
+	    code ptr
+
+    compile-only definition
+	compile xt does> internal-execute
+	interpret xt does> -14 throw
+	execution semantics
+	    code ptr
+
+    : definition
+	compile xt does> ,
+	interpret xt does> internal-execute
+	execution semantics
+	    do-:, xt ...
+
+    CONSTANT definition
+	compile xt does> internal-execute postpone literal
+	interpret xt does> internal-execute
+	execution semantics
+	    do-constant, cell
+
+    VARIABLE definition
+	compile xt does> internal-execute postpone literal
+	interpret xt does> internal-execute
+	execution semantics
+	    do-variable, cell
+
+    CREATE definition before DOES>
+	compile xt does> postpone literal
+	interpret xt does>
+	definition layout
+	    data ...
+
+    CREATE definition after DOES>
+	compile xt does> postpone literal <does-ptr> compile,
+	interpret xt is does-ptr
+	definition layout
+	    data ...
+
+    changing a word to IMMEDIATE
+	compile xt is interpret xt
+	interpret xt is unchanged
+	definition layout is unchanged
+
+    changing a word to NO-INTERPRET
+	set a flag in the name header
+
+    changing a word to COMPILE-ONLY
+	equivalent to
+	    IMMEDIATE NO-INTERPRET
+
+Peculiarities:
+    xt from ', FIND, ['] points to <compile,interpret> pair
+    EXECUTE invokes execution semantics
+	... must extract data pointer, too
+    COMPILE, invokes compile semantics
+	... must extract data pointer, too
+    ??? what does this do:
+	: FUBAR ['] EXIT EXECUTE ;
+    QUIT logic:
+	( i*x xt -- j*x )
+	STATE @ IF internal-compile, ELSE internal-execute THEN
+    POSTPONE logic:
+	( xt -- ) COMPILE,
+    [COMPILE] logic:
+	if IMMEDIATE	\ ??? is this right?
+	    COMPILE,
+	else
+	    POSTPONE LITERAL POSTPONE EXECUTE

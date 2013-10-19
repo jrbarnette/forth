@@ -12,13 +12,26 @@ definition formats
 	do_colon, instr ..., ' EXIT
 
     CREATE definition
-	do_create, xt, data ..., pad
+	do_create, xt-ptr, data ..., pad
 
     CONSTANT definition
 	do_constant, cell
 
     VARIABLE definition
 	do_variable, cell
+
+behaviors
+    do_colon:
+	RPUSH IP
+	IP = DP
+    do_create:
+	RPUSH IP
+	PUSH DP + CELL_SIZE
+	IP = *DP
+    do_constant:
+	PUSH *DP
+    do_variable:
+	PUSH DP
 
 instr formats:
     xt

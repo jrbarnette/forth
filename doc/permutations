@@ -1,0 +1,92 @@
+( 4 3 2 1 -- 2 1 4 3 )	 2SWAP
+( 4 3 2 1 -- 2 1 4 3 )	 ROT >R ROT R>
+( 4 3 2 1 -- 2 1 4 3 )	 >R SWAP >R SWAP R> R> SWAP >R SWAP R>
+( 4 3 2 1 -- 2 1 4 3 )	 >R SWAP R> SWAP >R >R SWAP R> SWAP R>
+
+( 4 3 2 1 -- 1 2 4 3 )	 SWAP 2SWAP
+( 4 3 2 1 -- 1 2 4 3 )	 SWAP ROT >R ROT R>
+( 4 3 2 1 -- 1 2 4 3 )	 ROT >R SWAP ROT R>
+( 4 3 2 1 -- 1 2 4 3 )	 >R SWAP R> SWAP >R SWAP >R SWAP R> SWAP R>
+( 4 3 2 1 -- 1 2 4 3 )	 SWAP >R SWAP >R SWAP R> R> SWAP >R SWAP R>
+( 4 3 2 1 -- 1 2 4 3 )	 SWAP >R SWAP R> SWAP >R >R SWAP R> SWAP R>
+
+( 4 3 2 1 -- 2 1 3 4 )	 2SWAP SWAP
+( 4 3 2 1 -- 2 1 3 4 )	 ROT >R ROT R> SWAP
+( 4 3 2 1 -- 2 1 3 4 )	 >R SWAP >R SWAP R> R> SWAP >R SWAP R> SWAP
+( 4 3 2 1 -- 2 1 3 4 )	 >R SWAP >R SWAP R> SWAP R> SWAP >R SWAP R>
+( 4 3 2 1 -- 2 1 3 4 )	 >R SWAP R> SWAP >R >R SWAP R> SWAP R> SWAP
+
+( 4 3 2 1 -- 2 4 3 1 )	 2SWAP ROT
+( 4 3 2 1 -- 2 4 3 1 )	 >R ROT ROT R>
+( 4 3 2 1 -- 2 4 3 1 )	 >R SWAP >R SWAP R> R>
+
+( 4 3 2 1 -- 1 3 4 2 )	 ROT 2SWAP
+( 4 3 2 1 -- 1 3 4 2 )	 SWAP >R SWAP ROT R>
+( 4 3 2 1 -- 1 3 4 2 )	 SWAP >R SWAP >R SWAP R> SWAP R>
+
+( 4 3 2 1 -- 1 2 3 4 )	 SWAP 2SWAP SWAP
+( 4 3 2 1 -- 1 2 3 4 )	 ROT >R SWAP ROT R> SWAP
+( 4 3 2 1 -- 1 2 3 4 )	 SWAP ROT >R ROT R> SWAP
+( 4 3 2 1 -- 1 2 3 4 )	 >R SWAP R> SWAP >R SWAP >R SWAP R> SWAP R> SWAP
+( 4 3 2 1 -- 1 2 3 4 )	 SWAP >R SWAP >R SWAP R> R> SWAP >R SWAP R> SWAP
+( 4 3 2 1 -- 1 2 3 4 )	 SWAP >R SWAP >R SWAP R> SWAP R> SWAP >R SWAP R>
+( 4 3 2 1 -- 1 2 3 4 )	 SWAP >R SWAP R> SWAP >R >R SWAP R> SWAP R> SWAP
+
+( 4 3 2 1 -- 2 3 4 1 )	 2SWAP SWAP ROT
+( 4 3 2 1 -- 2 3 4 1 )	 SWAP ROT 2SWAP
+( 4 3 2 1 -- 2 3 4 1 )	 >R SWAP ROT R>
+( 4 3 2 1 -- 2 3 4 1 )	 >R SWAP >R SWAP R> SWAP R>
+
+( 4 3 2 1 -- 3 1 4 2 )	 ROT SWAP 2SWAP
+( 4 3 2 1 -- 3 1 4 2 )	 SWAP >R ROT R>
+( 4 3 2 1 -- 3 1 4 2 )	 SWAP >R >R SWAP R> SWAP R>
+
+( 4 3 2 1 -- 1 4 3 2 )	 SWAP 2SWAP ROT
+( 4 3 2 1 -- 1 4 3 2 )	 SWAP >R ROT ROT R>
+( 4 3 2 1 -- 1 4 3 2 )	 SWAP >R SWAP >R SWAP R> R>
+
+( 4 3 2 1 -- 2 4 1 3 )	 2SWAP ROT SWAP
+( 4 3 2 1 -- 2 4 1 3 )	 >R ROT ROT R> SWAP
+( 4 3 2 1 -- 2 4 1 3 )	 >R SWAP ROT R> ROT
+( 4 3 2 1 -- 2 4 1 3 )	 ROT >R ROT SWAP R>
+( 4 3 2 1 -- 2 4 1 3 )	 >R SWAP >R SWAP R> R> SWAP
+
+( 4 3 2 1 -- 1 3 2 4 )	 ROT 2SWAP SWAP
+( 4 3 2 1 -- 1 3 2 4 )	 SWAP >R SWAP ROT R> SWAP
+( 4 3 2 1 -- 1 3 2 4 )	 SWAP >R SWAP >R SWAP R> SWAP R> SWAP
+
+( 4 3 2 1 -- 3 2 4 1 )	 ROT ROT 2SWAP
+( 4 3 2 1 -- 3 2 4 1 )	 >R ROT R>
+( 4 3 2 1 -- 3 2 4 1 )	 >R >R SWAP R> SWAP R>
+
+( 4 3 2 1 -- 2 3 1 4 )	 2SWAP ROT ROT
+( 4 3 2 1 -- 2 3 1 4 )	 >R SWAP ROT R> SWAP
+( 4 3 2 1 -- 2 3 1 4 )	 >R SWAP >R SWAP R> SWAP R> SWAP
+
+( 4 3 2 1 -- 1 4 2 3 )	 ROT 2SWAP ROT
+( 4 3 2 1 -- 1 4 2 3 )	 SWAP 2SWAP ROT SWAP
+( 4 3 2 1 -- 1 4 2 3 )	 ROT >R ROT ROT R>
+( 4 3 2 1 -- 1 4 2 3 )	 SWAP >R ROT ROT R> SWAP
+( 4 3 2 1 -- 1 4 2 3 )	 SWAP >R SWAP ROT R> ROT
+( 4 3 2 1 -- 1 4 2 3 )	 SWAP ROT >R ROT SWAP R>
+( 4 3 2 1 -- 1 4 2 3 )	 SWAP >R SWAP >R SWAP R> R> SWAP
+
+( 4 3 2 1 -- 3 1 2 4 )	 ROT SWAP 2SWAP SWAP
+( 4 3 2 1 -- 3 1 2 4 )	 SWAP >R ROT R> SWAP
+( 4 3 2 1 -- 3 1 2 4 )	 SWAP >R >R SWAP R> SWAP R> SWAP
+
+( 4 3 2 1 -- 3 4 2 1 )	 ROT SWAP 2SWAP ROT
+( 4 3 2 1 -- 3 4 2 1 )	 >R ROT SWAP R>
+( 4 3 2 1 -- 3 4 2 1 )	 >R >R SWAP R> R>
+
+( 4 3 2 1 -- 3 2 1 4 )	 ROT ROT 2SWAP SWAP
+( 4 3 2 1 -- 3 2 1 4 )	 >R ROT R> SWAP
+( 4 3 2 1 -- 3 2 1 4 )	 >R >R SWAP R> SWAP R> SWAP
+
+( 4 3 2 1 -- 3 4 1 2 )	 ROT ROT 2SWAP ROT
+( 4 3 2 1 -- 3 4 1 2 )	 ROT SWAP 2SWAP ROT SWAP
+( 4 3 2 1 -- 3 4 1 2 )	 >R ROT R> ROT
+( 4 3 2 1 -- 3 4 1 2 )	 >R ROT SWAP R> SWAP
+( 4 3 2 1 -- 3 4 1 2 )	 SWAP >R ROT SWAP R>
+( 4 3 2 1 -- 3 4 1 2 )	 >R >R SWAP R> R> SWAP
+( 4 3 2 1 -- 3 4 1 2 )	 SWAP >R >R SWAP R> R>

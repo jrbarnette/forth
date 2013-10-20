@@ -1,5 +1,5 @@
 /*
- * Copyright 2011, by J. Richard Barnette
+ * Copyright 2013, by J. Richard Barnette. All Rights Reserved.
  */
 
 #include <stdio.h>
@@ -14,6 +14,16 @@
  * dictionary.c - C internal functions and Forth standard words for
  *   allocating and managing dictionary data space.
  */
+
+/*------  ------  ------  ------  ------  ------  ------  ------
+  ,                     6.1.0150 CORE                   27
+  ALIGN                 6.1.0705 CORE                   33
+  ALLOT                 6.1.0710 CORE                   33
+  C,                    6.1.0860 CORE                   34
+  HERE                  6.1.1650 CORE                   39
+  ------  ------  ------  ------  ------  ------  ------  ------
+*/
+
 
 union dict dictionary;
 
@@ -37,7 +47,6 @@ allot(vmstate_p vm, size_t n)
 
 /* -------------------------------------------------------------- */
 
-/* , "comma"		6.1.0150 CORE, p. 27 */
 /* ( x -- ) */
 static vminstr_p
 x_comma(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -47,7 +56,7 @@ x_comma(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     return ip;
 }
 
-/* ALIGN		6.1.0705 CORE, p. 33 */
+
 /* ( -- ) */
 static vminstr_p
 x_align(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -57,7 +66,6 @@ x_align(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* ALLOT		6.1.0710 CORE, p. 33 */
 /* ( n -- ) */
 static vminstr_p
 x_allot(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -68,7 +76,6 @@ x_allot(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* C, "c-comma"		6.1.0860 CORE, p. 34 */
 /* ( char -- ) */
 static vminstr_p
 x_c_comma(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -79,7 +86,6 @@ x_c_comma(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* HERE			6.1.1650 CORE, p. 40 */
 /* ( -- addr ) */
 static vminstr_p
 x_here(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -108,8 +114,3 @@ dictionary_defns[] = {
     { define_name, "HERE",      x_here },
     { NULL }
 };
-
-#if 0
-    PAD                   6.2.2000 CORE EXT               56
-    UNUSED                6.2.2395 CORE EXT               59
-#endif

@@ -1,5 +1,5 @@
 /*
- * Copyright 2011, by J. Richard Barnette
+ * Copyright 2013, by J. Richard Barnette. All Rights Reserved.
  */
 
 #include <stdio.h>
@@ -10,6 +10,18 @@
  * format.c - Forth standard words for formatted output and number
  *   conversion.
  */
+
+/*------  ------  ------  ------  ------  ------  ------  ------
+  .                     6.1.0180 CORE                   27
+  .R                    6.2.0210 CORE EXT               49
+  BASE                  6.1.0750 CORE                   34
+  DECIMAL               6.1.1170 CORE                   36
+  HEX                   6.2.1660 CORE EXT               54
+  U.                    6.1.2320 CORE                   46
+  U.R                   6.2.2330 CORE EXT               57
+  ------  ------  ------  ------  ------  ------  ------  ------
+*/
+
 
 #define MAXBASE			36
 #define NUM_SIZE		(8 * CELL_SIZE + 1)
@@ -40,12 +52,6 @@ printunum(char *cp, cell_ft uval)
 }
 
 
-/* #                     6.1.0030 CORE                   25 */
-/* #>                    6.1.0040 CORE                   25 */
-/* #S                    6.1.0050 CORE                   25 */
-
-
-/* .                     6.1.0180 CORE                   27 */
 /* ( n -- ) */
 static vminstr_p
 x_dot(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -69,10 +75,6 @@ x_dot(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* <#                    6.1.0490 CORE                   31 */
-
-
-/* BASE                  6.1.0750 CORE                   34 */
 /* ( -- a-addr ) */
 static vminstr_p
 x_base(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -83,7 +85,6 @@ x_base(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* DECIMAL               6.1.1170 CORE                   36 */
 /* ( -- ) */
 static vminstr_p
 x_decimal(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -93,12 +94,6 @@ x_decimal(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* >NUMBER               6.1.0570 CORE                   31 */
-/* HOLD                  6.1.1670 CORE                   39 */
-/* SIGN                  6.1.2210 CORE                   45 */
-
-
-/* U.                    6.1.2320 CORE                   46 */
 /* ( u -- ) */
 static vminstr_p
 x_udot(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -114,7 +109,6 @@ x_udot(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* .R                    6.2.0210 CORE EXT               49 */
 /* ( n1 n2 -- ) */
 static vminstr_p
 x_dot_r(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -148,7 +142,6 @@ x_dot_r(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* HEX                   6.2.1660 CORE EXT               54 */
 /* ( -- ) */
 static vminstr_p
 x_hex(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -158,7 +151,6 @@ x_hex(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* U.R                   6.2.2330 CORE EXT               57 */
 /* ( u n -- ) */
 static vminstr_p
 x_udot_r(vminstr_p ip, vmstate_p vm, vmarg_p ignore)

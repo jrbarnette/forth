@@ -1,5 +1,5 @@
 /*
- * Copyright 2011, by J. Richard Barnette
+ * Copyright 2013, by J. Richard Barnette. All Rights Reserved.
  */
 
 #include "forth.h"
@@ -8,15 +8,22 @@
  * stackops.c - Standard Forth words for stack operations.
  */
 
+/*------  ------  ------  ------  ------  ------  ------  ------
+  >R                    6.1.0580 CORE                   32
+  ?DUP                  6.1.0630 CORE                   32
+  DEPTH                 6.1.1200 CORE                   36
+  DROP                  6.1.1260 CORE                   37
+  DUP                   6.1.1290 CORE                   37
+  OVER                  6.1.1990 CORE                   42
+  R>                    6.1.2060 CORE                   43
+  R@                    6.1.2070 CORE                   43
+  ROT                   6.1.2160 CORE                   44
+  SWAP                  6.1.2260 CORE                   45
+  PICK                  6.2.2030 CORE EXT               55
+  ------  ------  ------  ------  ------  ------  ------  ------
+*/
 
-/* 2DROP                 6.1.0370 CORE                   29 */
-/* 2DUP                  6.1.0380 CORE                   29 */
-/* 2OVER                 6.1.0400 CORE                   29 */
-/* 2SWAP                 6.1.0430 CORE                   30 */
 
-
-/* >R                    6.1.0580 CORE                   32 */
-/* interpretation semantics undefined */
 /* ( x -- ) ( R:  -- x ) execution semantics */
 static vminstr_p
 x_to_r(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -28,7 +35,6 @@ x_to_r(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* ?DUP                  6.1.0630 CORE                   32 */
 /* ( x -- 0 | x x ) */
 static vminstr_p
 x_question_dup(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -45,7 +51,6 @@ x_question_dup(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* DEPTH                 6.1.1200 CORE                   36 */
 /* ( -- +n ) */
 static vminstr_p
 x_depth(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -57,7 +62,6 @@ x_depth(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* DROP                  6.1.1260 CORE                   37 */
 /* ( x -- ) */
 static vminstr_p
 x_drop(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -68,7 +72,6 @@ x_drop(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* DUP                   6.1.1290 CORE                   37 */
 /* ( x -- x x ) */
 static vminstr_p
 x_dup(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -81,7 +84,6 @@ x_dup(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* OVER                  6.1.1990 CORE                   42 */
 /* ( x1 x2 -- x1 x2 x1 ) */
 static vminstr_p
 x_over(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -94,8 +96,6 @@ x_over(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* R>                    6.1.2060 CORE                   43 */
-/* interpretation semantics undefined */
 /* ( -- x ) ( R: x -- ) execution semantics */
 static vminstr_p
 x_r_from(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -107,8 +107,6 @@ x_r_from(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* R@                    6.1.2070 CORE                   43 */
-/* interpretation semantics undefined */
 /* ( -- x ) ( R: x -- x ) execution semantics */
 static vminstr_p
 x_r_fetch(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -120,7 +118,6 @@ x_r_fetch(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* ROT                   6.1.2160 CORE                   44 */
 /* ( x1 x2 x3 -- x2 x3 x1 ) */
 static vminstr_p
 x_rot(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -137,7 +134,6 @@ x_rot(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* SWAP                  6.1.2260 CORE                   45 */
 /* ( x1 x2 -- x2 x1 ) */
 static vminstr_p
 x_swap(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -153,13 +149,6 @@ x_swap(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* 2>R                   6.2.0340 CORE EXT               50 */
-/* 2R>                   6.2.0410 CORE EXT               50 */
-/* 2R@                   6.2.0415 CORE EXT               50 */
-/* NIP                   6.2.1930 CORE EXT               54 */
-
-
-/* PICK                  6.2.2030 CORE EXT               55 */
 /* ( xu ... x0 u -- xu ... x0 xu ) */
 static vminstr_p
 x_pick(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -173,10 +162,6 @@ x_pick(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     PICK(sp, 0) = PICK(sp, t+1);
     return ip;
 }
-
-
-/* ROLL                  6.2.2150 CORE EXT               56 */
-/* TUCK                  6.2.2300 CORE EXT               57 */
 
 
 defn_dt

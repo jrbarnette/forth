@@ -1,5 +1,5 @@
 /*
- * Copyright 2011, by J. Richard Barnette
+ * Copyright 2013, by J. Richard Barnette. All Rights Reserved.
  */
 
 /* ISO/IEC standard */
@@ -13,6 +13,7 @@
 /*
  * cmdline.c - Command line parsing and OS-specific initialization.
  */
+
 
 void
 process_args(int argc, char *argv[], struct options *optptr)

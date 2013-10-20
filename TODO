@@ -1,0 +1,14 @@
+====
+See this trick:
+    { define_name, "+LOOP",	x_plus_loop, NAME_TYPE_COMPILE },
+    { compile_name, "UNLOOP" },
+
+Have a compile_name, but for xt functions.  Can use it for most
+anonymous xt literals; only skip/fskip are compiled from more than
+one compiling definition.
+====
+Add something to convert stdforth.fth to a C string, and compile
+it into the interpreter.  The interpret the string for
+initialization.  For extra credit, get rid of the main
+interpretation loop by making the last call in the string be QUIT
+====

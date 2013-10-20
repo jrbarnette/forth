@@ -1,5 +1,5 @@
 /*
- * Copyright 2011, by J. Richard Barnette
+ * Copyright 2013, by J. Richard Barnette. All Rights Reserved.
  */
 
 #include <stdio.h>
@@ -14,6 +14,20 @@
  * names.c - C internal functions and Forth standard words for
  *   dictionary name space.
  */
+
+/*------  ------  ------  ------  ------  ------  ------  ------
+  '                     6.1.0070 CORE                   25
+  :                     6.1.0450 CORE                   30
+  EXIT                  6.1.1380 CORE                   38
+  ;                     6.1.0460 CORE                   30
+  >BODY                 6.1.0550 CORE                   31
+  CONSTANT              6.1.0950 CORE                   35
+  CREATE                6.1.1000 CORE                   36
+  DOES>                 6.1.1250 CORE                   37
+  IMMEDIATE             6.1.1710 CORE                   40
+  VARIABLE              6.1.2410 CORE                   47
+  ------  ------  ------  ------  ------  ------  ------  ------
+*/
 
 
 /*
@@ -70,12 +84,14 @@ addname(vmstate_p vm, c_addr_ft id, cell_ft len, vminstr_fn hdlr)
     return cur;
 }
 
+
 void
 linkname(name_p name)
 {
     name->prev = DICT.namelist;
     DICT.namelist = name;
 }
+
 
 void
 define_name(vmstate_p vm, defn_data_p data)
@@ -88,6 +104,7 @@ define_name(vmstate_p vm, defn_data_p data)
     linkname(nm);
     NAME_SET_TYPE(nm, data->flags);
 }
+
 
 void
 compile_name(vmstate_p vm, defn_data_p data)
@@ -104,7 +121,6 @@ compile_name(vmstate_p vm, defn_data_p data)
 
 static vminstr_p do_create(vminstr_p, vmstate_p, vmarg_p);
 
-/* ' "tick"		6.1.0070 CORE, p. 25 */
 /* ( "<spaces>name" -- xt ) */
 static vminstr_p
 x_tick(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -122,7 +138,6 @@ x_tick(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* : "colon"		6.1.0450 CORE, p. 30 */
 /* ( R: -- nest-sys ) initiation semantics */
 static vminstr_p
 do_colon(vminstr_p ip, vmstate_p vm, vmarg_p newip)
@@ -131,6 +146,7 @@ do_colon(vminstr_p ip, vmstate_p vm, vmarg_p newip)
     RPUSH(vm, (cell_ft)ip);
     return newip->vminstrs;
 }
+
 
 /* ( C: "<spaces>name" -- colon-sys ) */
 static vminstr_p
@@ -145,7 +161,6 @@ x_colon(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* ; "semicolon"	6.1.0460 CORE, p. 30 */
 /* ( C: colon-sys -- ) compilation semantics */
 static vminstr_p
 x_semicolon(vminstr_p ip, vmstate_p vm, vmarg_p exit_xt_ptr)
@@ -158,7 +173,6 @@ x_semicolon(vminstr_p ip, vmstate_p vm, vmarg_p exit_xt_ptr)
 }
 
 
-/* >BODY "to-body"	6.1.0550 CORE, p. 31 */
 /* ( xt -- a-addr ) */
 static vminstr_p
 x_to_body(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -177,8 +191,6 @@ x_to_body(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* EXIT			6.1.1380 CORE, p. 39 */
-/* interpretation semantics undefined */
 /* ( R: nest-sys -- ) execution semantics */
 static vminstr_p
 x_exit(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -188,7 +200,6 @@ x_exit(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* CONSTANT		6.1.0950 CORE, p. 35 */
 /* ( -- x ) name execution semantics */
 static vminstr_p
 do_constant(vminstr_p ip, vmstate_p vm, vmarg_p data_ptr)
@@ -197,6 +208,7 @@ do_constant(vminstr_p ip, vmstate_p vm, vmarg_p data_ptr)
     PUSH(vm, data_ptr->cell);
     return ip;
 }
+
 
 /* ( “<spaces>name” -- ) */
 static vminstr_p
@@ -212,8 +224,6 @@ x_constant(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-
-/* CREATE		6.1.1000 CORE, p. 36 */
 /* ( -- a-addr ) name execution semantics */
 static vminstr_p
 do_create(vminstr_p ip, vmstate_p vm, vmarg_p data_ptr)
@@ -231,6 +241,7 @@ do_create(vminstr_p ip, vmstate_p vm, vmarg_p data_ptr)
     return ip;
 }
 
+
 /* ( “<spaces>name” -- ) */
 static vminstr_p
 x_create(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -243,7 +254,6 @@ x_create(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* DOES> "does"		6.1.1250 CORE, p. 37 */
 /* ( -- ) ( R: nest-sys -- ) runtime semantics */
 static vminstr_p
 do_does(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -260,7 +270,7 @@ do_does(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     return (vminstr_p) RPOP(vm);
 }
 
-/* interpretation semantics undefined */
+
 /* ( C: colon-sys1 -- colon-sys2 ) compilation semantics */
 static vminstr_p
 x_does(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -271,30 +281,6 @@ x_does(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* FIND			6.1.1550 CORE, p. 39 */
-/* ( c-addr -- c-addr 0 | xt 1 | xt -1 ) */
-static vminstr_p
-x_find(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    c_addr_ft caddr;
-    name_p    nm;
-
-    CHECK_POP(vm, 1);
-    CHECK_PUSH(vm, 1);
-    caddr = (c_addr_ft)POP(vm);
-    nm = lookup(vm, caddr + 1, (cell_ft) *caddr);
-    if (nm == NULL) {
-	PUSH(vm, caddr);
-	PUSH(vm, 0);
-    } else {
-	PUSH(vm, NAME_XT(nm));
-	PUSH(vm, NAME_IS_IMMEDIATE(nm) ? 1 : -1);
-    }
-    return ip;
-}
-
-
-/* IMMEDIATE		6.1.1710 CORE, p. 41 */
 /* ( -- ) */
 static vminstr_p
 x_immediate(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -304,7 +290,6 @@ x_immediate(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* VARIABLE		6.1.2410 CORE, p. 48 */
 /* ( -- a-addr ) name execution semantics */
 static vminstr_p
 do_variable(vminstr_p ip, vmstate_p vm, vmarg_p var_addr)
@@ -313,6 +298,7 @@ do_variable(vminstr_p ip, vmstate_p vm, vmarg_p var_addr)
     PUSH(vm, (cell_ft) var_addr);
     return ip;
 }
+
 
 /* ( "<spaces>name" -- ) execution semantics */
 static vminstr_p
@@ -339,7 +325,7 @@ names_defns[] = {
     { define_name, "'",         x_tick },
     { define_name, ":",		x_colon },
 
-    /* EXIT out of order for references below */
+    /* EXIT out of order for reference below */
     { define_name, "EXIT",	x_exit, NAME_TYPE_NO_INTERPRET },
 
     { define_name, ";",		x_semicolon, NAME_TYPE_COMPILE },
@@ -349,15 +335,7 @@ names_defns[] = {
     { define_name, "CONSTANT",	x_constant },
     { define_name, "CREATE",	x_create },
     { define_name, "DOES>",	x_does, NAME_TYPE_COMPILE },
-    { define_name, "FIND",	x_find },
     { define_name, "IMMEDIATE",	x_immediate },
     { define_name, "VARIABLE",	x_variable },
     { NULL }
 };
-
-#if 0
-    :NONAME               6.2.0455 CORE EXT               52
-    MARKER                6.2.1850 CORE EXT               56
-    TO                    6.2.2295 CORE EXT               59
-    VALUE                 6.2.2405 CORE EXT               60
-#endif

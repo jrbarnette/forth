@@ -1,5 +1,5 @@
 /*
- * Copyright 2011, by J. Richard Barnette
+ * Copyright 2013, by J. Richard Barnette. All Rights Reserved.
  */
 
 #include <stddef.h>
@@ -10,6 +10,23 @@
  * control.c - Standard Forth words relating to flow of control in
  *   compiled defintions.
  */
+
+/*------  ------  ------  ------  ------  ------  ------  ------
+  +LOOP                 6.1.0140 CORE                   27
+  BEGIN                 6.1.0760 CORE                   34
+  DO                    6.1.1240 CORE                   36
+  ELSE                  6.1.1310 CORE                   37
+  I                     6.1.1680 CORE                   39
+  IF                    6.1.1700 CORE                   40
+  J                     6.1.1730 CORE                   40
+  LEAVE                 6.1.1760 CORE                   41
+  REPEAT                6.1.2140 CORE                   44
+  THEN                  6.1.2270 CORE                   46
+  UNLOOP                6.1.2380 CORE                   47
+  UNTIL                 6.1.2390 CORE                   47
+  WHILE                 6.1.2430 CORE                   47
+  ------  ------  ------  ------  ------  ------  ------  ------
+*/
 
 
 static vminstr_p leavers;
@@ -34,7 +51,6 @@ compile_plus_loop(vmstate_p vm, xt_ft unloop_xt)
 }
 
 
-/* +LOOP                6.1.0140 CORE, p. 27 */
 /* ( n -- ) ( R: loop-sys1 -- | loop-sys2 ) runtime semantics */
 static vminstr_p
 do_plus_loop(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -50,6 +66,7 @@ do_plus_loop(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     return ip;
 }
 
+
 /* ( C: do-sys -- ) compilation semantics */
 static vminstr_p
 x_plus_loop(vminstr_p ip, vmstate_p vm, vmarg_p unloop_xt_ptr)
@@ -59,19 +76,6 @@ x_plus_loop(vminstr_p ip, vmstate_p vm, vmarg_p unloop_xt_ptr)
 }
 
 
-/* BEGIN		6.1.0760 CORE, p. 34 */
-/* interpretation semantics undefined */
-/* ( C: -- dest ) compilation semantics */
-static vminstr_p
-x_begin(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    CHECK_PUSH(vm, 1);
-    PUSH(vm, (cell_ft) HERE);
-    return ip;
-}
-
-
-/* DO                   6.1.1240 CORE, p. 37 */
 /* ( x1 x2 -- ) ( R: -- loop-sys ) runtime semantics */
 static vminstr_p
 do_do(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -90,6 +94,7 @@ do_do(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     return ip;
 }
 
+
 /* ( C: -- do-sys ) compilation semantics */
 static vminstr_p
 x_do(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -104,8 +109,63 @@ x_do(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* ELSE			6.1.1310 CORE, p. 38 */
-/* interpretation semantics undefined */
+/* ( -- x ) ( R: loop-sys -- loop-sys ) execution semantics */
+static vminstr_p
+x_i(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    CHECK_RPOP(vm, 2);
+    CHECK_PUSH(vm, 1);
+    cell_ft *rsp = RSP(vm);
+    PUSH(vm, PICK(rsp, 0) + PICK(rsp, 1));
+    return ip;
+}
+
+
+/* ( -- x ) ( R: loop-sys1 loop-sys2 -- loop-sys1 loop-sys2 ) */
+/*          execution semantics */
+static vminstr_p
+x_j(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    CHECK_RPOP(vm, 4);
+    CHECK_PUSH(vm, 1);
+    cell_ft *rsp = RSP(vm);
+    PUSH(vm, PICK(rsp, 2) + PICK(rsp, 3));
+    return ip;
+}
+
+
+/* ( C: do-sys1 -- do-sys2 ) compilation semantics */
+static vminstr_p
+c_leave(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    CHECK_POP(vm, 2);
+    vminstr_p orig = compile_skip(vm, SKIP_XT);
+    *(vminstr_p *)orig = leavers;
+    leavers = orig;
+    return ip;
+}
+
+
+/* ( -- ) ( R: loop-sys -- ) execution semantics */
+static vminstr_p
+x_unloop(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    CHECK_RPOP(vm, 2);
+    SET_RSP(vm, RSP(vm), 2);
+    return ip;
+}
+
+
+/* ( C: -- dest ) compilation semantics */
+static vminstr_p
+x_begin(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    CHECK_PUSH(vm, 1);
+    PUSH(vm, (cell_ft) HERE);
+    return ip;
+}
+
+
 /* ( C: orig1 -- orig2 ) compilation semantics */
 static vminstr_p
 x_else(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -122,22 +182,6 @@ x_else(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* I                    6.1.1680 CORE, p. 40 */
-/* interpretation semantics undefined */
-/* ( -- x ) ( R: loop-sys -- loop-sys ) execution semantics */
-static vminstr_p
-x_i(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    CHECK_RPOP(vm, 2);
-    CHECK_PUSH(vm, 1);
-    cell_ft *rsp = RSP(vm);
-    PUSH(vm, PICK(rsp, 0) + PICK(rsp, 1));
-    return ip;
-}
-
-
-/* IF			6.1.1700 CORE, p. 40 */
-/* interpretation semantics undefined */
 /* ( C: -- orig ) compilation semantics */
 static vminstr_p
 x_if(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -148,48 +192,6 @@ x_if(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* J                    6.1.1730 CORE, p. 41 */
-/* interpretation semantics undefined */
-/* ( -- x ) ( R: loop-sys1 loop-sys2 -- loop-sys1 loop-sys2 ) */
-/*          execution semantics */
-static vminstr_p
-x_j(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    CHECK_RPOP(vm, 4);
-    CHECK_PUSH(vm, 1);
-    cell_ft *rsp = RSP(vm);
-    PUSH(vm, PICK(rsp, 2) + PICK(rsp, 3));
-    return ip;
-}
-
-
-/* LEAVE                6.1.1760 CORE, p. 41 */
-/* interpretation semantics undefined */
-/* ( C: do-sys1 -- do-sys2 ) compilation semantics */
-static vminstr_p
-c_leave(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    CHECK_POP(vm, 2);
-    vminstr_p orig = compile_skip(vm, SKIP_XT);
-    *(vminstr_p *)orig = leavers;
-    leavers = orig;
-    return ip;
-}
-
-
-/* LOOP                 6.1.1800 CORE, p. 42 */
-/* ( C: do-sys -- ) compilation semantics */
-static vminstr_p
-x_loop(vminstr_p ip, vmstate_p vm, vmarg_p unloop_xt_ptr)
-{
-    compile_literal(vm, 1);
-    compile_plus_loop(vm, unloop_xt_ptr->xtok);
-    return ip;
-}
-
-
-/* REPEAT		6.1.2140 CORE, p. 45 */
-/* interpretation semantics undefined */
 /* ( C: orig dest -- ) compilation semantics */
 static vminstr_p
 x_repeat(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -206,8 +208,6 @@ x_repeat(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* THEN			6.1.2270 CORE, p. 47 */
-/* interpretation semantics undefined */
 /* ( C: orig -- ) compilation semantics */
 static vminstr_p
 x_then(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -218,20 +218,6 @@ x_then(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* UNLOOP               6.1.2380 CORE, p. 48 */
-/* interpretation semantics undefined */
-/* ( -- ) ( R: loop-sys -- ) execution semantics */
-static vminstr_p
-x_unloop(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    CHECK_RPOP(vm, 2);
-    SET_RSP(vm, RSP(vm), 2);
-    return ip;
-}
-
-
-/* UNTIL		6.1.2390 CORE, p. 48 */
-/* interpretation semantics undefined */
 /* ( C: dest -- ) compilation semantics */
 static vminstr_p
 x_until(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -245,8 +231,6 @@ x_until(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* WHILE		6.1.2430 CORE, p. 49 */
-/* interpretation semantics undefined */
 /* ( C: dest -- orig dest ) compilation semantics */
 static vminstr_p
 x_while(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -286,7 +270,6 @@ control_defns[] =
     { define_name, "IF",	x_if, NAME_TYPE_COMPILE },
     { define_name, "J",		x_j, NAME_TYPE_NO_INTERPRET },
     { define_name, "LEAVE",	c_leave, NAME_TYPE_COMPILE },
-    { define_name, "LOOP",	x_loop, NAME_TYPE_COMPILE },
     { compile_name, "UNLOOP" },
 
     { define_name, "REPEAT",	x_repeat, NAME_TYPE_COMPILE },
@@ -295,14 +278,3 @@ control_defns[] =
     { define_name, "WHILE",	x_while, NAME_TYPE_COMPILE },
     { NULL }
 };
-
-#if 0
-    RECURSE               6.1.2120 CORE                   44
-    ?DO                   6.2.0620 CORE EXT               53
-    AGAIN                 6.2.0700 CORE EXT               53
-    CASE                  6.2.0873 CORE EXT               54
-    COMPILE,              6.2.0945 CORE EXT               54
-    ENDCASE               6.2.1342 CORE EXT               54
-    ENDOF                 6.2.1343 CORE EXT               55
-    OF                    6.2.1950 CORE EXT               56
-#endif

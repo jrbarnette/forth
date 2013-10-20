@@ -50,7 +50,7 @@
 \ PICK ( xu ... x1 x0 u -- xu ... x1 x0 xu )
 \ ROLL ( xu xu-1 ... x0 u -- xu-1 ... x0 xu )
 
-\ primitives - could be in forth
+\ primitives - can't be forth because they use the return stack
 \ : 2>R ( x1 x2 -- ) ( R: -- x1 x2 ) swap >r >r ;
 \ : 2R> ( -- x1 x2 ) ( R: x1 x2 -- ) r> r> swap ;
 \ : 2R@ ( -- x1 x2 ) ( R: x1 x2 -- x1 x2 ) r> r> 2dup >r >r swap ;

@@ -1,5 +1,5 @@
 /*
- * Copyright 2011, by J. Richard Barnette
+ * Copyright 2013, by J. Richard Barnette. All Rights Reserved.
  */
 
 #include <ctype.h>
@@ -13,6 +13,24 @@
  * interpret.c - Outer (interactive) interpreter, and related Forth
  *   words.
  */
+
+/*------  ------  ------  ------  ------  ------  ------  ------
+  >IN                   6.1.0560 CORE                   31
+  ABORT                 6.1.0670 CORE                   32
+  CHAR                  6.1.0895 CORE                   35
+  EVALUATE              6.1.1360 CORE                   38
+  EXECUTE               6.1.1370 CORE                   38
+  LITERAL               6.1.1780 CORE                   41
+  POSTPONE              6.1.2033 CORE                   43
+  QUIT                  6.1.2050 CORE                   43
+  S"                    6.1.2165 CORE                   44
+  SOURCE                6.1.2216 CORE                   45
+  STATE                 6.1.2250 CORE                   45
+  [                     6.1.2500 CORE                   48
+  ]                     6.1.2540 CORE                   49
+  ------  ------  ------  ------  ------  ------  ------  ------
+*/
+
 
 void
 compile_literal(vmstate_p vm, cell_ft n)
@@ -252,6 +270,7 @@ do_skip(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     return ip + ip->offset + 1;
 }
 
+
 static vminstr_p
 do_fskip(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
@@ -264,18 +283,6 @@ do_fskip(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* ( "paren"		6.1.0080 CORE, p. 26 */
-/* ( “ccc<paren>” -- ) execution semantics */
-static vminstr_p
-x_paren(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    (void) parse(')', PARSE_AREA_PTR, PARSE_AREA_LEN);
-    return ip;
-}
-
-
-
-/* >IN "to-in"		6.1.0560 CORE, p. 31 */
 /* ( -- a-addr ) */
 static vminstr_p
 x_to_in(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -286,7 +293,6 @@ x_to_in(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* ABORT		6.1.0670 CORE, p. 32 */
 /* ( i*x -- ) ( R: j*x -- ) */
 static vminstr_p
 x_abort(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -299,23 +305,6 @@ x_abort(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-#if 0
-/* ABORT"		6.1.0680 CORE, p. 32 */
-/* ( i*x x -- | i*x ) ( R: j*x -- | j*x ) runtime semantics */
-static vminstr_p
-do_abort_quote(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-}
-
-/* ( "ccc<quote" -- ) compilation semantics */
-static vminstr_p
-x_abort_quote(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-}
-#endif
-
-
-/* CHAR			6.1.0895 CORE, p. 35 */
 /* ( "<spaces>name" -- char ) */
 static vminstr_p
 x_char(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -332,7 +321,6 @@ x_char(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* EVALUATE		6.1.1360 CORE, p. 39 */
 /* ( i*x c-addr u -- j*x ) */
 static vminstr_p
 x_evaluate(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -360,7 +348,6 @@ x_evaluate(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* EXECUTE		6.1.1370 CORE, p. 39 */
 /* ( i*x xt -- i*j ) */
 static vminstr_p
 x_execute(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -373,7 +360,6 @@ x_execute(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* LITERAL		6.1.1780 CORE, p. 42 */
 /* ( -- x ) runtime semantics */
 static vminstr_p
 do_literal(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -383,7 +369,7 @@ do_literal(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     return ip + 1;
 }
 
-/* interpretation semantics undefined */
+
 /* ( x -- ) compilation semantics */
 static vminstr_p
 x_literal(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -394,7 +380,6 @@ x_literal(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* S" "s-quote"		6.1.2165 CORE, p. 45 */
 /* ( -- c-addr u ) runtime semantics */
 static vminstr_p
 do_s_quote(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -408,7 +393,6 @@ do_s_quote(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* interpretation semantics undefined */
 /* ( "ccc<quote>" -- ) compilation semantics */
 static vminstr_p
 x_s_quote(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -426,7 +410,6 @@ x_s_quote(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* SOURCE		6.1.2216 CORE, p. 46 */
 /* ( -- c-addr u ) */
 static vminstr_p
 x_source(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -438,7 +421,6 @@ x_source(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* QUIT			6.1.2050 CORE, p. 44 */
 /* ( -- )  ( R: i*x -- ) */
 static vminstr_p
 x_quit(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -450,7 +432,6 @@ x_quit(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* STATE		6.1.2250 CORE, p. 46 */
 /* ( -- a-addr ) */
 static vminstr_p
 x_state(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -461,7 +442,6 @@ x_state(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* POSTPONE		6.1.2033 CORE, p. 43 */
 /* ( -- ) execution semantics for default compilation semantics */
 static vminstr_p
 do_postpone(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -469,6 +449,7 @@ do_postpone(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     compile_xt(vm, ip->xtok);
     return ip + 1;
 }
+
 
 /* ( "<spaces>name" -- ) compilation semantics */
 static vminstr_p
@@ -496,8 +477,6 @@ x_postpone(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* [ "left-bracket"	6.1.2500 CORE, p. 49 */
-/* interpretation semantics undefined */
 /* ( -- ) compilation semantics */
 static vminstr_p
 x_left_bracket(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -507,24 +486,6 @@ x_left_bracket(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* [CHAR] "bracket-char"	6.1.2520 CORE, p. 49 */
-/* interpretation semantics undefined */
-/* ( "<spaces>name" -- ) compilation semantics */
-static vminstr_p
-x_bracket_char(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    cell_ft len;
-    c_addr_ft id = parse_name(&len);
-
-    if (len == 0)
-	THROW(vm, -16);
-
-    compile_literal(vm, *id);
-    return ip;
-}
-
-
-/* ] "right-bracket"	6.1.2540 CORE, p. 50 */
 /* ( -- ) */
 static vminstr_p
 x_right_bracket(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -534,7 +495,6 @@ x_right_bracket(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* PARSE		6.2.2008 CORE EXT, p. 57 */
 /* ( char "ccc<char>" -- c-addr u ) */
 static vminstr_p
 x_parse(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -548,16 +508,6 @@ x_parse(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     PUSH(vm, (cell_ft) parse_ptr);
     PUSH(vm, (cell_ft) len);
 
-    return ip;
-}
-
-
-/* \ "backslash"	6.2.2535 CORE EXT, p. 60 */
-/* ( “ccc<eol>” -- ) execution semantics */
-static vminstr_p
-x_backslash(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    DICT.to_in = DICT.source.len;
     return ip;
 }
 
@@ -576,7 +526,6 @@ initialize_xtokens(vmstate_p vm, defn_data_p ignore)
 defn_dt
 interpret_defns[] = {
     { initialize_xtokens },
-    { define_name, "(",		x_paren, NAME_TYPE_IMMEDIATE },
     { define_name, ">IN",	x_to_in },
     { define_name, "ABORT",	x_abort },
     { define_name, "CHAR",	x_char },
@@ -589,30 +538,7 @@ interpret_defns[] = {
     { define_name, "SOURCE",	x_source },
     { define_name, "STATE",	x_state },
     { define_name, "[",		x_left_bracket, NAME_TYPE_COMPILE },
-    { define_name, "[CHAR]",	x_bracket_char, NAME_TYPE_COMPILE },
     { define_name, "]",		x_right_bracket },
     { define_name, "PARSE",	x_parse },
-    { define_name, "\\",	x_backslash, NAME_TYPE_IMMEDIATE },
     { NULL }
 };
-
-#if 0
-    ."                    6.1.0190 CORE                   28
-    ABORT"                6.1.0680 CORE                   32
-    BL                    6.1.0770 CORE                   34
-    COUNT                 6.1.0980 CORE                   36
-    ENVIRONMENT?          6.1.1345 CORE                   38
-    WORD                  6.1.2450 CORE                   49
-    [']                   6.1.2510 CORE                   50
-    #TIB                  6.2.0060 CORE EXT               51
-    C"                    6.2.0855 CORE EXT               53
-    COMPILE,              6.2.0945 CORE EXT               54
-    FALSE                 6.2.1485 CORE EXT               55
-    REFILL                6.2.2125 CORE EXT               57
-    RESTORE-INPUT         6.2.2148 CORE EXT               57
-    SAVE-INPUT            6.2.2182 CORE EXT               58
-    SOURCE-ID             6.2.2218 CORE EXT               58
-    TIB                   6.2.2290 CORE EXT               58
-    TRUE                  6.2.2298 CORE EXT               59
-    [COMPILE]             6.2.2530 CORE EXT               60
-#endif

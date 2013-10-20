@@ -1,5 +1,5 @@
 /*
- * Copyright 2011, by J. Richard Barnette
+ * Copyright 2013, by J. Richard Barnette. All Rights Reserved.
  */
 
 #include <assert.h>
@@ -14,6 +14,23 @@
  * fileops.c - Standard Forth words for the optional File-Access
  *   word set.
  */
+
+/*------  ------  ------  ------  ------  ------  ------  ------
+  BIN                11.6.1.0765 FILE                   80
+  CLOSE-FILE         11.6.1.0900 FILE                   80
+  CREATE-FILE        11.6.1.1010 FILE                   81
+  FILE-POSITION      11.6.1.1520 FILE                   81
+  FILE-SIZE          11.6.1.1522 FILE                   81
+  OPEN-FILE          11.6.1.1970 FILE                   82
+  R/O                11.6.1.2054 FILE                   82
+  R/W                11.6.1.2056 FILE                   83
+  READ-FILE          11.6.1.2080 FILE                   83
+  REPOSITION-FILE    11.6.1.2142 FILE                   84
+  W/O                11.6.1.2425 FILE                   85
+  WRITE-FILE         11.6.1.2480 FILE                   85
+  ------  ------  ------  ------  ------  ------  ------  ------
+*/
+
 
 #define FILE_CREATE	1
 #define FILE_R_O	((cell_ft) 01)
@@ -88,7 +105,7 @@ do_open_create(vmstate_p vm, bool is_open)
     SET_SP(vm, sp, 1);
 }
 
-/* BIN               11.6.1.0765 FILE, p. 80 */
+
 /* ( fam1 -- fam2 ) */
 static vminstr_p
 x_bin(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -99,7 +116,7 @@ x_bin(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     return ip;
 }
 
-/* CLOSE-FILE        11.6.1.0900 FILE, p. 80 */
+
 /* ( fileid -- ior ) */
 static vminstr_p
 x_close_file(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -116,7 +133,7 @@ x_close_file(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     return ip;
 }
 
-/* CREATE-FILE       11.6.1.1010 FILE, p. 81 */
+
 /* ( c-addr u fam -- fileid ior ) */
 static vminstr_p
 x_create_file(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -125,7 +142,7 @@ x_create_file(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     return ip;
 }
 
-/* FILE-POSITION     11.6.1.1520 FILE, p. 81 */
+
 /* ( fileid -- ud ior ) */
 static vminstr_p
 x_file_position(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -149,7 +166,7 @@ x_file_position(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     return ip;
 }
 
-/* FILE-SIZE         11.6.1.1522 FILE, p. 81 */
+
 /* ( fileid -- ud ior ) */
 static vminstr_p
 x_file_size(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -187,7 +204,7 @@ x_file_size(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     return ip;
 }
 
-/* OPEN-FILE         11.6.1.1970 FILE, p. 82 */
+
 /* ( c-addr u fam -- fileid ior ) */
 static vminstr_p
 x_open_file(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -196,7 +213,7 @@ x_open_file(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     return ip;
 }
 
-/* R/O               11.6.1.2054 FILE, p. 82 */
+
 /* ( -- fam ) */
 static vminstr_p
 x_r_o(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -206,7 +223,7 @@ x_r_o(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     return ip;
 }
 
-/* R/W               11.6.1.2056 FILE, p. 83 */
+
 /* ( -- fam ) */
 static vminstr_p
 x_r_w(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -216,7 +233,7 @@ x_r_w(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     return ip;
 }
 
-/* READ-FILE         11.6.1.2080 FILE, p. 83 */
+
 /* ( c-addr u1 fileid -- u2 ior ) */
 static vminstr_p
 x_read_file(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -249,7 +266,7 @@ x_read_file(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     return ip;
 }
 
-/* REPOSITION-FILE   11.6.1.2142 FILE, p. 84 */
+
 /* ( ud fileid -- ior ) */
 static vminstr_p
 x_reposition_file(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -271,7 +288,7 @@ x_reposition_file(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     return ip;
 }
 
-/* W/O               11.6.1.2425 FILE, p. 85 */
+
 /* ( -- fam ) */
 static vminstr_p
 x_w_o(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -281,7 +298,7 @@ x_w_o(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     return ip;
 }
 
-/* WRITE-FILE        11.6.1.2480 FILE, p. 85 */
+
 /* ( c-addr u1 fileid -- ior ) */
 static vminstr_p
 x_write_file(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -326,19 +343,3 @@ fileops_defns[] = {
     { define_name, "WRITE-FILE",       x_write_file },
     { NULL }
 };
-
-#if 0
-    (                    paren                11.6.1.0080 FILE            80
-    DELETE-FILE                               11.6.1.1190 FILE            81
-    INCLUDE-FILE                              11.6.1.1717 FILE            81
-    INCLUDED                                  11.6.1.1718 FILE            82
-    READ-LINE                                 11.6.1.2090 FILE            83
-    RESIZE-FILE                               11.6.1.2147 FILE            84
-    S"                   s-quote              11.6.1.2165 FILE            84
-    SOURCE-ID            source-i-d           11.6.1.2218 FILE            84
-    WRITE-LINE                                11.6.1.2485 FILE            85
-    FILE-STATUS                               11.6.2.1524 FILE EXT        85
-    FLUSH-FILE                                11.6.2.1560 FILE EXT        85
-    REFILL                                    11.6.2.2125 FILE EXT        86
-    RENAME-FILE                               11.6.2.2130 FILE EXT        86
-#endif

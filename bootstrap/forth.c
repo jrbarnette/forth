@@ -1,5 +1,5 @@
 /*
- * Copyright 2009, by J. Richard Barnette
+ * Copyright 2013, by J. Richard Barnette. All Rights Reserved.
  */
 
 #include <errno.h>
@@ -110,6 +110,7 @@ handle_exception(int throwcode, vmstate_p vm)
     } 
 }
 
+
 static void
 init_forth(vmstate_p vm)
 {
@@ -133,6 +134,7 @@ init_forth(vmstate_p vm)
     interpret_defs(vm, interpret_defns);
     interpret_defs(vm, fileops_defns);
 }
+
 
 struct options forth_options;
 

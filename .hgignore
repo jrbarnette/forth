@@ -2,3 +2,4 @@
 \.swp$
 ^bootstrap/tags$
 ^bootstrap/forth$
+^bootstrap/stdforth\.c$

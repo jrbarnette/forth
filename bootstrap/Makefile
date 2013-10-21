@@ -13,6 +13,7 @@ SOURCES =			\
 	    multops.c		\
 	    names.c		\
 	    stackops.c		\
+	    stdforth.c		\
 	    termio.c
 
 CHECKNONE = 0
@@ -30,6 +31,9 @@ forth: $(OBJECTS)
 	$(CC) -o $@ $(OBJECTS)
 
 $(OBJECTS): forth.h
+
+stdforth.c: gen_cforth stdforth.fth
+	./gen_cforth initialize_forth stdforth.fth > $@
 
 tags: $(SOURCES)
 	ctags $(SOURCES)

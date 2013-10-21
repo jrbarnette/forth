@@ -150,6 +150,12 @@ main(int argc, char *argv[])
 
     init_vm(&vmstate);
 
+    if ((throwcode = setjmp(vmstate.interp_loop)) == 0) {
+	interpret_string(&vmstate, initialize_forth);
+    } else {
+	handle_exception(throwcode, &vmstate);
+    }
+
     if (forth_options.startup_file != NULL) {
 	bool saved_interactive = forth_options.is_interactive;
 	forth_options.is_interactive = false;

@@ -2,6 +2,7 @@
  * Copyright 2013, by J. Richard Barnette. All Rights Reserved.
  */
 
+#include <assert.h>
 #include <ctype.h>
 #include <setjmp.h>
 #include <stdio.h>
@@ -128,7 +129,7 @@ execute(vmstate_p vm, xt_ft entry_xt)
 static int
 evaluate_name(c_addr_ft s, cell_ft len, vmstate_p vm)
 {
-    name_p name = lookup(vm, s, len);
+    name_p name = lookup(vm, DICT.forth_wordlist, s, len);
     xt_ft xtok;
 
     if (name == NULL) {
@@ -259,6 +260,38 @@ quit(vmstate_p vm, FILE *input)
     while (refill(input)) {
 	evaluate(vm);
     }
+}
+
+
+void
+interpret_string(vmstate_p vm, char *s)
+{
+    char       *eval_start;
+    char       *eval_end;
+    size_t	eval_remaining;
+
+    DICT.source_id = SOURCE_ID_EVALUATE;
+    DICT.state = STATE_INTERP;
+
+    eval_start = s;
+    eval_remaining = strlen(s);
+    while (eval_remaining != 0) {
+	eval_end = strchr(eval_start, '\n');
+	if (eval_end != NULL) {
+	    DICT.source.len = eval_end - eval_start;
+	    eval_remaining -= DICT.source.len + 1;
+	} else {
+	    DICT.source.len = eval_remaining;
+	    eval_remaining = 0;
+	}
+	DICT.source.c_addr = (c_addr_ft) eval_start;
+	DICT.to_in = 0;
+	evaluate(vm);
+	eval_start += DICT.source.len + 1;
+    }
+
+    assert(DICT.state == STATE_INTERP);
+    /* assert stacks are empty */
 }
 
 
@@ -457,7 +490,7 @@ x_postpone(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft	len;
     c_addr_ft	id = parse_name(&len);
-    name_p	name = lookup(vm, id, len);
+    name_p	name = lookup(vm, DICT.forth_wordlist, id, len);
     xt_ft	xtok;
 
     if (name == NULL) {

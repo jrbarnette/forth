@@ -26,6 +26,9 @@
   DOES>                 6.1.1250 CORE                   37
   IMMEDIATE             6.1.1710 CORE                   40
   VARIABLE              6.1.2410 CORE                   47
+
+  FORTH-WORDLIST     16.6.1.1595 SEARCH                119
+  SEARCH-WORDLIST    16.6.1.2192 SEARCH                120
   ------  ------  ------  ------  ------  ------  ------  ------
 */
 
@@ -35,14 +38,14 @@
  * token.  Return NULL if not found.
  */
 name_p
-lookup(vmstate_p vm, c_addr_ft id, cell_ft len)
+lookup(vmstate_p vm, name_p names, c_addr_ft id, cell_ft len)
 {
     name_p	cur;
 
     if (len == 0)
 	THROW(vm, -16);
 
-    for (cur = DICT.namelist; cur != NULL; cur = cur->prev) {
+    for (cur = names; cur != NULL; cur = cur->prev) {
 	int i;
 
 	if (len != NAME_LENGTH(cur))
@@ -88,8 +91,8 @@ addname(vmstate_p vm, c_addr_ft id, cell_ft len, vminstr_fn hdlr)
 void
 linkname(name_p name)
 {
-    name->prev = DICT.namelist;
-    DICT.namelist = name;
+    name->prev = DICT.forth_wordlist;
+    DICT.forth_wordlist = name;
 }
 
 
@@ -111,7 +114,7 @@ compile_name(vmstate_p vm, defn_data_p data)
 {
     c_addr_ft	id = (c_addr_ft) data->data0;
     cell_ft	len = (cell_ft) strlen((char *) id);
-    name_p	nm = lookup(vm, id, len);
+    name_p	nm = lookup(vm, DICT.forth_wordlist, id, len);
 
     COMMA(vm, NAME_XT(nm));
 }
@@ -127,7 +130,7 @@ x_tick(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft len;
     c_addr_ft id = parse_name(&len);
-    name_p nm = lookup(vm, id, len);
+    name_p nm = lookup(vm, DICT.forth_wordlist, id, len);
 
     if (nm == NULL)
 	THROW(vm, -13);
@@ -258,7 +261,7 @@ x_create(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 static vminstr_p
 do_does(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
-    xt_ft create_def = NAME_XT(DICT.namelist);
+    xt_ft create_def = NAME_XT(DICT.forth_wordlist);
 
     if (create_def->handler != do_create) {
 	/* XXX - this isn't *exactly* specified in the standard */
@@ -285,7 +288,7 @@ x_does(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 static vminstr_p
 x_immediate(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
-    NAME_SET_TYPE(DICT.namelist, NAME_TYPE_IMMEDIATE);
+    NAME_SET_TYPE(DICT.forth_wordlist, NAME_TYPE_IMMEDIATE);
     return ip;
 }
 
@@ -312,6 +315,39 @@ x_variable(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
+/* ( -- wid ) */
+static vminstr_p
+x_forth_wordlist(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    CHECK_PUSH(vm, 1);
+    PUSH(vm, (cell_ft) &DICT.forth_wordlist);
+    return ip;
+}
+
+
+/* ( c-addr u wid -- 0 | xt 1 | xt -1 ) */
+static vminstr_p
+x_search_wordlist(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    c_addr_ft caddr;
+    cell_ft   len;
+    name_p    nm;
+
+    CHECK_POP(vm, 3);
+    nm = (name_p) POP(vm);
+    len = (cell_ft) POP(vm);
+    caddr = (c_addr_ft) POP(vm);
+    nm = lookup(vm, nm, caddr, len);
+    if (nm == NULL) {
+	PUSH(vm, 0);
+    } else {
+	PUSH(vm, NAME_XT(nm));
+	PUSH(vm, NAME_IS_IMMEDIATE(nm) ? 1 : -1);
+    }
+    return ip;
+}
+
+
 static void
 initialize_does(vmstate_p vm, defn_data_p ignore)
 {
@@ -322,20 +358,24 @@ initialize_does(vmstate_p vm, defn_data_p ignore)
 defn_dt
 names_defns[] = {
     { initialize_does },
-    { define_name, "'",         x_tick },
-    { define_name, ":",		x_colon },
+    { define_name, "'",			x_tick },
+    { define_name, ":",			x_colon },
 
     /* EXIT out of order for reference below */
-    { define_name, "EXIT",	x_exit, NAME_TYPE_NO_INTERPRET },
+    { define_name, "EXIT",		x_exit, NAME_TYPE_NO_INTERPRET },
 
-    { define_name, ";",		x_semicolon, NAME_TYPE_COMPILE },
+    { define_name, ";",			x_semicolon, NAME_TYPE_COMPILE },
     { compile_name, "EXIT" },
 
-    { define_name, ">BODY",	x_to_body },
-    { define_name, "CONSTANT",	x_constant },
-    { define_name, "CREATE",	x_create },
-    { define_name, "DOES>",	x_does, NAME_TYPE_COMPILE },
-    { define_name, "IMMEDIATE",	x_immediate },
-    { define_name, "VARIABLE",	x_variable },
+    { define_name, ">BODY",		x_to_body },
+    { define_name, "CONSTANT",		x_constant },
+    { define_name, "CREATE",		x_create },
+    { define_name, "DOES>",		x_does, NAME_TYPE_COMPILE },
+    { define_name, "IMMEDIATE",		x_immediate },
+    { define_name, "VARIABLE",		x_variable },
+
+    { define_name, "FORTH-WORDLIST",	x_forth_wordlist },
+    { define_name, "SEARCH-WORDLIST",	x_search_wordlist },
+
     { NULL }
 };

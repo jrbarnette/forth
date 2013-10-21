@@ -64,9 +64,11 @@ drop drop
 
 : CR ( -- ) 10 emit ;
 : SPACE ( -- ) bl emit ;
-: SPACES ( n -- ) 0 ?do space loop ;
+: SPACES ( n -- ) ?dup if 0 do space loop then ;
 : TYPE ( c-addr u -- )
-    chars over + swap ?do i c@ emit [ 1 chars ] literal +loop
+    \ missing ?do :-(
+    dup 0= if 2drop exit then
+    chars over + swap do i c@ emit [ 1 chars ] literal +loop
 ;
 : ." postpone s" type ; immediate
 

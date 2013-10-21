@@ -201,7 +201,7 @@ struct name_header {
     char_ft		ident[NAME_MAX_LENGTH];
 };
 
-extern name_p lookup(vmstate_p, c_addr_ft, cell_ft);
+extern name_p lookup(vmstate_p, name_p, c_addr_ft, cell_ft);
 extern name_p addname(vmstate_p, c_addr_ft, cell_ft, vminstr_fn);
 extern void linkname(name_p);
 
@@ -221,7 +221,7 @@ extern void linkname(name_p);
 extern union dict {
     struct {
 	cell_ft		here;		/* HERE */
-	name_p		namelist;	/* internal */
+	name_p		forth_wordlist;	/* FORTH-WORDLIST */
 
 	definition_d	literal_instr;	/* for LITERAL runtime xt */
 	definition_d	postpone_instr;	/* for POSTPONE non-immediate */
@@ -308,9 +308,12 @@ extern void compile_xt(vmstate_p, xt_ft);
 extern vminstr_p compile_skip(vmstate_p, xt_ft);
 extern void patch(vminstr_p, vminstr_p);
 extern void quit(vmstate_p, FILE *);
+extern void interpret_string(vmstate_p, char *);
 
 #define COMMA(vm, x)	(*(a_addr_ft)allot((vm), CELL_SIZE) = (cell_ft) (x))
 #define ALIGN(vm)	(DICT.here = ALIGNED(DICT.here))
+
+extern char initialize_forth[];
 
 /*
  */

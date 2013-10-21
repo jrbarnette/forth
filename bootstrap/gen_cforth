@@ -1,0 +1,29 @@
+#!/bin/bash
+# Copyright 2013, by J. Richard Barnette. All Rights Reserved.
+
+if [ $# -ne 2 ]
+then
+    echo "usage: $(basename $0) <variable> <file>" >&2
+    exit 1
+fi
+
+VARIABLE=$1
+FILE=$2
+cat <<END
+/*
+ * Copyright 2013, by J. Richard Barnette. All Rights Reserved.
+ */
+
+#include "forth.h"
+
+/*
+ * This file is automatically generate - don't edit.
+ */
+
+char $VARIABLE[] =
+$(sed '
+    s/[\"]/\\&/g
+    s/.*/    "&\\\n"/
+  ' $FILE)
+;
+END

@@ -229,7 +229,7 @@ extern union dict {
 	definition_d	fskip_instr;	/* for IF runtime xt */
 	definition_d	do_instr;	/* for DO runtime xt */
 	definition_d	plus_loop_instr; /* for +LOOP runtime xt */
-	definition_d	does_instr;	/* for IF runtime xt */
+	definition_d	does_instr;	/* for DOES> runtime xt */
 	definition_d	s_quote_instr;	/* for S" runtime xt */
 
 	cell_ft		state;		/* STATE */

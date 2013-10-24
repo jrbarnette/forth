@@ -2,7 +2,7 @@ char = parse Copyright 2013, by J. Richard Barnette, All Rights Reserved. =
 drop drop
 
 : \ source >in ! drop ; immediate
-\ Whew! Glad that's taken care of!
+\ Whew! Now we can write real comments!
 
 : [CHAR] char postpone literal ; immediate
 : ( [char] ) parse drop drop ; immediate
@@ -10,10 +10,6 @@ drop drop
 32 constant BL
 0 0 = constant TRUE
 1 0 = constant FALSE
-
-
-: LOOP 1 postpone literal postpone +loop ; immediate
-: COMPILE, ( xt -- ) , ;
 
 
 \ stackops - CORE
@@ -43,16 +39,22 @@ drop drop
 : U> ( n1 n2 -- flag ) swap u< ;
 : WITHIN ( x1 x2 x3 -- flag ) over - >r - r> u< ;
 
+\ memops - CORE
 : CHARS ( n1 -- n2 ) ;
 : CELLS ( n1 -- n2 ) 3 lshift ;
 : CELL+ ( a-addr1 -- a-addr2 ) [ 1 cells ] literal + ;
 : ALIGNED ( addr -- a-addr )
-    [ 1 cells dup 1- ] literal + [ negate ] literal and ;
+    [ 1 cells 1- ] literal + [ -1 cells ] literal and ;
 : CHAR+ ( c-addr1 -- c-addr2 ) [ 1 chars ] literal + ;
 : +! ( x a-addr -- ) dup >r @ + r> ! ;
 : 2! ( x1 x2 a-addr -- ) swap over ! cell+ ! ;
 : 2@ ( a-addr -- x1 x2 ) dup cell+ @ swap @ ;
 : COUNT ( c-addr -- c-addr u ) dup char+ swap c@ ;
+
+
+\ compile - CORE
+: LOOP 1 postpone literal postpone +loop ; immediate
+: COMPILE, ( xt -- ) , ;
 
 
 : FIND ( c-addr -- c-addr 0 | xt 1 | xt -1 )
@@ -71,6 +73,7 @@ drop drop
     chars over + swap do i c@ emit [ 1 chars ] literal +loop
 ;
 : ." postpone s" type ; immediate
+
 
 : .( [char] ) parse type ; immediate
 : ABORT"

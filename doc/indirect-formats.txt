@@ -22,16 +22,13 @@ definition formats
 
 behaviors
     do_colon:
-	RPUSH IP
-	IP = DP
+	IP@ >R DP@ IP!
     do_create:
-	RPUSH IP
-	PUSH DP + CELL_SIZE
-	IP = *DP
+	IP@ >R DP@ CELL+ DP@ @ IP!
     do_constant:
-	PUSH *DP
+	DP@ @
     do_variable:
-	PUSH DP
+	DP@
 
 instr formats:
     xt

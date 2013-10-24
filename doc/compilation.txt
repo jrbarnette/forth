@@ -1,3 +1,25 @@
+immediate word:  a Forth word whose compilation semantics are to
+    perform its execution semantics.
+default interpretation semantics are execution semantics
+default compilation semantics are to append execution semantics
+
+standard definition
+    compilation: compile xt
+    interpret: execute xt
+
+immediate definition
+    compilation: execute xt
+    interpret: execute xt
+
+no-interpret definition
+    compilation: compile xt
+    interpret: -14 throw
+
+compile-only definition
+    compilation: execute xt
+    interpret: -14 throw
+
+
 dictionary entry layout
     link
     count char, name char*len

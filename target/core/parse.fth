@@ -7,17 +7,48 @@
 \ WORD                  6.1.2450 CORE                   48
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
+create SOURCE 2 cells allot
+    here ] 2@ exit [ ' SOURCE cell+ !
+variable >IN
+
 \ anonymous definitions
-\ label word-addr - >= 33 characters, <= size of counted string
-\ skip-delimiters ( char "<chars>" -- )
+: delimiter? ( delim char -- flag )
+    over bl = if nip 127 33 within else = then
+;
+: skip-delimiters ( char "<chars>" -- )
+    >r source swap >r				( R: char c-addr )
+    >in @ 1-
+    begin 1+ 2dup > while			( end idx )
+	dup chars 2r@ rot + c@			( end idx char c )
+	delimiter? invert
+    until then >in ! drop 2r@ 2drop
+;
+
+\ target definitions
+: PARSE ( char "ccc<char>" -- c-addr u )
+    >r source swap >in @ chars + >r		( R: delim c-addr )
+    >in @ - -1
+    begin 1+ 2dup > while			( end idx )
+	dup chars 2r@ rot + c@			( end idx delim c )
+	delimiter?
+    until
+	nip dup 1+
+    then >in +! r> swap r> drop
+;
+
+\ anonymous definitions
 : parse-name ( -- c-addr u ) bl skip-delimiters bl parse ;
 
-variable >IN
-: CHAR ( "<spaces>name" --- char ) parse-name drop c@ ;
-: ( [char] ) parse 2drop ; immediate
+\ label word-addr - >= 33 characters, <= size of counted string
+
+\ target definitions
 : WORD ( char "<chars>ccc<char>" -- c-addr )
     parse-name word-addr 2dup c! char+
-    swap chars 2dup + bl c! move ;
+    swap chars 2dup + bl c! move
+;
+
+: CHAR ( "<spaces>name" --- char ) parse-name drop c@ ;
+: ( [char] ) parse 2drop ; immediate
 
 \ ------  ------  ------  ------  ------  ------  ------  ------
 \ .(                    6.2.0200 CORE EXT               49

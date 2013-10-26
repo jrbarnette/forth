@@ -24,31 +24,31 @@ variable STATE
 : ] true  state ! ;
 
 : interpret
-    begin parse-name dup while
-	2dup lookup if
-	    2drop state @ if
+    begin parse-name dup while			( str len )
+	2dup lookup if				( str len xt flags )
+	    \ compile or execute a definition
+	    2swap 2drop state @ if
 		nf-immediate and if execute else compile, then
 	    else
 		nf-nointerp and if -14 throw else execute then
 	    then
-	else
-	    \ try to parse integer
-	    -13 throw
+	else					( str len )
+	    \ try to convert a number
+	    over c@ [char] - = >r		( R: neg? )
+	    r@ + swap r@ - swap			\ adjust for sign char
+	    0 dup 2swap >number			( ul uh str len )
+	    if -13 throw then 2drop		( ul )
+	    r> if negate then			( n )
+	    state @ if postpone literal then
 	then
     repeat
 ;
-: interpret
-    BEGIN BL WORD DUP C@ WHILE	( c-addr )
-	FIND ?DUP IF		( xt -1 | xt 1 ) \ 1 means IMMEDIATE
-	    -1 = STATE @ AND IF COMPILE, ELSE EXECUTE THEN
-	ELSE			( c-addr )
-	    0 0 ROT COUNT	( ud c-addr u )
-	    OVER C@ [CHAR] - = IF 1- SWAP 1+ SWAP -1 ELSE 0 THEN
-	    >R >NUMBER 2SWAP SWAP DROP R> IF NEGATE THEN
-	    SWAP IF -13 THROW THEN SWAP DROP
-	    STATE @ IF POSTPONE LITERAL THEN
-	THEN
-    REPEAT
+
+: EVALUATE ( i*x c-addr u -- j*x )
+    \ current source specification >R
+    \ XXX -1 TO SOURCE-ID
+    begin [ ' source >body ] literal @ >in @ > while interpret repeat
+    \ R> current source specification
 ;
 
 : QUIT

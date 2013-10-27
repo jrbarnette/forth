@@ -96,7 +96,22 @@ x_here(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-static void
+/*------  ------  ------  ------  ------  ------  ------  ------
+  UNUSED                6.2.2395 CORE EXT               57
+  ------  ------  ------  ------  ------  ------  ------  ------
+*/
+
+/* ( -- u ) */
+static vminstr_p
+x_unused(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    CHECK_PUSH(vm, 1);
+    PUSH(vm, DICTIONARY_SIZE - DICT.here);
+    return ip;
+}
+
+
+void
 initialize_dictionary(vmstate_p vm, defn_data_p ignore)
 {
     DICT.here = sizeof (dictionary.dict_static_data);
@@ -112,5 +127,6 @@ dictionary_defns[] = {
     { define_name, "ALLOT",     x_allot },
     { define_name, "C,",        x_c_comma },
     { define_name, "HERE",      x_here },
+    { define_name, "UNUSED",    x_unused },
     { NULL }
 };

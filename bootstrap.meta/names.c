@@ -64,7 +64,6 @@ vminstr_p
 i_addname(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     char *id = ip[0].str;
-fprintf(stderr, "add %s\n", id);
     cell_ft len = strlen(ip[0].str);
     assert(0 < len && len < NAME_MAX_LENGTH);
 

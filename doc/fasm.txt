@@ -1,0 +1,36 @@
+\ comment
+( comment )
+load "filename"
+create "name"
+    immediate
+    no-interpret
+does> handler
+here
+constant "name"
+' "name"
+<integer>
+,
+execute
+allot
+interpret[ name ... ]
+compile[ name ... ]
+====
+load "filename"
+create "name"
+    immediate
+    no-interpret
+compile "name"
+execute "name"
+does> handler
+label "name"
+<integer>
+,
+====
+CALL(table)
+ADDNAME("name")
+ADDNAME2("name", flags)
+C NAME("string")
+X NAME("string")
+PRIM NAME("string")
+LABEL NAME("string")
+L(expr)

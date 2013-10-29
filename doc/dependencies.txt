@@ -1,0 +1,62 @@
+QUIT
+    reset return stack pointer
+    set input source to terminal
+    [ STATE CR TYPE REFILL
+    interpret
+
+interpret
+    parse-name
+    lookup
+    nf-immediate nf-nointerp
+    COMPILE,
+    >NUMBER
+    LITERAL
+    STATE
+
+parse-name -> PARSE
+set input source to terminal
+    >IN SOURCE
+
+lookup
+    FORTH-WORDLIST
+
+>NUMBER
+    BASE
+    double-cell arithmetic
+
+LITERAL
+    ,
+
+COMPILE, -> ,
+    HERE ALLOT
+
+[
+    STATE
+
+STATE CR TYPE REFILL BASE >IN SOURCE FORTH-WORDLIST HERE ALLOT
+    primitives dependencies
+
+primitive dependencies
+    stack primitives
+    1-cell arithmetic primitives
+    memory primitives
+    do-literal
+    do-s"
+    branches
+    here-address
+    nf-immediate nf-nointerp
+    reset return stack pointer
+    THROW
+    EXECUTE
+    EMIT
+
+compile-time functions
+    IF ELSE THEN BEGIN WHILE REPEAT UNTIL
+    DO LOOP +LOOP I UNLOOP LEAVE
+    : CREATE CONSTANT VARIABLE
+    LITERAL
+    POSTPONE
+    execute
+    lookup
+    here allot align , c,
+    ( some sort of storage for labels )

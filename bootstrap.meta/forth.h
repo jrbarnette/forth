@@ -246,6 +246,7 @@ extern vminstr_p init_names(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_d init_stack_prim[];
 extern vminstr_d init_arith_prim[];
 extern vminstr_d init_memory_prim[];
+extern vminstr_d init_mult_prim[];
 extern vminstr_d init_compile_prim[];
 
 extern vminstr_d init_memory_ops[];

@@ -189,6 +189,7 @@ DIRECT_FORTH(initialize) // {
     CALL(init_stack_prim)
     CALL(init_arith_prim)
     CALL(init_memory_prim)
+    CALL(init_mult_prim)
     CALL(init_compile_prim)
     CALL(init_memory_ops)
     CALL(init_dictionary_ops)

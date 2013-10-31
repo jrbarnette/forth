@@ -7,6 +7,7 @@ SOURCES =			\
 		dictionary.c	\
 		forth.c		\
 		memops.c	\
+		multops.c	\
 		names.c		\
 		stackops.c	\
 		vm.c

@@ -13,13 +13,21 @@
 // ABORT                 6.1.0670 CORE                   32
 // ABORT"                6.1.0680 CORE                   32
 // EVALUATE              6.1.1360 CORE                   38
+// POSTPONE              6.1.2033 CORE                   43
 // QUIT                  6.1.2050 CORE                   43
 //------  ------  ------  ------  ------  ------  ------  ------
 
+/* ( R: i*x -- ) */
+vminstr_p
+do_clearrstack(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    CLEAR_RSTACK(vm);
+    return ip;
+}
+
 
 META_FORTH(interpreter_ops) // {
-XNONAME						/* interpret */
-    BEGIN parse-name DUP WHILE			/* ( str len ) */
+    XNONAME BEGIN parse-name DUP WHILE		/* ( str len ) */
 	TWO_DUP lookup IF			/* ( str len xt flags ) */
 	    /* compile or execute a definition */
 	    TWO_SWAP TWO_DROP STATE FETCH IF
@@ -37,24 +45,21 @@ XNONAME						/* interpret */
 	    R_FROM IF NEGATE THEN		/* ( n ) */
 	    STATE FETCH IF XPOSTPONE LITERAL THEN
 	THEN
-    REPEAT
-XSEMICOLON
+    REPEAT XSEMICOLON
 
-/* ( C: interpret-xt ) */
-ANONYMOUS(do_quit)
+					/* ( C: interpret ) */
+    ANONYMOUS(do_clearrstack)		/* ( C: interpret clearrstack ) */
 
-/* ( C: interpret-xt do-quit-xt ) */
-XCOLON("QUIT")
-    LEFT_BRACKET COMMA RIGHT_BRACKET
-    /* ( C: interpret-xt ) */
-    XPOSTPONE(LEFT_BRACKET)
-    BEGIN
-	STATE FETCH L(0) EQUALS IF CR
-	/* ." OK " */
-	THEN
-	REFILL WHILE
-	LEFT_BRACKET COMMA RIGHT_BRACKET
-	/* ( C: ) */
-    REPEAT
-XSEMICOLON
+    XCOLON("QUIT")
+	INTERP( COMMA )			/* ( C: interpret ) */
+	XPOSTPONE LEFT_BRACKET
+	BEGIN
+	    STATE FETCH L(0) EQUALS IF CR
+	    /* ." OK " */
+	    THEN
+	    REFILL WHILE
+	    LEFT_BRACKET COMMA RIGHT_BRACKET
+	    /* ( C: ) */
+	REPEAT
+    XSEMICOLON
 END_META // }

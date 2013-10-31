@@ -21,6 +21,9 @@
 ;
 : ." POSTPONE S" TYPE ; IMMEDIATE
 
+: . <# DUP ABS BL HOLD 0 #S ROT SIGN #> TYPE ;
+: U. <# BL HOLD 0 #S #> TYPE ;
+
 \ XXX - does this really work?  what about backspace, etc.?
 : ACCEPT ( c-addr +n1 -- +n2 )
     DUP >R CHARS OVER + SWAP		( end start ) ( R: +n1 )

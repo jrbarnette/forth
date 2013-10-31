@@ -25,6 +25,35 @@
   ------  ------  ------  ------  ------  ------  ------  ------
 */
 
+#define HALF_SHIFT	((cell_ft) (4 * CELL_SIZE))
+#define HALF_MASK	(~(cell_ft) 0 >> HALF_SHIFT)
+
+
+static void
+dmult(cell_ft *sp, cell_ft n1, cell_ft n2, cell_ft sign)
+{
+    cell_ft n1_lo = n1 & HALF_MASK;
+    cell_ft n1_hi = n1 >> HALF_SHIFT;
+    cell_ft n2_lo = n2 & HALF_MASK;
+    cell_ft n2_hi = n2 >> HALF_SHIFT;
+
+    cell_ft mid1 = n1_hi * n2_lo;
+    cell_ft mid2 = n1_lo * n2_hi;
+    cell_ft hi = n1_hi * n2_hi + (mid1 >> HALF_SHIFT) +
+		    (mid2 >> HALF_SHIFT);
+    cell_ft tlo, lo;
+
+    tlo = n1_lo * n2_lo;
+    lo = tlo + (mid1 << HALF_SHIFT);
+    hi += (lo < tlo);
+    tlo = lo;
+    lo = tlo + (mid2 << HALF_SHIFT);
+    hi += (lo < tlo);
+
+    PICK(sp, 1) = lo;
+    PICK(sp, 0) = hi + sign;
+}
+
 
 /* ( x1 x2 -- x ) */
 static vminstr_p
@@ -66,16 +95,47 @@ x_slash_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
+/* ( n1 n2 -- d ) */
+static vminstr_p
+x_m_star(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    cell_ft *sp = SP(vm);
+    CHECK_POP(vm, 2);
+    cell_ft n1 = PICK(sp, 1);
+    cell_ft n2 = PICK(sp, 0);
+    cell_ft s1 = -((snumber_ft) n1 >= 0);
+    cell_ft s2 = -((snumber_ft) n2 >= 0);
+    cell_ft sign = ((s1 & -n1) + (s2 & -n2)) & (s1 ^ s2);
+    dmult(sp, n1, n2, sign);
+
+    return ip;
+}
+
+
 /* ( n1 n2 -- n ) */
 static vminstr_p
 x_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
     CHECK_POP(vm, 2);
-    snumber_ft n1 = PICK(sp, 1);
-    snumber_ft n2 = PICK(sp, 0);
+    cell_ft n1 = PICK(sp, 1);
+    cell_ft n2 = PICK(sp, 0);
     PICK(sp, 0) = (cell_ft) (n1 % n2);
     SET_SP(vm, sp, 1);
+    return ip;
+}
+
+
+/* ( u1 u2 -- ud ) */
+static vminstr_p
+x_u_m_star(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    cell_ft *sp = SP(vm);
+    CHECK_POP(vm, 2);
+    cell_ft n1 = PICK(sp, 1);
+    cell_ft n2 = PICK(sp, 0);
+    dmult(sp, n1, n2, 0);
+
     return ip;
 }
 
@@ -85,6 +145,8 @@ multops_defns[] = {
     { define_name, "*",		x_star },
     { define_name, "/",		x_slash },
     { define_name, "/MOD",	x_slash_mod },
+    { define_name, "M*",	x_m_star },
     { define_name, "MOD",	x_mod },
+    { define_name, "UM*",	x_u_m_star },
     { NULL }
 };

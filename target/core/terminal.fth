@@ -1,5 +1,6 @@
 \ Copyright 2013, by J. Richard Barnette, All Rights Reserved.
 \ ------  ------  ------  ------  ------  ------  ------  ------
+\ .                     6.1.0180 CORE                   27
 \ ."                    6.1.0190 CORE                   28
 \ ACCEPT                6.1.0695 CORE                   33
 \ CR                    6.1.0990 CORE                   36
@@ -8,6 +9,10 @@
 \ SPACE                 6.1.2220 CORE                   45
 \ SPACES                6.1.2230 CORE                   45
 \ TYPE                  6.1.2310 CORE                   46
+\ U.                    6.1.2320 CORE                   46
+\
+\ .R                    6.2.0210 CORE EXT               49
+\ U.R                   6.2.2330 CORE EXT               57
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
 \ EMIT ( char -- )
@@ -21,7 +26,7 @@
 ;
 : ." POSTPONE S" TYPE ; IMMEDIATE
 
-: . <# DUP ABS BL HOLD 0 #S ROT SIGN #> TYPE ;
+: . <# BL HOLD DUP ABS 0 #S ROT SIGN #> TYPE ;
 : U. <# BL HOLD 0 #S #> TYPE ;
 
 \ XXX - does this really work?  what about backspace, etc.?

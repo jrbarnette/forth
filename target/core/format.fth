@@ -22,27 +22,28 @@ variable hold-count
 here constant hold-end
 : hold-pointer ( -- c-addr ) hold-end hold-count @ chars - ;
 
-: #< ( -- ) 0 hold-count ! ;
-: HOLD ( char -- ) hold-pointer c! ;
+: <# ( -- ) 0 hold-count ! ;
+: HOLD ( char -- ) 1 hold-count +! hold-pointer c! ;
 : #> ( xd -- c-addr u ) 2drop hold-pointer hold-count @ ;
 
 : SIGN ( n -- ) 0< if [char] - hold then ;
 : # ( ud1 -- ud2 )
-    dup >r base @ um/mod
-    dup 10 < if [char] 0 else [char] A then + hold
-    r> 0 base @ um/mod drop
+    0 base @ um/mod rot swap base @ um/mod
+    dup 10 u< if [char] 0 else [ char A 10 - ] literal then
+    + hold swap
 ;
 
 : #S ( ud1 -- ud2 ) begin # 2dup or 0= until ;
 
 : >NUMBER ( ud1 c-addr1 u1 -- ud2 c-addr2 u2 )
     begin dup while			( ud c-addr u )
-	>r dup >r			( R: u c-addr )
-	c@ [char] 0 -
-	dup 9 > if [ char A char 0 - ] literal - then
-	base @ over 1+ < if drop r> r> exit then
-	\ FIXME multiply ud1 by base, add in digit
-	r> r>
+	>r dup >r c@			( ud char ) ( R: u c-addr )
+	[char] 0 -
+	9 over u< if [ char 0 char A - ] literal + then
+	dup base @ u< invert if drop r> r> exit then
+	>r base @ * >r base @ um* r> + r>
+	rot dup >r + dup r> u< negate rot +
+	r> char+ r> 1-
     repeat
 ;
 

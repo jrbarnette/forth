@@ -22,9 +22,11 @@
   M*                    6.1.1810 CORE                   41
   MOD                   6.1.1890 CORE                   42
   UM*                   6.1.2360 CORE                   46
+  UM/MOD                6.1.2370 CORE                   46
   ------  ------  ------  ------  ------  ------  ------  ------
 */
 
+#define HIGH_BIT	(~(~(unsigned) 0 >> 1))
 #define HALF_SHIFT	((cell_ft) (4 * CELL_SIZE))
 #define HALF_MASK	(~(cell_ft) 0 >> HALF_SHIFT)
 
@@ -140,6 +142,33 @@ x_u_m_star(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
+/* ( ud u1 -- u2 u3 ) */
+static vminstr_p
+x_u_m_slash_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    cell_ft *sp = SP(vm);
+    CHECK_POP(vm, 3);
+    cell_ft v = PICK(sp, 0);
+    if (v == 0) {
+	THROW(vm, -10);
+    }
+    cell_ft d_hi = PICK(sp, 1);
+    cell_ft d_lo = PICK(sp, 2);
+
+    unsigned r_hi = d_hi % v;
+    unsigned factor = (HIGH_BIT / v) << 1;
+    unsigned factor_rem = (HIGH_BIT % v) << 1;
+    unsigned q_lo = d_lo / v + r_hi * factor;
+    unsigned rem = d_lo % v + r_hi * factor_rem;
+
+    PICK(sp, 2) = q_lo + rem / v;
+    PICK(sp, 1) = rem % v;
+    SET_SP(vm, sp, 1);
+
+    return ip;
+}
+
+
 defn_dt
 multops_defns[] = {
     { define_name, "*",		x_star },
@@ -148,5 +177,6 @@ multops_defns[] = {
     { define_name, "M*",	x_m_star },
     { define_name, "MOD",	x_mod },
     { define_name, "UM*",	x_u_m_star },
+    { define_name, "UM/MOD",	x_u_m_slash_mod },
     { NULL }
 };

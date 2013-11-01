@@ -24,6 +24,7 @@
 //------  ------  ------  ------  ------  ------  ------  ------
 
 
+#define HIGH_BIT	(~(~(unsigned) 0 >> 1))
 #define HALF_SHIFT	((cell_ft) (4 * CELL_SIZE))
 #define HALF_MASK	(~(cell_ft) 0 >> HALF_SHIFT)
 
@@ -138,6 +139,33 @@ x_u_m_star(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
+/* ( ud u1 -- u2 u3 ) */
+static vminstr_p
+x_u_m_slash_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    cell_ft *sp = SP(vm);
+    CHECK_POP(vm, 3);
+    cell_ft v = PICK(sp, 0);
+    if (v == 0) {
+	THROW(vm, -10);
+    }
+    cell_ft d_hi = PICK(sp, 1);
+    cell_ft d_lo = PICK(sp, 2);
+
+    unsigned r_hi = d_hi % v;
+    unsigned factor = (HIGH_BIT / v) << 1;
+    unsigned factor_rem = (HIGH_BIT % v) << 1;
+    unsigned q_lo = d_lo / v + r_hi * factor;
+    unsigned rem = d_lo % v + r_hi * factor_rem;
+
+    PICK(sp, 2) = q_lo + rem / v;
+    PICK(sp, 1) = rem % v;
+    SET_SP(vm, sp, 1);
+
+    return ip;
+}
+
+
 DIRECT_FORTH(init_mult_prim) // {
     PRIM("*",		x_star)
     PRIM("/",		x_slash)
@@ -145,6 +173,7 @@ DIRECT_FORTH(init_mult_prim) // {
     PRIM("M*",		x_m_star)
     PRIM("MOD",		x_mod)
     PRIM("UM*",		x_u_m_star)
+    PRIM("UM/MOD",	x_u_m_slash_mod)
 END_DIRECT // }
 
 // */                    6.1.0100 CORE                   26

@@ -248,11 +248,15 @@ extern vminstr_d init_arith_prim[];
 extern vminstr_d init_memory_prim[];
 extern vminstr_d init_mult_prim[];
 extern vminstr_d init_compile_prim[];
+extern vminstr_d init_terminal_prim[];
 
+extern vminstr_d init_arith_ops[];
 extern vminstr_d init_memory_ops[];
 extern vminstr_d init_dictionary_ops[];
 extern vminstr_d init_compile_ops[];
 extern vminstr_d init_control_ops[];
+extern vminstr_d init_format_ops[];
+extern vminstr_d init_terminal_ops[];
 
 
 /*

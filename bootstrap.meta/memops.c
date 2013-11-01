@@ -110,9 +110,9 @@ META_FORTH(init_memory_ops) // {
     XCOLON("CELLS") L(CELL_SHIFT) LSHIFT XSEMICOLON
     XCOLON("CHAR+") L(CHAR_SIZE) PLUS XSEMICOLON
     XCOLON("CHARS") XSEMICOLON		/* XXX assert(CHAR_SIZE == 1) */
+    XCOLON("+!") DUP TO_R FETCH PLUS R_FROM STORE XSEMICOLON
 END_META // }
 
-// +!                    6.1.0130 CORE                   27
 // 2!                    6.1.0310 CORE                   29
 // 2@                    6.1.0350 CORE                   29
 // C!                    6.1.0850 CORE                   34

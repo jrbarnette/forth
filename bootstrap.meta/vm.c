@@ -129,8 +129,11 @@ interpret_names(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 	xt_ft xtok = NAME_XT(name);
 	if (*state_ptr && !NAME_IS_IMMEDIATE(name)) {
 	    comma((cell_ft) xtok);
+	} else if (!*state_ptr && !NAME_IS_INTERPRETABLE(name)) {
+	    fprintf(stderr,
+		    "encountered %s in interpretion state\n", ip->str);
+	    abort();
 	} else {
-	    assert(NAME_IS_INTERPRETABLE(name));
 	    execute(vm, xtok);
 	}
 	ip++;
@@ -191,10 +194,14 @@ DIRECT_FORTH(initialize) // {
     CALL(init_memory_prim)
     CALL(init_mult_prim)
     CALL(init_compile_prim)
+    CALL(init_terminal_prim)
     CALL(init_memory_ops)
     CALL(init_dictionary_ops)
     CALL(init_compile_ops)
     CALL(init_control_ops)
+    CALL(init_arith_ops)
+    CALL(init_format_ops)
+    CALL(init_terminal_ops)
 END_DIRECT // }
 
 

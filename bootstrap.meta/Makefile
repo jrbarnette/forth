@@ -5,11 +5,13 @@ SOURCES =			\
 		compile.c	\
 		control.c	\
 		dictionary.c	\
+		format.c	\
 		forth.c		\
 		memops.c	\
 		multops.c	\
 		names.c		\
 		stackops.c	\
+		terminal.c	\
 		vm.c
 
 CHECKNONE = 0

@@ -236,11 +236,15 @@ DIRECT_FORTH(init_arith_prim) // {
     PRIM("XOR",		x_xor)
 END_DIRECT // }
 
+
+META_FORTH(init_arith_ops) // {
+    XCOLON("ABS") DUP L(0) LESS IF NEGATE THEN XSEMICOLON
+END_META // }
+
 // 0<                    6.1.0250 CORE                   28
 // 0=                    6.1.0270 CORE                   28
 // 1+                    6.1.0290 CORE                   28
 // 1-                    6.1.0300 CORE                   29
-// ABS                   6.1.0690 CORE                   32
 // MAX                   6.1.1870 CORE                   42
 // MIN                   6.1.1880 CORE                   42
 // S>D                   6.1.2170 CORE                   44

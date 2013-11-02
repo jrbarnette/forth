@@ -27,18 +27,25 @@ META_FORTH(init_format_ops) // {
     XCOLON("DECIMAL") L(10) BASE STORE XSEMICOLON
     DECIMAL
 
+    /* 1 CELLS 8 * 2 * 2 + ALLOT HERE CONSTANT hold-end */
+    /* VARIABLE hold-count */
     L(2 * 8 * CELL_SIZE + 2) ALLOT HERE L(CELL_SIZE) ALLOT
 
-    XNONAME INTERP( DUP DUP ) LITERAL LITERAL FETCH CHARS MINUS
+    /* : hold-pointer hold-end hold-count @ CHARS - ; */
+    XNONAME /* ( C: count-ptr xt ) */
+	INTERP( OVER DUP ) LITERAL LITERAL FETCH CHARS MINUS
     XSEMICOLON
     
     /* ( C: count-ptr hold-ptr-xt ) */
 
+    /* : <# ( -- ) 0 hold-count ! ; */
     XCOLON("<#") L(0) INTERP( OVER ) LITERAL STORE XSEMICOLON
+    /* : HOLD ( char -- ) 1 hold-count +! hold-pointer c! ; */
     XCOLON("HOLD")
 	L(1) INTERP( OVER ) LITERAL PLUS_STORE
 	INTERP( DUP COMMA ) C_STORE
     XSEMICOLON
+    /* : #> ( d -- c-addr u ) 2DROP hold-pointer hold-count @ ; */
     XCOLON("#>")
 	DROP DROP INTERP( COMMA ) LITERAL FETCH
     XSEMICOLON

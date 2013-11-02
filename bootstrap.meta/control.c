@@ -78,7 +78,7 @@ META_FORTH(init_control_ops) // {
     /* : UNTIL ( C: dest -- ) POSTPONE fskip back ; IMMEDIATE */
     XCOLON("UNTIL")
 	INTERP( ROT SWAP )		/* ( C: forward back fskip ) */
-	LITERAL COMMA INTERP( OVER COMMA )
+	LITERAL COMMA INTERP( DUP COMMA )
     XSEMICOLON COMPILE_ONLY		/* ( C: forward back ) */
 
     ANON(do_skip)			/* ( C: forward back skip ) */

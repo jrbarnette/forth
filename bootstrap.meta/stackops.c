@@ -174,14 +174,14 @@ x_pick(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 DIRECT_FORTH(init_stack_prim) // {
-    PRIM(">R",		x_to_r)		// XXX: NAME_TYPE_NO_INTERPRET
+    PRIM(">R",		x_to_r)		FLAGS(NO_INTERPRET)
     PRIM("?DUP",	x_question_dup)
     PRIM("DEPTH",	x_depth)
     PRIM("DROP",	x_drop)
     PRIM("DUP",		x_dup)
     PRIM("OVER",	x_over)
-    PRIM("R>",		x_r_from)	// XXX: NAME_TYPE_NO_INTERPRET
-    PRIM("R@",		x_r_fetch)	// XXX: NAME_TYPE_NO_INTERPRET
+    PRIM("R>",		x_r_from)	FLAGS(NO_INTERPRET)
+    PRIM("R@",		x_r_fetch)	FLAGS(NO_INTERPRET)
     PRIM("ROT",		x_rot)
     PRIM("SWAP",	x_swap)
     PRIM("PICK",	x_pick)

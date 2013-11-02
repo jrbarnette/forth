@@ -25,14 +25,5 @@ main(int argc, char *argv[])
 
     init_forth(&vmstate);
 
-    name_p np;
-    for (np = DICT.forth_wordlist; np != NULL; np = np->prev) {
-	char name[NAME_MAX_LENGTH+1];
-	size_t len = NAME_LENGTH(np);
-	(void) memcpy(name, np->ident, len);
-	name[len] = '\0';
-	(void) printf("name: %p  %p %s\n",
-			np, NAME_XT(np)->arg[0].xtok, name);
-    }
     return EXIT_SUCCESS;
 }

@@ -20,7 +20,7 @@
 
 : CR ( -- ) 10 EMIT ;
 : SPACE ( -- ) BL EMIT ;
-: SPACES ( n -- ) 0 ?DO SPACE LOOP ;
+: SPACES ( n -- ) DUP 0> IF 0 DO SPACE LOOP ELSE DROP THEN ;
 : TYPE ( c-addr u -- )
     CHARS OVER + SWAP ?DO I C@ EMIT [ 1 CHARS ] LITERAL +LOOP
 ;
@@ -39,3 +39,6 @@
 	    OVER C! CHAR+		( end cur ) ( R: +n1 )
     REPEAT THEN R> + - NEGATE
 ;
+
+: .R ( n1 n2 -- ) >R <# DUP SIGN ABS 0 #S #> R> OVER - SPACES TYPE ;
+: U.R ( u n -- ) >R <# 0 #S #> R> OVER - SPACES TYPE ;

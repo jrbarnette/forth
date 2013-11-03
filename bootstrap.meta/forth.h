@@ -297,13 +297,13 @@ extern vminstr_p do_variable(vminstr_p, vmstate_p, vmarg_p);
 #define NF_IMMEDIATE	L(NAME_TYPE_IMMEDIATE)
 #define NF_NO_INTERPRET	L(NAME_TYPE_NO_INTERPRET)
 
-#define ANON(h)		HERE DIRECT XCOMMA(h) META
+#define ANON(hdlr)	HERE L(hdlr) COMMA
 #define XNONAME		ANON(do_colon) S("]")
 #define XVARIABLE(nm)	DIRECT PRIM(nm, do_variable) ML(CELL_SIZE) ALLOT
 #define XCOLON(nm)	DIRECT PRIM(nm, do_colon) META S("]")
 #define XSEMICOLON	EXIT S("[")
 #define XPOSTPONE	DIRECT X(i_postpone)
-#define INTERP(code)	LEFT_BRACKET code RIGHT_BRACKET
+#define INTERP(code)	S("[") code S("]")
 
 #define STORE            S("!")
 #define NUMBER_SIGN      S("#")

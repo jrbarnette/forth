@@ -47,7 +47,7 @@ META_FORTH(interpreter_ops) // {
     REPEAT XSEMICOLON
 
 					/* ( C: interpret ) */
-    ANONYMOUS(do_clearrstack)		/* ( C: interpret clearrstack ) */
+    ANON(do_clearrstack)		/* ( C: interpret clearrstack ) */
 
     XCOLON("QUIT")
 	INTERP( COMMA )			/* ( C: interpret ) */

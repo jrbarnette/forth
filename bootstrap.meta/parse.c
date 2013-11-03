@@ -11,6 +11,11 @@
  */
 
 //------  ------  ------  ------  ------  ------  ------  ------
+// (                     6.1.0080 CORE                   26
+// >IN                   6.1.0560 CORE                   31
+// CHAR                  6.1.0895 CORE                   35
+// SOURCE                6.1.2216 CORE                   45
+//
 // PARSE                 6.2.2008 CORE EXT               55
 //------  ------  ------  ------  ------  ------  ------  ------
 
@@ -29,6 +34,8 @@ XSEMICOLON
 END_META // }
 
 /*
+Q:  where should skip-delimiters (for parse-word) live?
+
 clients of skip-delimiters:
     '                     6.1.0070 CORE                   25
     CHAR                  6.1.0895 CORE                   35
@@ -49,6 +56,9 @@ but we can ignore these:
     ... which should also be used in interpret.  So those four
     belong in interpret.c.
 
-    So... only WORD is different, and it can can reasonably be added
-    to interpret.c, too.
+    Only WORD and CHAR are different, and they can can reasonably be
+    added to interpret.c, too.
+
+    So...  it seems like skip-delimiters can go in interpret.c.
+    We'd like PARSE to live with skip-delimiters...
 */

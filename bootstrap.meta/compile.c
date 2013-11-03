@@ -10,6 +10,7 @@
  */
 
 //------  ------  ------  ------  ------  ------  ------  ------
+// EXECUTE               6.1.1370 CORE                   38
 // EXIT                  6.1.1380 CORE                   38
 // LITERAL               6.1.1780 CORE                   41
 // POSTPONE              6.1.2033 CORE                   43
@@ -23,6 +24,16 @@
 // COMPILE,              6.2.0945 CORE EXT               52
 // [COMPILE]             6.2.2530 CORE EXT               58
 //------  ------  ------  ------  ------  ------  ------  ------
+
+
+/* ( i*x xt -- i*j ) */
+vminstr_p
+x_execute(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    CHECK_POP(vm, 1);
+    xt_ft xtok = (xt_ft) POP(vm);
+    return xtok->handler(ip, vm, xtok[1].arg);
+}
 
 
 /* ( R: -- nest-sys ) initiation semantics */
@@ -74,6 +85,7 @@ init_compile(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 DIRECT_FORTH(init_compile_prim) // {
     X(init_compile)
+    PRIM("EXECUTE", x_execute)
     PRIM("EXIT", x_exit)
     PRIM("STATE", do_variable) XCOMMA(F_TRUE)
     PRIM("[", do_colon)

@@ -243,19 +243,20 @@ extern name_p lookup(char *, size_t);
 extern vminstr_p init_dictionary(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p init_names(vminstr_p, vmstate_p, vmarg_p);
 
-extern vminstr_d init_stack_prim[];
 extern vminstr_d init_arith_prim[];
+extern vminstr_d init_compile_prim[];
 extern vminstr_d init_memory_prim[];
 extern vminstr_d init_mult_prim[];
-extern vminstr_d init_compile_prim[];
+extern vminstr_d init_stack_prim[];
 extern vminstr_d init_terminal_prim[];
 
 extern vminstr_d init_arith_ops[];
-extern vminstr_d init_memory_ops[];
-extern vminstr_d init_dictionary_ops[];
 extern vminstr_d init_compile_ops[];
 extern vminstr_d init_control_ops[];
+extern vminstr_d init_dictionary_ops[];
 extern vminstr_d init_format_ops[];
+extern vminstr_d init_memory_ops[];
+extern vminstr_d init_parse_ops[];
 extern vminstr_d init_terminal_ops[];
 
 

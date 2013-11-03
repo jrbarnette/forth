@@ -10,6 +10,7 @@ SOURCES =			\
 		memops.c	\
 		multops.c	\
 		names.c		\
+		parse.c	\
 		stackops.c	\
 		terminal.c	\
 		vm.c

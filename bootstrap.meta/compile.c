@@ -76,15 +76,15 @@ do_variable(vminstr_p ip, vmstate_p vm, vmarg_p var_addr)
 
 
 static vminstr_p
-init_compile(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+init_literal(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
-    DICT.literal_instr.handler = do_literal;
+    DO_LITERAL->handler = do_literal;
     return ip;
 }
 
 
 DIRECT_FORTH(init_compile_prim) // {
-    X(init_compile)
+    X(init_literal)
     PRIM("EXECUTE", x_execute)
     PRIM("EXIT", x_exit)
     PRIM("STATE", do_variable) XCOMMA(F_TRUE)
@@ -100,10 +100,12 @@ META_FORTH(init_compile_ops) // {
     XCOLON("LITERAL") L(DO_LITERAL) COMMA COMMA XSEMICOLON COMPILE_ONLY
 END_META // }
 
+// COMPILE,              6.2.0945 CORE EXT               52
+
+// These rely on PARSE
 // POSTPONE              6.1.2033 CORE                   43
 // S"                    6.1.2165 CORE                   44
 // [']                   6.1.2510 CORE                   48
 // [CHAR]                6.1.2520 CORE                   49
 // C"                    6.2.0855 CORE EXT               52
-// COMPILE,              6.2.0945 CORE EXT               52
 // [COMPILE]             6.2.2530 CORE EXT               58

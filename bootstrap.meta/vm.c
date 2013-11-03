@@ -396,6 +396,7 @@ DIRECT_FORTH(initialize) // {
     CALL(init_compile_ops)
     CALL(init_control_ops)
     CALL(init_arith_ops)
+    CALL(init_parse_ops)
     CALL(init_format_ops)
     CALL(init_terminal_ops)
     CALL(test_forth)

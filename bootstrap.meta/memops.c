@@ -111,12 +111,10 @@ META_FORTH(init_memory_ops) // {
     XCOLON("CHAR+") L(CHAR_SIZE) PLUS XSEMICOLON
     XCOLON("CHARS") XSEMICOLON		/* XXX assert(CHAR_SIZE == 1) */
     XCOLON("+!") DUP TO_R FETCH PLUS R_FROM STORE XSEMICOLON
+    XCOLON("2!") SWAP OVER STORE CELL_PLUS STORE XSEMICOLON
+    XCOLON("2@") DUP CELL_PLUS FETCH SWAP FETCH XSEMICOLON
 END_META // }
 
-// 2!                    6.1.0310 CORE                   29
-// 2@                    6.1.0350 CORE                   29
-// C!                    6.1.0850 CORE                   34
-// C@                    6.1.0870 CORE                   34
 // COUNT                 6.1.0980 CORE                   36
 // FILL                  6.1.1540 CORE                   39
 // ERASE                 6.2.1350 CORE EXT               53

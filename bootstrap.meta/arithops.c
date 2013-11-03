@@ -66,6 +66,50 @@ x_minus(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
+/* ( n -- flag ) */
+vminstr_p
+x_zero_less(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    cell_ft *sp = SP(vm);
+    CHECK_POP(vm, 1);
+    PICK(sp, 0) = -((snumber_ft) PICK(sp, 0) < 0);
+    return ip;
+}
+
+
+/* ( x -- flag ) */
+vminstr_p
+x_zero_equals(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    cell_ft *sp = SP(vm);
+    CHECK_POP(vm, 1);
+    PICK(sp, 0) = -(PICK(sp, 0) == 0);
+    return ip;
+}
+
+
+/* ( x1 -- x2 ) */
+vminstr_p
+x_one_plus(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    cell_ft *sp = SP(vm);
+    CHECK_POP(vm, 1);
+    PICK(sp, 0) = PICK(sp, 0) + 1;
+    return ip;
+}
+
+
+/* ( x1 -- x2 ) */
+vminstr_p
+x_one_minus(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    cell_ft *sp = SP(vm);
+    CHECK_POP(vm, 1);
+    PICK(sp, 0) = PICK(sp, 0) - 1;
+    return ip;
+}
+
+
 /* ( n1 -- n2 ) */
 vminstr_p
 x_two_star(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -218,9 +262,59 @@ x_xor(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
+/* ( x -- flag ) */
+vminstr_p
+x_zero_not_equals(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    cell_ft *sp = SP(vm);
+    CHECK_POP(vm, 1);
+    PICK(sp, 0) = -(PICK(sp, 0) != 0);
+    return ip;
+}
+
+
+/* ( n -- flag ) */
+vminstr_p
+x_zero_greater(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    cell_ft *sp = SP(vm);
+    CHECK_POP(vm, 1);
+    PICK(sp, 0) = -((snumber_ft) PICK(sp, 0) > 0);
+    return ip;
+}
+
+
+/* ( x1 x2 -- flag ) */
+vminstr_p
+x_not_equals(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    cell_ft *sp = SP(vm);
+    CHECK_POP(vm, 2);
+    PICK(sp, 1) = -(PICK(sp, 1) != PICK(sp, 0));
+    SET_SP(vm, sp, 1);
+    return ip;
+}
+
+
+/* ( u1 u2 -- flag ) */
+vminstr_p
+x_u_greater(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    cell_ft *sp = SP(vm);
+    CHECK_POP(vm, 2);
+    PICK(sp, 1) = -(PICK(sp, 1) > PICK(sp, 0));
+    SET_SP(vm, sp, 1);
+    return ip;
+}
+
+
 DIRECT_FORTH(init_arith_prim) // {
     PRIM("+",		x_plus)
     PRIM("-",		x_minus)
+    PRIM("0<",		x_zero_less)
+    PRIM("0=",		x_zero_not_equals)
+    PRIM("1+",		x_one_plus)
+    PRIM("1-",		x_one_minus)
     PRIM("2*",		x_two_star)
     PRIM("2/",		x_two_slash)
     PRIM("<",		x_less_than)
@@ -234,22 +328,19 @@ DIRECT_FORTH(init_arith_prim) // {
     PRIM("RSHIFT",	x_rshift)
     PRIM("U<",		x_u_less)
     PRIM("XOR",		x_xor)
+
+    PRIM("0<>",		x_zero_not_equals)
+    PRIM("0>",		x_zero_greater)
+    PRIM("<>",		x_not_equals)
+    PRIM("U>",		x_u_greater)
 END_DIRECT // }
 
 
 META_FORTH(init_arith_ops) // {
     XCOLON("ABS") DUP L(0) LESS IF NEGATE THEN XSEMICOLON
+    XCOLON("WITHIN") OVER MINUS TO_R MINUS R_FROM U_LESS XSEMICOLON
 END_META // }
 
-// 0<                    6.1.0250 CORE                   28
-// 0=                    6.1.0270 CORE                   28
-// 1+                    6.1.0290 CORE                   28
-// 1-                    6.1.0300 CORE                   29
 // MAX                   6.1.1870 CORE                   42
 // MIN                   6.1.1880 CORE                   42
 // S>D                   6.1.2170 CORE                   44
-// 0<>                   6.2.0260 CORE EXT               49
-// 0>                    6.2.0280 CORE EXT               50
-// <>                    6.2.0500 CORE EXT               50
-// U>                    6.2.2350 CORE EXT               57
-// WITHIN                6.2.2440 CORE EXT               58

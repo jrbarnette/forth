@@ -6,7 +6,6 @@ SOURCES =			\
 	    control.c		\
 	    dictionary.c	\
 	    fileops.c		\
-	    format.c		\
 	    forth.c		\
 	    interpret.c		\
 	    memops.c		\

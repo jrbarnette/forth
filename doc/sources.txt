@@ -1,3 +1,23 @@
+indicators
+    BLK is not 0
+	input buffer is specified block
+	REFILL increments BLK
+	    TRUE if new BLK is valid
+	    FALSE if new BLK is not valid
+    BLK is 0 and source-id is -1
+	input buffer is string
+	REFILL returns FALSE
+    BLK is 0 and source-id is 0
+	input buffer is terminal buffer
+	REFILL uses ACCEPT
+	    FALSE at EOF
+	    TRUE if not EOF
+    BLK is 0 and source-id is fileid
+	input buffer is a file buffer
+	REFILL reads from file
+	    FALSE at EOF
+	    TRUE if not EOF
+====
 class input-source
     abstract source-id
     variable input-buffer
@@ -7,7 +27,7 @@ class input-source
     abstract restore-input
     abstract real-refill
     : refill real-refill ?dup if 0 >in ! then ;
-    : source buffer-pointer @ buffer-size @ ;
+    : source input-buffer @ input-size @ ;
 
 class string-input extends input-source
     -1 constant source-id

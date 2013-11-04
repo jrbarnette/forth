@@ -34,7 +34,7 @@ META_FORTH(init_parse_ops) // {
 	    DUP CHARS TWO_R_FETCH
 	    ROT PLUS C_FETCH			/* ( end idx delim c ) */
 	    OVER L(' ') EQUALS IF
-		SWAP DROP L(' '+1) MINUS L('~'-' ') U_LESS
+		SWAP DROP L(' ' + 1) MINUS L('~' - ' ') U_LESS
 	    ELSE
 		EQUALS
 	    THEN

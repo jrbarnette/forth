@@ -357,7 +357,7 @@ META_FORTH(dump_dictionary) // {
 	UNTIL DROP NUMBER_GREATER TYPE
 	BASE STORE
     XSEMICOLON
-    XCOLON("dump-dictionary")
+    XCOLON("DUMP-WORDLIST")
 	/* ( wid -- ) */
 	BASE FETCH SWAP HEX
 	BEGIN FETCH DUP WHILE
@@ -372,12 +372,14 @@ META_FORTH(dump_dictionary) // {
 	REPEAT DROP
 	BASE STORE
     XSEMICOLON
-    HERE S("ADDR.") CR
-    L(&DICT.forth_wordlist) S("dump-dictionary")
-    L(DICT_START) S("ADDR.") CR
-    L(DICT_END) L(DICT_START) MINUS DOT
-    HERE L(DICT_START) MINUS DOT
-    L(DICT_END) HERE MINUS DOT CR
+    XCOLON("DUMP-DICTIONARY")
+	HERE S("ADDR.") CR
+	L(&DICT.forth_wordlist) S("DUMP-WORDLIST")
+	L(DICT_START) S("ADDR.") CR
+	L(DICT_END) L(DICT_START) MINUS DOT
+	HERE L(DICT_START) MINUS DOT
+	L(DICT_END) HERE MINUS DOT CR
+    XSEMICOLON
 END_META // }
 
 
@@ -421,4 +423,22 @@ init_forth(vmstate_p vm)
     while (ip != NULL) {
 	ip = ip->handler(ip + 1, vm, NULL);
     }
+}
+
+
+void
+interpret(vmstate_p start_vm, char *name)
+{
+    name_p entry = lookup(name, strlen(name));
+    if (entry == NULL) {
+	return;
+    }
+
+    volatile vmstate_p  vm = start_vm;
+    volatile xt_ft      xtok = NAME_XT(entry);
+    volatile int	throwcode;
+    while ((throwcode = setjmp(vm->interp_loop)) != 0) {
+	handle_exception(throwcode, vm);
+    }
+    execute(vm, xtok);
 }

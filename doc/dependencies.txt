@@ -1,21 +1,23 @@
 QUIT
     reset return stack pointer
-    set input source to terminal
-    [ STATE CR TYPE REFILL
+    source management
+    state management
+    CR TYPE REFILL
     interpret
 
 interpret
-    parse-name
-    lookup
-    nf-immediate nf-nointerp
-    COMPILE,
-    >NUMBER
-    LITERAL
-    STATE
+    parse-word
+    lookup nf-immediate nf-nointerp
+    EXECUTE COMPILE, >NUMBER LITERAL
+    state management
 
-parse-name -> PARSE
-set input source to terminal
+parse-word -> PARSE
+    source management
+
+source management
     >IN SOURCE
+    set source to terminal
+    set source to string
 
 lookup
     FORTH-WORDLIST
@@ -30,8 +32,8 @@ LITERAL
 COMPILE, -> ,
     HERE ALLOT
 
-[
-    STATE
+state management
+    [ ] STATE
 
 STATE CR TYPE REFILL BASE >IN SOURCE FORTH-WORDLIST HERE ALLOT
     primitives dependencies
@@ -48,14 +50,14 @@ primitive dependencies
     reset return stack pointer
     THROW
     EXECUTE
+    EXIT
     EMIT
 
 compile-time functions
     IF ELSE THEN BEGIN WHILE REPEAT UNTIL
     DO LOOP +LOOP I UNLOOP LEAVE
     : CREATE CONSTANT VARIABLE
-    LITERAL
-    POSTPONE
+    LITERAL S" POSTPONE
     execute
     lookup
     here allot align , c,

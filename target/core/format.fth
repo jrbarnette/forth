@@ -16,7 +16,9 @@ variable BASE
 decimal
 
 variable hold-count
-1 cells 8 * 2 * 2 + 2 cells + allot
+\ 2*n + 2 charcters, n = 8 * cell-size
+\ (2 * 8 * cell-size + 2) characters
+1 cells 8 * 2 * 2 + chars allot align
 here constant hold-end
 : hold-pointer ( -- c-addr ) hold-end hold-count @ chars - ;
 

@@ -192,6 +192,7 @@ union definition_data {
 #define NAME_SET_TYPE(nm, type)		((nm)->flags |= (type))
 #define NAME_MAX_LENGTH			31
 #define NAME_LENGTH(nm)			((nm)->flags & 0x1f)
+#define NAME_FLAGS(nm)			((nm)->flags & ~0x1f)
 #define NAME_SIZE(len)			\
 	    XALIGNED(offsetof(struct name_header, ident) + (len))
 #define NAME_XT(nm)			\
@@ -234,6 +235,7 @@ extern union dict {
  */
 
 extern void init_forth(vmstate_p);
+extern void interpret(vmstate_p, char *);
 
 extern void align(void);
 extern addr_ft allot(size_t);

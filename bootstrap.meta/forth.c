@@ -24,6 +24,7 @@ main(int argc, char *argv[])
     struct vmstate	vmstate;
 
     init_forth(&vmstate);
+    interpret(&vmstate, "DUMP-DICTIONARY");
 
     return EXIT_SUCCESS;
 }

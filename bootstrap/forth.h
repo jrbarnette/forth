@@ -284,7 +284,6 @@ typedef struct defn {
 extern defn_dt arithops_defns[];
 extern defn_dt control_defns[];
 extern defn_dt dictionary_defns[];
-extern defn_dt format_defns[];
 extern defn_dt interpret_defns[];
 extern defn_dt memops_defns[];
 extern defn_dt multops_defns[];

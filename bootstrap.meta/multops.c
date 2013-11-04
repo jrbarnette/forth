@@ -24,7 +24,7 @@
 //------  ------  ------  ------  ------  ------  ------  ------
 
 
-#define HIGH_BIT	(~(~(unsigned) 0 >> 1))
+#define HIGH_BIT	(~(~(cell_ft) 0 >> 1))
 #define HALF_SHIFT	((cell_ft) (4 * CELL_SIZE))
 #define HALF_MASK	(~(cell_ft) 0 >> HALF_SHIFT)
 
@@ -152,11 +152,11 @@ x_u_m_slash_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     cell_ft d_hi = PICK(sp, 1);
     cell_ft d_lo = PICK(sp, 2);
 
-    unsigned r_hi = d_hi % v;
-    unsigned factor = (HIGH_BIT / v) << 1;
-    unsigned factor_rem = (HIGH_BIT % v) << 1;
-    unsigned q_lo = d_lo / v + r_hi * factor;
-    unsigned rem = d_lo % v + r_hi * factor_rem;
+    cell_ft r_hi = d_hi % v;
+    cell_ft factor = (HIGH_BIT / v) << 1;
+    cell_ft factor_rem = (HIGH_BIT % v) << 1;
+    cell_ft q_lo = d_lo / v + r_hi * factor;
+    cell_ft rem = d_lo % v + r_hi * factor_rem;
 
     PICK(sp, 2) = q_lo + rem / v;
     PICK(sp, 1) = rem % v;

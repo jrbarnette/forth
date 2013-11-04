@@ -74,6 +74,33 @@ drop drop
 ;
 : ." postpone s" type ; immediate
 
+1 cells 8 * 2 * 2 + chars allot align here 1 cells allot
+constant hold-pointer
+
+: <# ( -- ) 0 hold-pointer ! ;
+: HOLD ( char -- ) hold-pointer dup @ 1+ 2dup swap ! chars - c! ;
+: #> ( xd -- c-addr u ) 2drop hold-pointer dup @ dup >r chars - r> ;
+
+: SIGN ( n -- ) 0< if [char] - hold then ;
+: # ( ud1 -- ud2 )
+    0 base @ um/mod rot swap base @ um/mod
+    dup 10 u< if [char] 0 else [ char A 10 - ] literal then
+    + hold swap
+;
+
+: #S ( ud1 -- ud2 ) begin # 2dup or 0= until ;
+
+: >NUMBER ( ud1 c-addr1 u1 -- ud2 c-addr2 u2 )
+    begin dup while			( ud c-addr u )
+	>r dup >r c@			( ud char ) ( R: u c-addr )
+	[char] 0 -
+	9 over u< if [ char 0 char A - ] literal + then
+	dup base @ u< invert if drop r> r> exit then
+	>r base @ * >r base @ um* r> + r>
+	rot dup >r + dup r> u< negate rot +
+	r> char+ r> 1-
+    repeat
+;
 
 : .( [char] ) parse type ; immediate
 : ABORT"

@@ -18,7 +18,9 @@
 /*------  ------  ------  ------  ------  ------  ------  ------
   >IN                   6.1.0560 CORE                   31
   ABORT                 6.1.0670 CORE                   32
+  BASE                  6.1.0750 CORE                   34
   CHAR                  6.1.0895 CORE                   35
+  DECIMAL               6.1.1170 CORE                   36
   EVALUATE              6.1.1360 CORE                   38
   EXECUTE               6.1.1370 CORE                   38
   LITERAL               6.1.1780 CORE                   41
@@ -29,6 +31,9 @@
   STATE                 6.1.2250 CORE                   45
   [                     6.1.2500 CORE                   48
   ]                     6.1.2540 CORE                   49
+
+  HEX                   6.2.1660 CORE EXT               54
+  PARSE                 6.2.2008 CORE EXT               55
   ------  ------  ------  ------  ------  ------  ------  ------
 */
 
@@ -338,6 +343,16 @@ x_abort(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
+/* ( -- a-addr ) */
+static vminstr_p
+x_base(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    CHECK_PUSH(vm, 1);
+    PUSH(vm, (cell_ft) &DICT.base);
+    return ip;
+}
+
+
 /* ( "<spaces>name" -- char ) */
 static vminstr_p
 x_char(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -350,6 +365,15 @@ x_char(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
     CHECK_PUSH(vm, 1);
     PUSH(vm, (cell_ft) *id);
+    return ip;
+}
+
+
+/* ( -- ) */
+static vminstr_p
+x_decimal(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    DICT.base = 10;
     return ip;
 }
 
@@ -528,6 +552,15 @@ x_right_bracket(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
+/* ( -- ) */
+static vminstr_p
+x_hex(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    DICT.base = 16;
+    return ip;
+}
+
+
 /* ( char "ccc<char>" -- c-addr u ) */
 static vminstr_p
 x_parse(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -553,6 +586,8 @@ initialize_xtokens(vmstate_p vm, defn_data_p ignore)
     DICT.skip_instr.handler = do_skip;
     DICT.fskip_instr.handler = do_fskip;
     DICT.s_quote_instr.handler = do_s_quote;
+
+    DICT.base = 10;
 }
 
 
@@ -561,17 +596,21 @@ interpret_defns[] = {
     { initialize_xtokens },
     { define_name, ">IN",	x_to_in },
     { define_name, "ABORT",	x_abort },
+    { define_name, "BASE",	x_base },
     { define_name, "CHAR",	x_char },
+    { define_name, "DECIMAL",	x_decimal },
     { define_name, "EVALUATE",	x_evaluate },
     { define_name, "EXECUTE",	x_execute },
     { define_name, "LITERAL",	x_literal, NAME_TYPE_COMPILE },
-    { define_name, "S\"",	x_s_quote, NAME_TYPE_COMPILE },
     { define_name, "POSTPONE",	x_postpone, NAME_TYPE_COMPILE },
     { define_name, "QUIT",	x_quit },
     { define_name, "SOURCE",	x_source },
     { define_name, "STATE",	x_state },
+    { define_name, "S\"",	x_s_quote, NAME_TYPE_COMPILE },
     { define_name, "[",		x_left_bracket, NAME_TYPE_COMPILE },
     { define_name, "]",		x_right_bracket },
+
+    { define_name, "HEX",	x_hex },
     { define_name, "PARSE",	x_parse },
     { NULL }
 };

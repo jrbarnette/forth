@@ -54,7 +54,7 @@ drop drop
 
 \ compile - CORE
 : LOOP 1 postpone literal postpone +loop ; immediate
-: COMPILE, ( xt -- ) , ;
+: COMPILE, ( xt -- ) , ; \ no-interpret
 
 
 : FIND ( c-addr -- c-addr 0 | xt 1 | xt -1 )
@@ -63,23 +63,12 @@ drop drop
 ;
 : ['] ( "<spaces>name" -- ) ' postpone literal ; immediate \ no-interpret
 
-
-: CR ( -- ) 10 emit ;
-: SPACE ( -- ) bl emit ;
-: SPACES ( n -- ) ?dup if 0 do space loop then ;
-: TYPE ( c-addr u -- )
-    \ missing ?do :-(
-    dup 0= if 2drop exit then
-    chars over + swap do i c@ emit [ 1 chars ] literal +loop
-;
-: ." postpone s" type ; immediate
-
-1 cells 8 * 2 * 2 + chars allot align here 1 cells allot
-constant hold-pointer
-
-: <# ( -- ) 0 hold-pointer ! ;
-: HOLD ( char -- ) hold-pointer dup @ 1+ 2dup swap ! chars - c! ;
-: #> ( xd -- c-addr u ) 2drop hold-pointer dup @ dup >r chars - r> ;
+1 cells 8 * 2 * 2 + chars allot align
+here 1 cells allot
+: <# ( -- ) 0 [ over ] literal ! ;
+: HOLD ( char -- ) [ over ] literal dup @ 1+ 2dup swap ! chars - c! ;
+: #> ( xd -- c-addr u ) 2drop [ over ] literal dup @ dup >r chars - r> ;
+drop
 
 : SIGN ( n -- ) 0< if [char] - hold then ;
 : # ( ud1 -- ud2 )
@@ -101,6 +90,22 @@ constant hold-pointer
 	r> char+ r> 1-
     repeat
 ;
+
+: CR ( -- ) 10 emit ;
+: SPACE ( -- ) bl emit ;
+: SPACES ( n -- ) dup 0> if 0 do space loop else drop then ;
+: TYPE ( c-addr u -- )
+    \ missing ?do :-(
+    dup 0= if 2drop exit then
+    chars over + swap do i c@ emit [ 1 chars ] literal +loop
+;
+
+: . <# bl hold dup abs 0 #s rot sign #> type ;
+: U. <# bl hold 0 #s #> type ;
+: .R ( n1 n2 -- ) >r <# dup sign abs 0 #s #> r> over - spaces type ;
+: U.R ( u n -- ) >r <# 0 #s #> r> over - spaces type ;
+
+: ." postpone s" type ; immediate
 
 : .( [char] ) parse type ; immediate
 : ABORT"

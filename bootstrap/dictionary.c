@@ -115,7 +115,6 @@ void
 initialize_dictionary(vmstate_p vm, defn_data_p ignore)
 {
     DICT.here = sizeof (dictionary.dict_static_data);
-    DICT.base = 10;
 }
 
 

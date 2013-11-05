@@ -342,6 +342,62 @@ META_FORTH(test_forth) // {
     L(10) S("CHECK-BASE-#S")
     L(36) S("CHECK-BASE-#S")
     CR
+
+    // parse ops
+    SPACE
+    XCOLON("SOURCE!")	// ( c-addr u -- )
+	L(0) TO_IN STORE
+	L(-1) TO_IN CELL_PLUS STORE
+	TO_IN L(2) CELLS PLUS TWO_STORE
+    XSEMICOLON
+    L("") L(0) S("SOURCE!")
+    SOURCE SWAP DROP L(0) EQUALS S("ASSERT-TRUE")
+    L(' ') PARSE L(0) EQUALS S("REPORT")
+    SOURCE DROP EQUALS S("ASSERT-TRUE")
+    TO_IN FETCH L(0) EQUALS S("ASSERT-TRUE")
+    SPACE
+
+    L("ABA") L(3) S("SOURCE!")
+    L('B') PARSE L(1) EQUALS S("REPORT")
+    SOURCE DROP EQUALS S("ASSERT-TRUE")
+    TO_IN FETCH L(2) EQUALS S("ASSERT-TRUE")
+    SPACE
+
+    L("A") L(1) S("SOURCE!")
+    L('B') PARSE L(1) EQUALS S("REPORT")
+    SOURCE DROP EQUALS S("ASSERT-TRUE")
+    TO_IN FETCH L(1) EQUALS S("ASSERT-TRUE")
+    SPACE
+
+    L("A A") L(3) S("SOURCE!")
+    L(' ') PARSE L(1) EQUALS S("REPORT")
+    SOURCE DROP EQUALS S("ASSERT-TRUE")
+    TO_IN FETCH L(2) EQUALS S("ASSERT-TRUE")
+    SPACE
+
+    L("A\nA") L(3) S("SOURCE!")
+    L(' ') PARSE L(1) EQUALS S("REPORT")
+    SOURCE DROP EQUALS S("ASSERT-TRUE")
+    TO_IN FETCH L(2) EQUALS S("ASSERT-TRUE")
+    SPACE
+
+    L("A\0177A") L(3) S("SOURCE!")
+    L(' ') PARSE L(1) EQUALS S("REPORT")
+    SOURCE DROP EQUALS S("ASSERT-TRUE")
+    TO_IN FETCH L(2) EQUALS S("ASSERT-TRUE")
+    SPACE
+
+    L("A~A") L(3) S("SOURCE!")
+    L(' ') PARSE L(3) EQUALS S("REPORT")
+    SOURCE DROP EQUALS S("ASSERT-TRUE")
+    TO_IN FETCH L(3) EQUALS S("ASSERT-TRUE")
+    SPACE
+
+    L("A!A") L(3) S("SOURCE!")
+    L(' ') PARSE L(3) EQUALS S("REPORT")
+    SOURCE DROP EQUALS S("ASSERT-TRUE")
+    TO_IN FETCH L(3) EQUALS S("ASSERT-TRUE")
+    CR
 END_META // }
 
 
@@ -398,9 +454,9 @@ DIRECT_FORTH(initialize) // {
     CALL(init_compile_ops)
     CALL(init_control_ops)
     CALL(init_arith_ops)
-    CALL(init_parse_ops)
     CALL(init_format_ops)
     CALL(init_terminal_ops)
+    CALL(init_parse_ops)
     CALL(test_forth)
     CALL(dump_dictionary)
 END_DIRECT // }

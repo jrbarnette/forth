@@ -219,7 +219,8 @@ extern union dict {
 	addr_ft		here;		/* HERE */
 	name_p		forth_wordlist;	/* FORTH-WORDLIST */
 
-	definition_d	literal_instr;	/* for LITERAL runtime xt */
+	definition_d	literal_instr;	/* LITERAL runtime xt */
+	definition_d	accept_instr;	/* ACCEPT internal xt */
     } static_data;
     addr_unit_ft	space[DICTIONARY_SIZE];
 } dictionary;
@@ -229,6 +230,7 @@ extern union dict {
 #define DICT_END	(&dictionary.space[DICTIONARY_SIZE])
 
 #define DO_LITERAL	(&DICT.literal_instr)
+#define DO_ACCEPT	(&DICT.accept_instr)
 
 
 /*

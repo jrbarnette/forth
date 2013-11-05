@@ -3,6 +3,7 @@
  */
 
 #include <stdio.h>
+#include <string.h>
 
 #include "forth.h"
 
@@ -37,12 +38,39 @@ x_emit(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
+/* ( c-addr +n1 -- +n2 flag ) */
+static vminstr_p
+do_accept(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    CHECK_POP(vm, 2);
+    cell_ft *sp = SP(vm);
+    char *buff = (char *) PICK(sp, 1);
+    cell_ft n1 = PICK(sp, 0);
+    unsigned n2 = 0;
+    int c;
+    while (n2 < n1) {
+	c = getchar();
+	if (c == EOF || c == '\n')
+	    break;
+	buff[n2++] = (char) c;
+    }
+    PICK(sp, 1) = n2;
+    PICK(sp, 0) = -(n2 != 0 || c != EOF);
+    return ip;
+}
+
+
 DIRECT_FORTH(init_terminal_prim) // {
     PRIM("EMIT", x_emit)
 END_DIRECT // }
 
 
 META_FORTH(init_terminal_ops) // {
+    L(do_accept) L(DO_ACCEPT) STORE
+
+    XCOLON("ACCEPT")
+	INTERP( L(DO_ACCEPT) COMMA ) DROP
+    XSEMICOLON
     XCOLON("CR") L('\n') EMIT XSEMICOLON
     XCOLON("SPACE") L(' ') EMIT XSEMICOLON
     XCOLON("TYPE") /* ( c-addr u -- ) */

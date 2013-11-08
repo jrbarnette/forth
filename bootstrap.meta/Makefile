@@ -7,10 +7,11 @@ SOURCES =			\
 		dictionary.c	\
 		format.c	\
 		forth.c		\
+		interpret.c	\
 		memops.c	\
 		multops.c	\
 		names.c		\
-		parse.c	\
+		parse.c		\
 		stackops.c	\
 		terminal.c	\
 		vm.c

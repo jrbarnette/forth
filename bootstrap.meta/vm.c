@@ -398,6 +398,21 @@ META_FORTH(test_forth) // {
     SOURCE DROP EQUALS S("ASSERT-TRUE")
     TO_IN FETCH L(3) EQUALS S("ASSERT-TRUE")
     CR
+
+    L('X') EMIT
+    L("+") L(1) L(DO_LOOKUP) EXECUTE ROT DROP S("REPORT")
+    L(0) EQUALS S("ASSERT-TRUE")
+    SPACE
+
+    L("+") L(1) S("SOURCE!") L(1) L(2)
+    S("INTERPRET") FETCH EXECUTE L(3) EQUALS S("ASSERT-TRUE")
+
+    DECIMAL L("1") L(1) S("SOURCE!")
+    S("INTERPRET") FETCH EXECUTE L(1) EQUALS S("ASSERT-TRUE")
+
+    // L(1) L(2) L("+") L(1) EVALUATE
+    // L(3) EQUALS S("ASSERT-TRUE")
+    CR
 END_META // }
 
 
@@ -457,6 +472,7 @@ DIRECT_FORTH(initialize) // {
     CALL(init_format_ops)
     CALL(init_terminal_ops)
     CALL(init_parse_ops)
+    CALL(init_interpreter_ops)
     CALL(test_forth)
     CALL(dump_dictionary)
 END_DIRECT // }

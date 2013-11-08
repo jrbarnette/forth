@@ -4,8 +4,9 @@ drop drop
 : \ source >in ! drop ; immediate
 \ Whew! Now we can write real comments!
 
-: [CHAR] char postpone literal ; immediate
+: [CHAR] char postpone literal ; immediate \ no-interpret
 : ( [char] ) parse drop drop ; immediate
+: ['] ( "<spaces>name" -- ) ' postpone literal ; immediate \ no-interpret
 
 32 constant BL
 0 0 = constant TRUE
@@ -53,7 +54,7 @@ drop drop
 
 
 \ compile - CORE
-: LOOP 1 postpone literal postpone +loop ; immediate
+: LOOP 1 postpone literal postpone +loop ; immediate \ no-interpret
 : COMPILE, ( xt -- ) , ; \ no-interpret
 
 
@@ -61,7 +62,6 @@ drop drop
     dup >r count forth-wordlist search-wordlist r>
     over if drop else swap then
 ;
-: ['] ( "<spaces>name" -- ) ' postpone literal ; immediate \ no-interpret
 
 1 cells 8 * 2 * 2 + chars allot align
 here 1 cells allot

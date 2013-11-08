@@ -62,14 +62,23 @@ META_FORTH(init_format_ops) // {
 	BEGIN NUMBER_SIGN OVER OVER OR L(0) EQUALS UNTIL
     XSEMICOLON
     XCOLON(">NUMBER")
+	// ( ud1 c-addr1 u1 -- ud2 c-addr2 u2 )
 	BEGIN DUP WHILE
+	    // ( ud c-addr len )
 	    TO_R DUP TO_R C_FETCH L('0') MINUS
+	    // ( ud digit ) ( R: len c-addr )
 	    L(9) OVER U_LESS IF L('0' - 'A') PLUS THEN
+	    // ( ud digit ) ( R: len c-addr )
 	    DUP BASE FETCH U_LESS INVERT
+	    // ( ud digit flag ) ( R: len c-addr )
 		IF DROP R_FROM R_FROM EXIT THEN
+	    // ( ud digit ) ( R: len c-addr )
 	    TO_R BASE FETCH STAR TO_R BASE FETCH UM_STAR R_FROM PLUS
+	    // ( ul*base uh*base ) ( R: len c-addr digit )
 	    R_FROM ROT DUP TO_R PLUS DUP R_FROM U_LESS NEGATE ROT PLUS
+	    // ( ul*base+digit uh*base+carry ) ( R: len c-addr )
 	    R_FROM CHAR_PLUS R_FROM L(1) MINUS
+	    // ( ud c-addr len )
 	REPEAT
     XSEMICOLON
 

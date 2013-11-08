@@ -47,7 +47,7 @@ do_accept(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     char *buff = (char *) PICK(sp, 1);
     cell_ft n1 = PICK(sp, 0);
     unsigned n2 = 0;
-    int c;
+    int c = EOF;
     while (n2 < n1) {
 	c = getchar();
 	if (c == EOF || c == '\n')

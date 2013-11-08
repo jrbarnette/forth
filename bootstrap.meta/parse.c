@@ -31,7 +31,7 @@ META_FORTH(init_parse_ops) // {
 
     HERE L(256) CHARS ALLOT	// ( C: tib )
     XCOLON("REFILL")		// ( -- flag )
-	INTERP( TO_IN CELL_PLUS ) LITERAL FETCH IF
+	SOURCE_ID IF
 	    L(F_FALSE)
 	ELSE
 	    LITERAL DUP					// ( tib tib )

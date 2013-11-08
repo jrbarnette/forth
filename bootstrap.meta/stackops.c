@@ -40,7 +40,7 @@ x_two_drop(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_POP(vm, 2);
     cell_ft *sp = SP(vm);
-    SET_SP(vm, sp, -2);
+    SET_SP(vm, sp, 2);
     return ip;
 }
 

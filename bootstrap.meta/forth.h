@@ -221,6 +221,8 @@ extern union dict {
 
 	definition_d	literal_instr;	/* LITERAL runtime xt */
 	definition_d	accept_instr;	/* ACCEPT internal xt */
+	definition_d	throw_instr;	/* THROW internal xt */
+	definition_d	lookup_instr;	/* lookup internal xt */
     } static_data;
     addr_unit_ft	space[DICTIONARY_SIZE];
 } dictionary;
@@ -231,6 +233,8 @@ extern union dict {
 
 #define DO_LITERAL	(&DICT.literal_instr)
 #define DO_ACCEPT	(&DICT.accept_instr)
+#define DO_THROW	(&DICT.throw_instr)
+#define DO_LOOKUP	(&DICT.lookup_instr)
 
 
 /*
@@ -259,6 +263,7 @@ extern vminstr_d init_compile_ops[];
 extern vminstr_d init_control_ops[];
 extern vminstr_d init_dictionary_ops[];
 extern vminstr_d init_format_ops[];
+extern vminstr_d init_interpreter_ops[];
 extern vminstr_d init_memory_ops[];
 extern vminstr_d init_parse_ops[];
 extern vminstr_d init_terminal_ops[];

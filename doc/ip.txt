@@ -1,0 +1,7 @@
+machine functions that don't just 'return ip':
+    do_colon
+    x_exit do_does
+    do_skip do_fskip
+    do_literal do_postpone do_s_quote
+    x_execute
+    x_quit

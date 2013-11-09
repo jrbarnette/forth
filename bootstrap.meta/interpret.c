@@ -126,10 +126,12 @@ META_FORTH(init_interpreter_ops) // {
 	BEGIN				// ( C: interpret dest )
 	    STATE FETCH L(0) EQUALS IF
 		// XXX implement ."
-		CR L('O') EMIT L('K') EMIT L(' ') EMIT
+		L('o') EMIT L('k') EMIT L(' ') EMIT
 	    THEN
 	    REFILL WHILE		// ( C: interpret orig dest )
 		    INTERP( ROT COMMA )
 	REPEAT
+	L('b') EMIT L('y') EMIT L('e') EMIT CR
+	L(0) TO_R L(0) TO_R
     XSEMICOLON
 END_META // }

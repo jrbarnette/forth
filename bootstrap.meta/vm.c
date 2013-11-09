@@ -474,7 +474,8 @@ DIRECT_FORTH(initialize) // {
     CALL(init_parse_ops)
     CALL(init_interpreter_ops)
     CALL(test_forth)
-    CALL(dump_dictionary)
+    // CALL(dump_dictionary)
+    META QUIT DIRECT
 END_DIRECT // }
 
 

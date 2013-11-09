@@ -105,7 +105,7 @@ drop
 : .R ( n1 n2 -- ) >r <# dup sign abs 0 #s #> r> over - spaces type ;
 : U.R ( u n -- ) >r <# 0 #s #> r> over - spaces type ;
 
-: ." postpone s" type ; immediate
+: ." postpone s" postpone type ; immediate
 
 : .( [char] ) parse type ; immediate
 : ABORT"

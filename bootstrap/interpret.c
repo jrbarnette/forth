@@ -72,7 +72,7 @@ compile_skip(vmstate_p vm, xt_ft skip)
 void
 patch(vminstr_p orig, vminstr_p dest)
 {
-    orig->offset = dest - orig - 1;
+    orig->offset = dest - orig;
 }
 
 
@@ -305,19 +305,18 @@ interpret_string(vmstate_p vm, char *s)
 static vminstr_p
 do_skip(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
-    return ip + ip->offset + 1;
+    return ip + ip->offset;
 }
 
 
 static vminstr_p
 do_fskip(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
-    cell_ft tos;
-
     CHECK_POP(vm, 1);
-    tos = POP(vm);
-    if (tos == 0) ip += ip->offset;
-    return ip + 1;
+    if (POP(vm) == 0)
+	return ip + ip->offset;
+    else
+	return ip + 1;
 }
 
 

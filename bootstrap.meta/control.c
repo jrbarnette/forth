@@ -47,13 +47,10 @@ vminstr_p
 do_fskip(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_POP(vm, 1);
-    cell_ft offset;
-    if (POP(vm) == 0) {
-	offset = ip->offset;
-    } else {
-	offset = 1;
-    }
-    return ip + offset;
+    if (POP(vm) == 0)
+	return ip + ip->offset;
+    else
+	return ip + 1;
 }
 
 

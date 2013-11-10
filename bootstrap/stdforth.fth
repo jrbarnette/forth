@@ -6,7 +6,7 @@ drop drop
 
 : [CHAR] char postpone literal ; immediate \ no-interpret
 : ( [char] ) parse drop drop ; immediate
-: ['] ( "<spaces>name" -- ) ' postpone literal ; immediate \ no-interpret
+: ['] ' postpone literal ; immediate \ no-interpret
 
 32 constant BL
 0 0 = constant TRUE
@@ -54,8 +54,8 @@ drop drop
 
 
 \ compile - CORE
-: LOOP 1 postpone literal postpone +loop ; immediate \ no-interpret
 : COMPILE, ( xt -- ) , ; \ no-interpret
+: LOOP 1 postpone literal postpone +loop ; immediate \ no-interpret
 
 
 : FIND ( c-addr -- c-addr 0 | xt 1 | xt -1 )
@@ -63,12 +63,13 @@ drop drop
     over if drop else swap then
 ;
 
+\ pictured string formatting - CORE
 1 cells 8 * 2 * 2 + chars allot align
-here 1 cells allot
+here 1 cells allot			( hold-addr )
 : <# ( -- ) 0 [ over ] literal ! ;
 : HOLD ( char -- ) [ over ] literal dup @ 1+ 2dup swap ! chars - c! ;
 : #> ( xd -- c-addr u ) 2drop [ over ] literal dup @ dup >r chars - r> ;
-drop
+drop					( )
 
 : SIGN ( n -- ) 0< if [char] - hold then ;
 : # ( ud1 -- ud2 )
@@ -76,7 +77,6 @@ drop
     dup 10 u< if [char] 0 else [ char A 10 - ] literal then
     + hold swap
 ;
-
 : #S ( ud1 -- ud2 ) begin # 2dup or 0= until ;
 
 : >NUMBER ( ud1 c-addr1 u1 -- ud2 c-addr2 u2 )
@@ -91,6 +91,7 @@ drop
     repeat
 ;
 
+\ terminal I/O - CORE
 : CR ( -- ) 10 emit ;
 : SPACE ( -- ) bl emit ;
 : SPACES ( n -- ) dup 0> if 0 do space loop else drop then ;
@@ -102,7 +103,7 @@ drop
 
 : . <# bl hold dup abs 0 #s rot sign #> type ;
 : U. <# bl hold 0 #s #> type ;
-: .R ( n1 n2 -- ) >r <# dup sign abs 0 #s #> r> over - spaces type ;
+: .R ( n1 n2 -- ) >r <# dup abs 0 #s rot sign #> r> over - spaces type ;
 : U.R ( u n -- ) >r <# 0 #s #> r> over - spaces type ;
 
 : ." postpone s" postpone type ; immediate

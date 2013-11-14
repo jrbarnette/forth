@@ -8,6 +8,9 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <readline/readline.h>
+#include <readline/history.h>
+
 #include "forth.h"
 
 /*
@@ -232,21 +235,39 @@ evaluate(vmstate_p vm)
 static cell_ft
 refill(FILE *input)
 {
-    char *	s;
-    cell_ft	len;
+    char *		line;
+    const char *	prompt;
+    cell_ft		len;
 
     if (DICT.state == STATE_INTERP && IS_INTERACTIVE()) {
-	(void) fputs("ok ", stdout);
+	prompt = "ok ";
+    } else {
+	prompt = "";
     }
 
-    s = (char *) DICT.source.c_addr;
-    if (fgets(s, DICT.source_max_len, input) == NULL) {
-	return F_FALSE;
-    }
+    if (IS_INTERACTIVE()) {
+	rl_instream = input;
+	line = readline(prompt);
+	if (line == NULL) {
+	    return F_FALSE;
+	}
+	len = strlen(line);
+	if (len > DICT.source_max_len) {
+	    len = DICT.source_max_len;
+	    line[len] = '\0';
+	}
+	add_history(line);
+	memcpy(DICT.source.c_addr, line, len);
+    } else {
+	line = (char *) DICT.source.c_addr;
+	if (fgets(line, DICT.source_max_len, input) == NULL) {
+	    return F_FALSE;
+	}
+	len = strlen(line);
 
-    len = strlen(s);
-    if (s[len-1] == '\n')
-	len--;
+	if (line[len-1] == '\n')
+	    len--;
+    }
     DICT.source.len = len;
     DICT.to_in = 0;
     return F_TRUE;

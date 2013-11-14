@@ -23,11 +23,12 @@ CHECKFLAG = -DCHECKMODE=$(CHECK$(CHECKMODE))
 
 OBJECTS = $(SOURCES:.c=.o)
 CFLAGS = -O -g $(CHECKFLAG) -Wall
+LDFLAGS = -lreadline
 
 all: forth tags
 
 forth: $(OBJECTS)
-	$(CC) -o $@ $(OBJECTS)
+	$(CC) $(LDFLAGS) -o $@ $(OBJECTS)
 
 $(OBJECTS): forth.h
 

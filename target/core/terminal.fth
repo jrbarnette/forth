@@ -17,7 +17,9 @@
 
 \ EMIT ( char -- )
 \ KEY ( -- char )
+\ DO-ACCEPT ( c-addr +n1 -- -1 | +n2 0 )
 
+: ACCEPT DO-ACCEPT IF 0 THEN ;
 : CR ( -- ) 10 EMIT ;
 : SPACE ( -- ) BL EMIT ;
 : SPACES ( n -- ) DUP 0> IF 0 DO SPACE LOOP ELSE DROP THEN ;

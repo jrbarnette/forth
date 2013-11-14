@@ -42,11 +42,12 @@
 \ U< ( u1 u2 -- flag )
 \ XOR ( x1 x2 -- x3 )
 
-\ maybe should be primitives
-: 0< ( n -- flag ) 0 < ;
-: 0= ( n -- flag ) 0 = ;
-: 1+ ( x1 -- x2 ) 1 + ;
-: 1- ( x1 -- x2 ) 1 - ;
+\ primitives - could be in forth
+\ : 0< ( n -- flag ) 0 < ;
+\ : 0= ( n -- flag ) 0 = ;
+\ : 1+ ( x1 -- x2 ) 1 + ;
+\ : 1- ( x1 -- x2 ) 1 - ;
+
 : ABS ( n -- u ) dup 0< if negate then ;
 : MAX ( n1 n2 -- n3 ) 2dup < if swap then drop ;
 : MIN ( n1 n2 -- n3 ) 2dup > if swap then drop ;
@@ -64,8 +65,7 @@
 \ primitives - could be in forth
 \ : <> ( x1 x2 -- flag ) = invert ;
 \ : U> ( u1 u2 -- flag ) swap u< ;
+\ : 0<> ( n -- flag ) 0 <> ;
+\ : 0> ( n -- flag ) 0 > ;
 
-\ maybe should be primitives
-: 0<> ( n -- flag ) 0 <> ;
-: 0> ( n -- flag ) 0 > ;
 : WITHIN ( x1 x2 x3 -- flag ) over - >r - r> u< ;

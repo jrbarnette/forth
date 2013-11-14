@@ -9,22 +9,20 @@
 \ ]                     6.1.2540 CORE                   49
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
-\ anonymous definitions
-\ clearstack ( i*x -- )
-\ clearrstack ( R: i*x -- )
-\ require-interpret - signal an error if not in interpretation state
-: require-interpret ( -- ) state @    if -29 throw then ;
+\ non-standard primitives
+\ CLEARSTACK ( i*x -- )
+\ CLEARRSTACK ( R: i*x -- )
 
-\ require-compile   - signal an error if not in compilation state
-\                     or there is no current definition
-: require-compile   ( -- ) state @ 0= if -14 throw then ;
+\ non-standard constants
+\ NF-IMMEDIATE		- flag for immediate definitions
+\ NF-NOINTERP		- flag for no-interpret definitions
 
 variable STATE
 : [ false state ! ; immediate
 : ] true  state ! ;
 
-: interpret
-    begin parse-name dup while			( str len )
+: INTERPRET
+    begin parse-word dup while			( str len )
 	2dup lookup if				( str len xt flags )
 	    \ compile or execute a definition
 	    2swap 2drop state @ if
@@ -45,20 +43,26 @@ variable STATE
 ;
 
 : EVALUATE ( i*x c-addr u -- j*x )
-    \ current source specification >R
-    \ XXX -1 TO SOURCE-ID
-    begin [ ' source >body ] literal @ >in @ > while interpret repeat
-    \ R> current source specification
+    \ save current source specification
+    >in   dup @ >r			( R: >IN )
+	0 over !			( 0 TO >IN )
+    cell+ dup @ >r			( R: >IN SOURCE-ID )
+	-1 over !			\ -1 TO SOURCE-ID
+    cell+ dup 2@ 2>r			( R: >IN SOURCE-ID c-addr u )
+	2!				\ TO SOURCE
+    interpret
+    \ restore previous source specification
+    2r> >in 2 cells + 2!		\ TO SOURCE
+    r> >in cell+ !			\ TO SOURCE-ID
+    r> >in !
 ;
 
 : QUIT
-    clearrsp
-    \ XXX 0 TO SOURCE-ID
-    POSTPONE [
-    BEGIN REFILL WHILE
-	interpret STATE @ 0= IF CR ." OK " THEN
-    REPEAT BYE
+    clearrstack 0 >in cell+ !		\ TO SOURCE-ID
+    postpone [ begin state @ 0= if ." ok " then
+	refill while interpret
+    repeat bye
 ;
 
-: ABORT clearsp QUIT ;
+: ABORT clearstack quit ;
 : ABORT" postpone if postpone ." postpone abort postpone then ; immediate

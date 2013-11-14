@@ -77,7 +77,7 @@ x_slash(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     CHECK_POP(vm, 2);
     snumber_ft n1 = PICK(sp, 1);
     snumber_ft n2 = PICK(sp, 0);
-    PICK(sp, 0) = (cell_ft) (n1 / n2);
+    PICK(sp, 1) = (cell_ft) (n1 / n2);
     SET_SP(vm, sp, 1);
     return ip;
 }
@@ -122,7 +122,7 @@ x_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     CHECK_POP(vm, 2);
     cell_ft n1 = PICK(sp, 1);
     cell_ft n2 = PICK(sp, 0);
-    PICK(sp, 0) = (cell_ft) (n1 % n2);
+    PICK(sp, 1) = (cell_ft) (n1 % n2);
     SET_SP(vm, sp, 1);
     return ip;
 }

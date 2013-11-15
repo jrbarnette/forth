@@ -42,19 +42,27 @@ variable STATE
     repeat
 ;
 
+: [COMPILE] ' compile, ; immediate
+: POSTPONE
+    parse-word lookup if
+	nf-immediate and if
+	    compile,
+	else
+	    [compile] literal [compile] compile,
+	then
+    else
+	-13 throw
+    then
+; immediate
+
 : EVALUATE ( i*x c-addr u -- j*x )
     \ save current source specification
-    >in   dup @ >r			( R: >IN )
-	0 over !			( 0 TO >IN )
-    cell+ dup @ >r			( R: >IN SOURCE-ID )
-	-1 over !			\ -1 TO SOURCE-ID
-    cell+ dup 2@ 2>r			( R: >IN SOURCE-ID c-addr u )
-	2!				\ TO SOURCE
+    >in @ >r source-id >r source 2>r
+    \ set current source to the string
+    source! -1 source-id! 0 >in !
     interpret
     \ restore previous source specification
-    2r> >in 2 cells + 2!		\ TO SOURCE
-    r> >in cell+ !			\ TO SOURCE-ID
-    r> >in !
+    2r> source! r> source-id! r> >in !
 ;
 
 : QUIT

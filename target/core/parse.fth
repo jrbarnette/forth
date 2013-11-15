@@ -2,53 +2,15 @@
 \ ------  ------  ------  ------  ------  ------  ------  ------
 \ (                     6.1.0080 CORE                   26
 \ >IN                   6.1.0560 CORE                   31
-\ CHAR                  6.1.0895 CORE                   35
 \ SOURCE                6.1.2216 CORE                   45
-\ WORD                  6.1.2450 CORE                   48
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
-create SOURCE 2 cells allot
-    here ] 2@ exit [ ' SOURCE cell+ !
 variable >IN
-
-\ anonymous definitions
-: delimiter? ( delim char -- flag )
-    over bl = if nip 127 33 within else = then
-;
-: skip-delimiters ( char "<chars>" -- )
-    >r source swap >r				( R: char c-addr )
-    >in @ 1-
-    begin 1+ 2dup > while			( end idx )
-	dup chars 2r@ rot + c@			( end idx char c )
-	delimiter? invert
-    until then >in ! drop 2r@ 2drop
-;
-
-\ target definitions
-: PARSE ( char "ccc<char>" -- c-addr u )
-    >r source swap >in @ chars + >r		( R: delim c-addr )
-    >in @ - -1
-    begin 1+ 2dup > while			( end idx )
-	dup chars 2r@ rot + c@			( end idx delim c )
-	delimiter?
-    until
-	nip dup 1+
-    then >in +! r> swap r> drop
-;
-
-\ anonymous definitions
-: parse-name ( -- c-addr u ) bl skip-delimiters bl parse ;
-
-\ label word-addr - >= 33 characters, <= size of counted string
-
-\ target definitions
-: WORD ( char "<chars>ccc<char>" -- c-addr )
-    parse-name word-addr 2dup c! char+
-    swap chars 2dup + bl c! move
-;
-
-: CHAR ( "<spaces>name" --- char ) parse-name drop c@ ;
-: ( [char] ) parse 2drop ; immediate
+    3 cells allot
+: SOURCE ( -- c-addr u ) [ >in 2 cells + ] literal 2@ ;
+: SOURCE! ( c-addr u -- ) [ >in 2 cells + ] literal 2! ;
+: SOURCE-ID [ >in cell+ ] literal @ ;
+: SOURCE-ID! [ >in cell+ ] literal ! ;
 
 \ ------  ------  ------  ------  ------  ------  ------  ------
 \ .(                    6.2.0200 CORE EXT               49
@@ -60,18 +22,39 @@ variable >IN
 \ \                     6.2.2535 CORE EXT               58
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
-\ input source specification
-\   common data -
-\     source-id
-\     start address
-\     current size
-\     >in
-\   terminal extends common data -
-\     max size
-\   seekable file extends terminal -
-\     offset of buffer w/in file
-\   block data extends common data -
-\     ???
-\ REFILL depends on input source
-: .( [char] ) parse type ; immediate
-: \ source >in ! drop ; immediate
+: PARSE ( char "ccc<char>" -- c-addr u )
+    >r source swap >in chars @ + >r		( R: delim c-addr )
+    >in @ - -1
+    begin 1+ 2dup > while			( end idx )
+	dup 2r@ rot chars + c@			( end idx delim c )
+	over bl = if nip 127 33 within else = then
+    until
+	nip dup 1+
+    then >in +! r> swap r> drop
+;
+
+\ non-standard definition
+: PARSE-WORD ( -- c-addr u )
+    >r source swap >r				( R: delim c-addr )
+    >in @ 1-
+    begin 1+ 2dup > while			( end idx )
+	dup 2r@ rot chars + c@			( end idx char c )
+	over bl = if nip 33 127 within else <> then
+    until then >in ! drop 2r> drop parse
+;
+
+: WORD ( char "<chars>ccc<char>" -- c-addr )
+    parse-word here aligned cell+		( src u dst )
+    dup >r					( R: c-addr )
+    2dup c! char+ swap chars			( src dst' u' )
+    2dup + >r move bl r> c! r>			( c-addr )
+;
+
+here 256 dup chars allot
+pad aligned 2!
+: REFILL ( -- flag )
+    source-id if false exit then
+    [ pad aligned 2@ swap ] literal dup literal	( c-addr c-addr +n1 )
+    do-accept if drop false exit then		( c-addr +n2 )
+    source! 0 >in true
+;

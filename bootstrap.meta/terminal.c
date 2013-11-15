@@ -5,6 +5,9 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <readline/readline.h>
+#include <readline/history.h>
+
 #include "forth.h"
 
 /*
@@ -38,24 +41,33 @@ x_emit(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* ( c-addr +n1 -- +n2 flag ) */
+/* ( c-addr +n1 prompt -- +n2 flag ) */
 static vminstr_p
 do_accept(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
-    CHECK_POP(vm, 2);
+    CHECK_POP(vm, 3);
     cell_ft *sp = SP(vm);
-    char *buff = (char *) PICK(sp, 1);
-    cell_ft n1 = PICK(sp, 0);
-    unsigned n2 = 0;
-    int c = EOF;
-    while (n2 < n1) {
-	c = getchar();
-	if (c == EOF || c == '\n')
-	    break;
-	buff[n2++] = (char) c;
+    char *buff = (char *) PICK(sp, 2);
+    cell_ft n1 = PICK(sp, 1);
+    char *prompt = (char *) PICK(sp, 0);
+
+    char *line = readline(prompt);
+    if (line != NULL) {
+	size_t len = strlen(line);
+	if (len > n1) {
+	    len = n1;
+	    line[len] = '\0';
+	}
+	add_history(line);
+	memcpy(buff, line, len);
+	PICK(sp, 2) = len;
+	PICK(sp, 1) = F_TRUE;
+    } else {
+	PICK(sp, 2) = 0;
+	PICK(sp, 1) = F_FALSE;
     }
-    PICK(sp, 1) = n2;
-    PICK(sp, 0) = -(n2 != 0 || c != EOF);
+    SET_SP(vm, sp, 1);
+
     return ip;
 }
 
@@ -93,7 +105,6 @@ META_FORTH(init_terminal_ops) // {
 END_META // }
 
 // ."                    6.1.0190 CORE                   28
-// ACCEPT                6.1.0695 CORE                   33
 // KEY                   6.1.1750 CORE                   40
 // SPACES                6.1.2230 CORE                   45
 //

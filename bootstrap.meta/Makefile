@@ -26,11 +26,12 @@ OPTIONS = $(CHECKFLAG) -DTEST
 
 OBJECTS = $(SOURCES:.c=.o)
 CFLAGS = -O -g $(OPTIONS) -Wall
+LDFLAGS = -lreadline
 
 all: forth tags
 
 forth: $(OBJECTS)
-	$(CC) -o $@ $(OBJECTS)
+	$(CC) $(LDFLAGS) -o $@ $(OBJECTS)
 
 $(OBJECTS): forth.h
 

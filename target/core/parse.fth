@@ -34,7 +34,7 @@ variable >IN
 ;
 
 \ non-standard definition
-: PARSE-WORD ( -- c-addr u )
+: PARSE-WORD  ( char "<chars>ccc<char>" -- c-addr u )
     >r source swap >r				( R: delim c-addr )
     >in @ 1-
     begin 1+ 2dup > while			( end idx )

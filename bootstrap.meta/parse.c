@@ -29,14 +29,16 @@ META_FORTH(init_parse_ops) // {
 	INTERP( TO_IN L(2) CELLS PLUS ) LITERAL TWO_FETCH
     XSEMICOLON
 
+    XVARIABLE("REFILL-PROMPT") 
     HERE L(256) CHARS ALLOT	// ( C: tib )
     XCOLON("REFILL")		// ( -- flag )
 	SOURCE_ID IF
 	    L(F_FALSE)
 	ELSE
-	    LITERAL DUP					// ( tib tib )
+	    LITERAL					// ( tib )
 	    // ACCEPT into TIB
-	    L(256) INTERP( L(DO_ACCEPT) COMMA ) IF	// ( tib u )
+	    DUP L(256) S("REFILL-PROMPT") FETCH
+	    INTERP( L(DO_ACCEPT) COMMA ) IF		// ( tib +n )
 		// success
 		// set SOURCE to TIB and length
 		INTERP( TO_IN L(2) CELLS PLUS ) LITERAL TWO_STORE
@@ -46,6 +48,7 @@ META_FORTH(init_parse_ops) // {
 	    ELSE					// ( tib u )
 		DROP DROP L(F_FALSE)
 	    THEN
+	    L(0) S("REFILL-PROMPT") STORE
 	THEN
     XSEMICOLON
 

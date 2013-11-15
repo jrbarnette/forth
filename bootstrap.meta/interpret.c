@@ -115,8 +115,7 @@ META_FORTH(init_interpreter_ops) // {
 	XPOSTPONE LEFT_BRACKET
 	BEGIN				// ( C: interpret dest )
 	    STATE FETCH L(0) EQUALS IF
-		// XXX implement ."
-		L('o') EMIT L('k') EMIT L(' ') EMIT
+		L("ok ") S("REFILL-PROMPT") STORE
 	    THEN
 	    REFILL WHILE		// ( C: interpret orig dest )
 		    INTERP( ROT COMMA )

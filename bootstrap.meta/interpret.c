@@ -63,18 +63,8 @@ META_FORTH(init_interpreter_ops) // {
     L(i_throw) L(DO_THROW) STORE
     L(i_lookup) L(DO_LOOKUP) STORE
 
-    XNONAME					// ( C: parse-word )
-	SOURCE SWAP TO_IN FETCH CHARS PLUS TO_R		// ( R: c-addr )
-	TO_IN FETCH MINUS L(-1)
-	BEGIN ONE_PLUS TWO_DUP GREATER WHILE		// ( end idx )
-	    DUP CHARS R_FETCH SWAP PLUS C_FETCH		// ( end idx c )
-	    L(' ' + 1) MINUS L('~' - ' ') U_LESS
-	UNTIL THEN TO_IN PLUS_STORE DROP R_FROM DROP
-	L(' ') PARSE
-    XSEMICOLON
-
-    XNONAME					// ( C: parse-word interpret )
-    BEGIN INTERP( ROT COMMA ) DUP WHILE		// ( str len )
+    XNONAME						// ( C: interpret )
+    BEGIN L(' ') S("PARSE-WORD") DUP WHILE		// ( str len )
 	TWO_DUP INTERP( L(DO_LOOKUP) COMMA ) IF		// ( str len xt flags )
 	    // compile or execute a definition
 	    TWO_SWAP TWO_DROP STATE FETCH IF

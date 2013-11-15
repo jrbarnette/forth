@@ -66,6 +66,19 @@ META_FORTH(init_parse_ops) // {
 	THEN					// ( len idx )
 	TO_IN PLUS_STORE R_FROM SWAP R_FROM DROP
     XSEMICOLON
+
+    XCOLON("PARSE-WORD")	// ( char "<chars>ccc<char>" -- c-addr u )
+	TO_R SOURCE SWAP TO_R				// ( R: delim c-addr )
+	TO_IN FETCH ONE_MINUS
+	BEGIN ONE_PLUS TWO_DUP GREATER WHILE		// ( end idx )
+	    DUP TWO_R_FETCH ROT CHARS PLUS C_FETCH	// ( end idx char c )
+	    OVER L(' ') EQUALS IF
+		SWAP DROP L(' ' + 1) MINUS L('~' - ' ') U_LESS
+	    ELSE
+		NOT_EQUALS
+	    THEN
+	UNTIL THEN TO_IN STORE DROP TWO_R_FROM DROP PARSE
+    XSEMICOLON
 END_META // }
 
 /*

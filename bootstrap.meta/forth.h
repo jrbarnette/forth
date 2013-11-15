@@ -258,6 +258,8 @@ extern vminstr_d init_mult_prim[];
 extern vminstr_d init_stack_prim[];
 extern vminstr_d init_terminal_prim[];
 
+extern vminstr_d test_forth[];
+
 extern vminstr_d init_arith_ops[];
 extern vminstr_d init_compile_ops[];
 extern vminstr_d init_control_ops[];

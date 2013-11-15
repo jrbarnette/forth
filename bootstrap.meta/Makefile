@@ -14,6 +14,7 @@ SOURCES =			\
 		parse.c		\
 		stackops.c	\
 		terminal.c	\
+		test.c		\
 		vm.c
 
 CHECKNONE = 0
@@ -21,9 +22,10 @@ CHECKSTMT = 1
 CHECKEXPR = 2
 CHECKMODE = EXPR
 CHECKFLAG = -DCHECKMODE=$(CHECK$(CHECKMODE))
+OPTIONS = $(CHECKFLAG) -DTEST
 
 OBJECTS = $(SOURCES:.c=.o)
-CFLAGS = -O -g $(CHECKFLAG) -Wall
+CFLAGS = -O -g $(OPTIONS) -Wall
 
 all: forth tags
 

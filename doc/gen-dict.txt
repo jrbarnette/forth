@@ -1,0 +1,33 @@
+idea: Forth code to generate dictionary contents as C code
+
+what does the C code look like?
+    union dict_entry
+    raw_dictionary[] = {
+	{ .cell = ... },
+	{ .str = "..." },
+	{ .label = &dictionary[...] },
+	{ .handler = x_plus },
+    };
+
+... then direct execute a sequence equivalent to this:
+    raw-dictionary dictionary raw-dictionary-size MOVE
+    raw-dictionary-size here-address !
+    forth-wordlist-label FORTH-WORDLIST !
+    DECIMAL
+    QUIT
+... would expand like this in C:
+    { .handler = do_literal }, { .label = &raw_dictionary[0] },
+    { .handler = do_literal }, { .label = &dictionary[0] },
+    { .handler = do_literal }, { .cell = sizeof (raw_dictionary) },
+    { .handler = x_move },
+    { .handler = do_literal }, { .cell = sizeof (raw_dictionary) },
+    { .handler = do_literal }, { .label = &dictionary[<here-addr>] },
+    { .handler = x_store },
+    { .handler = do_literal }, { .label = &dictionary[<last-definition>] },
+    { .handler = do_literal }, { .label = &dictionary[<forth-word-list>] },
+    { .handler = x_store },
+    { .handler = do_literal }, { .label = &dictionary[<DECIMAL>] },
+    { .handler = i_execute },
+    { .handler = do_literal }, { .label = &dictionary[<QUIT>] },
+    { .handler = i_execute },
+... where i_execute is the execution loop

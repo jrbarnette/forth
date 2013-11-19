@@ -13,8 +13,6 @@
 \ VARIABLE              6.1.2410 CORE                   47
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
-\ GET-CURRENT
-\ anonymous skip-delimiters ( <char> "<chars>" -- )
 \ anonymous lookup ( c-addr u -- 0 | xt flags -1 )
 \ anonymous definitions
 : string, ( c-addr u -- ) here swap chars dup allot move ;
@@ -46,18 +44,19 @@
 : ; ( C: colon-sys -- ) link-name postpone exit postpone [ ;
 immediate \ compile-only
 
-\ anonymous definitions
-: current-xt get-current @ cell+ count 1f and chars + aligned ;
+\ non-standard definition
+base @ hex
+: >XT ( colon-sys -- xt ) cell+ dup c@ 1f and 1+ chars + aligned ;
+base !
 
-: RECURSE current-xt compile, ; immediate
+: RECURSE ( colon-sys -- colon-sys ) dup >xt compile, ; immediate
 
 : CONSTANT ( "<spaces>name" x -- ) mcp-constant create-name , ;
-: VARIABLE ( "<spaces>name" -- )
-    mcp-variable create-name [ 1 cells ] literal allot ;
+: VARIABLE ( "<spaces>name" -- ) mcp-variable create-name 0 , ;
 : CREATE ( "<spaces>name" -- )
     mcp-create create-name [ here 3 cells + ] literal , ;
-: DOES>
-    postpone exit current-xt cell+ here !
+: DOES> ( C: colon-sys2 -- colon-sys2 )
+    postpone exit here over >xt cell+ !
 ; immediate
 : >BODY ( xt -- a-addr ) [ 2 cells ] literal + ;
 

@@ -201,9 +201,11 @@ struct name_header {
     char_ft		ident[NAME_MAX_LENGTH];
 };
 
-extern name_p lookup(vmstate_p, name_p, c_addr_ft, cell_ft);
+extern name_p lookup(vmstate_p, c_addr_ft, cell_ft);
 extern name_p addname(vmstate_p, c_addr_ft, cell_ft, vminstr_fn);
 extern void linkname(name_p);
+
+#define MAX_SEARCH_ORDER	8
 
 
 /*
@@ -222,6 +224,9 @@ extern union dict {
     struct {
 	cell_ft		here;		/* HERE */
 	name_p		forth_wordlist;	/* FORTH-WORDLIST */
+	name_p *	current;	/* CURRENT */
+	cell_ft		n_search_order;
+	name_p *	search_order[MAX_SEARCH_ORDER];
 
 	definition_d	literal_instr;	/* for LITERAL runtime xt */
 	definition_d	postpone_instr;	/* for POSTPONE non-immediate */

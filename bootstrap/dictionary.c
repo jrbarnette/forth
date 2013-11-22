@@ -115,6 +115,9 @@ void
 initialize_dictionary(vmstate_p vm, defn_data_p ignore)
 {
     DICT.here = sizeof (dictionary.dict_static_data);
+    DICT.current = &DICT.forth_wordlist;
+    DICT.n_search_order = 1;
+    DICT.search_order[0] = &DICT.forth_wordlist;
 }
 
 

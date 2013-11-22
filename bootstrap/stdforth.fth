@@ -58,10 +58,32 @@ drop drop
 : LOOP 1 postpone literal postpone +loop ; immediate \ no-interpret
 
 
-: FIND ( c-addr -- c-addr 0 | xt 1 | xt -1 )
-    dup >r count forth-wordlist search-wordlist r>
-    over if drop else swap then
+\ SEARCH
+: GET-CURRENT ( -- wid ) [ forth-wordlist cell+ ] literal @ ;
+: SET-CURRENT ( wid -- ) [ forth-wordlist cell+ ] literal ! ;
+: GET-ORDER ( -- widn ... wid1 n )
+    [ forth-wordlist 2 cells + ] literal
+    dup @ dup >r swap over cells + swap
+    begin dup while
+	>r dup @ swap [ 1 cells ] literal - r> 1-
+    repeat 2drop r>
 ;
+: SET-ORDER ( widn ... wid1 n -- )
+    dup -1 = if drop forth-wordlist 1 then
+    [ forth-wordlist 2 cells + ] literal
+    2dup ! swap begin dup while
+	>r cell+ swap over ! r> 1-
+    repeat drop
+;
+: DEFINITIONS ( -- ) [ forth-wordlist 3 cells + ] literal @ set-current ;
+
+here forth-wordlist 3 cells + ' definitions @ , ] literal ! exit [
+: VOCABULARY create 0 , does> [ over , ] ;
+: FORTH ( -- ) forth-wordlist [ swap , ] ;
+
+: ALSO ( -- ) get-order over swap 1+ set-order ;
+: ONLY ( -- ) -1 set-order ;
+: PREVIOUS ( -- ) get-order nip 1- set-order ;
 
 \ pictured string formatting - CORE
 1 cells 8 * 2 * 2 + chars allot align

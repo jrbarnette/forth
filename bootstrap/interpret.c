@@ -137,7 +137,7 @@ execute(vmstate_p vm, xt_ft entry_xt)
 static int
 evaluate_name(c_addr_ft s, cell_ft len, vmstate_p vm)
 {
-    name_p name = lookup(vm, DICT.forth_wordlist, s, len);
+    name_p name = lookup(vm, s, len);
     xt_ft xtok;
 
     if (name == NULL) {
@@ -534,7 +534,7 @@ x_postpone(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft	len;
     c_addr_ft	id = parse_name(&len);
-    name_p	name = lookup(vm, DICT.forth_wordlist, id, len);
+    name_p	name = lookup(vm, id, len);
     xt_ft	xtok;
 
     if (name == NULL) {

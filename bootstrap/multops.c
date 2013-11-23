@@ -77,6 +77,9 @@ x_slash(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     CHECK_POP(vm, 2);
     snumber_ft n1 = PICK(sp, 1);
     snumber_ft n2 = PICK(sp, 0);
+    if (n2 == 0) {
+	THROW(vm, -10);
+    }
     PICK(sp, 1) = (cell_ft) (n1 / n2);
     SET_SP(vm, sp, 1);
     return ip;
@@ -91,8 +94,11 @@ x_slash_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     CHECK_POP(vm, 2);
     snumber_ft n1 = PICK(sp, 1);
     snumber_ft n2 = PICK(sp, 0);
-    PICK(sp, 1) = (cell_ft) (n1 / n2);
-    PICK(sp, 0) = (cell_ft) (n1 % n2);
+    if (n2 == 0) {
+	THROW(vm, -10);
+    }
+    PICK(sp, 1) = (cell_ft) (n1 % n2);
+    PICK(sp, 0) = (cell_ft) (n1 / n2);
     return ip;
 }
 
@@ -122,6 +128,9 @@ x_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     CHECK_POP(vm, 2);
     cell_ft n1 = PICK(sp, 1);
     cell_ft n2 = PICK(sp, 0);
+    if (n2 == 0) {
+	THROW(vm, -10);
+    }
     PICK(sp, 1) = (cell_ft) (n1 % n2);
     SET_SP(vm, sp, 1);
     return ip;
@@ -161,8 +170,8 @@ x_u_m_slash_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     cell_ft q_lo = d_lo / v + r_hi * factor;
     cell_ft rem = d_lo % v + r_hi * factor_rem;
 
-    PICK(sp, 2) = q_lo + rem / v;
-    PICK(sp, 1) = rem % v;
+    PICK(sp, 2) = rem % v;
+    PICK(sp, 1) = q_lo + rem / v;
     SET_SP(vm, sp, 1);
 
     return ip;

@@ -239,13 +239,13 @@ refill(FILE *input)
     const char *	prompt;
     cell_ft		len;
 
-    if (DICT.state == STATE_INTERP && IS_INTERACTIVE()) {
-	prompt = "ok ";
-    } else {
-	prompt = "";
-    }
+    if (IS_INTERACTIVE(input)) {
+	if (DICT.state == STATE_INTERP) {
+	    prompt = "ok ";
+	} else {
+	    prompt = "";
+	}
 
-    if (IS_INTERACTIVE()) {
 	rl_instream = input;
 	line = readline(prompt);
 	if (line == NULL) {

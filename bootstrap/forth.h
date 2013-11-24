@@ -325,12 +325,15 @@ extern char initialize_forth[];
 struct options {
     bool	is_interactive;
     char *	startup_file;
+    int		argc;
+    char **	argv;
 };
 
 extern struct options forth_options;
 
-#define IS_INTERACTIVE()	(forth_options.is_interactive)
+#define IS_INTERACTIVE(input)	(is_interactive((input), &forth_options))
 
 extern void process_args(int, char *[], struct options *);
+extern bool is_interactive(FILE *, struct options *);
 
 #endif

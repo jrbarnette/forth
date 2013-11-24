@@ -179,6 +179,22 @@ main(int argc, char *argv[])
 	handle_exception(throwcode, &vmstate);
     }
 
-    quit(&vmstate, stdin);
+    if (!forth_options.argc) {
+	quit(&vmstate, stdin);
+    } else {
+	int i;
+	for (i = 0; i < forth_options.argc; i++) {
+	    FILE *input = fopen(forth_options.argv[i], "r");
+	    if (input == NULL) {
+		fprintf(stderr,
+			"Can't open input file %s for reading: %s\n",
+			forth_options.argv[i],
+			strerror(errno));
+		return EXIT_FAILURE;
+	    }
+	    quit(&vmstate, input);
+	    (void) fclose(input);
+	}
+    }
     return EXIT_SUCCESS;
 }

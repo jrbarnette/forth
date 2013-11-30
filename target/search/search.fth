@@ -23,9 +23,9 @@ nf-immediate nf-no-interpret or
     constant NF-COMPILE-ONLY
 : >XT ( name -- xt ) cell+ dup c@ 1f and 1+ chars + aligned ;
 : >FLAGS ( name -- flags ) cell+ dup c@ c0 and ;
+: >ID ( name -- c-addr u ) cell+ count 1f and ;
 base !
 
-\ non-standard definitions
 : SET-FLAGS ( flags -- ) get-current @ cell+ dup >r c@ or r> c! ;
 : NO-INTERPRET nf-no-interpret set-flags ;
 : COMPILE-ONLY nf-compile-only set-flags ;
@@ -36,9 +36,10 @@ base !
 \ non-standard
 variable ORDER 8 cells allot
 : GET-ORDER ( -- widn ... wid1 n )
-    order dup @ begin dup while
-	>r cell+ dup @ swap r> 1-
-    repeat swap drop
+    order dup @ >r
+    swap over cells + swap begin dup while
+	>r dup @ swap [ 1 cells ] literal - r> 1-
+    repeat 2drop r>
 ;
 : SET-ORDER ( widn ... wid1 n -- )
     dup -1 = if drop forth-wordlist 1 then

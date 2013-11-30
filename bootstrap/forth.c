@@ -144,9 +144,7 @@ main(int argc, char *argv[])
     volatile int	throwcode;
 
     process_args(argc, argv, &forth_options);
-
     init_forth(&vmstate);
-
     init_vm(&vmstate);
 
     if ((throwcode = setjmp(vmstate.interp_loop)) == 0) {
@@ -175,11 +173,10 @@ main(int argc, char *argv[])
 	forth_options.is_interactive = saved_interactive;
     }
 
-    while ((throwcode = setjmp(vmstate.interp_loop)) != 0) {
-	handle_exception(throwcode, &vmstate);
-    }
-
     if (!forth_options.argc) {
+	while ((throwcode = setjmp(vmstate.interp_loop)) != 0) {
+	    handle_exception(throwcode, &vmstate);
+	}
 	quit(&vmstate, stdin);
     } else {
 	int i;
@@ -191,6 +188,9 @@ main(int argc, char *argv[])
 			forth_options.argv[i],
 			strerror(errno));
 		return EXIT_FAILURE;
+	    }
+	    while ((throwcode = setjmp(vmstate.interp_loop)) != 0) {
+		handle_exception(throwcode, &vmstate);
 	    }
 	    quit(&vmstate, input);
 	    (void) fclose(input);

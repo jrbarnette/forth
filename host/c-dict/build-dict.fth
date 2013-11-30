@@ -1,5 +1,7 @@
 \ Copyright 2013, by J. Richard Barnette, All Rights Reserved.
 
+host-mode
+
 : graphic? ( char -- flag ) [char] ! 127 within ;
 : .{ ( -- ) ."     { " ;
 : }, ( -- ) ."  }," cr ;
@@ -38,32 +40,47 @@ here
     ' .handler , 
 : .entry ( a-addr tag -- ) cells [ swap ] literal + @ execute ;
 
-256 constant #defn-buffer
-create defn-buffer #defn-buffer cells allot
-variable dp defn-buffer dp !
+
+\ We accumulate definitions into a local buffer that we flush at the
+\ start of each new definition, and at the end.
+\
+\ The buffer is needed for cases where we backpatch content, most
+\ notably for forward branches (e.g. IF, WHILE).
+\
+\ The buffer has the following parts:
+\   defn-buffer		The actual cells of the definition
+\   tags-buffer		Tags for .entry, packed as bit fields
+\   names-buffer	Storage for handler-names for .handler
+
+256				constant #defn-buffer
+
+create		defn-buffer	#defn-buffer cells allot
+variable	dp		defn-buffer dp !
 
 2				constant #tag-bits
 1 #tag-bits lshift 1-		constant tag-mask
 1 cells 8 * #tag-bits /		constant #tags/cell
-create tag-buffer
+
+create		tag-buffer
     #defn-buffer #tags/cell 1- + #tags/cell /
     cells allot
-: tag-idx ( idx -- shift a-addr )
+: tag-addr ( a-addr -- shift a-addr )
+    defn-buffer - 1 cells /
     #tags/cell /mod >r #tag-bits * r> cells tag-buffer +
 ;
-: tag@ ( idx -- tag ) tag-idx @ swap rshift tag-mask and ;
-: tag! ( tag idx -- ) tag-idx >r lshift r@ @ or r> ! ;
-: clear-defn #defn-buffer 0 do 0 defn-buffer i cells + ! loop ;
-: clear-tags #defn-buffer 0 do i tag-idx ! #tags/cell +loop ;
+: tag@ ( a-addr -- tag ) tag-addr @ swap rshift tag-mask and ;
+: tag! ( tag a-addr -- ) tag-addr >r lshift r@ @ or r> ! ;
+
+create		names-buffer		256 chars allot
+variable	np			names-buffer np !
 
 : here dp @ ;
 \ must be careful now; we have two versions of HERE
 
-: dp>tag defn-buffer - 1 cells / ;
-: mark-string  1 here dp>tag tag! ;
-: mark-label   2 here dp>tag tag! ;
-: mark-handler 3 here dp>tag tag! ;
-: mark-string? here dup aligned <> if mark-string then ;
+: mark-string  1 here 1 cells - tag! ;
+: mark-label   2 here 1 cells - tag! ;
+: mark-handler 3 here 1 cells - tag! ;
+: mark-string? here dup aligned <> if 1 here tag! then ;
 : align ( -- ) mark-string? here aligned dp ! ;
 : allot ( n -- )
     here + dup aligned here aligned <> if mark-string? then dp !
@@ -71,18 +88,32 @@ create tag-buffer
 : , ( x -- ) here 1 cells allot ! ;
 : c, ( char -- ) here 1 chars allot c! ;
 : str, ( c-addr u -- )
-    here aligned >r chars dup >r here swap move r> allot
-    here aligned r> begin 2dup > while
-	1 over dp>tag tag!
-    cell+ repeat
+    here dup >r swap chars dup allot move
+    here aligned r> aligned
+    begin 2dup u> while 1 over tag! cell+ repeat
+;
+: handler, ( c-addr u -- )
+    np @ , mark-handler
+    dup >r dup np @ c! np @ char+ swap chars move r> 1+ np +!
 ;
 
 : flush-definition
     align here defn-buffer begin 2dup > while
-	dup dup dp>tag tag@ .entry
-    cell+ repeat defn-buffer dp !
+	dup dup tag@ .entry
+    cell+ repeat
+    defn-buffer dp ! names-buffer np !
+    #defn-buffer 0 do 0 defn-buffer i cells + ! loop
+    #defn-buffer 0 do defn-buffer i cells + tag-addr ! #tags/cell +loop
 ;
 
-5 ,
-bl parse A-VERY-LONG-NAME str,
+1 ,
+bl parse NAME str,
+flush-definition
+
+2 ,
+bl parse AN-EXTRA-LONG-NAME str,
+flush-definition
+
+3 ,
+bl parse x_plus handler,
 flush-definition

@@ -13,11 +13,33 @@ words affecting/creating definitions
 operating on defintions or names
     '		parses name and finds definition
     >BODY	requires definition from CREATE
+    EVALUATE	(indirect) parses names; must know semantics
     FIND	finds definition
     POSTPONE	parses name; must know semantics
+    QUIT	(indirect) parses names; must know semantics
     TO		requires name created by VALUE
     [']		parses name and finds definition
     [COMPILE]	parses name; must know semantics
+
+returning an xt (definition)
+    '		when interpreting, ' <xyz> EXECUTE equivalent to <xyz>
+    :NONAME
+    FIND	return value may depend on STATE
+    [']		: ['] ' POSTPONE LITERAL ; IMMEDIATE
+
+consuming an xt (definition)
+    >BODY
+    COMPILE,
+    EXECUTE
+
+attributes of definition
+    immediate	used: FIND assigned: IMMEDIATE
+    created	used: >BODY DOES> assigned: CREATE
+    execution	used: EXECUTE COMPILE,
+    interp'n	used: QUIT EVALUATE
+    compila'n	used: QUIT EVALUATE POSTPONE [COMPILE] assigned: IMMEDIATE
+    findable	used: FIND assigned: ;
+    value	used: TO assigned: VALUE
 
 create a definition:
 :                     6.1.0450 CORE                   30
@@ -113,3 +135,18 @@ PAD                   6.2.2000 CORE EXT               56
 PARSE                 6.2.2008 CORE EXT               57
 REFILL                6.2.2125 CORE EXT               57
 SOURCE-ID             6.2.2218 CORE EXT               58
+
+parses a name, for whatever purpose:
+'                     6.1.0070 CORE                   25
+:                     6.1.0450 CORE                   30
+CHAR                  6.1.0895 CORE                   35
+CONSTANT              6.1.0950 CORE                   35
+CREATE                6.1.1000 CORE                   36
+POSTPONE              6.1.2033 CORE                   43
+VARIABLE              6.1.2410 CORE                   48
+[']                   6.1.2510 CORE                   50
+[CHAR]                6.1.2520 CORE                   50
+MARKER                6.2.1850 CORE EXT               56
+TO                    6.2.2295 CORE EXT               59
+VALUE                 6.2.2405 CORE EXT               60
+[COMPILE]             6.2.2530 CORE EXT               60

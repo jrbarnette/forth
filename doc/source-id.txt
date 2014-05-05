@@ -1,0 +1,34 @@
+Values for SOURCE-ID
+
+Reading from terminal:
+    SOURCE-ID is 0
+    BLK is 0
+    input buffer is TIB, the user terminal input buffer
+    user buffer holds  at least 80 characters
+    \ comments until end of buffer
+    ( parses until end of buffer
+    control characters may match blank delimter
+
+Reading from string for EVALUATE
+    SOURCE-ID is -1
+    input buffer is string
+    \ comments until end of string
+    ( parses until end of string
+    control characters may match blank delimter
+
+Reading from block
+    SOURCE-ID is BLK
+    input buffer is the block in BLK
+    \ comments until end of line
+    line length for \ is implementation-defined
+    ( parses until end of block
+    control characters may match blank delimter
+
+Reading from file
+    SOURCE-ID is fileid
+    BLK is 0
+    input buffer is one line of text
+    lines can have at least 128 characters
+    \ comments until end of line
+    ( parses until end of file
+    control characters must match blank delimiters

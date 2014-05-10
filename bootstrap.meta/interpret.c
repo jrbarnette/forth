@@ -120,7 +120,7 @@ META_FORTH(init_interpreter_ops) // {
 	    REFILL WHILE		// ( C: interpret orig dest )
 		    INTERP( ROT COMMA )
 	REPEAT
-	L('b') EMIT L('y') EMIT L('e') EMIT CR
+	CR L("bye") L(3) TYPE CR
 	L(0) TO_R L(0) TO_R
     XSEMICOLON
 END_META // }

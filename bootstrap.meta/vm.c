@@ -129,12 +129,12 @@ interpret_names(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 	xt_ft xtok = NAME_XT(name);
 	if (*state_ptr && !NAME_IS_IMMEDIATE(name)) {
 	    comma((cell_ft) xtok);
-	} else if (!*state_ptr && !NAME_IS_INTERPRETABLE(name)) {
+	} else if (*state_ptr || NAME_IS_INTERPRETABLE(name)) {
+	    execute(vm, xtok);
+	} else {
 	    fprintf(stderr,
 		    "encountered %s in interpretion state\n", ip->str);
 	    abort();
-	} else {
-	    execute(vm, xtok);
 	}
 	ip++;
     }

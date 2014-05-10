@@ -88,7 +88,7 @@ META_FORTH(init_interpreter_ops) // {
 	THEN
     REPEAT TWO_DROP XSEMICOLON
 
-    XVARIABLE("INTERPRET")
+    XVARIABLE("INTERPRET")		// ( C: interpret )
     DUP S("INTERPRET") STORE
 
 					// ( C: interpret )
@@ -111,6 +111,7 @@ META_FORTH(init_interpreter_ops) // {
     ANON(do_clearrstack)		// ( C: interpret clearrstack )
     XCOLON("QUIT")
 	INTERP( COMMA )			// ( C: interpret )
+	// 0 TO SOURCE-ID
 	L(0) INTERP( TO_IN CELL_PLUS ) LITERAL STORE
 	XPOSTPONE LEFT_BRACKET
 	BEGIN				// ( C: interpret dest )

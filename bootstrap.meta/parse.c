@@ -32,9 +32,10 @@ META_FORTH(init_parse_ops) // {
     XVARIABLE("REFILL-PROMPT") 
     HERE L(256) CHARS ALLOT	// ( C: tib )
     XCOLON("REFILL")		// ( -- flag )
-	SOURCE_ID IF
+	SOURCE_ID IF		// ( C: tib orig1 )
 	    L(F_FALSE)
-	ELSE
+	ELSE			// ( C: tib orig2 )
+	    INTERP( SWAP )
 	    LITERAL					// ( tib )
 	    // ACCEPT into TIB
 	    DUP L(256) S("REFILL-PROMPT") FETCH

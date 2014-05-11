@@ -204,6 +204,7 @@ DIRECT_FORTH(initialize) // {
     CALL(init_terminal_ops)
     CALL(init_parse_ops)
     CALL(init_interpreter_ops)
+    CALL(init_name_ops)
 #ifdef TEST
     CALL(test_forth)
 #endif

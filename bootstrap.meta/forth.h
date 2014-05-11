@@ -287,6 +287,7 @@ extern vminstr_p interpret_names(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_exit(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p do_colon(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p do_variable(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p do_constant(vminstr_p, vmstate_p, vmarg_p);
 
 #define DIRECT_FORTH(nm) vminstr_d nm[] = {
 #define END_DIRECT	X(x_exit) };
@@ -314,6 +315,7 @@ extern vminstr_p do_variable(vminstr_p, vmstate_p, vmarg_p);
 #define ANON(hdlr)	HERE L(hdlr) COMMA
 #define XNONAME		ANON(do_colon) S("]")
 #define XVARIABLE(nm)	DIRECT PRIM(nm, do_variable) ML(CELL_SIZE) ALLOT
+#define XCONSTANT(nm)	DIRECT PRIM(nm, do_constant) META COMMA
 #define XCOLON(nm)	DIRECT PRIM(nm, do_colon) META S("]")
 #define XSEMICOLON	EXIT S("[")
 #define XPOSTPONE	DIRECT X(i_postpone)

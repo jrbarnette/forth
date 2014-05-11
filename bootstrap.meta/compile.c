@@ -75,6 +75,16 @@ do_variable(vminstr_p ip, vmstate_p vm, vmarg_p var_addr)
 }
 
 
+/* ( -- x ) name execution semantics */
+vminstr_p
+do_constant(vminstr_p ip, vmstate_p vm, vmarg_p data_ptr)
+{
+    CHECK_PUSH(vm, 1);
+    PUSH(vm, data_ptr->cell);
+    return ip;
+}
+
+
 static vminstr_p
 init_literal(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {

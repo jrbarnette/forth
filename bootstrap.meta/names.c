@@ -98,6 +98,37 @@ init_names(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
+META_FORTH(init_name_ops) // {
+    XVARIABLE("CURRENT")
+    XCOLON("GET-CURRENT") S("CURRENT") FETCH XSEMICOLON
+    XCOLON("SET-CURRENT") S("CURRENT") STORE XSEMICOLON
+    L(&DICT.forth_wordlist) S("SET-CURRENT")
+    L(&DICT.forth_wordlist) XCONSTANT("FORTH-WORDLIST")
+
+    XCOLON("STRING,")			// ( c-addr u -- )
+	DUP C_COMMA HERE SWAP CHARS DUP ALLOT MOVE
+    XSEMICOLON
+    XCOLON("NAME,")			// ( "<spaces>name" mcp -- name )
+	ALIGN HERE SWAP S("GET-CURRENT") FETCH COMMA
+	L(' ') S("PARSE-WORD") S("STRING,") ALIGN COMMA
+    XSEMICOLON
+    XCOLON("LINK-NAME")			// ( name -- )
+	S("GET-CURRENT") STORE
+    XSEMICOLON
+    XCOLON("CREATE-NAME")		// ( "<spaces>name" mcp -- )
+	S("NAME,") S("LINK-NAME")
+    XSEMICOLON
+
+    XCOLON("CONSTANT") L(do_constant) S("CREATE-NAME") COMMA XSEMICOLON
+
+    XCOLON(":") L(do_colon) S("NAME,") RIGHT_BRACKET XSEMICOLON
+    XCOLON(";")
+	S("LINK-NAME")
+	INTERP( L(DO_LITERAL) COMMA ) EXIT COMMA
+	XPOSTPONE LEFT_BRACKET
+    XSEMICOLON XIMMEDIATE
+END_META // }
+
 // '                     6.1.0070 CORE                   25
 // :                     6.1.0450 CORE                   30
 // ;                     6.1.0460 CORE                   30

@@ -259,6 +259,7 @@ extern vminstr_d init_stack_prim[];
 extern vminstr_d init_terminal_prim[];
 
 extern vminstr_d test_forth[];
+extern vminstr_d dump_dictionary[];
 
 extern vminstr_d init_arith_ops[];
 extern vminstr_d init_compile_ops[];
@@ -267,6 +268,7 @@ extern vminstr_d init_dictionary_ops[];
 extern vminstr_d init_format_ops[];
 extern vminstr_d init_interpreter_ops[];
 extern vminstr_d init_memory_ops[];
+extern vminstr_d init_name_ops[];
 extern vminstr_d init_parse_ops[];
 extern vminstr_d init_terminal_ops[];
 

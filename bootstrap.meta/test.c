@@ -9,9 +9,8 @@
  */
 
 
-#if 0	// prevent a warning
-static
 META_FORTH(dump_dictionary) // {
+#if 0
     XCOLON("COUNT") DUP CHAR_PLUS SWAP C_FETCH XSEMICOLON
     XCOLON("ADDR.")
 	/* ( addr -- ) */
@@ -45,8 +44,8 @@ META_FORTH(dump_dictionary) // {
 	HERE L(DICT_START) MINUS DOT
 	L(DICT_END) HERE MINUS DOT CR
     XSEMICOLON
-END_META // }
 #endif
+END_META // }
 
 
 META_FORTH(test_forth) // {
@@ -207,7 +206,7 @@ META_FORTH(test_forth) // {
     CR
 
     // parse ops
-    SPACE
+    L('p') EMIT
     XCOLON("SOURCE!")	// ( c-addr u -- )
 	L(0) TO_IN STORE
 	L(-1) TO_IN CELL_PLUS STORE
@@ -224,6 +223,9 @@ META_FORTH(test_forth) // {
     L('B') PARSE L(1) EQUALS S("REPORT")
     SOURCE DROP EQUALS S("ASSERT-TRUE")
     TO_IN FETCH L(2) EQUALS S("ASSERT-TRUE")
+    L('B') PARSE L(1) EQUALS S("REPORT")
+    SOURCE ONE_MINUS CHARS PLUS EQUALS S("ASSERT-TRUE")
+    TO_IN FETCH L(3) EQUALS S("ASSERT-TRUE")
     SPACE
 
     L("A") L(1) S("SOURCE!")

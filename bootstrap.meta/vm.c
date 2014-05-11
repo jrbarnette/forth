@@ -208,6 +208,7 @@ DIRECT_FORTH(initialize) // {
     CALL(test_forth)
 #endif
     META QUIT DIRECT
+    CALL(dump_dictionary)
 END_DIRECT // }
 
 

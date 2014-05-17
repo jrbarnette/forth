@@ -71,9 +71,10 @@ drop drop
 : SET-ORDER ( widn ... wid1 n -- )
     dup -1 = if drop forth-wordlist 1 then
     [ forth-wordlist 2 cells + ] literal
-    2dup ! swap begin dup while
-	>r cell+ swap over ! r> 1-
-    repeat drop
+    2dup ! swap				( wids ptr n )
+    begin dup while			( wids ptr n )
+	>r cell+ swap over ! r> 1-	( wids' ptr+ n- )
+    repeat 2drop
 ;
 : DEFINITIONS ( -- ) [ forth-wordlist 3 cells + ] literal @ set-current ;
 

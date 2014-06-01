@@ -56,7 +56,7 @@ do_fskip(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 META_FORTH(init_control_ops) // {
     XCOLON("BEGIN")	/* ( C: -- dest ) */
-			HERE XSEMICOLON COMPILE_ONLY	
+			HERE XSEMICOLON COMPILE_ONLY
 
     XCOLON("THEN")	/* ( C: orig -- ) */
 	HERE OVER MINUS L(CELL_SHIFT) RSHIFT SWAP STORE

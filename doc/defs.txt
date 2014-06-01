@@ -144,6 +144,7 @@ CONSTANT              6.1.0950 CORE                   35
 CREATE                6.1.1000 CORE                   36
 POSTPONE              6.1.2033 CORE                   43
 VARIABLE              6.1.2410 CORE                   48
+WORD                  6.1.2450 CORE                   49
 [']                   6.1.2510 CORE                   50
 [CHAR]                6.1.2520 CORE                   50
 MARKER                6.2.1850 CORE EXT               56

@@ -31,3 +31,9 @@ what does the C code look like?
     { .handler = do_literal }, { .label = &dictionary[<QUIT>] },
     { .handler = i_execute },
 ... where i_execute is the execution loop
+... could also just say
+    memcpy(dictionary, raw_dictionary, sizeof (raw_dictionary));
+    dictionary[HERE_ADDR] = sizeof (raw_dictionary);
+    dictionary[FORTH_WORDLIST] = LAST_DEFINITION;
+    execute(DECIMAL_XT);
+    execute(QUIT_XT);

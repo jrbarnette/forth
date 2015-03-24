@@ -1,0 +1,5 @@
+#!/bin/bash
+
+FILES=( $(sed 's/#.*//' file-order) )
+cd ..
+../bootstrap/forth "${FILES[@]}"

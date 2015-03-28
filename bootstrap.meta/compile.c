@@ -96,7 +96,7 @@ init_literal(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 DIRECT_FORTH(init_compile_prim) // {
     X(init_literal)
     PRIM("EXECUTE", x_execute)
-    PRIM("EXIT", x_exit)
+    PRIM("EXIT", x_exit) FLAGS(NO_INTERPRET)
     PRIM("STATE", do_variable) XCOMMA(F_TRUE)
     PRIM("[", do_colon)
 	META L(F_FALSE) STATE STORE EXIT DIRECT

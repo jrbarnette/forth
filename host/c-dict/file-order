@@ -3,4 +3,5 @@ host/host.fth
 host/c-dict/build-dict.fth
 host/c-dict/arithprim.fth
 host/c-dict/stackprim.fth
+host/c-dict/memprim.fth
 host/c-dict/end-dict.fth

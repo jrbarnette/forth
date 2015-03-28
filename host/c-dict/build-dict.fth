@@ -6,9 +6,7 @@ host-mode
 : .{ ( -- ) ."   { " ;
 : }, ( -- ) ."  }," ;
 : .cell ( a-addr -- )
-    base @ >r decimal
     .{ ." .cell = " @ 1 .r },
-    r> base !
 ;
 : .str ( a-addr -- )
     .{ ." .str = " [char] " emit
@@ -20,9 +18,9 @@ host-mode
 		dup [char] \ = over [char] " = or
 		if [char] \ emit then emit
 	    else				( #nul non-graphic )
-		base @ >r 8 base !
+		8 base !
 		0 <# # # # [char] \ hold #> type
-		r> base !
+		decimal
 	    then
 	else					( #nul 0 )
 	    drop 1+
@@ -31,7 +29,7 @@ host-mode
     [char] " emit },
 ;
 : .label ( a-addr -- )
-    base @ >r decimal .{ ." .label = &dictionary[" @ 1 .r ." ]" }, r> base !
+    .{ ." .label = &dictionary[" @ 1 .r ." ]" },
 ;
 : .handler ( a-addr -- ) .{ ." .handler = " @ count type }, ;
 
@@ -44,10 +42,10 @@ here
 
 
 \ We accumulate definitions into a local buffer that we flush at the
-\ start of each new definition, and at the end.
+\ end of processing.
 \
-\ The buffer is needed for cases where we backpatch content, most
-\ notably for forward branches (e.g. IF, WHILE).
+\ The buffer is needed for cases where we backpatch content, as for
+\ forward branches (e.g. IF, WHILE) and IMMEDIATE.
 \
 \ The buffer has the following parts:
 \   data-buffer		The actual cells of the definition
@@ -103,14 +101,14 @@ variable  lp	0 lp !
     begin 2dup u> while 1 over tag! cell+ repeat 2drop
 ;
 : handler, ( c-addr -- ) align , mark-handler ;
-: label, ( u -- ) 1 cells / , mark-label ;
-: link, ( -- ) lp @ label, ;
-: link-name ( name -- ) data-buffer - lp ! ;
+: label, ( addr -- ) dup if data-buffer - , mark-label else , then ;
+: link, ( -- ) align lp @ label, ;
+: link-name ( name -- ) lp ! ;
 
 : flush-target-dictionary
+    decimal
     align here data-buffer begin 2dup > while
-	dup data-buffer - 1 cells /
-	." /* " 4 .r ."  */"
+	dup data-buffer - ." /* " 5 .r ."  */"
 	dup dup tag@ .entry cr
     cell+ repeat 2drop
 ;
@@ -132,7 +130,7 @@ variable  lp	0 lp !
 ;
 
 hex
-: immediate lp @ data-buffer + cell+ dup c@ 80 or swap c! ;
-: no-interpret lp @ data-buffer + cell+ dup c@ 40 or swap c! ;
-: compile-only lp @ data-buffer + cell+ dup c@ c0 or swap c! ;
+: immediate lp @ cell+ dup c@ 80 or swap c! ;
+: no-interpret lp @ cell+ dup c@ 40 or swap c! ;
+: compile-only lp @ cell+ dup c@ c0 or swap c! ;
 decimal

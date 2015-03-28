@@ -1,6 +1,6 @@
 # Copyright 2015, by J. Richard Barnette, All Rights Reserved.
-host.fth
-c-dict/build-dict.fth
-c-dict/arithprim.fth
-c-dict/stackprim.fth
-c-dict/end-dict.fth
+host/host.fth
+host/c-dict/build-dict.fth
+host/c-dict/arithprim.fth
+host/c-dict/stackprim.fth
+host/c-dict/end-dict.fth

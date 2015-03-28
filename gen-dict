@@ -1,0 +1,22 @@
+#!/bin/bash
+
+usage() {
+    echo "usage: $(basename $0) target-type" >&2
+    exit 1
+}
+
+if [ $# -ne 1 ]
+then
+    usage
+fi
+
+FILEORDER="host/$1/file-order"
+if [ ! -f $FILEORDER ]
+then
+    echo "$FILEORDER: no file" >&2
+    usage
+fi
+
+cd $(dirname $0)
+FILES=( $(sed 's/#.*//' $FILEORDER) )
+bootstrap/forth "${FILES[@]}"

@@ -27,6 +27,12 @@
 \  U>                    6.2.2350 CORE EXT               57
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
+\ : 0< 0 < ;
+\ : 0= 0 = ;
+\ : 1+ 1 + ;
+\ : 1- 1 - ;
+\ : 2* 1 LSHIFT ;
+
 prim: +         x_plus
 prim: -         x_minus
 prim: 0<        x_zero_less
@@ -46,6 +52,11 @@ prim: OR        x_or
 prim: RSHIFT    x_rshift
 prim: U<        x_u_less
 prim: XOR       x_xor
+
+\ : <> = NEGATE ;
+\ : 0<> 0 <> ;
+\ : 0> 0 > ;
+\ : U> SWAP U< ;
 
 prim: 0<>       x_zero_not_equals
 prim: 0>        x_zero_greater

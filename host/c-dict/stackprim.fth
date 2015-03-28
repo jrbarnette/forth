@@ -22,6 +22,9 @@
 \  PICK                  6.2.2030 CORE EXT               55
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
+\ : 2DROP DROP DROP ;
+\ : 2DUP OVER OVER ;
+
 prim: 2DROP     x_two_drop
 prim: 2DUP      x_two_dup
 prim: 2OVER     x_two_over

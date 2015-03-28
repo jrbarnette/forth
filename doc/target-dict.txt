@@ -1,0 +1,54 @@
+three way definitions:
+    standard Forth definition
+    operating on target dictionary in host
+    definition in target dictionary
+
+host-mode names to be reused for target dictionary
+    here allot , c, align
+
+    @ c@ ! c!  (maybe?)
+
+    immediate
+
+    variable constant create does>
+    : ; [ ]
+    literal
+    if else then begin while repeat until do loop +loop
+
+
+behavior of definitions in target-mode
+
+regular:
+    look up in target dictionary, label, the offset
+    ... but these will be looked up by top-level interpreter
+    options
+      + teach the top level interpreter to search the target
+	dictionary?
+	... give every wordlist its own embedded search method
+	... need to be careful that IMMEDIATE target words
+	    are properly shadowed by host-mode words that do
+	    the right thing
+      + separate interpreter loop in target mode
+	... but currently, we operate by parsing files named on the
+	    command line, and each file starts at the high-level
+	    interpreter
+	... something has to change; maybe time to implement
+	    INCLUDED, INCLUDE-FILE, etc.?
+      + for each target definition, create a host definition
+        with the needed behavior
+	    IMMEDIATE gets sticky; consider definition of IF
+
+    considering IF when host-mode has a shadow dictionary for
+    target-mode
+    : IF ( C: -- orig ) postpone fskip orig> ; immediate
+	... in target, this compiles in, and gets marked IMMEDIATE
+	    (provided fskip and orig> are OK?); all good
+	... in host-mode IF becomes
+		' IF label,
+	    but in host-mode, IF should do the same as the target
+
+compile-only words
+    need a host-mode definition that shadows and mocks the the
+    target-mode definition
+    ... ideally, just source the code twice, once in host-mode, once
+	in target-mode

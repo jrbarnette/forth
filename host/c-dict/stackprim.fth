@@ -19,10 +19,7 @@
 \  2>R                   6.2.0340 CORE EXT               50
 \  2R>                   6.2.0410 CORE EXT               50
 \  2R@                   6.2.0415 CORE EXT               50
-\  NIP                   6.2.1930 CORE EXT               54
 \  PICK                  6.2.2030 CORE EXT               55
-\  ROLL                  6.2.2150 CORE EXT               56
-\  TUCK                  6.2.2300 CORE EXT               57
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
 prim: 2DROP     x_two_drop

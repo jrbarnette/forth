@@ -15,7 +15,7 @@
 
 \ anonymous lookup ( c-addr u -- 0 | xt flags -1 )
 \ anonymous definitions
-: string, ( c-addr u -- ) here swap chars dup allot move ;
+: string, ( c-addr u -- ) dup c, here swap chars dup allot move ;
 : name, ( mcp -- name )
     align here swap get-current @ , parse-name dup c, string, align ,
 ;

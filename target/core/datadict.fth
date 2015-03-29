@@ -11,7 +11,7 @@
 \ address of the HERE pointer (preferably as a literal).
 
 : HERE ( -- addr ) here-addr @ ;
-: ALLOT ( n -- ) here-addr @ + here-addr ! ;
+: ALLOT ( n -- ) here-addr +! ;
 : ALIGN ( -- ) here aligned here-addr ! ;
 : , ( x -- ) here [ 1 cells ] literal allot ! ;
 : C, ( char -- ) here [ 1 chars ] literal allot c! ;

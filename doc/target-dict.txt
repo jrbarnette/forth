@@ -2,53 +2,85 @@ three way definitions:
     standard Forth definition
     operating on target dictionary in host
     definition in target dictionary
+use three modes (search order configurations) to select
+which definitions will be used
 
-host-mode names to be reused for target dictionary
-    here allot , c, align
+but really it's just two modes:
+    Forth (interpret and compile)
+    Target (interpret and compile)
+... but still three choices of search order
 
-    @ c@ ! c!  (maybe?)
-
-    immediate
-
+in target mode interpretation state, these words operate on the
+target dictionary:
+    here allot , c, align unused
+    : ]
     variable constant create does>
-    : ; [ ]
-    literal
-    if else then begin while repeat until do loop +loop
+    ' find >body
+    immediate
+    (some primitives, if target has different cell size)
+    ( ... or different character set (!))
+: ] both switch to target-mode compiler
 
+in target mode compilation state, we must interpret the source for
+ourselves
+    parse-word and lookup in target search order
+    if found
+	execute
+    else
+	lookup in target dictionary
+	if found
+	    compile into target dictionary
+	else
+	    if parse number
+		compile literal into target dictionary
+	    else
+		complain
 
-behavior of definitions in target-mode
+target search order has just the special compilation semantics
+words from the standard
+    \ ( .(
+    POSTPONE ['] [CHAR] [COMPILE]
+    LITERAL RECURSE
+    S" C" ." ABORT"
+    [ ;
+    IF ELSE THEN
+    BEGIN WHILE REPEAT UNTIL AGAIN
+    DO ?DO LOOP +LOOP UNLOOP LEAVE I J
+    DOES>
+[ ; switch back to host-mode
 
-regular:
-    look up in target dictionary, label, the offset
-    ... but these will be looked up by top-level interpreter
-    options
-      + teach the top level interpreter to search the target
-	dictionary?
-	... give every wordlist its own embedded search method
-	... need to be careful that IMMEDIATE target words
-	    are properly shadowed by host-mode words that do
-	    the right thing
-      + separate interpreter loop in target mode
-	... but currently, we operate by parsing files named on the
-	    command line, and each file starts at the high-level
-	    interpreter
-	... something has to change; maybe time to implement
-	    INCLUDED, INCLUDE-FILE, etc.?
-      + for each target definition, create a host definition
-        with the needed behavior
-	    IMMEDIATE gets sticky; consider definition of IF
+=== alternatives considered to a target-mode compile state loop
+  + separate interpreter loop in target mode
+    ... but currently, we operate by parsing files named on the
+	command line, and each file starts at the high-level
+	interpreter
+    ... something has to change; maybe time to implement
+	INCLUDED, INCLUDE-FILE, etc.?
+    ... wait, target-mode is triggered by content in the
+	source file, like a : definition
+    ... target-mode loop just has to handle EOF properly
+    ... more to the point, terminate properly after ;
+  + teach the top level interpreter to search the target
+    dictionary?
+    ... give every wordlist its own embedded search method
+    ... need to be careful that IMMEDIATE target words
+	are properly shadowed by host-mode words that do
+	the right thing
+  + for each target definition, create a host definition
+    with the needed behavior
+	IMMEDIATE gets sticky; consider definition of IF
 
-    considering IF when host-mode has a shadow dictionary for
-    target-mode
-    : IF ( C: -- orig ) postpone fskip orig> ; immediate
-	... in target, this compiles in, and gets marked IMMEDIATE
-	    (provided fskip and orig> are OK?); all good
-	... in host-mode IF becomes
-		' IF label,
-	    but in host-mode, IF should do the same as the target
+considering IF when host-mode has a shadow dictionary for
+target-mode
+: IF ( C: -- orig ) postpone fskip orig> ; immediate
+    ... in target, this compiles in, and gets marked IMMEDIATE
+	(provided fskip and orig> are OK?); all good
+    ... in host-mode IF becomes
+	    ' IF label,
+	but in host-mode, IF should do the same as the target
 
 compile-only words
-    need a host-mode definition that shadows and mocks the the
+    need a host-mode definition that shadows and mocks the
     target-mode definition
     ... ideally, just source the code twice, once in host-mode, once
 	in target-mode

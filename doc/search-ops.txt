@@ -1,0 +1,14 @@
+search operations (search list methods)
+    name, ( c-addr u -- )
+    set-flags ( flags == )
+    lookup ( c-addr u -- ptr flags )
+
+but the real goal is to associate a ptr with xt values
+... how many?  which one?
+
+so
+    lookup ( c-addr u -- xt flags )
+
+issue is two different callers:
+    QUIT just wants to execute something based on STATE
+    FIND just wants to give the caller the facts

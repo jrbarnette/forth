@@ -1,0 +1,101 @@
+objective:
+    QUIT and its dependencies
+    In Forth
+    embedded in a Forth interpreter's dictionary
+    with no references into the old dictionary
+	... but with copies of pointers to relevant C primitives
+    maybe, a vehicle to experiment with dictionary layout
+
+rationale:
+    proof-of-concept of Forth in Forth
+    basis for building interpreter free of vestiges
+	... can reuse much of the code, we hope
+    easy way to experiement with alternative dictionaries
+
+strategy/design:
+machine code pointers can be copied into the new dictionary like so:
+    ' + @ ,
+... need to update the bootstrap interpreter to make it easy to get
+    to internal handlers, including
+	do_skip do_fskip
+	do_colon do_constant do_variable
+	do_literal
+	do_plus_loop, etc.
+	do_s_quote do_c_quote
+
+=== layout changes to consider later
+format of a defintion:
+    back-link
+    name as a counted string
+    interpretation xt
+    compilation xt
+    [ ... ]
+
+in QUIT, after successful lookup
+    ( pointer-to-compilation-xt )
+    state @ if cell+ dup cell+ swap then @ execute
+
+default compilation semantics:
+    ( xt-ptr ) compile,
+
+no interpretation semantics:
+    -14 THROW
+
+layout in specific cases
+    default semantics
+	pointer to data field
+	default compilation semantics XT
+	code handler
+	[ ... ]
+
+    immediate word
+	pointer to data field
+	pointer to data field
+	code handler
+	[ ... ]
+
+    no interpretation semantics
+	no interpretation semantics XT
+	default compilation semantics XT
+	code handler
+	[ ... ]
+
+    special compilation semantics
+	no interpretation semantics XT
+	pointer to data field
+	code handler
+	[ ... ]
+
+    VARIABLE
+	pointer to data field
+	custom semantics ->
+	    cell+ postpone literal
+	do_variable
+	variable value
+
+    CONSTANT
+	pointer to data field
+	custom semantics ->
+	    cell+ @ postpone literal
+	do_constant
+	constant value
+
+    CREATE definition (before DOES>)
+	pointer to data field
+	default compilation semantics XT
+	do_colon
+	data field XT
+	['] EXIT
+	['] EXIT
+	do_variable
+	[ ... ]
+
+    CREATE definition (after DOES>)
+	pointer to data field
+	default compilation semantics XT
+	do_colon
+	data field XT
+	does-ptr
+	['] EXIT
+	do_variable
+	[ ... ]

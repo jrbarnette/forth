@@ -81,6 +81,23 @@ char *forth_exceptions[] =
 
 
 static void
+handle_exception(int throwcode, vmstate_p vm, char *filename)
+{
+    char *excdesc = forth_exceptions[-throwcode-1];
+
+    if (filename != NULL) {
+	fprintf(stderr, "error in %s:%lu col %lu\n",
+		filename, DICT.lineno, DICT.to_in + 1);
+    }
+    if (excdesc != NULL) {
+	CLEAR_RSTACK(vm);
+	CLEAR_STACK(vm);
+	fprintf(stderr, "%s\n", excdesc);
+    }
+}
+
+
+static void
 init_vm(vmstate_p vm)
 {
     CLEAR_STACK(vm);
@@ -99,25 +116,12 @@ interpret_defs(vmstate_p vm, defn_dt *dp)
 
 
 static void
-handle_exception(int throwcode, vmstate_p vm)
-{
-    char *excdesc = forth_exceptions[-throwcode-1];
-
-    if (excdesc != NULL) {
-	CLEAR_RSTACK(vm);
-	CLEAR_STACK(vm);
-	fprintf(stderr, "%s\n", excdesc);
-    } 
-}
-
-
-static void
 init_forth(vmstate_p vm)
 {
     volatile int	throwcode;
 
     if ((throwcode = setjmp(vm->interp_loop)) != 0) {
-	handle_exception(throwcode, vm);
+	handle_exception(throwcode, vm, NULL);
 	abort();
     }
     init_vm(vm);
@@ -150,7 +154,7 @@ main(int argc, char *argv[])
     if ((throwcode = setjmp(vmstate.interp_loop)) == 0) {
 	interpret_string(&vmstate, initialize_forth);
     } else {
-	handle_exception(throwcode, &vmstate);
+	handle_exception(throwcode, &vmstate, NULL);
     }
 
     if (forth_options.startup_file != NULL) {
@@ -161,7 +165,8 @@ main(int argc, char *argv[])
 	    if ((throwcode = setjmp(vmstate.interp_loop)) == 0) {
 		quit(&vmstate, startup);
 	    } else {
-		handle_exception(throwcode, &vmstate);
+		handle_exception(throwcode, &vmstate,
+				 forth_options.startup_file);
 	    }
 	} else {
 	    fprintf(stderr,
@@ -175,22 +180,23 @@ main(int argc, char *argv[])
 
     if (!forth_options.argc) {
 	while ((throwcode = setjmp(vmstate.interp_loop)) != 0) {
-	    handle_exception(throwcode, &vmstate);
+	    handle_exception(throwcode, &vmstate, NULL);
 	}
 	quit(&vmstate, stdin);
     } else {
 	int i;
 	for (i = 0; i < forth_options.argc; i++) {
-	    FILE *input = fopen(forth_options.argv[i], "r");
+	    volatile char *filename = forth_options.argv[i];
+	    FILE *input = fopen((char *) filename, "r");
 	    if (input == NULL) {
 		fprintf(stderr,
-			"Can't open input file %s for reading: %s\n",
-			forth_options.argv[i],
-			strerror(errno));
+			"Can't open %s for reading: %s\n",
+			(char *) filename, strerror(errno));
 		return EXIT_FAILURE;
 	    }
 	    while ((throwcode = setjmp(vmstate.interp_loop)) != 0) {
-		handle_exception(throwcode, &vmstate);
+		handle_exception(throwcode, &vmstate,
+				 (char *) filename);
 	    }
 	    quit(&vmstate, input);
 	    (void) fclose(input);

@@ -4,7 +4,6 @@
 
 #include <assert.h>
 #include <ctype.h>
-#include <setjmp.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -280,10 +279,12 @@ quit(vmstate_p vm, FILE *input)
     DICT.source_id = SOURCE_ID_TERMINAL;
     DICT.source.c_addr = DICT.tib;
     DICT.source_max_len = sizeof (DICT.tib);
+    DICT.lineno = 0;
 
     DICT.state = STATE_INTERP;
 
     while (refill(input)) {
+	DICT.lineno++;
 	evaluate(vm);
     }
 }

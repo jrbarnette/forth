@@ -246,6 +246,7 @@ extern union dict {
 	string_ft	source;		/* SOURCE */
 	cell_ft		to_in;		/* >IN */
 	int		source_max_len;
+	size_t		lineno;
 
 	cell_ft		base;		/* BASE */
     } dict_static_data;

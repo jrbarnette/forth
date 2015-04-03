@@ -9,6 +9,7 @@ but really it's just two modes:
     Forth (interpret and compile)
     Target (interpret and compile)
 ... but still three choices of search order
+... have to think about intermediate modes during creation
 
 in target mode interpretation state, these words operate on the
 target dictionary:
@@ -19,6 +20,7 @@ target dictionary:
     immediate
     (some primitives, if target has different cell size)
     ( ... or different character set (!))
+    ( ... or different endianness)
 : ] both switch to target-mode compiler
 
 in target mode compilation state, we must interpret the source for
@@ -48,6 +50,7 @@ words from the standard
     DO ?DO LOOP +LOOP UNLOOP LEAVE I J
     DOES>
 [ ; switch back to host-mode
+
 
 === alternatives considered to a target-mode compile state loop
   + separate interpreter loop in target mode

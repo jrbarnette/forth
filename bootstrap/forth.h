@@ -236,6 +236,7 @@ extern union dict {
 	definition_d	plus_loop_instr; /* for +LOOP runtime xt */
 	definition_d	does_instr;	/* for DOES> runtime xt */
 	definition_d	s_quote_instr;	/* for S" runtime xt */
+	definition_d	c_quote_instr;	/* for C" runtime xt */
 
 	cell_ft		state;		/* STATE */
 
@@ -273,6 +274,7 @@ extern union dict {
 #define PLUS_LOOP_XT		(&DICT.plus_loop_instr)
 #define DOES_XT			(&DICT.does_instr)
 #define S_QUOTE_XT		(&DICT.s_quote_instr)
+#define C_QUOTE_XT		(&DICT.c_quote_instr)
 
 extern addr_ft allot(vmstate_p, cell_ft);
 

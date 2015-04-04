@@ -34,6 +34,7 @@
   [                     6.1.2500 CORE                   48
   ]                     6.1.2540 CORE                   49
 
+  C"                    6.2.0855 CORE EXT               52
   HEX                   6.2.1660 CORE EXT               54
   PARSE                 6.2.2008 CORE EXT               55
   ------  ------  ------  ------  ------  ------  ------  ------
@@ -573,6 +574,35 @@ x_right_bracket(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
+/* ( -- c-addr u ) runtime semantics */
+static vminstr_p
+do_c_quote(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    cell_ft len = ip->cdata[0];
+
+    CHECK_PUSH(vm, 1);
+    PUSH(vm, &ip->cdata[0]);
+    return (vminstr_p) ((cell_ft) ip + ALIGNED(len + 1));
+}
+
+
+/* ( "ccc<quote>" -- ) compilation semantics */
+static vminstr_p
+x_c_quote(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    char_ft *str_src = PARSE_AREA_PTR;
+    cell_ft len = parse('"', str_src, PARSE_AREA_LEN);
+    char_ft *str_dst;
+
+    compile_xt(vm, C_QUOTE_XT);
+    str_dst = allot(vm, len + 1);
+    str_dst[0] = (char_ft) len;
+    memcpy(str_dst + 1, str_src, len);
+    ALIGN(vm);
+    return ip;
+}
+
+
 /* ( -- ) */
 static vminstr_p
 x_hex(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -607,6 +637,7 @@ initialize_xtokens(vmstate_p vm, defn_data_p ignore)
     DICT.skip_instr.handler = do_skip;
     DICT.fskip_instr.handler = do_fskip;
     DICT.s_quote_instr.handler = do_s_quote;
+    DICT.c_quote_instr.handler = do_c_quote;
 
     DICT.base = 10;
 }
@@ -631,6 +662,7 @@ interpret_defns[] = {
     { define_name, "[",		x_left_bracket, NAME_TYPE_COMPILE },
     { define_name, "]",		x_right_bracket },
 
+    { define_name, "C\"",	x_c_quote, NAME_TYPE_COMPILE },
     { define_name, "HEX",	x_hex },
     { define_name, "PARSE",	x_parse },
     { NULL }

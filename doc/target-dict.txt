@@ -14,6 +14,7 @@ but really it's just two modes:
 in target mode interpretation state, these words operate on the
 target dictionary:
     here allot , c, align unused
+    compile,
     : ]
     variable constant create does>
     ' find >body

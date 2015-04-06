@@ -37,6 +37,7 @@
   C"                    6.2.0855 CORE EXT               52
   HEX                   6.2.1660 CORE EXT               54
   PARSE                 6.2.2008 CORE EXT               55
+  REFILL                6.2.2125 CORE EXT               55
   ------  ------  ------  ------  ------  ------  ------  ------
 */
 
@@ -233,20 +234,20 @@ evaluate(vmstate_p vm)
 
 
 static cell_ft
-refill(FILE *input)
+refill(void)
 {
     char *		line;
     const char *	prompt;
     cell_ft		len;
 
-    if (IS_INTERACTIVE(input)) {
+    if (IS_INTERACTIVE(DICT.input)) {
 	if (DICT.state == STATE_INTERP) {
 	    prompt = "ok ";
 	} else {
 	    prompt = "";
 	}
 
-	rl_instream = input;
+	rl_instream = DICT.input;
 	line = readline(prompt);
 	if (line == NULL) {
 	    return F_FALSE;
@@ -260,7 +261,7 @@ refill(FILE *input)
 	memcpy(DICT.source.c_addr, line, len);
     } else {
 	line = (char *) DICT.source.c_addr;
-	if (fgets(line, DICT.source_max_len, input) == NULL) {
+	if (fgets(line, DICT.source_max_len, DICT.input) == NULL) {
 	    return F_FALSE;
 	}
 	len = strlen(line);
@@ -270,6 +271,7 @@ refill(FILE *input)
     }
     DICT.source.len = len;
     DICT.to_in = 0;
+    DICT.lineno++;
     return F_TRUE;
 }
 
@@ -281,11 +283,11 @@ quit(vmstate_p vm, FILE *input)
     DICT.source.c_addr = DICT.tib;
     DICT.source_max_len = sizeof (DICT.tib);
     DICT.lineno = 0;
+    DICT.input = input;
 
     DICT.state = STATE_INTERP;
 
-    while (refill(input)) {
-	DICT.lineno++;
+    while (refill()) {
 	evaluate(vm);
     }
 }
@@ -629,6 +631,16 @@ x_parse(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
+/* ( -- flag ) */
+static vminstr_p
+x_refill(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    CHECK_PUSH(vm, 1);
+    PUSH(vm, refill());
+    return ip;
+}
+
+
 static void
 initialize_xtokens(vmstate_p vm, defn_data_p ignore)
 {
@@ -665,5 +677,6 @@ interpret_defns[] = {
     { define_name, "C\"",	x_c_quote, NAME_TYPE_COMPILE },
     { define_name, "HEX",	x_hex },
     { define_name, "PARSE",	x_parse },
+    { define_name, "REFILL",	x_refill },
     { NULL }
 };

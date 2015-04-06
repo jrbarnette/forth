@@ -248,6 +248,7 @@ extern union dict {
 	cell_ft		to_in;		/* >IN */
 	int		source_max_len;
 	size_t		lineno;
+	FILE *		input;
 
 	cell_ft		base;		/* BASE */
     } dict_static_data;

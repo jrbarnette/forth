@@ -102,8 +102,6 @@ variable  lp	0 lp !
 ;
 : handler, ( c-addr -- ) align , mark-handler ;
 : label, ( addr -- ) dup if data-buffer - , mark-label else , then ;
-: link, ( -- ) align lp @ label, ;
-: link-name ( name -- ) lp ! ;
 
 : flush-target-dictionary
     decimal
@@ -113,14 +111,23 @@ variable  lp	0 lp !
     cell+ repeat 2drop
 ;
 
-: .s depth begin dup while dup pick . 1- repeat drop ;
-: parse-word begin dup parse dup 0= while 2drop repeat rot drop ;
+: parse-word  ( char "<chars>ccc<char>" -- c-addr u )
+    >r source chars + source drop >in @ chars +
+    begin 2dup > while		( end c-addr ) ( R: char )
+	dup c@ r@ bl = if 33 - 94 u< else r@ <> then
+	if 2drop r> parse exit then
+	1 >in +! char+
+    repeat r> 2drop 0
+;
+
+: link, ( -- ) align lp @ label, ;
+: link-name ( name -- ) lp ! ;
 
 : handler: ( "<name>" -- )
-    bl parse-word
-    dup hnp @ dup handler, c!
-    hnp @ char+ swap chars dup >r move
-    r> char+ hnp +!
+    bl parse-word				( c-addr u )
+    dup hnp @ dup handler, c!			( c-addr u )
+    hnp @ char+ swap chars dup >r move		( ) ( R: nchars )
+    r> char+ hnp +!				( )
 ;
 
 : prim:
@@ -129,8 +136,52 @@ variable  lp	0 lp !
     handler:
 ;
 
+here constant do-literal
+handler: do_literal
+
+: toupper ( char -- char )
+    dup [char] a - 26 u< if [ char A char a - ] literal + then
+;
+
+: id= ( c-addr1 u1 c-addr1 u1 -- match? )
+    rot dup = if
+	begin dup while			( c-addr1 c-addr2 u )
+	    >r over c@ toupper over c@ toupper <> if
+		r> drop 2drop false exit
+	    then char+ swap char+ swap r> 1-
+	repeat drop 2drop true
+    else
+	drop 2drop false
+    then
+;
+
 hex
-: immediate lp @ cell+ dup c@ 80 or swap c! ;
-: no-interpret lp @ cell+ dup c@ 40 or swap c! ;
-: compile-only lp @ cell+ dup c@ c0 or swap c! ;
+
+: flags! ( flags -- ) lp @ cell+ dup >r c@ or r> c! ;
+: immediate 80 flags! ;
+: no-interpret 40 flags! ;
+: compile-only c0 flags! ;
+
+: >flags ( name -- xt ) cell+ c@ c0 and ;
+: >id ( name -- c-addr u ) cell+ count 1f and ;
+: >xt ( name -- xt ) cell+ dup c@ 1f and 1+ chars + aligned ;
+
+: target-lookup ( c-addr u -- name )
+    lp @ begin
+	>r 2dup r@ >id id= if		( id id tid ) ( R: name )
+	    2drop r> true
+	else
+	    r> @ dup if
+		data-buffer + false
+	    else
+		drop 2drop 0 true
+	    then
+	then				( c-addr u name flag )
+    until
+;
+
+: compile, label, ;
+
 decimal
+
+variable state	0 state !

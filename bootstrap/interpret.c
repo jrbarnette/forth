@@ -496,7 +496,7 @@ static vminstr_p
 x_source(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_PUSH(vm, 2);
-    PUSH(vm, &DICT.source.c_addr);
+    PUSH(vm, DICT.source.c_addr);
     PUSH(vm, DICT.source.len);
     return ip;
 }

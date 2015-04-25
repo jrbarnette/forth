@@ -1,10 +1,3 @@
-+ performance - change vm primitive interface to pass ip instead of tos
-+ CONSTANT
-+ the remaining stackops words
-+ the remaining memops words
-+ do loop words
-+ literal generation words
-+ CORE EXT words
-+ multi-cell multiply and divide
-+ pictured output (needs multi-cell divide)
-+ termio words
++ can xtok point to a struct, not a union?
++ execute() can be private?
++ create parse.c for parse(), etc.

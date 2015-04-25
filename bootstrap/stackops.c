@@ -8,20 +8,23 @@
  * stackops.c - Standard Forth words for stack operations.
  */
 
-/*------  ------  ------  ------  ------  ------  ------  ------
-  >R                    6.1.0580 CORE                   32
-  ?DUP                  6.1.0630 CORE                   32
-  DEPTH                 6.1.1200 CORE                   36
-  DROP                  6.1.1260 CORE                   37
-  DUP                   6.1.1290 CORE                   37
-  OVER                  6.1.1990 CORE                   42
-  R>                    6.1.2060 CORE                   43
-  R@                    6.1.2070 CORE                   43
-  ROT                   6.1.2160 CORE                   44
-  SWAP                  6.1.2260 CORE                   45
-  PICK                  6.2.2030 CORE EXT               55
-  ------  ------  ------  ------  ------  ------  ------  ------
-*/
+//------  ------  ------  ------  ------  ------  ------  ------
+// >R                    6.1.0580 CORE                   32
+// ?DUP                  6.1.0630 CORE                   32
+// DEPTH                 6.1.1200 CORE                   36
+// DROP                  6.1.1260 CORE                   37
+// DUP                   6.1.1290 CORE                   37
+// OVER                  6.1.1990 CORE                   42
+// R>                    6.1.2060 CORE                   43
+// R@                    6.1.2070 CORE                   43
+// ROT                   6.1.2160 CORE                   44
+// SWAP                  6.1.2260 CORE                   45
+//
+// 2>R                   6.2.0340 CORE EXT               50
+// 2R>                   6.2.0410 CORE EXT               50
+// 2R@                   6.2.0415 CORE EXT               50
+// PICK                  6.2.2030 CORE EXT               55
+//------  ------  ------  ------  ------  ------  ------  ------
 
 
 /* ( x -- ) ( R:  -- x ) execution semantics */
@@ -149,6 +152,53 @@ x_swap(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
+/* ( x1 x2 -- ) ( R:  -- x1 x2 ) execution semantics */
+vminstr_p
+x_two_to_r(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    CHECK_POP(vm, 2);
+    CHECK_RPUSH(vm, 2);
+    cell_ft *sp = SP(vm);
+    cell_ft *rsp = RSP(vm);
+    SET_RSP(vm, rsp, -2);
+    PICK(rsp, -1) = PICK(sp, 1);
+    PICK(rsp, -2) = PICK(sp, 0);
+    SET_SP(vm, sp, 2);
+    return ip;
+}
+
+
+/* ( -- x1 x2 ) ( R: x1 x2 -- ) execution semantics */
+vminstr_p
+x_two_r_from(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    CHECK_PUSH(vm, 2);
+    CHECK_RPOP(vm, 2);
+    cell_ft *sp = SP(vm);
+    cell_ft *rsp = RSP(vm);
+    SET_SP(vm, sp, -2);
+    PICK(sp, -1) = PICK(rsp, 1);
+    PICK(sp, -2) = PICK(rsp, 0);
+    SET_RSP(vm, rsp, 2);
+    return ip;
+}
+
+
+/* ( -- x1 x2 ) ( R: x1 x2 -- x1 x2 ) execution semantics */
+vminstr_p
+x_two_r_fetch(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    CHECK_PUSH(vm, 2);
+    CHECK_RPOP(vm, 2);
+    cell_ft *sp = SP(vm);
+    cell_ft *rsp = RSP(vm);
+    SET_SP(vm, sp, -2);
+    PICK(sp, -1) = PICK(rsp, 1);
+    PICK(sp, -2) = PICK(rsp, 0);
+    return ip;
+}
+
+
 /* ( xu ... x0 u -- xu ... x0 xu ) */
 vminstr_p
 x_pick(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -164,19 +214,20 @@ x_pick(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-defn_dt
-stackops_defns[] = {
-    { define_name, ">R",	x_to_r, NAME_TYPE_NO_INTERPRET },
-    { define_name, "?DUP",	x_question_dup },
-    { define_name, "DEPTH",	x_depth },
-    { define_name, "DROP",	x_drop },
-    { define_name, "DUP",	x_dup },
-    { define_name, "OVER",	x_over },
-    { define_name, "R>",	x_r_from, NAME_TYPE_NO_INTERPRET },
-    { define_name, "R@",	x_r_fetch, NAME_TYPE_NO_INTERPRET },
-    { define_name, "ROT",	x_rot },
-    { define_name, "SWAP",	x_swap },
+DIRECT_FORTH(init_stack_prim) // {
+    PRIM(">R",		x_to_r)			FLAGS(NO_INTERPRET)
+    PRIM("?DUP",	x_question_dup)
+    PRIM("DEPTH",	x_depth)
+    PRIM("DROP",	x_drop)
+    PRIM("DUP",		x_dup)
+    PRIM("OVER",	x_over)
+    PRIM("R>",		x_r_from)		FLAGS(NO_INTERPRET)
+    PRIM("R@",		x_r_fetch)		FLAGS(NO_INTERPRET)
+    PRIM("ROT",		x_rot)
+    PRIM("SWAP",	x_swap)
 
-    { define_name, "PICK",	x_pick },
-    { NULL }
-};
+    PRIM("2>R",		x_two_to_r)		FLAGS(NO_INTERPRET)
+    PRIM("2R>",		x_two_r_from)		FLAGS(NO_INTERPRET)
+    PRIM("2R@",		x_two_r_fetch)		FLAGS(NO_INTERPRET)
+    PRIM("PICK",	x_pick)
+END_DIRECT // }

@@ -5,7 +5,7 @@
 #include "forth.h"
 
 /*
- * multops.c - Standard Forth words for single- and double cell
+ * multops.c - Standard Forth words for single and double cell
  *   multiply and divide operations.
  */
 
@@ -27,6 +27,7 @@
 #define HIGH_BIT	(~(~(cell_ft) 0 >> 1))
 #define HALF_SHIFT	((cell_ft) (4 * CELL_SIZE))
 #define HALF_MASK	(~(cell_ft) 0 >> HALF_SHIFT)
+
 
 static void
 dmult(cell_ft *sp, cell_ft n1, cell_ft n2, cell_ft sign)
@@ -74,7 +75,10 @@ x_slash(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     CHECK_POP(vm, 2);
     snumber_ft n1 = PICK(sp, 1);
     snumber_ft n2 = PICK(sp, 0);
-    PICK(sp, 0) = (cell_ft) (n1 / n2);
+    if (n2 == 0) {
+	THROW(vm, -10);
+    }
+    PICK(sp, 1) = (cell_ft) (n1 / n2);
     SET_SP(vm, sp, 1);
     return ip;
 }
@@ -88,8 +92,11 @@ x_slash_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     CHECK_POP(vm, 2);
     snumber_ft n1 = PICK(sp, 1);
     snumber_ft n2 = PICK(sp, 0);
-    PICK(sp, 1) = (cell_ft) (n1 / n2);
-    PICK(sp, 0) = (cell_ft) (n1 % n2);
+    if (n2 == 0) {
+	THROW(vm, -10);
+    }
+    PICK(sp, 1) = (cell_ft) (n1 % n2);
+    PICK(sp, 0) = (cell_ft) (n1 / n2);
     return ip;
 }
 
@@ -119,7 +126,10 @@ x_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     CHECK_POP(vm, 2);
     cell_ft n1 = PICK(sp, 1);
     cell_ft n2 = PICK(sp, 0);
-    PICK(sp, 0) = (cell_ft) (n1 % n2);
+    if (n2 == 0) {
+	THROW(vm, -10);
+    }
+    PICK(sp, 1) = (cell_ft) (n1 % n2);
     SET_SP(vm, sp, 1);
     return ip;
 }
@@ -158,8 +168,8 @@ x_u_m_slash_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     cell_ft q_lo = d_lo / v + r_hi * factor;
     cell_ft rem = d_lo % v + r_hi * factor_rem;
 
-    PICK(sp, 2) = q_lo + rem / v;
-    PICK(sp, 1) = rem % v;
+    PICK(sp, 2) = rem % v;
+    PICK(sp, 1) = q_lo + rem / v;
     SET_SP(vm, sp, 1);
 
     return ip;
@@ -180,4 +190,3 @@ END_DIRECT // }
 // */MOD                 6.1.0110 CORE                   26
 // FM/MOD                6.1.1561 CORE                   39
 // SM/REM                6.1.2214 CORE                   45
-// UM/MOD                6.1.2370 CORE                   46

@@ -1,3 +1,0 @@
-+ can xtok point to a struct, not a union?
-+ execute() can be private?
-+ create parse.c for parse(), etc.

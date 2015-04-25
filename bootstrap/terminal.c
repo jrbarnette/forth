@@ -7,7 +7,7 @@
 #include "forth.h"
 
 /*
- * termio.c - Standard Forth words for user terminal I/O.
+ * terminal.c - Standard Forth words for user terminal I/O.
  */
 
 //------  ------  ------  ------  ------  ------  ------  ------
@@ -25,6 +25,6 @@ x_emit(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-DIRECT_FORTH(init_termio_prim) // {
+DIRECT_FORTH(init_terminal_prim) // {
     PRIM("EMIT", x_emit)
 END_DIRECT // }

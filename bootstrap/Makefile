@@ -13,7 +13,7 @@ SOURCES =			\
 	    names.c		\
 	    stackops.c		\
 	    stdforth.c		\
-	    termio.c
+	    terminal.c
 
 CHECKNONE = 0
 CHECKSTMT = 1

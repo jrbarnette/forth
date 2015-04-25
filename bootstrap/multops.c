@@ -5,26 +5,20 @@
 #include "forth.h"
 
 /*
- * multops.c - Standard Forth words for double cell multiply
- *   and divide operations.
+ * multops.c - Standard Forth words for single and double cell
+ *   multiply and divide operations.
  */
 
-/*
- * N.B. The Forth spellings of star-slash and star-slash-mode can't
- * appear in a comment.  Go ahead, try it.  Make my day.
- */
-/*------  ------  ------  ------  ------  ------  ------  ------
-  *                     6.1.0090 CORE                   26
-  star-slash            6.1.0100 CORE                   26
-  star-slash-mod        6.1.0110 CORE                   26
-  /                     6.1.0230 CORE                   28
-  /MOD                  6.1.0240 CORE                   28
-  M*                    6.1.1810 CORE                   41
-  MOD                   6.1.1890 CORE                   42
-  UM*                   6.1.2360 CORE                   46
-  UM/MOD                6.1.2370 CORE                   46
-  ------  ------  ------  ------  ------  ------  ------  ------
-*/
+//------  ------  ------  ------  ------  ------  ------  ------
+// *                     6.1.0090 CORE                   26
+// /                     6.1.0230 CORE                   28
+// /MOD                  6.1.0240 CORE                   28
+// M*                    6.1.1810 CORE                   41
+// MOD                   6.1.1890 CORE                   42
+// UM*                   6.1.2360 CORE                   46
+// UM/MOD                6.1.2370 CORE                   46
+//------  ------  ------  ------  ------  ------  ------  ------
+
 
 #define HIGH_BIT	(~(~(cell_ft) 0 >> 1))
 #define HALF_SHIFT	((cell_ft) (4 * CELL_SIZE))
@@ -177,15 +171,18 @@ x_u_m_slash_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     return ip;
 }
 
+// XXX - missing the following:
+// */                    6.1.0100 CORE                   26
+// */MOD                 6.1.0110 CORE                   26
+// FM/MOD                6.1.1561 CORE                   39
+// SM/REM                6.1.2214 CORE                   45
 
-defn_dt
-multops_defns[] = {
-    { define_name, "*",		x_star },
-    { define_name, "/",		x_slash },
-    { define_name, "/MOD",	x_slash_mod },
-    { define_name, "M*",	x_m_star },
-    { define_name, "MOD",	x_mod },
-    { define_name, "UM*",	x_u_m_star },
-    { define_name, "UM/MOD",	x_u_m_slash_mod },
-    { NULL }
-};
+DIRECT_FORTH(init_mult_prim) // {
+    PRIM("*",		x_star)
+    PRIM("/",		x_slash)
+    PRIM("/MOD",	x_slash_mod)
+    PRIM("M*",		x_m_star)
+    PRIM("MOD",		x_mod)
+    PRIM("UM*",		x_u_m_star)
+    PRIM("UM/MOD",	x_u_m_slash_mod)
+END_DIRECT // }

@@ -128,7 +128,7 @@ DIRECT_FORTH(initialize) // {
     CALL(init_dictionary)
     CALL(init_stack_prim)
     CALL(init_arith_prim)
-    DEFS(memops_defns)
+    CALL(init_memory_prim)
     DEFS(multops_defns)
     DEFS(names_defns)
     DEFS(control_defns)

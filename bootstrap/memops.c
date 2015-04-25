@@ -11,14 +11,13 @@
  *   pointer arithmetic operations.
  */
 
-/*------  ------  ------  ------  ------  ------  ------  ------
-  !                     6.1.0010 CORE                   25
-  @                     6.1.0650 CORE                   32
-  C!                    6.1.0850 CORE                   34
-  C@                    6.1.0870 CORE                   34
-  MOVE                  6.1.1900 CORE                   42
-  ------  ------  ------  ------  ------  ------  ------  ------
-*/
+//------  ------  ------  ------  ------  ------  ------  ------
+// !                     6.1.0010 CORE                   25
+// @                     6.1.0650 CORE                   32
+// C!                    6.1.0850 CORE                   34
+// C@                    6.1.0870 CORE                   34
+// MOVE                  6.1.1900 CORE                   42
+//------  ------  ------  ------  ------  ------  ------  ------
 
 
 /* ( x a-addr -- ) */
@@ -84,12 +83,10 @@ x_move(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-defn_dt
-memops_defns[] = {
-    { define_name, "!",		x_store },
-    { define_name, "@",		x_fetch },
-    { define_name, "C!",	x_c_store },
-    { define_name, "C@",	x_c_fetch },
-    { define_name, "MOVE",	x_move },
-    { NULL }
-};
+DIRECT_FORTH(init_memory_prim) // {
+    PRIM("!", 		x_store)
+    PRIM("@",		x_fetch)
+    PRIM("C!",		x_c_store)
+    PRIM("C@",		x_c_fetch)
+    PRIM("MOVE",	x_move)
+END_DIRECT // }

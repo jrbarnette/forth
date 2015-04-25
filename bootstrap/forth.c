@@ -2,13 +2,14 @@
  * Copyright 2013, by J. Richard Barnette. All Rights Reserved.
  */
 
+#include "forth.h"
+
+#include <assert.h>
 #include <errno.h>
 #include <setjmp.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-#include "forth.h"
 
 /*
  * main.c - Initialization and main() for bootstrap Forth
@@ -97,45 +98,57 @@ handle_exception(int throwcode, vmstate_p vm, char *filename)
 }
 
 
-static void
-init_vm(vmstate_p vm)
+static vminstr_p
+interpret_defs(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
-    CLEAR_STACK(vm);
-    CLEAR_RSTACK(vm);
-}
+    defn_dt *dp = (defn_dt *) ip->ptr;
 
-
-static void
-interpret_defs(vmstate_p vm, defn_dt *dp)
-{
     while (dp->fn != NULL) {
 	dp->fn(vm, dp);
 	dp++;
     }
+
+    return ip + 1;
 }
+
+
+#define DEFS(defns)	X(interpret_defs) { .ptr = defns },
+
+static
+DIRECT_FORTH(initialize) // {
+    DEFS(dictionary_defns)
+    DEFS(stackops_defns)
+    DEFS(arithops_defns)
+    DEFS(memops_defns)
+    DEFS(multops_defns)
+    DEFS(names_defns)
+    DEFS(control_defns)
+    DEFS(termio_defns)
+    DEFS(interpret_defns)
+    DEFS(fileops_defns)
+END_DIRECT // }
 
 
 static void
 init_forth(vmstate_p vm)
 {
-    volatile int	throwcode;
+    CLEAR_STACK(vm);
+    CLEAR_RSTACK(vm);
 
+    volatile int	throwcode;
     if ((throwcode = setjmp(vm->interp_loop)) != 0) {
 	handle_exception(throwcode, vm, NULL);
 	abort();
     }
-    init_vm(vm);
 
-    interpret_defs(vm, dictionary_defns);
-    interpret_defs(vm, stackops_defns);
-    interpret_defs(vm, arithops_defns);
-    interpret_defs(vm, memops_defns);
-    interpret_defs(vm, multops_defns);
-    interpret_defs(vm, names_defns);
-    interpret_defs(vm, control_defns);
-    interpret_defs(vm, termio_defns);
-    interpret_defs(vm, interpret_defns);
-    interpret_defs(vm, fileops_defns);
+    RPUSH(vm, NULL);
+    vminstr_p ip = initialize;
+    while (ip != NULL) {
+	ip = ip->handler(ip + 1, vm, NULL);
+    }
+
+    assert(EMPTY(vm));
+    assert(REMPTY(vm));
 }
 
 
@@ -149,7 +162,6 @@ main(int argc, char *argv[])
 
     process_args(argc, argv, &forth_options);
     init_forth(&vmstate);
-    init_vm(&vmstate);
 
     if ((throwcode = setjmp(vmstate.interp_loop)) == 0) {
 	interpret_string(&vmstate, initialize_forth);

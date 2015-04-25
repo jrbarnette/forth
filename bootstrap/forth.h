@@ -119,9 +119,10 @@ union instruction_data {
     snumber_ft		offset;
     char_ft		cdata[1];
 
-    /* initialization instructions only */
+    /* direct execution only */
     vminstr_fn		handler;
     char *		id;
+    void *		ptr;
 };
 
 union argument_data {
@@ -138,12 +139,11 @@ union definition_data {
     vmarg_d		arg[1];
 };
 
-extern void execute(vmstate_p, xt_ft);
-
-#define CLEAR_STACK(vm)		((vm)->sp = vm->stack + STACK_SIZE)
-#define CLEAR_RSTACK(vm)	((vm)->rsp = vm->rstack + RSTACK_SIZE)
+#define CLEAR_STACK(vm)		((vm)->sp = (vm)->stack + STACK_SIZE)
+#define CLEAR_RSTACK(vm)	((vm)->rsp = (vm)->rstack + RSTACK_SIZE)
 #define DEPTH(vm)		(STACK_SIZE - ((vm)->sp - (vm)->stack))
-#define EMPTY(vm)		((vm)->sp == (vm)->stack)
+#define EMPTY(vm)		((vm)->sp == (vm)->stack + STACK_SIZE)
+#define REMPTY(vm)		((vm)->rsp == (vm)->rstack + RSTACK_SIZE)
 #define SP(vm)			((vm)->sp)
 #define RSP(vm)			((vm)->rsp)
 #define PICK(sp, n)		((sp)[(n)])
@@ -284,7 +284,9 @@ extern union dict {
 #define S_QUOTE_XT		(&DICT.s_quote_instr)
 #define C_QUOTE_XT		(&DICT.c_quote_instr)
 
-extern addr_ft allot(vmstate_p, cell_ft);
+
+/*
+ */
 
 typedef struct defn *defn_data_p;
 
@@ -311,9 +313,21 @@ extern defn_dt fileops_defns[];
 extern void define_name(vmstate_p, defn_data_p);
 extern void compile_name(vmstate_p, defn_data_p);
 
+extern vminstr_p x_exit(vminstr_p, vmstate_p, vmarg_p);
+
+#define DIRECT_FORTH(nm)	vminstr_d nm[] = {
+#define END_DIRECT		X(x_exit) };
+
+#define X(x)		{ .handler = x },
+#define S(s)		{ .id = s },
+
 
 /*
  */
+
+extern void execute(vmstate_p, xt_ft);
+
+extern addr_ft allot(vmstate_p, cell_ft);
 
 extern cell_ft parse(char_ft, c_addr_ft, cell_ft);
 extern c_addr_ft parse_name(cell_ft *);
@@ -329,6 +343,7 @@ extern void interpret_string(vmstate_p, char *);
 #define XALIGN(vm)	(DICT.here = XALIGNED(DICT.here))
 
 extern char initialize_forth[];
+
 
 /*
  */

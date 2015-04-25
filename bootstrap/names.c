@@ -215,7 +215,7 @@ x_to_body(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( R: nest-sys -- ) execution semantics */
-static vminstr_p
+vminstr_p
 x_exit(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_RPOP(vm, 1);

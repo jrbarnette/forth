@@ -9,24 +9,23 @@
  *   logical operations.
  */
 
-/*------  ------  ------  ------  ------  ------  ------  ------
-  +                     6.1.0120 CORE                   26
-  -                     6.1.0160 CORE                   27
-  2*                    6.1.0320 CORE                   29
-  2/                    6.1.0330 CORE                   29
-  <                     6.1.0480 CORE                   30
-  =                     6.1.0530 CORE                   31
-  >                     6.1.0540 CORE                   31
-  AND                   6.1.0720 CORE                   33
-  INVERT                6.1.1720 CORE                   40
-  LSHIFT                6.1.1805 CORE                   41
-  NEGATE                6.1.1910 CORE                   42
-  OR                    6.1.1980 CORE                   42
-  RSHIFT                6.1.2162 CORE                   44
-  U<                    6.1.2340 CORE                   46
-  XOR                   6.1.2490 CORE                   48
-  ------  ------  ------  ------  ------  ------  ------  ------
-*/
+//------  ------  ------  ------  ------  ------  ------  ------
+// +                     6.1.0120 CORE                   26
+// -                     6.1.0160 CORE                   27
+// 2*                    6.1.0320 CORE                   29
+// 2/                    6.1.0330 CORE                   29
+// <                     6.1.0480 CORE                   30
+// =                     6.1.0530 CORE                   31
+// >                     6.1.0540 CORE                   31
+// AND                   6.1.0720 CORE                   33
+// INVERT                6.1.1720 CORE                   40
+// LSHIFT                6.1.1805 CORE                   41
+// NEGATE                6.1.1910 CORE                   42
+// OR                    6.1.1980 CORE                   42
+// RSHIFT                6.1.2162 CORE                   44
+// U<                    6.1.2340 CORE                   46
+// XOR                   6.1.2490 CORE                   48
+//------  ------  ------  ------  ------  ------  ------  ------
 
 
 /* ( x1 x2 -- x ) */
@@ -205,23 +204,20 @@ x_xor(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-defn_dt
-arithops_defns[] = {
-    { define_name, "+",		x_plus },
-    { define_name, "-",		x_minus },
-    { define_name, "2*",	x_two_star },
-    { define_name, "2/",	x_two_slash },
-    { define_name, "<",		x_less_than },
-    { define_name, "=",		x_equals },
-    { define_name, ">",		x_greater_than },
-    { define_name, "AND",	x_and },
-    { define_name, "INVERT",	x_invert },
-    { define_name, "LSHIFT",	x_lshift },
-    { define_name, "NEGATE",	x_negate },
-    { define_name, "OR",	x_or },
-    { define_name, "RSHIFT",	x_rshift },
-    { define_name, "U<",	x_u_less },
-    { define_name, "XOR",	x_xor },
-
-    { NULL }
-};
+DIRECT_FORTH(init_arith_prim) // {
+    PRIM("+",		x_plus)
+    PRIM("-",		x_minus)
+    PRIM("2*",		x_two_star)
+    PRIM("2/",		x_two_slash)
+    PRIM("<",		x_less_than)
+    PRIM("=",		x_equals)
+    PRIM(">",		x_greater_than)
+    PRIM("AND",		x_and)
+    PRIM("INVERT",	x_invert)
+    PRIM("LSHIFT",	x_lshift)
+    PRIM("NEGATE",	x_negate)
+    PRIM("OR",		x_or)
+    PRIM("RSHIFT",	x_rshift)
+    PRIM("U<",		x_u_less)
+    PRIM("XOR",		x_xor)
+END_DIRECT // }

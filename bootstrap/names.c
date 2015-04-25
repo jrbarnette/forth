@@ -86,33 +86,42 @@ lookup(vmstate_p vm, c_addr_ft id, cell_ft len)
 /*
  * Routines for adding named definitions into the dictionary.
  */
-name_p
+static name_p
 addname(vmstate_p vm, c_addr_ft id, cell_ft len, vminstr_fn hdlr)
 {
-    name_p	cur;
-    xt_ft	xtok;
-
     if (len == 0)		THROW(vm, -16);
     if (len > NAME_MAX_LENGTH)	THROW(vm, -19);
 
     XALIGN(vm);
-    cur = (name_p) allot(vm, NAME_SIZE(len) + CELL_SIZE);
-    cur->prev = NULL;
-    cur->flags = len;
-    (void) memcpy(cur->ident, id, len);
-    xtok = NAME_XT(cur);
+    name_p name = (name_p) allot(vm, NAME_SIZE(len) + CELL_SIZE);
+    name->prev = *DICT.current;
+    name->flags = len;
+    (void) memcpy(name->ident, id, len);
+
+    xt_ft xtok = NAME_XT(name);
     xtok->handler = hdlr;
     assert(HERE == xtok[1].arg->data);
 
-    return cur;
+    return name;
 }
 
 
-void
+static void
 linkname(name_p name)
 {
-    name->prev = *DICT.current;
     *DICT.current = name;
+}
+
+
+vminstr_p
+i_addname(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    char *id = ip[0].id;
+    cell_ft len = strlen(id);
+    vminstr_fn hdlr = ip[1].handler;
+    linkname(addname(vm, (c_addr_ft) id, len, hdlr));
+
+    return ip + 2;
 }
 
 
@@ -136,7 +145,7 @@ compile_name(vmstate_p vm, defn_data_p data)
     cell_ft	len = (cell_ft) strlen((char *) id);
     name_p	nm = lookup(vm, id, len);
 
-    COMMA(vm, NAME_XT(nm));
+    COMPILE(vm, NAME_XT(nm));
 }
 
 

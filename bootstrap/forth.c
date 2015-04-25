@@ -112,13 +112,22 @@ interpret_defs(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
+vminstr_p
+i_call(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    CHECK_RPUSH(vm, 1);
+    RPUSH(vm, ip + 1);
+    return ip->ip;
+}
+
+
 #define DEFS(defns)	X(interpret_defs) { .ptr = defns },
 
 static
 DIRECT_FORTH(initialize) // {
     DEFS(dictionary_defns)
     DEFS(stackops_defns)
-    DEFS(arithops_defns)
+    CALL(init_arith_prim)
     DEFS(memops_defns)
     DEFS(multops_defns)
     DEFS(names_defns)

@@ -121,6 +121,7 @@ union instruction_data {
 
     /* direct execution only */
     vminstr_fn		handler;
+    vminstr_p		ip;
     char *		id;
     void *		ptr;
 };
@@ -209,8 +210,6 @@ struct name_header {
 };
 
 extern name_p lookup(vmstate_p, c_addr_ft, cell_ft);
-extern name_p addname(vmstate_p, c_addr_ft, cell_ft, vminstr_fn);
-extern void linkname(name_p);
 
 #define MAX_SEARCH_ORDER	8
 
@@ -299,7 +298,6 @@ typedef struct defn {
     cell_ft		flags;
 } defn_dt;
 
-extern defn_dt arithops_defns[];
 extern defn_dt control_defns[];
 extern defn_dt dictionary_defns[];
 extern defn_dt interpret_defns[];
@@ -310,9 +308,12 @@ extern defn_dt stackops_defns[];
 extern defn_dt termio_defns[];
 extern defn_dt fileops_defns[];
 
+extern vminstr_d init_arith_prim[];
+
 extern void define_name(vmstate_p, defn_data_p);
 extern void compile_name(vmstate_p, defn_data_p);
 
+extern vminstr_p i_addname(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_exit(vminstr_p, vmstate_p, vmarg_p);
 
 #define DIRECT_FORTH(nm)	vminstr_d nm[] = {
@@ -320,6 +321,8 @@ extern vminstr_p x_exit(vminstr_p, vmstate_p, vmarg_p);
 
 #define X(x)		{ .handler = x },
 #define S(s)		{ .id = s },
+#define CALL(x)		X(i_call) { .ip = (x) },
+#define PRIM(nm, hdlr)	X(i_addname) S(nm) { .handler = hdlr },
 
 
 /*

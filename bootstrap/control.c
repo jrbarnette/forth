@@ -66,6 +66,24 @@ compile_plus_loop(vmstate_p vm, xt_ft unloop_xt)
 }
 
 
+static vminstr_p
+do_skip(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    return ip + ip->offset;
+}
+
+
+static vminstr_p
+do_fskip(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    CHECK_POP(vm, 1);
+    if (POP(vm) == 0)
+	return ip + ip->offset;
+    else
+	return ip + 1;
+}
+
+
 /* ( n -- ) ( R: loop-sys1 -- | loop-sys2 ) runtime semantics */
 static vminstr_p
 do_plus_loop(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -262,17 +280,19 @@ x_while(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 static void
-initialize_do_tokens(vmstate_p vm, defn_data_p ignore)
+initialize_control_tokens(vmstate_p vm, defn_data_p ignore)
 {
     DICT.do_instr.handler = do_do;
     DICT.plus_loop_instr.handler = do_plus_loop;
+    DICT.skip_instr.handler = do_skip;
+    DICT.fskip_instr.handler = do_fskip;
 }
 
 
 defn_dt
 control_defns[] =
 {
-    { initialize_do_tokens },
+    { initialize_control_tokens },
     { define_name, "UNLOOP",	x_unloop, NAME_TYPE_NO_INTERPRET },
 
     { define_name, "+LOOP",	x_plus_loop, NAME_TYPE_COMPILE },

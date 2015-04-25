@@ -133,7 +133,7 @@ DIRECT_FORTH(initialize) // {
     CALL(init_terminal_prim)
     DEFS(names_defns)
     DEFS(control_defns)
-    DEFS(interpret_defns)
+    CALL(init_interpret)
     CALL(init_file_prim)
 END_DIRECT // }
 

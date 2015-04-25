@@ -17,29 +17,28 @@
  *   words.
  */
 
-/*------  ------  ------  ------  ------  ------  ------  ------
-  >IN                   6.1.0560 CORE                   31
-  ABORT                 6.1.0670 CORE                   32
-  BASE                  6.1.0750 CORE                   34
-  CHAR                  6.1.0895 CORE                   35
-  DECIMAL               6.1.1170 CORE                   36
-  EVALUATE              6.1.1360 CORE                   38
-  EXECUTE               6.1.1370 CORE                   38
-  LITERAL               6.1.1780 CORE                   41
-  POSTPONE              6.1.2033 CORE                   43
-  QUIT                  6.1.2050 CORE                   43
-  S"                    6.1.2165 CORE                   44
-  SOURCE                6.1.2216 CORE                   45
-  STATE                 6.1.2250 CORE                   45
-  [                     6.1.2500 CORE                   48
-  ]                     6.1.2540 CORE                   49
-
-  C"                    6.2.0855 CORE EXT               52
-  HEX                   6.2.1660 CORE EXT               54
-  PARSE                 6.2.2008 CORE EXT               55
-  REFILL                6.2.2125 CORE EXT               55
-  ------  ------  ------  ------  ------  ------  ------  ------
-*/
+//------  ------  ------  ------  ------  ------  ------  ------
+// >IN                   6.1.0560 CORE                   31
+// ABORT                 6.1.0670 CORE                   32
+// BASE                  6.1.0750 CORE                   34
+// CHAR                  6.1.0895 CORE                   35
+// DECIMAL               6.1.1170 CORE                   36
+// EVALUATE              6.1.1360 CORE                   38
+// EXECUTE               6.1.1370 CORE                   38
+// LITERAL               6.1.1780 CORE                   41
+// POSTPONE              6.1.2033 CORE                   43
+// QUIT                  6.1.2050 CORE                   43
+// S"                    6.1.2165 CORE                   44
+// SOURCE                6.1.2216 CORE                   45
+// STATE                 6.1.2250 CORE                   45
+// [                     6.1.2500 CORE                   48
+// ]                     6.1.2540 CORE                   49
+//
+// C"                    6.2.0855 CORE EXT               52
+// HEX                   6.2.1660 CORE EXT               54
+// PARSE                 6.2.2008 CORE EXT               55
+// REFILL                6.2.2125 CORE EXT               55
+//------  ------  ------  ------  ------  ------  ------  ------
 
 
 static void
@@ -304,24 +303,6 @@ interpret_string(vmstate_p vm, char *s)
 
 
 /* -------------------------------------------------------------- */
-
-static vminstr_p
-do_skip(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    return ip + ip->offset;
-}
-
-
-static vminstr_p
-do_fskip(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    CHECK_POP(vm, 1);
-    if (POP(vm) == 0)
-	return ip + ip->offset;
-    else
-	return ip + 1;
-}
-
 
 /* ( -- a-addr ) */
 static vminstr_p
@@ -617,42 +598,32 @@ x_refill(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-static void
-initialize_xtokens(vmstate_p vm, defn_data_p ignore)
-{
-    DICT.literal_instr.handler = do_literal;
-    DICT.postpone_instr.handler = do_postpone;
-    DICT.skip_instr.handler = do_skip;
-    DICT.fskip_instr.handler = do_fskip;
-    DICT.s_quote_instr.handler = do_s_quote;
-    DICT.c_quote_instr.handler = do_c_quote;
+DIRECT_FORTH(init_interpret) // {
+    L(do_literal)  L(DO_LITERAL_XT)  X(x_store)
+    L(do_postpone) L(DO_POSTPONE_XT) X(x_store)
+    L(do_s_quote)  L(S_QUOTE_XT)     X(x_store)
+    L(do_c_quote)  L(C_QUOTE_XT)     X(x_store)
 
-    DICT.base = 10;
-}
+    L(10)          L(&DICT.base)     X(x_store)
 
+    PRIM(">IN",		x_to_in)
+    PRIM("ABORT",	x_abort)
+    PRIM("BASE",	x_base)
+    PRIM("CHAR",	x_char)
+    PRIM("DECIMAL",	x_decimal)
+    PRIM("EVALUATE",	x_evaluate)
+    PRIM("EXECUTE",	x_execute)
+    PRIM("LITERAL",	x_literal)		FLAGS(COMPILE)
+    PRIM("POSTPONE",	x_postpone)		FLAGS(COMPILE)
+    PRIM("QUIT",	x_quit)
+    PRIM("SOURCE",	x_source)
+    PRIM("STATE",	x_state)
+    PRIM("S\"",		x_s_quote)		FLAGS(COMPILE)
+    PRIM("[",		x_left_bracket)		FLAGS(COMPILE)
+    PRIM("]",		x_right_bracket)
 
-defn_dt
-interpret_defns[] = {
-    { initialize_xtokens },
-    { define_name, ">IN",	x_to_in },
-    { define_name, "ABORT",	x_abort },
-    { define_name, "BASE",	x_base },
-    { define_name, "CHAR",	x_char },
-    { define_name, "DECIMAL",	x_decimal },
-    { define_name, "EVALUATE",	x_evaluate },
-    { define_name, "EXECUTE",	x_execute },
-    { define_name, "LITERAL",	x_literal, NAME_TYPE_COMPILE },
-    { define_name, "POSTPONE",	x_postpone, NAME_TYPE_COMPILE },
-    { define_name, "QUIT",	x_quit },
-    { define_name, "SOURCE",	x_source },
-    { define_name, "STATE",	x_state },
-    { define_name, "S\"",	x_s_quote, NAME_TYPE_COMPILE },
-    { define_name, "[",		x_left_bracket, NAME_TYPE_COMPILE },
-    { define_name, "]",		x_right_bracket },
-
-    { define_name, "C\"",	x_c_quote, NAME_TYPE_COMPILE },
-    { define_name, "HEX",	x_hex },
-    { define_name, "PARSE",	x_parse },
-    { define_name, "REFILL",	x_refill },
-    { NULL }
-};
+    PRIM("C\"",		x_c_quote)		FLAGS(COMPILE)
+    PRIM("HEX",		x_hex)
+    PRIM("PARSE",	x_parse)
+    PRIM("REFILL",	x_refill)
+END_DIRECT // }

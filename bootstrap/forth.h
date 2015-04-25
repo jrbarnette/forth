@@ -299,16 +299,16 @@ typedef struct defn {
 } defn_dt;
 
 extern defn_dt control_defns[];
-extern defn_dt interpret_defns[];
 extern defn_dt names_defns[];
 
 extern vminstr_d init_arith_prim[];
 extern vminstr_d init_dictionary[];
+extern vminstr_d init_file_prim[];
+extern vminstr_d init_interpret[];
 extern vminstr_d init_memory_prim[];
 extern vminstr_d init_mult_prim[];
 extern vminstr_d init_stack_prim[];
 extern vminstr_d init_terminal_prim[];
-extern vminstr_d init_file_prim[];
 
 extern void define_name(vmstate_p, defn_data_p);
 extern void compile_name(vmstate_p, defn_data_p);

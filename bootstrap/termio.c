@@ -10,10 +10,9 @@
  * termio.c - Standard Forth words for user terminal I/O.
  */
 
-/*------  ------  ------  ------  ------  ------  ------  ------
-  EMIT                  6.1.1320 CORE                   38
-  ------  ------  ------  ------  ------  ------  ------  ------
-*/
+//------  ------  ------  ------  ------  ------  ------  ------
+// EMIT                  6.1.1320 CORE                   38
+//------  ------  ------  ------  ------  ------  ------  ------
 
 
 /* ( x -- ) */
@@ -26,8 +25,6 @@ x_emit(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-defn_dt
-termio_defns[] = {
-    { define_name, "EMIT",	x_emit },
-    { NULL }
-};
+DIRECT_FORTH(init_termio_prim) // {
+    PRIM("EMIT", x_emit)
+END_DIRECT // }

@@ -130,9 +130,9 @@ DIRECT_FORTH(initialize) // {
     CALL(init_arith_prim)
     CALL(init_memory_prim)
     CALL(init_mult_prim)
+    CALL(init_termio_prim)
     DEFS(names_defns)
     DEFS(control_defns)
-    DEFS(termio_defns)
     DEFS(interpret_defns)
     DEFS(fileops_defns)
 END_DIRECT // }

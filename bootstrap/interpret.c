@@ -470,7 +470,7 @@ do_s_quote(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     CHECK_PUSH(vm, 2);
     PUSH(vm, ip + 1);
     PUSH(vm, len);
-    return (vminstr_p) ((cell_ft) ip + ALIGNED(len + CELL_SIZE));
+    return (vminstr_p) ((cell_ft) ip + XALIGNED(len + CELL_SIZE));
 }
 
 
@@ -484,9 +484,8 @@ x_s_quote(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
     compile_xt(vm, S_QUOTE_XT);
     COMMA(vm, len);
-    str_dst = allot(vm, len);
+    str_dst = allot(vm, XALIGNED(len));
     memcpy(str_dst, str_src, len);
-    ALIGN(vm);
     return ip;
 }
 
@@ -584,7 +583,7 @@ do_c_quote(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
     CHECK_PUSH(vm, 1);
     PUSH(vm, &ip->cdata[0]);
-    return (vminstr_p) ((cell_ft) ip + ALIGNED(len + 1));
+    return (vminstr_p) ((cell_ft) ip + XALIGNED(len + 1));
 }
 
 
@@ -597,10 +596,9 @@ x_c_quote(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     char_ft *str_dst;
 
     compile_xt(vm, C_QUOTE_XT);
-    str_dst = allot(vm, len + 1);
+    str_dst = allot(vm, XALIGNED(len + 1));
     str_dst[0] = (char_ft) len;
     memcpy(str_dst + 1, str_src, len);
-    ALIGN(vm);
     return ip;
 }
 

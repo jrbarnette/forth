@@ -61,7 +61,7 @@ x_comma(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 static vminstr_p
 x_align(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
-    ALIGN(vm);
+    XALIGN(vm);
     return ip;
 }
 

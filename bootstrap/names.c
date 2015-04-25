@@ -95,7 +95,7 @@ addname(vmstate_p vm, c_addr_ft id, cell_ft len, vminstr_fn hdlr)
     if (len == 0)		THROW(vm, -16);
     if (len > NAME_MAX_LENGTH)	THROW(vm, -19);
 
-    ALIGN(vm);
+    XALIGN(vm);
     cur = (name_p) allot(vm, NAME_SIZE(len) + CELL_SIZE);
     cur->prev = NULL;
     cur->flags = len;

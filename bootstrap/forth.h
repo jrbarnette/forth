@@ -1,5 +1,5 @@
 /*
- * Copyright 2011, by J. Richard Barnette
+ * Copyright 2015, by J. Richard Barnette. All Rights Reserved.
  */
 
 #ifndef FORTH_H
@@ -57,11 +57,18 @@ typedef struct {
     c_addr_ft		c_addr;
 } string_ft;
 
+#define SHIFT(s)	((((s) & 0xaa) != 0) | ((((s) & 0xcc) != 0) << 1) | \
+			    ((((s) & 0xf0) != 0) << 2))
+
 #define CELL_SIZE	(sizeof (cell_ft))
-#define CELL_ALIGNMENT	(sizeof (cell_ft))
-#define ALIGNED(n)	(((n) + CELL_ALIGNMENT - 1) & -CELL_ALIGNMENT)
-#define CELLS		* CELL_SIZE
-#define CHARS		* (sizeof (char_ft))
+#define XALIGNED(n)	(((n) + CELL_SIZE-1) & -CELL_SIZE)
+#define XCELLS		* CELL_SIZE
+#define CELL_SHIFT	SHIFT(CELL_SIZE)
+
+/* The following would change if char_ft changes (e.g. to UTF-16) */
+#define CHAR_SIZE	(sizeof (char_ft))
+#define XCHARS
+#define CHAR_SHIFT	0
 
 
 /*
@@ -189,7 +196,7 @@ extern void execute(vmstate_p, xt_ft);
 #define NAME_MAX_LENGTH			31
 #define NAME_LENGTH(nm)			((nm)->flags & 0x1f)
 #define NAME_SIZE(len)			\
-	    ALIGNED(offsetof(struct name_header, ident) + (len))
+	    XALIGNED(offsetof(struct name_header, ident) + (len))
 #define NAME_XT(nm)			\
 	    ((xt_ft) ((addr_ft)(nm) + NAME_SIZE(NAME_LENGTH(nm))))
 
@@ -212,13 +219,13 @@ extern void linkname(name_p);
  * C definitions and declarations relating to the Forth dictionary,
  * including structures for initialization.
  *
- * For ALIGN() to produce an aligned data space pointer, the
- * dictionary space must be cell-aligned.  To prevent ALIGN() from
+ * For ALIGN to produce an aligned data space pointer, the
+ * dictionary space must be cell-aligned.  To prevent ALIGN from
  * overflowing the dictionary space, DICTIONARY_SIZE must also be a
  * multiple of CELL_SIZE.
  */
 
-#define DICTIONARY_SIZE		(0x10000 CELLS)
+#define DICTIONARY_SIZE		(0x10000 XCELLS)
 
 extern union dict {
     struct {
@@ -319,7 +326,7 @@ extern void quit(vmstate_p, FILE *);
 extern void interpret_string(vmstate_p, char *);
 
 #define COMMA(vm, x)	(*(a_addr_ft)allot((vm), CELL_SIZE) = (cell_ft) (x))
-#define ALIGN(vm)	(DICT.here = ALIGNED(DICT.here))
+#define XALIGN(vm)	(DICT.here = XALIGNED(DICT.here))
 
 extern char initialize_forth[];
 

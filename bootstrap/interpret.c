@@ -42,41 +42,19 @@
 */
 
 
-void
+static void
 compile_literal(vmstate_p vm, cell_ft n)
 {
-    COMMA(vm, DO_LITERAL_XT);
+    COMPILE(vm, DO_LITERAL_XT);
     COMMA(vm, n);
 }
 
 
-void
+static void
 compile_postpone(vmstate_p vm, xt_ft xtok)
 {
-    COMMA(vm, DO_POSTPONE_XT);
+    COMPILE(vm, DO_POSTPONE_XT);
     COMMA(vm, xtok);
-}
-
-
-void
-compile_xt(vmstate_p vm, xt_ft xtok)
-{
-    COMMA(vm, xtok);
-}
-
-
-vminstr_p
-compile_skip(vmstate_p vm, xt_ft skip)
-{
-    compile_xt(vm, skip);
-    return (vminstr_p) allot(vm, CELL_SIZE);
-}
-
-
-void
-patch(vminstr_p orig, vminstr_p dest)
-{
-    orig->offset = dest - orig;
 }
 
 
@@ -121,7 +99,7 @@ parse_name(cell_ft *p_len)
 }
 
 
-void
+static void
 execute(vmstate_p vm, xt_ft entry_xt)
 {
     vminstr_p ip;
@@ -147,7 +125,7 @@ evaluate_name(c_addr_ft s, cell_ft len, vmstate_p vm)
 
     xtok = NAME_XT(name);
     if (DICT.state != STATE_INTERP && !NAME_IS_IMMEDIATE(name)) {
-	compile_xt(vm, xtok);
+	COMPILE(vm, xtok);
     } else if (DICT.state != STATE_INTERP || NAME_IS_INTERPRETABLE(name)) {
 	execute(vm, xtok);
     } else {
@@ -482,7 +460,7 @@ x_s_quote(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     cell_ft len = parse('"', str_src, PARSE_AREA_LEN);
     char_ft *str_dst;
 
-    compile_xt(vm, S_QUOTE_XT);
+    COMPILE(vm, S_QUOTE_XT);
     COMMA(vm, len);
     str_dst = allot(vm, XALIGNED(len));
     memcpy(str_dst, str_src, len);
@@ -526,7 +504,7 @@ x_state(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 static vminstr_p
 do_postpone(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
-    compile_xt(vm, ip->xtok);
+    COMPILE(vm, ip->xtok);
     return ip + 1;
 }
 
@@ -549,7 +527,7 @@ x_postpone(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
     xtok = NAME_XT(name);
     if (NAME_IS_IMMEDIATE(name)) {
-	compile_xt(vm, xtok);
+	COMPILE(vm, xtok);
     } else {
 	compile_postpone(vm, xtok);
     }
@@ -595,7 +573,7 @@ x_c_quote(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     cell_ft len = parse('"', str_src, PARSE_AREA_LEN);
     char_ft *str_dst;
 
-    compile_xt(vm, C_QUOTE_XT);
+    COMPILE(vm, C_QUOTE_XT);
     str_dst = allot(vm, XALIGNED(len + 1));
     str_dst[0] = (char_ft) len;
     memcpy(str_dst + 1, str_src, len);

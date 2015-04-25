@@ -29,13 +29,28 @@
 */
 
 
+static vminstr_p
+compile_skip(vmstate_p vm, xt_ft skip)
+{
+    COMPILE(vm, skip);
+    return (vminstr_p) allot(vm, CELL_SIZE);
+}
+
+
+static void
+patch(vminstr_p orig, vminstr_p dest)
+{
+    orig->offset = dest - orig;
+}
+
+
 static vminstr_p leavers;
 
 static void
 compile_plus_loop(vmstate_p vm, xt_ft unloop_xt)
 {
     CHECK_POP(vm, 1);
-    compile_xt(vm, PLUS_LOOP_XT);
+    COMPILE(vm, PLUS_LOOP_XT);
     vminstr_p dest = (vminstr_p)POP(vm);
     patch(compile_skip(vm, FSKIP_XT), dest);
 
@@ -47,7 +62,7 @@ compile_plus_loop(vmstate_p vm, xt_ft unloop_xt)
 	patch(orig, (vminstr_p)HERE);
 	orig = new_orig;
     }
-    compile_xt(vm, unloop_xt);
+    COMPILE(vm, unloop_xt);
 }
 
 
@@ -101,7 +116,7 @@ x_do(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_PUSH(vm, 1);
 
-    compile_xt(vm, DO_DO_XT);
+    COMPILE(vm, DO_DO_XT);
     PUSH(vm, leavers);
     leavers = 0;
     PUSH(vm, HERE);

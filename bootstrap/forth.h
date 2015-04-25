@@ -325,21 +325,16 @@ extern vminstr_p x_exit(vminstr_p, vmstate_p, vmarg_p);
 /*
  */
 
-extern void execute(vmstate_p, xt_ft);
-
 extern addr_ft allot(vmstate_p, cell_ft);
 
 extern cell_ft parse(char_ft, c_addr_ft, cell_ft);
 extern c_addr_ft parse_name(cell_ft *);
 
-extern void compile_literal(vmstate_p, cell_ft);
-extern void compile_xt(vmstate_p, xt_ft);
-extern vminstr_p compile_skip(vmstate_p, xt_ft);
-extern void patch(vminstr_p, vminstr_p);
 extern void quit(vmstate_p, FILE *);
 extern void interpret_string(vmstate_p, char *);
 
 #define COMMA(vm, x)	(*(a_addr_ft)allot((vm), CELL_SIZE) = (cell_ft) (x))
+#define COMPILE(vm, xt)	COMMA(vm, xt)
 #define XALIGN(vm)	(DICT.here = XALIGNED(DICT.here))
 
 extern char initialize_forth[];

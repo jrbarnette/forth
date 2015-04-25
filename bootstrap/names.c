@@ -189,7 +189,7 @@ static vminstr_p
 x_semicolon(vminstr_p ip, vmstate_p vm, vmarg_p exit_xt_ptr)
 {
     CHECK_POP(vm, 1);
-    compile_xt(vm, exit_xt_ptr->xtok);
+    COMPILE(vm, exit_xt_ptr->xtok);
     linkname((name_p) POP(vm));
     DICT.state = STATE_INTERP;
     return ip;
@@ -299,7 +299,7 @@ static vminstr_p
 x_does(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_POP(vm, 1);
-    compile_xt(vm, DOES_XT);
+    COMPILE(vm, DOES_XT);
     return ip;
 }
 

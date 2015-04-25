@@ -125,7 +125,7 @@ i_call(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 static
 DIRECT_FORTH(initialize) // {
-    DEFS(dictionary_defns)
+    CALL(init_dictionary)
     DEFS(stackops_defns)
     CALL(init_arith_prim)
     DEFS(memops_defns)

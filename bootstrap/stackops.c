@@ -25,7 +25,7 @@
 
 
 /* ( x -- ) ( R:  -- x ) execution semantics */
-static vminstr_p
+vminstr_p
 x_to_r(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_POP(vm, 1);
@@ -36,7 +36,7 @@ x_to_r(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( x -- 0 | x x ) */
-static vminstr_p
+vminstr_p
 x_question_dup(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
@@ -52,7 +52,7 @@ x_question_dup(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( -- +n ) */
-static vminstr_p
+vminstr_p
 x_depth(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft depth = DEPTH(vm);
@@ -63,7 +63,7 @@ x_depth(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( x -- ) */
-static vminstr_p
+vminstr_p
 x_drop(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_POP(vm, 1);
@@ -73,7 +73,7 @@ x_drop(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( x -- x x ) */
-static vminstr_p
+vminstr_p
 x_dup(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
@@ -85,7 +85,7 @@ x_dup(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( x1 x2 -- x1 x2 x1 ) */
-static vminstr_p
+vminstr_p
 x_over(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
@@ -97,7 +97,7 @@ x_over(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( -- x ) ( R: x -- ) execution semantics */
-static vminstr_p
+vminstr_p
 x_r_from(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_RPOP(vm, 1);
@@ -108,7 +108,7 @@ x_r_from(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( -- x ) ( R: x -- x ) execution semantics */
-static vminstr_p
+vminstr_p
 x_r_fetch(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_RPOP(vm, 1);
@@ -119,7 +119,7 @@ x_r_fetch(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( x1 x2 x3 -- x2 x3 x1 ) */
-static vminstr_p
+vminstr_p
 x_rot(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     a_addr_ft sp = SP(vm);
@@ -135,7 +135,7 @@ x_rot(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( x1 x2 -- x2 x1 ) */
-static vminstr_p
+vminstr_p
 x_swap(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     a_addr_ft sp = SP(vm);
@@ -150,7 +150,7 @@ x_swap(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( xu ... x0 u -- xu ... x0 xu ) */
-static vminstr_p
+vminstr_p
 x_pick(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     a_addr_ft sp = SP(vm);

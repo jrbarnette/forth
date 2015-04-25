@@ -420,7 +420,7 @@ x_execute(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( -- x ) runtime semantics */
-static vminstr_p
+vminstr_p
 do_literal(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_PUSH(vm, 1);

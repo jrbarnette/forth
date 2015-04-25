@@ -111,24 +111,19 @@ x_unused(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-void
-initialize_dictionary(vmstate_p vm, defn_data_p ignore)
-{
-    DICT.here = sizeof (dictionary.dict_static_data);
-    DICT.current = &DICT.forth_wordlist;
-    DICT.n_search_order = 1;
-    DICT.search_order[0] = &DICT.forth_wordlist;
-}
+DIRECT_FORTH(init_dictionary) // {
+    L(sizeof (dictionary.dict_static_data))
+	L(&DICT.here)			X(x_store)
+    L(1)
+	L(&DICT.n_search_order)		X(x_store)
+    L(&DICT.forth_wordlist) X(x_dup)
+	L(&DICT.current)		X(x_store)
+	L(&DICT.search_order[0])	X(x_store)
 
-
-defn_dt
-dictionary_defns[] = {
-    { initialize_dictionary },
-    { define_name, ",",         x_comma },
-    { define_name, "ALIGN",     x_align },
-    { define_name, "ALLOT",     x_allot },
-    { define_name, "C,",        x_c_comma },
-    { define_name, "HERE",      x_here },
-    { define_name, "UNUSED",    x_unused },
-    { NULL }
-};
+    PRIM(",",         x_comma)
+    PRIM("ALIGN",     x_align)
+    PRIM("ALLOT",     x_allot)
+    PRIM("C,",        x_c_comma)
+    PRIM("HERE",      x_here)
+    PRIM("UNUSED",    x_unused)
+END_DIRECT // }

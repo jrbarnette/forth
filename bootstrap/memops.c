@@ -22,7 +22,7 @@
 
 
 /* ( x a-addr -- ) */
-static vminstr_p
+vminstr_p
 x_store(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
@@ -34,7 +34,7 @@ x_store(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( a-addr -- x ) */
-static vminstr_p
+vminstr_p
 x_fetch(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
@@ -45,7 +45,7 @@ x_fetch(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( char c-addr -- ) */
-static vminstr_p
+vminstr_p
 x_c_store(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
@@ -57,7 +57,7 @@ x_c_store(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( c-addr -- char ) */
-static vminstr_p
+vminstr_p
 x_c_fetch(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
@@ -68,7 +68,7 @@ x_c_fetch(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( addr1 addr2 u -- ) */
-static vminstr_p
+vminstr_p
 x_move(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     char *src, *dst;

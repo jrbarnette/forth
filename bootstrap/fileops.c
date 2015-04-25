@@ -15,21 +15,20 @@
  *   word set.
  */
 
-/*------  ------  ------  ------  ------  ------  ------  ------
-  BIN                11.6.1.0765 FILE                   80
-  CLOSE-FILE         11.6.1.0900 FILE                   80
-  CREATE-FILE        11.6.1.1010 FILE                   81
-  FILE-POSITION      11.6.1.1520 FILE                   81
-  FILE-SIZE          11.6.1.1522 FILE                   81
-  OPEN-FILE          11.6.1.1970 FILE                   82
-  R/O                11.6.1.2054 FILE                   82
-  R/W                11.6.1.2056 FILE                   83
-  READ-FILE          11.6.1.2080 FILE                   83
-  REPOSITION-FILE    11.6.1.2142 FILE                   84
-  W/O                11.6.1.2425 FILE                   85
-  WRITE-FILE         11.6.1.2480 FILE                   85
-  ------  ------  ------  ------  ------  ------  ------  ------
-*/
+//------  ------  ------  ------  ------  ------  ------  ------
+// BIN                11.6.1.0765 FILE                   80
+// CLOSE-FILE         11.6.1.0900 FILE                   80
+// CREATE-FILE        11.6.1.1010 FILE                   81
+// FILE-POSITION      11.6.1.1520 FILE                   81
+// FILE-SIZE          11.6.1.1522 FILE                   81
+// OPEN-FILE          11.6.1.1970 FILE                   82
+// R/O                11.6.1.2054 FILE                   82
+// R/W                11.6.1.2056 FILE                   83
+// READ-FILE          11.6.1.2080 FILE                   83
+// REPOSITION-FILE    11.6.1.2142 FILE                   84
+// W/O                11.6.1.2425 FILE                   85
+// WRITE-FILE         11.6.1.2480 FILE                   85
+//------  ------  ------  ------  ------  ------  ------  ------
 
 
 #define FILE_CREATE	1
@@ -327,19 +326,17 @@ x_write_file(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-defn_dt
-fileops_defns[] = {
-    { define_name, "BIN",              x_bin },
-    { define_name, "CLOSE-FILE",       x_close_file },
-    { define_name, "CREATE-FILE",      x_create_file },
-    { define_name, "FILE-POSITION",    x_file_position },
-    { define_name, "REPOSITION-FILE",  x_reposition_file },
-    { define_name, "FILE-SIZE",        x_file_size },
-    { define_name, "OPEN-FILE",        x_open_file },
-    { define_name, "R/O",              x_r_o },
-    { define_name, "R/W",              x_r_w },
-    { define_name, "READ-FILE",        x_read_file },
-    { define_name, "W/O",              x_w_o },
-    { define_name, "WRITE-FILE",       x_write_file },
-    { NULL }
-};
+DIRECT_FORTH(init_file_prim) // {
+    PRIM("BIN",              x_bin)
+    PRIM("CLOSE-FILE",       x_close_file)
+    PRIM("CREATE-FILE",      x_create_file)
+    PRIM("FILE-POSITION",    x_file_position)
+    PRIM("REPOSITION-FILE",  x_reposition_file)
+    PRIM("FILE-SIZE",        x_file_size)
+    PRIM("OPEN-FILE",        x_open_file)
+    PRIM("R/O",              x_r_o)
+    PRIM("R/W",              x_r_w)
+    PRIM("READ-FILE",        x_read_file)
+    PRIM("W/O",              x_w_o)
+    PRIM("WRITE-FILE",       x_write_file)
+END_DIRECT // }

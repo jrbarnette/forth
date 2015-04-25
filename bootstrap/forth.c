@@ -134,7 +134,7 @@ DIRECT_FORTH(initialize) // {
     DEFS(names_defns)
     DEFS(control_defns)
     DEFS(interpret_defns)
-    DEFS(fileops_defns)
+    CALL(init_file_prim)
 END_DIRECT // }
 
 

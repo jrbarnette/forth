@@ -145,30 +145,6 @@ i_compile(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-void
-define_name(vmstate_p vm, defn_data_p data)
-{
-    c_addr_ft	id = (c_addr_ft) data->data0;
-    vminstr_fn	hdlr = (vminstr_fn) data->data1;
-    cell_ft	len = (cell_ft) strlen((char *) id);
-
-    name_p nm = addname(vm, id, len, hdlr);
-    linkname(nm);
-    NAME_SET_TYPE(nm, data->flags);
-}
-
-
-void
-compile_name(vmstate_p vm, defn_data_p data)
-{
-    c_addr_ft	id = (c_addr_ft) data->data0;
-    cell_ft	len = (cell_ft) strlen((char *) id);
-    name_p	nm = lookup(vm, id, len);
-
-    COMPILE(vm, NAME_XT(nm));
-}
-
-
 /* -------------------------------------------------------------- */
 
 static vminstr_p do_create(vminstr_p, vmstate_p, vmarg_p);

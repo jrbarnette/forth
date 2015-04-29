@@ -11,22 +11,21 @@
  *   compiled defintions.
  */
 
-/*------  ------  ------  ------  ------  ------  ------  ------
-  +LOOP                 6.1.0140 CORE                   27
-  BEGIN                 6.1.0760 CORE                   34
-  DO                    6.1.1240 CORE                   36
-  ELSE                  6.1.1310 CORE                   37
-  I                     6.1.1680 CORE                   39
-  IF                    6.1.1700 CORE                   40
-  J                     6.1.1730 CORE                   40
-  LEAVE                 6.1.1760 CORE                   41
-  REPEAT                6.1.2140 CORE                   44
-  THEN                  6.1.2270 CORE                   46
-  UNLOOP                6.1.2380 CORE                   47
-  UNTIL                 6.1.2390 CORE                   47
-  WHILE                 6.1.2430 CORE                   47
-  ------  ------  ------  ------  ------  ------  ------  ------
-*/
+//------  ------  ------  ------  ------  ------  ------  ------
+// +LOOP                 6.1.0140 CORE                   27
+// BEGIN                 6.1.0760 CORE                   34
+// DO                    6.1.1240 CORE                   36
+// ELSE                  6.1.1310 CORE                   37
+// I                     6.1.1680 CORE                   39
+// IF                    6.1.1700 CORE                   40
+// J                     6.1.1730 CORE                   40
+// LEAVE                 6.1.1760 CORE                   41
+// REPEAT                6.1.2140 CORE                   44
+// THEN                  6.1.2270 CORE                   46
+// UNLOOP                6.1.2380 CORE                   47
+// UNTIL                 6.1.2390 CORE                   47
+// WHILE                 6.1.2430 CORE                   47
+//------  ------  ------  ------  ------  ------  ------  ------
 
 
 static vminstr_p
@@ -279,37 +278,27 @@ x_while(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-static void
-initialize_control_tokens(vmstate_p vm, defn_data_p ignore)
-{
-    DICT.do_instr.handler = do_do;
-    DICT.plus_loop_instr.handler = do_plus_loop;
-    DICT.skip_instr.handler = do_skip;
-    DICT.fskip_instr.handler = do_fskip;
-}
+DIRECT_FORTH(init_control) // {
+    L(do_do)         L(DO_DO_XT)      X(x_store)
+    L(do_plus_loop)  L(PLUS_LOOP_XT)  X(x_store)
+    L(do_skip)       L(SKIP_XT)       X(x_store)
+    L(do_fskip)      L(FSKIP_XT)      X(x_store)
 
+    PRIM("UNLOOP",	x_unloop)	FLAGS(NO_INTERPRET)
 
-defn_dt
-control_defns[] =
-{
-    { initialize_control_tokens },
-    { define_name, "UNLOOP",	x_unloop, NAME_TYPE_NO_INTERPRET },
+    PRIM("+LOOP",	x_plus_loop)	FLAGS(COMPILE)
+    XCOMPILE("UNLOOP")
 
-    { define_name, "+LOOP",	x_plus_loop, NAME_TYPE_COMPILE },
-    { compile_name, "UNLOOP" },
+    PRIM("BEGIN",	x_begin)	FLAGS(COMPILE)
+    PRIM("DO",		x_do)		FLAGS(COMPILE)
+    PRIM("ELSE",	x_else)		FLAGS(COMPILE)
+    PRIM("I",		x_i)		FLAGS(NO_INTERPRET)
+    PRIM("IF",		x_if)		FLAGS(COMPILE)
+    PRIM("J",		x_j)		FLAGS(NO_INTERPRET)
+    PRIM("LEAVE",	c_leave)	FLAGS(COMPILE)
 
-    { define_name, "BEGIN",	x_begin, NAME_TYPE_COMPILE },
-    { define_name, "DO",	x_do, NAME_TYPE_COMPILE },
-    { define_name, "ELSE",	x_else, NAME_TYPE_COMPILE },
-    { define_name, "I",		x_i, NAME_TYPE_NO_INTERPRET },
-    { define_name, "IF",	x_if, NAME_TYPE_COMPILE },
-    { define_name, "J",		x_j, NAME_TYPE_NO_INTERPRET },
-    { define_name, "LEAVE",	c_leave, NAME_TYPE_COMPILE },
-    { compile_name, "UNLOOP" },
-
-    { define_name, "REPEAT",	x_repeat, NAME_TYPE_COMPILE },
-    { define_name, "THEN",	x_then, NAME_TYPE_COMPILE },
-    { define_name, "UNTIL",	x_until, NAME_TYPE_COMPILE },
-    { define_name, "WHILE",	x_while, NAME_TYPE_COMPILE },
-    { NULL }
-};
+    PRIM("REPEAT",	x_repeat)	FLAGS(COMPILE)
+    PRIM("THEN",	x_then)		FLAGS(COMPILE)
+    PRIM("UNTIL",	x_until)	FLAGS(COMPILE)
+    PRIM("WHILE",	x_while)	FLAGS(COMPILE)
+END_DIRECT // }

@@ -285,22 +285,14 @@ extern union dict {
 
 
 /*
+ * Initialization and direct threaded interpretation primitives.
+ *
+ * Dictionary initialization is done by interpreting direct-threaded
+ * code stored in arrays.
  */
 
-typedef struct defn *defn_data_p;
-
-typedef void (*defn_fn)(vmstate_p, defn_data_p);
-
-typedef struct defn {
-    defn_fn		fn;
-    void *		data0;
-    void *		data1;
-    cell_ft		flags;
-} defn_dt;
-
-extern defn_dt control_defns[];
-
 extern vminstr_d init_arith_prim[];
+extern vminstr_d init_control[];
 extern vminstr_d init_dictionary[];
 extern vminstr_d init_file_prim[];
 extern vminstr_d init_interpret[];
@@ -310,12 +302,10 @@ extern vminstr_d init_names[];
 extern vminstr_d init_stack_prim[];
 extern vminstr_d init_terminal_prim[];
 
-extern void define_name(vmstate_p, defn_data_p);
-extern void compile_name(vmstate_p, defn_data_p);
-
 extern vminstr_p i_addname(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p i_compile(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p i_setflags(vminstr_p, vmstate_p, vmarg_p);
+
 extern vminstr_p do_literal(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_dup(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_exit(vminstr_p, vmstate_p, vmarg_p);

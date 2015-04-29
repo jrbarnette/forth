@@ -98,20 +98,6 @@ handle_exception(int throwcode, vmstate_p vm, char *filename)
 }
 
 
-static vminstr_p
-interpret_defs(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    defn_dt *dp = (defn_dt *) ip->ptr;
-
-    while (dp->fn != NULL) {
-	dp->fn(vm, dp);
-	dp++;
-    }
-
-    return ip + 1;
-}
-
-
 vminstr_p
 i_call(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
@@ -120,8 +106,6 @@ i_call(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     return ip->ip;
 }
 
-
-#define DEFS(defns)	X(interpret_defs) { .ptr = defns },
 
 static
 DIRECT_FORTH(initialize) // {
@@ -132,7 +116,7 @@ DIRECT_FORTH(initialize) // {
     CALL(init_mult_prim)
     CALL(init_terminal_prim)
     CALL(init_names)
-    DEFS(control_defns)
+    CALL(init_control)
     CALL(init_interpret)
     CALL(init_file_prim)
 END_DIRECT // }

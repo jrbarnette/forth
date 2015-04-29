@@ -15,22 +15,21 @@
  *   dictionary name space.
  */
 
-/*------  ------  ------  ------  ------  ------  ------  ------
-  '                     6.1.0070 CORE                   25
-  :                     6.1.0450 CORE                   30
-  EXIT                  6.1.1380 CORE                   38
-  ;                     6.1.0460 CORE                   30
-  >BODY                 6.1.0550 CORE                   31
-  CONSTANT              6.1.0950 CORE                   35
-  CREATE                6.1.1000 CORE                   36
-  DOES>                 6.1.1250 CORE                   37
-  IMMEDIATE             6.1.1710 CORE                   40
-  VARIABLE              6.1.2410 CORE                   47
-
-  FORTH-WORDLIST     16.6.1.1595 SEARCH                119
-  SEARCH-WORDLIST    16.6.1.2192 SEARCH                120
-  ------  ------  ------  ------  ------  ------  ------  ------
-*/
+//------  ------  ------  ------  ------  ------  ------  ------
+// '                     6.1.0070 CORE                   25
+// :                     6.1.0450 CORE                   30
+// EXIT                  6.1.1380 CORE                   38
+// ;                     6.1.0460 CORE                   30
+// >BODY                 6.1.0550 CORE                   31
+// CONSTANT              6.1.0950 CORE                   35
+// CREATE                6.1.1000 CORE                   36
+// DOES>                 6.1.1250 CORE                   37
+// IMMEDIATE             6.1.1710 CORE                   40
+// VARIABLE              6.1.2410 CORE                   47
+//
+// FORTH-WORDLIST     16.6.1.1595 SEARCH                119
+// SEARCH-WORDLIST    16.6.1.2192 SEARCH                120
+//------  ------  ------  ------  ------  ------  ------  ------
 
 
 /*

@@ -23,10 +23,10 @@ variable >IN
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
 : PARSE ( char "ccc<char>" -- c-addr u )
-    >r source swap >in chars @ + >r		( R: delim c-addr )
+    >r source swap >in @ chars + >r		( R: delim c-addr )
     >in @ - -1
-    begin 1+ 2dup > while			( end idx )
-	dup 2r@ rot chars + c@			( end idx delim c )
+    begin 1+ 2dup > while			( end cnt )
+	dup 2r@ rot chars + c@			( end cnt delim c )
 	over bl = if nip 127 33 within else = then
     until
 	nip dup 1+

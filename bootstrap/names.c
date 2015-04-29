@@ -135,6 +135,17 @@ i_setflags(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
+vminstr_p
+i_compile(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    char *id = ip[0].id;
+    cell_ft len = strlen(id);
+    name_p nm = lookup(vm, (c_addr_ft) id, len);
+    COMPILE(vm, NAME_XT(nm));
+    return ip + 1;
+}
+
+
 void
 define_name(vmstate_p vm, defn_data_p data)
 {
@@ -412,35 +423,26 @@ x_search_wordlist(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-static void
-initialize_does(vmstate_p vm, defn_data_p ignore)
-{
-    DICT.does_instr.handler = do_does;
-}
+DIRECT_FORTH(init_names) // {
+    L(do_does)  L(DOES_XT)  X(x_store)
 
-
-defn_dt
-names_defns[] = {
-    { initialize_does },
-    { define_name, "'",			x_tick },
-    { define_name, ":",			x_colon },
+    PRIM("'",			x_tick)
+    PRIM(":",			x_colon)
 
     /* EXIT out of order for reference below */
-    { define_name, "EXIT",		x_exit, NAME_TYPE_NO_INTERPRET },
+    PRIM("EXIT",		x_exit)		FLAGS(NO_INTERPRET)
 
-    { define_name, ";",			x_semicolon, NAME_TYPE_COMPILE },
-    { compile_name, "EXIT" },
+    PRIM(";",			x_semicolon)	FLAGS(COMPILE)
+    XCOMPILE("EXIT")
 
-    { define_name, ">BODY",		x_to_body },
-    { define_name, "CONSTANT",		x_constant },
-    { define_name, "CREATE",		x_create },
-    { define_name, "DOES>",		x_does, NAME_TYPE_COMPILE },
-    { define_name, "IMMEDIATE",		x_immediate },
-    { define_name, "VARIABLE",		x_variable },
+    PRIM(">BODY",		x_to_body)
+    PRIM("CONSTANT",		x_constant)
+    PRIM("CREATE",		x_create)
+    PRIM("DOES>",		x_does)		FLAGS(COMPILE)
+    PRIM("IMMEDIATE",		x_immediate)
+    PRIM("VARIABLE",		x_variable)
 
-    { define_name, "FORTH-WORDLIST",	x_forth_wordlist },
-    { define_name, "SEARCH-WORDLIST",	x_search_wordlist },
-    { define_name, "FIND",		x_find },
-
-    { NULL }
-};
+    PRIM("FORTH-WORDLIST",	x_forth_wordlist)
+    PRIM("SEARCH-WORDLIST",	x_search_wordlist)
+    PRIM("FIND",		x_find)
+END_DIRECT // }

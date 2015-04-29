@@ -131,7 +131,7 @@ DIRECT_FORTH(initialize) // {
     CALL(init_memory_prim)
     CALL(init_mult_prim)
     CALL(init_terminal_prim)
-    DEFS(names_defns)
+    CALL(init_names)
     DEFS(control_defns)
     CALL(init_interpret)
     CALL(init_file_prim)

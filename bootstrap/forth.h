@@ -299,7 +299,6 @@ typedef struct defn {
 } defn_dt;
 
 extern defn_dt control_defns[];
-extern defn_dt names_defns[];
 
 extern vminstr_d init_arith_prim[];
 extern vminstr_d init_dictionary[];
@@ -307,6 +306,7 @@ extern vminstr_d init_file_prim[];
 extern vminstr_d init_interpret[];
 extern vminstr_d init_memory_prim[];
 extern vminstr_d init_mult_prim[];
+extern vminstr_d init_names[];
 extern vminstr_d init_stack_prim[];
 extern vminstr_d init_terminal_prim[];
 
@@ -314,6 +314,7 @@ extern void define_name(vmstate_p, defn_data_p);
 extern void compile_name(vmstate_p, defn_data_p);
 
 extern vminstr_p i_addname(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p i_compile(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p i_setflags(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p do_literal(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_dup(vminstr_p, vmstate_p, vmarg_p);
@@ -329,6 +330,7 @@ extern vminstr_p x_store(vminstr_p, vmstate_p, vmarg_p);
 #define L(x)		X(do_literal) { .cell = (cell_ft) (x) },
 #define PRIM(nm, hdlr)	X(i_addname) S(nm) { .handler = hdlr },
 #define FLAGS(f)	X(i_setflags) { .cell = NAME_TYPE_ ## f },
+#define XCOMPILE(nm)	X(i_compile) S(nm)
 
 
 /*

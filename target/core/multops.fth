@@ -14,22 +14,23 @@
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
 \ primitives for double-cell multiply and divide
-\ FM/MOD ( d n1 -- n2 n3 )
+\ FM/MOD ( d n1 -- n2 n3 ) ( d n1 -- rem quo )
 \ M* ( n1 n2 -- d )
-\ SM/REM ( d n1 -- n2 n3 )
+\ SM/REM ( d n1 -- n2 n3 ) ( d n1 -- rem quo )
 \ UM* ( u1 u2 -- ud )
-\ UM/MOD ( ud u1 -- u2 u3 )
+\ UM/MOD ( ud u1 -- u2 u3 ) ( ud u1 -- rem quo )
 
 \ primitives - could be in forth
-\ : * ( n1 n2 -- n3 ) m* drop ;
-\ : / ( n1 n2 -- n3 ) >r s>d r> sm/rem swap drop ;
-\ : / ( n1 n2 -- n3 ) >r s>d r> fm/mod swap drop ;
-\ : MOD ( n1 n2 -- n3 ) >r s>d r> fm/mod drop ;
-
-: */MOD ( n1 n2 -- n3 n4 ) >r m* r> fm/mod ;
-: */ ( n1 n2 n3 -- n4 ) >r m* r> fm/mod drop ;
-: /MOD ( n1 n2 -- n3 n4 ) >r s>d r> fm/mod swap ;
-
+\ sm/rem the default
 \ : */MOD ( n1 n2 -- n3 n4 ) >r m* r> sm/rem ;
-\ : */ ( n1 n2 n3 -- n4 ) >r m* r> sm/rem drop ;
-\ : /MOD ( n1 n2 -- n3 n4 ) >r s>d r> sm/rem swap ;
+\ : /MOD ( n1 n2 -- n3 n4 ) >r s>d r> sm/rem ;
+
+\ fm/mod the default
+\ : */MOD ( n1 n2 -- n3 n4 ) >r m* r> fm/mod ;
+\ : /MOD ( n1 n2 -- n3 n4 ) >r s>d r> fm/mod ;
+
+
+\ : * ( n1 n2 -- n3 ) m* drop ;
+\ : */ ( n1 n2 n3 -- n4 ) */mod swap drop ;
+\ : / ( n1 n2 -- n3 ) /mod swap drop ;
+\ : MOD ( n1 n2 -- n3 ) /mod drop ;

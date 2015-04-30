@@ -39,4 +39,4 @@ tags: $(SOURCES)
 	ctags $(SOURCES)
 
 clean:
-	rm -f forth tags $(OBJECTS)
+	rm -f forth tags $(OBJECTS) stdforth.c

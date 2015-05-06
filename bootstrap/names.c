@@ -24,7 +24,6 @@
 // CONSTANT              6.1.0950 CORE                   35
 // CREATE                6.1.1000 CORE                   36
 // DOES>                 6.1.1250 CORE                   37
-// IMMEDIATE             6.1.1710 CORE                   40
 // VARIABLE              6.1.2410 CORE                   47
 //
 // FORTH-WORDLIST     16.6.1.1595 SEARCH                119
@@ -330,15 +329,6 @@ x_find(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* ( -- ) */
-static vminstr_p
-x_immediate(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    NAME_SET_TYPE(DICT.forth_wordlist, NAME_TYPE_IMMEDIATE);
-    return ip;
-}
-
-
 /* ( -- a-addr ) name execution semantics */
 static vminstr_p
 do_variable(vminstr_p ip, vmstate_p vm, vmarg_p var_addr)
@@ -414,7 +404,6 @@ DIRECT_FORTH(init_names) // {
     PRIM("CONSTANT",		x_constant)
     PRIM("CREATE",		x_create)
     PRIM("DOES>",		x_does)		FLAGS(COMPILE)
-    PRIM("IMMEDIATE",		x_immediate)
     PRIM("VARIABLE",		x_variable)
 
     PRIM("FORTH-WORDLIST",	x_forth_wordlist)

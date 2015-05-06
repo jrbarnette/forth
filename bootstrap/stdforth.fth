@@ -1,12 +1,24 @@
 char = parse Copyright 2013, by J. Richard Barnette, All Rights Reserved. =
 drop drop
 
+: CHARS ;
+: CELLS 3 lshift ;
+: CELL+ [ 1 cells ] literal + ;
+: CHAR+ [ 1 chars ] literal + ;
+
+hex
+: FLAGS! forth-wordlist @ cell+ dup >r c@ or r> c! ;
+: IMMEDIATE     80 flags! ;
+: NO-INTERPRET  40 flags! ;
+: COMPILE-ONLY  c0 flags! ;
+decimal
+
 : \ source >in ! drop ; immediate
 \ Whew! Now we can write real comments!
 
-: [CHAR] char postpone literal ; immediate \ no-interpret
+: [CHAR] char postpone literal ; compile-only
 : ( [char] ) parse drop drop ; immediate
-: ['] ' postpone literal ; immediate \ no-interpret
+: ['] ' postpone literal ; compile-only
 
 32 constant BL
 0 0 = constant TRUE
@@ -41,12 +53,8 @@ drop drop
 : WITHIN ( x1 x2 x3 -- flag ) over - >r - r> u< ;
 
 \ memops - CORE
-: CHARS ( n1 -- n2 ) ;
-: CELLS ( n1 -- n2 ) 3 lshift ;
-: CELL+ ( a-addr1 -- a-addr2 ) [ 1 cells ] literal + ;
 : ALIGNED ( addr -- a-addr )
     [ 1 cells 1- ] literal + [ -1 cells ] literal and ;
-: CHAR+ ( c-addr1 -- c-addr2 ) [ 1 chars ] literal + ;
 : +! ( x a-addr -- ) dup >r @ + r> ! ;
 : 2! ( x1 x2 a-addr -- ) swap over ! cell+ ! ;
 : 2@ ( a-addr -- x1 x2 ) dup cell+ @ swap @ ;
@@ -54,8 +62,8 @@ drop drop
 
 
 \ compile - CORE
-: COMPILE, ( xt -- ) , ; \ no-interpret
-: LOOP 1 postpone literal postpone +loop ; immediate \ no-interpret
+: COMPILE, ( xt -- ) , ; no-interpret
+: LOOP 1 postpone literal postpone +loop ; compile-only
 
 
 \ SEARCH

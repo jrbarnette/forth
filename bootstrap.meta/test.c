@@ -49,17 +49,30 @@ END_META // }
 
 
 META_FORTH(test_forth) // {
+    // ( x* -- )
+    // stack is expected empty; emit '!' for every excess element
     XCOLON("CHECKSTACK")
 	S("DEPTH") BEGIN DUP WHILE
 	    SWAP DROP L('!') EMIT L(1) MINUS
 	REPEAT DROP
     XSEMICOLON
+
+    // ( flag -- )
+    // flag indicates pass or file; emit 'P' or 'F' to indicate
     XCOLON("REPORT")
 	IF L('P') ELSE L('F') THEN EMIT
     XSEMICOLON
+
+    // ( x -- )
+    // pass iff x is a true value
+    // require x be the only element on the stack
     XCOLON("ASSERT-TRUE")
 	S("REPORT") S("CHECKSTACK")
     XSEMICOLON
+
+    // ( x -- )
+    // pass iff x is a false value
+    // require x be the only element on the stack
     XCOLON("ASSERT-FALSE")
 	L(0) EQUALS S("REPORT") S("CHECKSTACK")
     XSEMICOLON
@@ -128,8 +141,11 @@ META_FORTH(test_forth) // {
     HEX BASE FETCH L(16) EQUALS S("ASSERT-TRUE")
     DECIMAL
 
+    // ( char ... c-addr u -- )
+    // check that ( c-addr u ) points to the characters on the stack.
+    // results in the form of <????>, ? is 'P' or 'F' for each
+    // character, in order.
     XCOLON("CHECK-HOLD-STRING")
-	/* ( char ... c-addr u -- ) */
 	S("DEPTH") L(2) MINUS EQUALS DUP S("REPORT")
 	L('<') EMIT IF
 	    TO_R BEGIN S("DEPTH") WHILE

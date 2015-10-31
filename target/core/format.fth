@@ -28,9 +28,9 @@ here constant hold-end
 
 : SIGN ( n -- ) 0< if [char] - hold then ;
 : # ( ud1 -- ud2 )
-    0 base @ um/mod rot swap base @ um/mod
+    0 base @ um/mod >r base @ um/mod swap
     dup 10 u< if [char] 0 else [ char A 10 - ] literal then
-    + hold swap
+    + hold r>
 ;
 
 : #S ( ud1 -- ud2 ) begin # 2dup or 0= until ;

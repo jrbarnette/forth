@@ -1,31 +1,46 @@
-three way definitions:
-    standard Forth definition
-    operating on target dictionary in host
-    definition in target dictionary
-use three modes (search order configurations) to select
-which definitions will be used
-
-but really it's just two modes:
+Goal is to compile Forth sources into some target output
+language.  Operation has to be in two modes:
     Forth (interpret and compile)
     Target (interpret and compile)
-... but still three choices of search order
-... have to think about intermediate modes during creation
+... or count it as four modes...
 
-in target mode interpretation state, these words operate on the
-target dictionary:
-    here allot , c, align unused
-    compile,
-    : ]
-    variable constant create does>
-    ' find >body
-    immediate
-    (some primitives, if target has different cell size)
-    ( ... or different character set (!))
-    ( ... or different endianness)
-: ] both switch to target-mode compiler
+in target mode interpretation state, these words must be redefined
+to operate on the target dictionary:
+    HERE ALLOT , C, ALIGN UNUSED
+    : VARIABLE CONSTANT CREATE
+    ' FIND
+    IMMEDIATE
+
+Some words should operate using target execution rules:
+    >BODY EXECUTE
+	(>BODY should work, EXECUTE, ... well ... )
+    CELL+ CELLS @ ! C@ C! MOVE
+    etc.
+	(depends on cell size)
+	( ... or character set (!))
+	( ... or endianness)
+Need an escape to allow switching back to host primitives.
+
+target search order has just the special compilation semantics
+words from the standard
+    POSTPONE ['] [CHAR] [COMPILE]
+    LITERAL
+    RECURSE
+    S" C" ." ABORT"
+    [ ; DOES>
+    IF ELSE THEN
+    BEGIN WHILE REPEAT UNTIL AGAIN
+    DO ?DO LOOP +LOOP UNLOOP LEAVE I J
+
+omit these for now
+    CASE ENDCASE ENDOF OF
+    TO
+
+Some words can be inherited from the standard Forth interpreter:
+    \ ( .(
 
 in target mode compilation state, we must interpret the source for
-ourselves
+ourselves:
     parse-word and lookup in target search order
     if found
 	execute
@@ -33,25 +48,41 @@ ourselves
 	lookup in target dictionary
 	if found
 	    compile into target dictionary
+	else if parse number
+	    compile literal into target dictionary
 	else
-	    if parse number
-		compile literal into target dictionary
-	    else
-		complain
+	    complain (game over)
+Rationale:  LITERAL is the problem.  If we see a literal number,
+we must compile it into the target dictionary, and the standard
+QUIT loop that we inherit can't do that.
 
-target search order has just the special compilation semantics
-words from the standard
-    \ ( .(
-    POSTPONE ['] [CHAR] [COMPILE]
-    LITERAL RECURSE
-    S" C" ." ABORT"
+These words switch mode from target compilation state to
+target interpretation:
     [ ;
-    IF ELSE THEN
-    BEGIN WHILE REPEAT UNTIL AGAIN
-    DO ?DO LOOP +LOOP UNLOOP LEAVE I J
-    DOES>
-[ ; switch back to host-mode
+These words switch mode to target compilation state
+    : ]
 
+target mode compilation must be in a loop, needs an exit condition:
+    while TARGET-STATE
+	handle one word, as above
+	\ need to handle REFILL
+... is this so?  Maybe we have a custom QUIT loop that does
+a different kind of interpretation.
+
+options
+  * custom target compiler loop handles target interpretation and
+    compilation - escape by calling QUIT
+  * custom compiler loop only; interpretation is handled by custom
+    vocabulary - escape by setting a global, or by QUIT
+
+Have to go with custom loop for the compiler only:
+... top-level 'forth' command calls quit() in C for each file
+    ... so: must exit compilation state before EOF
+	on pain of fiery death
+    ... nice to have compilation state throw an error at EOF
+	    -39 THROW
+    ... the interpreter will remember the vocabulary settings
+	from file to file
 
 === alternatives considered to a target-mode compile state loop
   + separate interpreter loop in target mode
@@ -70,9 +101,11 @@ words from the standard
     ... need to be careful that IMMEDIATE target words
 	are properly shadowed by host-mode words that do
 	the right thing
+    ... doesn't handle compiling literals to target
   + for each target definition, create a host definition
     with the needed behavior
-	IMMEDIATE gets sticky; consider definition of IF
+    ... IMMEDIATE gets sticky; consider definition of IF
+    ... doesn't handle compiling literals to target
 
 considering IF when host-mode has a shadow dictionary for
 target-mode

@@ -4,6 +4,12 @@ language.  Operation has to be in two modes:
     Target (interpret and compile)
 ... or count it as four modes...
 
+for a given a standard word (e.g. HERE), we end up with (up to) 3
+different definitions:
+  * the built-in (standard) Forth definition for Forth mode
+  * a host-based definition for target interpretation mode
+  * the definition in the target dictionary for target compile mode
+
 in target mode interpretation state, these words must be redefined
 to operate on the target dictionary:
     HERE ALLOT , C, ALIGN UNUSED
@@ -11,7 +17,8 @@ to operate on the target dictionary:
     ' FIND
     IMMEDIATE
 
-Some words should operate using target execution rules:
+Some words should be redefined to operate using target execution
+rules:
     >BODY EXECUTE
 	(>BODY should work, EXECUTE, ... well ... )
     CELL+ CELLS @ ! C@ C! MOVE
@@ -19,10 +26,11 @@ Some words should operate using target execution rules:
 	(depends on cell size)
 	( ... or character set (!))
 	( ... or endianness)
+
 Need an escape to allow switching back to host primitives.
 
-target search order has just the special compilation semantics
-words from the standard
+target compilation mode has just the definitions with special
+compilation semantics words from the standard:
     POSTPONE ['] [CHAR] [COMPILE]
     LITERAL
     RECURSE
@@ -83,6 +91,8 @@ Have to go with custom loop for the compiler only:
 	    -39 THROW
     ... the interpreter will remember the vocabulary settings
 	from file to file
+... naive alternative:
+	cat "${FILES[@]}" | forth
 
 === alternatives considered to a target-mode compile state loop
   + separate interpreter loop in target mode

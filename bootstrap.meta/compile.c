@@ -85,16 +85,8 @@ do_constant(vminstr_p ip, vmstate_p vm, vmarg_p data_ptr)
 }
 
 
-static vminstr_p
-init_literal(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    DO_LITERAL->handler = do_literal;
-    return ip;
-}
-
-
 DIRECT_FORTH(init_compile_prim) // {
-    X(init_literal)
+    DL(do_literal) DL(&DO_LITERAL->handler) X(x_store)
     PRIM("EXECUTE", x_execute)
     PRIM("EXIT", x_exit) FLAGS(NO_INTERPRET)
     PRIM("STATE", do_variable) XCOMMA(F_TRUE)

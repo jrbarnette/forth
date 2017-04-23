@@ -187,8 +187,8 @@ i_call(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 static
 DIRECT_FORTH(initialize) // {
-    X(init_dictionary)
-    X(init_names)
+    CALL(init_dictionary)
+    CALL(init_names)
     CALL(init_arith_prim)
     CALL(init_stack_prim)
     CALL(init_memory_prim)

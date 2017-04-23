@@ -72,12 +72,9 @@ i_comma(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-vminstr_p
-init_dictionary(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    DICT.here = DICT_START + sizeof (DICT);
-    return ip;
-}
+DIRECT_FORTH(init_dictionary) // {
+    DL(DICT_START + sizeof (DICT)) DL(&DICT.here) X(x_store)
+END_DIRECT // }
 
 
 META_FORTH(init_dictionary_ops) // {

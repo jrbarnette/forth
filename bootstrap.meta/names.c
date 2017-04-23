@@ -90,12 +90,9 @@ i_setflags(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-vminstr_p
-init_names(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    DICT.forth_wordlist = NULL;
-    return ip;
-}
+DIRECT_FORTH(init_names) // {
+    DL(NULL) DL(&DICT.forth_wordlist) X(x_store)
+END_DIRECT // }
 
 
 META_FORTH(init_name_ops) // {

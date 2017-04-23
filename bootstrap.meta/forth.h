@@ -248,9 +248,8 @@ extern addr_ft allot(size_t);
 extern void comma(cell_ft);
 extern name_p lookup(char *, size_t);
 
-extern vminstr_p init_dictionary(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p init_names(vminstr_p, vmstate_p, vmarg_p);
-
+extern vminstr_d init_dictionary[];
+extern vminstr_d init_names[];
 extern vminstr_d init_arith_prim[];
 extern vminstr_d init_compile_prim[];
 extern vminstr_d init_memory_prim[];
@@ -285,6 +284,8 @@ extern vminstr_p i_literal(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p interpret_names(vminstr_p, vmstate_p, vmarg_p);
 
 extern vminstr_p x_exit(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_store(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p do_literal(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p do_colon(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p do_variable(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p do_constant(vminstr_p, vmstate_p, vmarg_p);
@@ -296,6 +297,7 @@ extern vminstr_p do_constant(vminstr_p, vmstate_p, vmarg_p);
 
 #define X(x)		{ .handler = x },
 #define S(s)		{ .str = s },
+#define DL(n)		X(do_literal) { .cell = (cell_ft) (n) },
 #define XCOMMA(n)	X(i_comma) { .cell = (cell_ft) (n) },
 #define CALL(x)		X(i_call) { .ip = (x) },
 #define PRIM(nm, hdlr)	X(i_addname) S(nm) { .handler = hdlr },

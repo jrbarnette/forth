@@ -285,7 +285,7 @@ x_create(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 static vminstr_p
 do_does(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
-    xt_ft create_def = NAME_XT(DICT.forth_wordlist);
+    xt_ft create_def = NAME_XT(*DICT.current);
 
     if (create_def->handler != do_create) {
 	/* XXX - this isn't *exactly* specified in the standard */

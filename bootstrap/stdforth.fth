@@ -7,7 +7,8 @@ drop drop
 : CHAR+ [ 1 chars ] literal + ;
 
 hex
-: FLAGS! forth-wordlist @ cell+ dup >r c@ or r> c! ;
+: GET-CURRENT [ forth-wordlist cell+ ] literal @ ;
+: FLAGS! get-current @ cell+ dup >r c@ or r> c! ;
 : IMMEDIATE     80 flags! ;
 : NO-INTERPRET  40 flags! ;
 : COMPILE-ONLY  c0 flags! ;
@@ -67,7 +68,6 @@ decimal
 
 
 \ SEARCH
-: GET-CURRENT ( -- wid ) [ forth-wordlist cell+ ] literal @ ;
 : SET-CURRENT ( wid -- ) [ forth-wordlist cell+ ] literal ! ;
 : GET-ORDER ( -- widn ... wid1 n )
     [ forth-wordlist 2 cells + ] literal

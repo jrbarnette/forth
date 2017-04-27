@@ -19,4 +19,4 @@ fi
 
 cd $(dirname $0)
 FILES=( $(sed 's/#.*//' $FILEORDER) )
-bootstrap/forth "${FILES[@]}"
+cat "${FILES[@]}" | bootstrap/forth

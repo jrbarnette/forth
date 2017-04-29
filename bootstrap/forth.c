@@ -2,14 +2,15 @@
  * Copyright 2013, by J. Richard Barnette. All Rights Reserved.
  */
 
-#include "forth.h"
-
 #include <assert.h>
 #include <errno.h>
 #include <setjmp.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include "forth.h"
+#include "direct.h"
 
 /*
  * main.c - Initialization and main() for bootstrap Forth
@@ -107,21 +108,6 @@ i_call(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-static
-DIRECT_FORTH(initialize) // {
-    CALL(init_dictionary)
-    CALL(init_stack_prim)
-    CALL(init_arith_prim)
-    CALL(init_memory_prim)
-    CALL(init_mult_prim)
-    CALL(init_terminal_prim)
-    CALL(init_names)
-    CALL(init_control)
-    CALL(init_interpret)
-    CALL(init_file_prim)
-END_DIRECT // }
-
-
 static void
 init_forth(vmstate_p vm)
 {
@@ -135,7 +121,7 @@ init_forth(vmstate_p vm)
     }
 
     RPUSH(vm, NULL);
-    vminstr_p ip = initialize;
+    vminstr_p ip = initialize_forth;
     while (ip != NULL) {
 	ip = ip->handler(ip + 1, vm, NULL);
     }
@@ -157,7 +143,7 @@ main(int argc, char *argv[])
     init_forth(&vmstate);
 
     if ((throwcode = setjmp(vmstate.interp_loop)) == 0) {
-	interpret_string(&vmstate, initialize_forth);
+	interpret_string(&vmstate, init_forth_defs);
     } else {
 	handle_exception(throwcode, &vmstate, NULL);
     }

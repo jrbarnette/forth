@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "forth.h"
+#include "direct.h"
 
 /*
  * memops.c - Standard Forth words for memory fetch/store, and
@@ -81,12 +82,3 @@ x_move(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
     return ip;
 }
-
-
-DIRECT_FORTH(init_memory_prim) // {
-    PRIM("!", 		x_store)
-    PRIM("@",		x_fetch)
-    PRIM("C!",		x_c_store)
-    PRIM("C@",		x_c_fetch)
-    PRIM("MOVE",	x_move)
-END_DIRECT // }

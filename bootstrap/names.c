@@ -9,6 +9,7 @@
 #include <assert.h>
 
 #include "forth.h"
+#include "direct.h"
 
 /*
  * names.c - C internal functions and Forth standard words for
@@ -146,10 +147,8 @@ i_compile(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 /* -------------------------------------------------------------- */
 
-static vminstr_p do_create(vminstr_p, vmstate_p, vmarg_p);
-
 /* ( "<spaces>name" -- xt ) */
-static vminstr_p
+vminstr_p
 x_tick(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft len;
@@ -166,7 +165,7 @@ x_tick(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( R: -- nest-sys ) initiation semantics */
-static vminstr_p
+vminstr_p
 do_colon(vminstr_p ip, vmstate_p vm, vmarg_p newip)
 {
     CHECK_RPUSH(vm, 1);
@@ -176,7 +175,7 @@ do_colon(vminstr_p ip, vmstate_p vm, vmarg_p newip)
 
 
 /* ( C: "<spaces>name" -- colon-sys ) */
-static vminstr_p
+vminstr_p
 x_colon(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft len;
@@ -189,7 +188,7 @@ x_colon(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( C: colon-sys -- ) compilation semantics */
-static vminstr_p
+vminstr_p
 x_semicolon(vminstr_p ip, vmstate_p vm, vmarg_p exit_xt_ptr)
 {
     CHECK_POP(vm, 1);
@@ -201,7 +200,7 @@ x_semicolon(vminstr_p ip, vmstate_p vm, vmarg_p exit_xt_ptr)
 
 
 /* ( xt -- a-addr ) */
-static vminstr_p
+vminstr_p
 x_to_body(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     xt_ft xtok;
@@ -228,7 +227,7 @@ x_exit(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( -- x ) name execution semantics */
-static vminstr_p
+vminstr_p
 do_constant(vminstr_p ip, vmstate_p vm, vmarg_p data_ptr)
 {
     CHECK_PUSH(vm, 1);
@@ -238,7 +237,7 @@ do_constant(vminstr_p ip, vmstate_p vm, vmarg_p data_ptr)
 
 
 /* ( “<spaces>name” -- ) */
-static vminstr_p
+vminstr_p
 x_constant(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft len;
@@ -252,7 +251,7 @@ x_constant(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( -- a-addr ) name execution semantics */
-static vminstr_p
+vminstr_p
 do_create(vminstr_p ip, vmstate_p vm, vmarg_p data_ptr)
 {
     vminstr_p does_ptr = data_ptr[0].ip;
@@ -270,7 +269,7 @@ do_create(vminstr_p ip, vmstate_p vm, vmarg_p data_ptr)
 
 
 /* ( “<spaces>name” -- ) */
-static vminstr_p
+vminstr_p
 x_create(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft len;
@@ -282,7 +281,7 @@ x_create(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( -- ) ( R: nest-sys -- ) runtime semantics */
-static vminstr_p
+vminstr_p
 do_does(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     xt_ft create_def = NAME_XT(*DICT.current);
@@ -299,7 +298,7 @@ do_does(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( C: colon-sys1 -- colon-sys2 ) compilation semantics */
-static vminstr_p
+vminstr_p
 x_does(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_POP(vm, 1);
@@ -309,7 +308,7 @@ x_does(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( c-addr - c-addr 0 | xt -1 | xt 1 ) */
-static vminstr_p
+vminstr_p
 x_find(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_POP(vm, 1);
@@ -330,7 +329,7 @@ x_find(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( -- a-addr ) name execution semantics */
-static vminstr_p
+vminstr_p
 do_variable(vminstr_p ip, vmstate_p vm, vmarg_p var_addr)
 {
     CHECK_PUSH(vm, 1);
@@ -340,7 +339,7 @@ do_variable(vminstr_p ip, vmstate_p vm, vmarg_p var_addr)
 
 
 /* ( "<spaces>name" -- ) execution semantics */
-static vminstr_p
+vminstr_p
 x_variable(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft len;
@@ -352,7 +351,7 @@ x_variable(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( -- wid ) */
-static vminstr_p
+vminstr_p
 x_forth_wordlist(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_PUSH(vm, 1);
@@ -362,7 +361,7 @@ x_forth_wordlist(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( c-addr u wid -- 0 | xt 1 | xt -1 ) */
-static vminstr_p
+vminstr_p
 x_search_wordlist(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     c_addr_ft caddr;
@@ -386,27 +385,3 @@ x_search_wordlist(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     }
     return ip;
 }
-
-
-DIRECT_FORTH(init_names) // {
-    L(do_does)  L(DOES_XT)  X(x_store)
-
-    PRIM("'",			x_tick)
-    PRIM(":",			x_colon)
-
-    /* EXIT out of order for reference below */
-    PRIM("EXIT",		x_exit)		FLAGS(NO_INTERPRET)
-
-    PRIM(";",			x_semicolon)	FLAGS(COMPILE)
-    XCOMPILE("EXIT")
-
-    PRIM(">BODY",		x_to_body)
-    PRIM("CONSTANT",		x_constant)
-    PRIM("CREATE",		x_create)
-    PRIM("DOES>",		x_does)		FLAGS(COMPILE)
-    PRIM("VARIABLE",		x_variable)
-
-    PRIM("FORTH-WORDLIST",	x_forth_wordlist)
-    PRIM("SEARCH-WORDLIST",	x_search_wordlist)
-    PRIM("FIND",		x_find)
-END_DIRECT // }

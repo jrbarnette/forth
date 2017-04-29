@@ -5,6 +5,7 @@
 #include <stddef.h>
 
 #include "forth.h"
+#include "direct.h"
 
 /*
  * control.c - Standard Forth words relating to flow of control in
@@ -65,14 +66,14 @@ compile_plus_loop(vmstate_p vm, xt_ft unloop_xt)
 }
 
 
-static vminstr_p
+vminstr_p
 do_skip(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     return ip + ip->offset;
 }
 
 
-static vminstr_p
+vminstr_p
 do_fskip(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_POP(vm, 1);
@@ -84,7 +85,7 @@ do_fskip(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( n -- ) ( R: loop-sys1 -- | loop-sys2 ) runtime semantics */
-static vminstr_p
+vminstr_p
 do_plus_loop(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_POP(vm, 1);
@@ -100,7 +101,7 @@ do_plus_loop(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( C: do-sys -- ) compilation semantics */
-static vminstr_p
+vminstr_p
 x_plus_loop(vminstr_p ip, vmstate_p vm, vmarg_p unloop_xt_ptr)
 {
     compile_plus_loop(vm, unloop_xt_ptr->xtok);
@@ -109,7 +110,7 @@ x_plus_loop(vminstr_p ip, vmstate_p vm, vmarg_p unloop_xt_ptr)
 
 
 /* ( x1 x2 -- ) ( R: -- loop-sys ) runtime semantics */
-static vminstr_p
+vminstr_p
 do_do(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
@@ -128,7 +129,7 @@ do_do(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( C: -- do-sys ) compilation semantics */
-static vminstr_p
+vminstr_p
 x_do(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_PUSH(vm, 1);
@@ -142,7 +143,7 @@ x_do(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( -- x ) ( R: loop-sys -- loop-sys ) execution semantics */
-static vminstr_p
+vminstr_p
 x_i(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_RPOP(vm, 2);
@@ -155,7 +156,7 @@ x_i(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 /* ( -- x ) ( R: loop-sys1 loop-sys2 -- loop-sys1 loop-sys2 ) */
 /*          execution semantics */
-static vminstr_p
+vminstr_p
 x_j(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_RPOP(vm, 4);
@@ -167,7 +168,7 @@ x_j(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( C: do-sys1 -- do-sys2 ) compilation semantics */
-static vminstr_p
+vminstr_p
 c_leave(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_POP(vm, 2);
@@ -179,7 +180,7 @@ c_leave(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( -- ) ( R: loop-sys -- ) execution semantics */
-static vminstr_p
+vminstr_p
 x_unloop(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_RPOP(vm, 2);
@@ -189,7 +190,7 @@ x_unloop(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( C: -- dest ) compilation semantics */
-static vminstr_p
+vminstr_p
 x_begin(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_PUSH(vm, 1);
@@ -199,7 +200,7 @@ x_begin(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( C: orig1 -- orig2 ) compilation semantics */
-static vminstr_p
+vminstr_p
 x_else(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     vminstr_p orig1;
@@ -215,7 +216,7 @@ x_else(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( C: -- orig ) compilation semantics */
-static vminstr_p
+vminstr_p
 x_if(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_PUSH(vm, 1);
@@ -225,7 +226,7 @@ x_if(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( C: orig dest -- ) compilation semantics */
-static vminstr_p
+vminstr_p
 x_repeat(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     vminstr_p dest;
@@ -241,7 +242,7 @@ x_repeat(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( C: orig -- ) compilation semantics */
-static vminstr_p
+vminstr_p
 x_then(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_POP(vm, 1);
@@ -251,7 +252,7 @@ x_then(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( C: dest -- ) compilation semantics */
-static vminstr_p
+vminstr_p
 x_until(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     vminstr_p dest;
@@ -264,7 +265,7 @@ x_until(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( C: dest -- orig dest ) compilation semantics */
-static vminstr_p
+vminstr_p
 x_while(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft dest;
@@ -276,29 +277,3 @@ x_while(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     PUSH(vm, dest);
     return ip;
 }
-
-
-DIRECT_FORTH(init_control) // {
-    L(do_do)         L(DO_DO_XT)      X(x_store)
-    L(do_plus_loop)  L(PLUS_LOOP_XT)  X(x_store)
-    L(do_skip)       L(SKIP_XT)       X(x_store)
-    L(do_fskip)      L(FSKIP_XT)      X(x_store)
-
-    PRIM("UNLOOP",	x_unloop)	FLAGS(NO_INTERPRET)
-
-    PRIM("+LOOP",	x_plus_loop)	FLAGS(COMPILE)
-    XCOMPILE("UNLOOP")
-
-    PRIM("BEGIN",	x_begin)	FLAGS(COMPILE)
-    PRIM("DO",		x_do)		FLAGS(COMPILE)
-    PRIM("ELSE",	x_else)		FLAGS(COMPILE)
-    PRIM("I",		x_i)		FLAGS(NO_INTERPRET)
-    PRIM("IF",		x_if)		FLAGS(COMPILE)
-    PRIM("J",		x_j)		FLAGS(NO_INTERPRET)
-    PRIM("LEAVE",	c_leave)	FLAGS(COMPILE)
-
-    PRIM("REPEAT",	x_repeat)	FLAGS(COMPILE)
-    PRIM("THEN",	x_then)		FLAGS(COMPILE)
-    PRIM("UNTIL",	x_until)	FLAGS(COMPILE)
-    PRIM("WHILE",	x_while)	FLAGS(COMPILE)
-END_DIRECT // }

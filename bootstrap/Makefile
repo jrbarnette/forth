@@ -7,6 +7,7 @@ SOURCES =			\
 	    dictionary.c	\
 	    fileops.c		\
 	    forth.c		\
+	    initdict.c		\
 	    interpret.c		\
 	    memops.c		\
 	    multops.c		\
@@ -33,7 +34,7 @@ forth: $(OBJECTS)
 $(OBJECTS): forth.h
 
 stdforth.c: gen_cforth stdforth.fth
-	./gen_cforth initialize_forth stdforth.fth > $@
+	./gen_cforth init_forth_defs stdforth.fth > $@
 
 tags: $(SOURCES)
 	ctags $(SOURCES)

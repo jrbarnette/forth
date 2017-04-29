@@ -3,6 +3,7 @@
  */
 
 #include "forth.h"
+#include "direct.h"
 
 /*
  * multops.c - Standard Forth words for single and double cell
@@ -11,10 +12,14 @@
 
 //------  ------  ------  ------  ------  ------  ------  ------
 // *                     6.1.0090 CORE                   26
+// */                    6.1.0100 CORE                   26
+// */MOD                 6.1.0110 CORE                   26
 // /                     6.1.0230 CORE                   28
 // /MOD                  6.1.0240 CORE                   28
+// FM/MOD                6.1.1561 CORE                   39
 // M*                    6.1.1810 CORE                   41
 // MOD                   6.1.1890 CORE                   42
+// SM/REM                6.1.2214 CORE                   45
 // UM*                   6.1.2360 CORE                   46
 // UM/MOD                6.1.2370 CORE                   46
 //------  ------  ------  ------  ------  ------  ------  ------
@@ -52,7 +57,7 @@ dmult(cell_ft *sp, cell_ft n1, cell_ft n2, cell_ft sign)
 
 
 /* ( x1 x2 -- x ) */
-static vminstr_p
+vminstr_p
 x_star(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
@@ -64,7 +69,7 @@ x_star(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( n1 n2 -- n ) */
-static vminstr_p
+vminstr_p
 x_slash(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
@@ -81,7 +86,7 @@ x_slash(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( n1 n2 -- n3 n4 ) */
-static vminstr_p
+vminstr_p
 x_slash_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
@@ -98,7 +103,7 @@ x_slash_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( n1 n2 -- d ) */
-static vminstr_p
+vminstr_p
 x_m_star(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
@@ -115,7 +120,7 @@ x_m_star(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( n1 n2 -- n ) */
-static vminstr_p
+vminstr_p
 x_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
@@ -132,7 +137,7 @@ x_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( u1 u2 -- ud ) */
-static vminstr_p
+vminstr_p
 x_u_m_star(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
@@ -146,7 +151,7 @@ x_u_m_star(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( ud u1 -- u2 u3 ) */
-static vminstr_p
+vminstr_p
 x_u_m_slash_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
@@ -171,18 +176,9 @@ x_u_m_slash_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     return ip;
 }
 
+
 // XXX - missing the following:
 // */                    6.1.0100 CORE                   26
 // */MOD                 6.1.0110 CORE                   26
 // FM/MOD                6.1.1561 CORE                   39
 // SM/REM                6.1.2214 CORE                   45
-
-DIRECT_FORTH(init_mult_prim) // {
-    PRIM("*",		x_star)
-    PRIM("/",		x_slash)
-    PRIM("/MOD",	x_slash_mod)
-    PRIM("M*",		x_m_star)
-    PRIM("MOD",		x_mod)
-    PRIM("UM*",		x_u_m_star)
-    PRIM("UM/MOD",	x_u_m_slash_mod)
-END_DIRECT // }

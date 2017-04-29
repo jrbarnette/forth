@@ -9,6 +9,7 @@
 #include <assert.h>
 
 #include "forth.h"
+#include "direct.h"
 
 /*
  * dictionary.c - C internal functions and Forth standard words for
@@ -49,7 +50,7 @@ allot(vmstate_p vm, size_t n)
 /* -------------------------------------------------------------- */
 
 /* ( x -- ) */
-static vminstr_p
+vminstr_p
 x_comma(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_POP(vm, 1);
@@ -59,7 +60,7 @@ x_comma(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( -- ) */
-static vminstr_p
+vminstr_p
 x_align(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     XALIGN(vm);
@@ -68,7 +69,7 @@ x_align(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( n -- ) */
-static vminstr_p
+vminstr_p
 x_allot(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_POP(vm, 1);
@@ -78,7 +79,7 @@ x_allot(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( char -- ) */
-static vminstr_p
+vminstr_p
 x_c_comma(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_POP(vm, 1);
@@ -88,7 +89,7 @@ x_c_comma(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( -- addr ) */
-static vminstr_p
+vminstr_p
 x_here(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_PUSH(vm, 1);
@@ -98,28 +99,10 @@ x_here(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( -- u ) */
-static vminstr_p
+vminstr_p
 x_unused(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_PUSH(vm, 1);
     PUSH(vm, DICTIONARY_SIZE - DICT.here);
     return ip;
 }
-
-
-DIRECT_FORTH(init_dictionary) // {
-    L(sizeof (dictionary.dict_static_data))
-	L(&DICT.here)			X(x_store)
-    L(1)
-	L(&DICT.n_search_order)		X(x_store)
-    L(&DICT.forth_wordlist) X(x_dup)
-	L(&DICT.current)		X(x_store)
-	L(&DICT.search_order[0])	X(x_store)
-
-    PRIM(",",         x_comma)
-    PRIM("ALIGN",     x_align)
-    PRIM("ALLOT",     x_allot)
-    PRIM("C,",        x_c_comma)
-    PRIM("HERE",      x_here)
-    PRIM("UNUSED",    x_unused)
-END_DIRECT // }

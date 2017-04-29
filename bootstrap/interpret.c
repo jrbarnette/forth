@@ -11,6 +11,7 @@
 #include <readline/history.h>
 
 #include "forth.h"
+#include "direct.h"
 
 /*
  * interpret.c - Outer (interactive) interpreter, and related Forth
@@ -305,7 +306,7 @@ interpret_string(vmstate_p vm, char *s)
 /* -------------------------------------------------------------- */
 
 /* ( -- a-addr ) */
-static vminstr_p
+vminstr_p
 x_to_in(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_PUSH(vm, 1);
@@ -315,7 +316,7 @@ x_to_in(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( i*x -- ) ( R: j*x -- ) */
-static vminstr_p
+vminstr_p
 x_abort(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CLEAR_STACK(vm);
@@ -327,7 +328,7 @@ x_abort(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( -- a-addr ) */
-static vminstr_p
+vminstr_p
 x_base(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_PUSH(vm, 1);
@@ -337,7 +338,7 @@ x_base(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( "<spaces>name" -- char ) */
-static vminstr_p
+vminstr_p
 x_char(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft len;
@@ -353,7 +354,7 @@ x_char(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( -- ) */
-static vminstr_p
+vminstr_p
 x_decimal(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     DICT.base = 10;
@@ -362,7 +363,7 @@ x_decimal(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( i*x c-addr u -- j*x ) */
-static vminstr_p
+vminstr_p
 x_evaluate(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft	osource_id = DICT.source_id;
@@ -389,7 +390,7 @@ x_evaluate(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( i*x xt -- i*j ) */
-static vminstr_p
+vminstr_p
 x_execute(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     xt_ft xtok;
@@ -411,7 +412,7 @@ do_literal(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( x -- ) compilation semantics */
-static vminstr_p
+vminstr_p
 x_literal(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_POP(vm, 1);
@@ -421,7 +422,7 @@ x_literal(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( -- c-addr u ) runtime semantics */
-static vminstr_p
+vminstr_p
 do_s_quote(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft len = ip->cell;
@@ -434,7 +435,7 @@ do_s_quote(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( "ccc<quote>" -- ) compilation semantics */
-static vminstr_p
+vminstr_p
 x_s_quote(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     char_ft *str_src = PARSE_AREA_PTR;
@@ -450,7 +451,7 @@ x_s_quote(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( -- c-addr u ) */
-static vminstr_p
+vminstr_p
 x_source(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_PUSH(vm, 2);
@@ -461,7 +462,7 @@ x_source(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( -- )  ( R: i*x -- ) */
-static vminstr_p
+vminstr_p
 x_quit(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CLEAR_RSTACK(vm);
@@ -472,7 +473,7 @@ x_quit(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( -- a-addr ) */
-static vminstr_p
+vminstr_p
 x_state(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_PUSH(vm, 1);
@@ -482,7 +483,7 @@ x_state(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( -- ) execution semantics for default compilation semantics */
-static vminstr_p
+vminstr_p
 do_postpone(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     COMPILE(vm, ip->xtok);
@@ -491,7 +492,7 @@ do_postpone(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( "<spaces>name" -- ) compilation semantics */
-static vminstr_p
+vminstr_p
 x_postpone(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft	len;
@@ -517,7 +518,7 @@ x_postpone(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( -- ) compilation semantics */
-static vminstr_p
+vminstr_p
 x_left_bracket(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     DICT.state = STATE_INTERP;
@@ -526,7 +527,7 @@ x_left_bracket(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( -- ) */
-static vminstr_p
+vminstr_p
 x_right_bracket(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     DICT.state = STATE_COMPILE;
@@ -535,7 +536,7 @@ x_right_bracket(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( -- c-addr u ) runtime semantics */
-static vminstr_p
+vminstr_p
 do_c_quote(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft len = ip->cdata[0];
@@ -547,7 +548,7 @@ do_c_quote(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( "ccc<quote>" -- ) compilation semantics */
-static vminstr_p
+vminstr_p
 x_c_quote(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     char_ft *str_src = PARSE_AREA_PTR;
@@ -563,7 +564,7 @@ x_c_quote(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( -- ) */
-static vminstr_p
+vminstr_p
 x_hex(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     DICT.base = 16;
@@ -572,7 +573,7 @@ x_hex(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( char "ccc<char>" -- c-addr u ) */
-static vminstr_p
+vminstr_p
 x_parse(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft	len;
@@ -589,41 +590,10 @@ x_parse(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( -- flag ) */
-static vminstr_p
+vminstr_p
 x_refill(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_PUSH(vm, 1);
     PUSH(vm, refill());
     return ip;
 }
-
-
-DIRECT_FORTH(init_interpret) // {
-    L(do_literal)  L(DO_LITERAL_XT)  X(x_store)
-    L(do_postpone) L(DO_POSTPONE_XT) X(x_store)
-    L(do_s_quote)  L(S_QUOTE_XT)     X(x_store)
-    L(do_c_quote)  L(C_QUOTE_XT)     X(x_store)
-
-    L(10)          L(&DICT.base)     X(x_store)
-
-    PRIM(">IN",		x_to_in)
-    PRIM("ABORT",	x_abort)
-    PRIM("BASE",	x_base)
-    PRIM("CHAR",	x_char)
-    PRIM("DECIMAL",	x_decimal)
-    PRIM("EVALUATE",	x_evaluate)
-    PRIM("EXECUTE",	x_execute)
-    PRIM("LITERAL",	x_literal)		FLAGS(COMPILE)
-    PRIM("POSTPONE",	x_postpone)		FLAGS(COMPILE)
-    PRIM("QUIT",	x_quit)
-    PRIM("SOURCE",	x_source)
-    PRIM("STATE",	x_state)
-    PRIM("S\"",		x_s_quote)		FLAGS(COMPILE)
-    PRIM("[",		x_left_bracket)		FLAGS(COMPILE)
-    PRIM("]",		x_right_bracket)
-
-    PRIM("C\"",		x_c_quote)		FLAGS(COMPILE)
-    PRIM("HEX",		x_hex)
-    PRIM("PARSE",	x_parse)
-    PRIM("REFILL",	x_refill)
-END_DIRECT // }

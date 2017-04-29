@@ -5,6 +5,7 @@
 #include <stdio.h>
 
 #include "forth.h"
+#include "direct.h"
 
 /*
  * terminal.c - Standard Forth words for user terminal I/O.
@@ -16,15 +17,10 @@
 
 
 /* ( x -- ) */
-static vminstr_p
+vminstr_p
 x_emit(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_POP(vm, 1);
     putc((char_ft) POP(vm), stdout);
     return ip;
 }
-
-
-DIRECT_FORTH(init_terminal_prim) // {
-    PRIM("EMIT", x_emit)
-END_DIRECT // }

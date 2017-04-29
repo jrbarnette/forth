@@ -3,6 +3,7 @@
  */
 
 #include "forth.h"
+#include "direct.h"
 
 /*
  * arithops.c - Standard Forth words for single cell arithmetic and
@@ -29,7 +30,7 @@
 
 
 /* ( x1 x2 -- x ) */
-static vminstr_p
+vminstr_p
 x_plus(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
@@ -41,7 +42,7 @@ x_plus(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( x1 x2 -- x ) */
-static vminstr_p
+vminstr_p
 x_minus(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
@@ -53,7 +54,7 @@ x_minus(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( n1 -- n2 ) */
-static vminstr_p
+vminstr_p
 x_two_star(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
@@ -64,7 +65,7 @@ x_two_star(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( n1 -- n2 ) */
-static vminstr_p
+vminstr_p
 x_two_slash(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
@@ -75,7 +76,7 @@ x_two_slash(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( n1 n2 -- flag ) */
-static vminstr_p
+vminstr_p
 x_less_than(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
@@ -87,7 +88,7 @@ x_less_than(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( x1 x2 -- flag ) */
-static vminstr_p
+vminstr_p
 x_equals(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
@@ -99,7 +100,7 @@ x_equals(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( n1 n2 -- flag ) */
-static vminstr_p
+vminstr_p
 x_greater_than(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
@@ -111,7 +112,7 @@ x_greater_than(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( x1 x2 -- x ) */
-static vminstr_p
+vminstr_p
 x_and(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
@@ -123,7 +124,7 @@ x_and(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( x1 -- x2 ) */
-static vminstr_p
+vminstr_p
 x_invert(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
@@ -134,7 +135,7 @@ x_invert(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( x1 u -- x ) */
-static vminstr_p
+vminstr_p
 x_lshift(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
@@ -146,7 +147,7 @@ x_lshift(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( x1 -- x2 ) */
-static vminstr_p
+vminstr_p
 x_negate(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
@@ -157,7 +158,7 @@ x_negate(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( x1 x2 -- x ) */
-static vminstr_p
+vminstr_p
 x_or(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
@@ -169,7 +170,7 @@ x_or(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( x1 u -- x ) */
-static vminstr_p
+vminstr_p
 x_rshift(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
@@ -181,7 +182,7 @@ x_rshift(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( u1 u2 -- flag ) */
-static vminstr_p
+vminstr_p
 x_u_less(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
@@ -193,7 +194,7 @@ x_u_less(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( x1 x2 -- x ) */
-static vminstr_p
+vminstr_p
 x_xor(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
@@ -202,22 +203,3 @@ x_xor(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     SET_SP(vm, sp, 1);
     return ip;
 }
-
-
-DIRECT_FORTH(init_arith_prim) // {
-    PRIM("+",		x_plus)
-    PRIM("-",		x_minus)
-    PRIM("2*",		x_two_star)
-    PRIM("2/",		x_two_slash)
-    PRIM("<",		x_less_than)
-    PRIM("=",		x_equals)
-    PRIM(">",		x_greater_than)
-    PRIM("AND",		x_and)
-    PRIM("INVERT",	x_invert)
-    PRIM("LSHIFT",	x_lshift)
-    PRIM("NEGATE",	x_negate)
-    PRIM("OR",		x_or)
-    PRIM("RSHIFT",	x_rshift)
-    PRIM("U<",		x_u_less)
-    PRIM("XOR",		x_xor)
-END_DIRECT // }

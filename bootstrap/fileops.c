@@ -9,6 +9,7 @@
 #include <string.h>
 
 #include "forth.h"
+#include "direct.h"
 
 /*
  * fileops.c - Standard Forth words for the optional File-Access
@@ -106,7 +107,7 @@ do_open_create(vmstate_p vm, bool is_open)
 
 
 /* ( fam1 -- fam2 ) */
-static vminstr_p
+vminstr_p
 x_bin(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
@@ -117,7 +118,7 @@ x_bin(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( fileid -- ior ) */
-static vminstr_p
+vminstr_p
 x_close_file(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
@@ -134,7 +135,7 @@ x_close_file(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( c-addr u fam -- fileid ior ) */
-static vminstr_p
+vminstr_p
 x_create_file(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     do_open_create(vm, false);
@@ -143,7 +144,7 @@ x_create_file(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( fileid -- ud ior ) */
-static vminstr_p
+vminstr_p
 x_file_position(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
@@ -167,7 +168,7 @@ x_file_position(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( fileid -- ud ior ) */
-static vminstr_p
+vminstr_p
 x_file_size(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
@@ -205,7 +206,7 @@ x_file_size(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( c-addr u fam -- fileid ior ) */
-static vminstr_p
+vminstr_p
 x_open_file(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     do_open_create(vm, true);
@@ -214,7 +215,7 @@ x_open_file(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( -- fam ) */
-static vminstr_p
+vminstr_p
 x_r_o(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_PUSH(vm, 1);
@@ -224,7 +225,7 @@ x_r_o(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( -- fam ) */
-static vminstr_p
+vminstr_p
 x_r_w(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_PUSH(vm, 1);
@@ -234,7 +235,7 @@ x_r_w(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( c-addr u1 fileid -- u2 ior ) */
-static vminstr_p
+vminstr_p
 x_read_file(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
@@ -267,7 +268,7 @@ x_read_file(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( ud fileid -- ior ) */
-static vminstr_p
+vminstr_p
 x_reposition_file(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
@@ -289,7 +290,7 @@ x_reposition_file(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( -- fam ) */
-static vminstr_p
+vminstr_p
 x_w_o(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_PUSH(vm, 1);
@@ -299,7 +300,7 @@ x_w_o(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( c-addr u1 fileid -- ior ) */
-static vminstr_p
+vminstr_p
 x_write_file(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft *sp = SP(vm);
@@ -324,19 +325,3 @@ x_write_file(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     SET_SP(vm, sp, 2);
     return ip;
 }
-
-
-DIRECT_FORTH(init_file_prim) // {
-    PRIM("BIN",              x_bin)
-    PRIM("CLOSE-FILE",       x_close_file)
-    PRIM("CREATE-FILE",      x_create_file)
-    PRIM("FILE-POSITION",    x_file_position)
-    PRIM("REPOSITION-FILE",  x_reposition_file)
-    PRIM("FILE-SIZE",        x_file_size)
-    PRIM("OPEN-FILE",        x_open_file)
-    PRIM("R/O",              x_r_o)
-    PRIM("R/W",              x_r_w)
-    PRIM("READ-FILE",        x_read_file)
-    PRIM("W/O",              x_w_o)
-    PRIM("WRITE-FILE",       x_write_file)
-END_DIRECT // }

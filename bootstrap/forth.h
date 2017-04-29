@@ -285,45 +285,6 @@ extern union dict {
 
 
 /*
- * Initialization and direct threaded interpretation primitives.
- *
- * Dictionary initialization is done by interpreting direct-threaded
- * code stored in arrays.
- */
-
-extern vminstr_d init_arith_prim[];
-extern vminstr_d init_control[];
-extern vminstr_d init_dictionary[];
-extern vminstr_d init_file_prim[];
-extern vminstr_d init_interpret[];
-extern vminstr_d init_memory_prim[];
-extern vminstr_d init_mult_prim[];
-extern vminstr_d init_names[];
-extern vminstr_d init_stack_prim[];
-extern vminstr_d init_terminal_prim[];
-
-extern vminstr_p i_addname(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p i_compile(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p i_setflags(vminstr_p, vmstate_p, vmarg_p);
-
-extern vminstr_p do_literal(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_dup(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_exit(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_store(vminstr_p, vmstate_p, vmarg_p);
-
-#define DIRECT_FORTH(nm)	vminstr_d nm[] = {
-#define END_DIRECT		X(x_exit) };
-
-#define X(x)		{ .handler = x },
-#define S(s)		{ .id = s },
-#define CALL(x)		X(i_call) { .ip = (x) },
-#define L(x)		X(do_literal) { .cell = (cell_ft) (x) },
-#define PRIM(nm, hdlr)	X(i_addname) S(nm) { .handler = hdlr },
-#define FLAGS(f)	X(i_setflags) { .cell = NAME_TYPE_ ## f },
-#define XCOMPILE(nm)	X(i_compile) S(nm)
-
-
-/*
  */
 
 extern addr_ft allot(vmstate_p, cell_ft);
@@ -338,7 +299,7 @@ extern void interpret_string(vmstate_p, char *);
 #define COMPILE(vm, xt)	COMMA(vm, xt)
 #define XALIGN(vm)	(DICT.here = XALIGNED(DICT.here))
 
-extern char initialize_forth[];
+extern char init_forth_defs[];
 
 
 /*

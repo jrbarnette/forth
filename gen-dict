@@ -5,6 +5,8 @@ usage() {
     exit 1
 }
 
+cd $(dirname $0)
+
 if [ $# -ne 1 ]
 then
     usage
@@ -17,6 +19,5 @@ then
     usage
 fi
 
-cd $(dirname $0)
 FILES=( $(sed 's/#.*//' $FILEORDER) )
 cat "${FILES[@]}" | bootstrap/forth

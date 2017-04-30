@@ -11,6 +11,7 @@
 
 #include "forth.h"
 #include "direct.h"
+#include "cmdline.h"
 
 /*
  * main.c - Initialization and main() for bootstrap Forth

@@ -5,10 +5,17 @@ language.  Operation has to be in two modes:
 ... or count it as four modes...
 
 for a given a standard word (e.g. HERE), we end up with (up to) 3
-different definitions:
+(or 4) different definitions:
   * the built-in (standard) Forth definition for Forth mode
   * a host-based definition for target interpretation mode
   * the definition in the target dictionary for target compile mode
+  * direct-mode interpreter
+
+Need separate vocabularies for each
+    FORTH
+    HOST
+    TARGET
+    DIRECT-ASSEMBLER
 
 in target mode interpretation state, these words must be redefined
 to operate on the target dictionary:

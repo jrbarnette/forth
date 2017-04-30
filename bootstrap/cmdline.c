@@ -3,12 +3,13 @@
  */
 
 /* ISO/IEC standard */
+#include <stdio.h>
 #include <stdbool.h>
 
 /* IEEE 1003 (POSIX) */
 #include <unistd.h>
 
-#include "forth.h"
+#include "cmdline.h"
 
 /*
  * cmdline.c - Command line parsing and OS-specific initialization.

@@ -12,6 +12,7 @@
 
 #include "forth.h"
 #include "direct.h"
+#include "cmdline.h"
 
 /*
  * interpret.c - Outer (interactive) interpreter, and related Forth

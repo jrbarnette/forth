@@ -143,8 +143,3 @@ drop					( )
 : ABORT"
     postpone if postpone ." postpone abort postpone then
 ; immediate
-
-unused				( free )
-here forth-wordlist - cell+	( free inuse )
-2dup + rot rot			( total free inuse )
-.( dictionary: ) . .( in use / ) . .( free / ) . .( total ) cr

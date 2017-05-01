@@ -1,0 +1,17 @@
+# Copyright 2016, by J. Richard Barnette, All Rights Reserved.
+host/direct/directmode.fth
+host/direct/stackprim.fth
+host/direct/arithprim.fth
+host/direct/memprim.fth
+host/direct/builddict.fth
+host/direct/dictionary.fth
+host/direct/stackprim.fth
+host/direct/arithprim.fth
+host/direct/memprim.fth
+host/direct/multprim.fth
+host/direct/terminal.fth
+host/direct/names.fth
+host/direct/control.fth
+host/direct/interpret.fth
+host/direct/fileprim.fth
+host/direct/enddict.fth

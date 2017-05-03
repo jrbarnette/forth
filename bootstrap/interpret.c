@@ -48,14 +48,6 @@ compile_literal(vmstate_p vm, cell_ft n)
 }
 
 
-static void
-compile_postpone(vmstate_p vm, xt_ft xtok)
-{
-    COMPILE(vm, DO_POSTPONE_XT);
-    COMMA(vm, xtok);
-}
-
-
 cell_ft
 parse(char_ft c, c_addr_ft s, cell_ft len)
 {
@@ -414,13 +406,13 @@ do_s_quote(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 /* ( "ccc<quote>" -- ) compilation semantics */
 vminstr_p
-x_s_quote(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+x_s_quote(vminstr_p ip, vmstate_p vm, vmarg_p s_quote_xt)
 {
     char_ft *str_src = PARSE_AREA_PTR;
     cell_ft len = parse('"', str_src, PARSE_AREA_LEN);
     char_ft *str_dst;
 
-    COMPILE(vm, S_QUOTE_XT);
+    COMPILE(vm, s_quote_xt);
     COMMA(vm, len);
     str_dst = allot(vm, XALIGNED(len));
     memcpy(str_dst, str_src, len);
@@ -461,7 +453,7 @@ do_postpone(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 /* ( "<spaces>name" -- ) compilation semantics */
 vminstr_p
-x_postpone(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+x_postpone(vminstr_p ip, vmstate_p vm, vmarg_p do_postpone_xt)
 {
     cell_ft	len;
     c_addr_ft	id = parse_name(&len);
@@ -479,7 +471,8 @@ x_postpone(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     if (NAME_IS_IMMEDIATE(name)) {
 	COMPILE(vm, xtok);
     } else {
-	compile_postpone(vm, xtok);
+	COMPILE(vm, do_postpone_xt);
+	COMMA(vm, xtok);
     }
     return ip;
 }
@@ -503,7 +496,7 @@ x_right_bracket(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* ( -- c-addr u ) runtime semantics */
+/* ( -- c-addr ) runtime semantics */
 vminstr_p
 do_c_quote(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
@@ -517,13 +510,13 @@ do_c_quote(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 /* ( "ccc<quote>" -- ) compilation semantics */
 vminstr_p
-x_c_quote(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+x_c_quote(vminstr_p ip, vmstate_p vm, vmarg_p c_quote_xt)
 {
     char_ft *str_src = PARSE_AREA_PTR;
     cell_ft len = parse('"', str_src, PARSE_AREA_LEN);
     char_ft *str_dst;
 
-    COMPILE(vm, C_QUOTE_XT);
+    COMPILE(vm, c_quote_xt);
     str_dst = allot(vm, XALIGNED(len + 1));
     str_dst[0] = (char_ft) len;
     memcpy(str_dst + 1, str_src, len);

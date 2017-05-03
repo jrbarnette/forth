@@ -235,14 +235,11 @@ extern union dict {
 	name_p *	search_order[MAX_SEARCH_ORDER];
 
 	definition_d	literal_instr;	/* for LITERAL runtime xt */
-	definition_d	postpone_instr;	/* for POSTPONE non-immediate */
 	definition_d	skip_instr;	/* for ELSE runtime xt */
 	definition_d	fskip_instr;	/* for IF runtime xt */
 	definition_d	do_instr;	/* for DO runtime xt */
 	definition_d	plus_loop_instr; /* for +LOOP runtime xt */
 	definition_d	does_instr;	/* for DOES> runtime xt */
-	definition_d	s_quote_instr;	/* for S" runtime xt */
-	definition_d	c_quote_instr;	/* for C" runtime xt */
 
 	cell_ft		state;		/* STATE */
 
@@ -274,14 +271,11 @@ extern union dict {
 #define PARSE_AREA_LEN		(DICT.source.len - DICT.to_in)
 
 #define DO_LITERAL_XT		(&DICT.literal_instr)
-#define DO_POSTPONE_XT		(&DICT.postpone_instr)
 #define SKIP_XT			(&DICT.skip_instr)
 #define FSKIP_XT		(&DICT.fskip_instr)
 #define DO_DO_XT		(&DICT.do_instr)
 #define PLUS_LOOP_XT		(&DICT.plus_loop_instr)
 #define DOES_XT			(&DICT.does_instr)
-#define S_QUOTE_XT		(&DICT.s_quote_instr)
-#define C_QUOTE_XT		(&DICT.c_quote_instr)
 
 
 /*

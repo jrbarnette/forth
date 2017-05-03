@@ -26,32 +26,36 @@
 \  REFILL                6.2.2125 CORE EXT               55
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
-expr do_literal;        expr DO_LITERAL_XT;   !
-expr do_postpone;       expr DO_POSTPONE_XT;  !
-expr do_s_quote;        expr S_QUOTE_XT;      !
-expr do_c_quote;        expr C_QUOTE_XT;      !
+expr do_literal;    expr DO_LITERAL_XT;   !
 
-10 literal              expr &DICT.base;      !
+expr &DICT.to_in;   constant >IN
 
-expr &DICT.to_in;       constant >IN
-expr &DICT.base;        constant BASE
-expr &DICT.state;       constant STATE
+expr &DICT.base; 10 literal over !
+                    constant BASE
+expr &DICT.state;   constant STATE
 
-prim: ABORT     x_abort
+prim: ABORT         x_abort
 
-prim: CHAR      x_char
-prim: DECIMAL   x_decimal
-prim: EVALUATE  x_evaluate
-prim: EXECUTE   x_execute
-prim: LITERAL   x_literal               compile-only
-prim: POSTPONE  x_postpone              compile-only
-prim: QUIT      x_quit
-prim: SOURCE    x_source
-prim: S"        x_s_quote               compile-only
-prim: [         x_left_bracket          compile-only
-prim: ]         x_right_bracket
+prim: CHAR          x_char
+prim: DECIMAL       x_decimal
+prim: EVALUATE      x_evaluate
+prim: EXECUTE       x_execute
+prim: LITERAL       x_literal           compile-only
+prim: POSTPONE      x_postpone          compile-only
+expr do_postpone;   ,
 
-prim: C"        x_c_quote               compile-only
-prim: HEX       x_hex
-prim: PARSE     x_parse
-prim: REFILL    x_refill
+prim: QUIT          x_quit
+prim: SOURCE        x_source
+
+prim: S"            x_s_quote           compile-only
+expr do_s_quote;    ,
+
+prim: [             x_left_bracket      compile-only
+prim: ]             x_right_bracket
+
+prim: C"            x_c_quote           compile-only
+expr do_c_quote;    ,
+
+prim: HEX           x_hex
+prim: PARSE         x_parse
+prim: REFILL        x_refill

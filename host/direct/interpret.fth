@@ -28,13 +28,13 @@
 
 expr do_literal;    expr DO_LITERAL_XT;   !
 
-expr &DICT.to_in;   constant >IN
-
-expr &DICT.base; 10 literal over !
-                    constant BASE
-expr &DICT.state;   constant STATE
+expr &DICT.to_in;
+constant >IN
 
 prim: ABORT         x_abort
+
+expr &DICT.base; 10 literal over !
+constant BASE
 
 prim: CHAR          x_char
 prim: DECIMAL       x_decimal
@@ -46,6 +46,9 @@ expr do_postpone;   ,
 
 prim: QUIT          x_quit
 prim: SOURCE        x_source
+
+expr &DICT.state;
+constant STATE
 
 prim: S"            x_s_quote           compile-only
 expr do_s_quote;    ,

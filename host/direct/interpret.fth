@@ -26,16 +26,19 @@
 \  REFILL                6.2.2125 CORE EXT               55
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
-expr do_literal;  expr DO_LITERAL_XT;   !
-expr do_postpone; expr DO_POSTPONE_XT;  !
-expr do_s_quote;  expr S_QUOTE_XT;      !
-expr do_c_quote;  expr C_QUOTE_XT;      !
+expr do_literal;        expr DO_LITERAL_XT;   !
+expr do_postpone;       expr DO_POSTPONE_XT;  !
+expr do_s_quote;        expr S_QUOTE_XT;      !
+expr do_c_quote;        expr C_QUOTE_XT;      !
 
-10 literal        expr &DICT.base;      !
+10 literal              expr &DICT.base;      !
 
-prim: >IN       x_to_in
+expr &DICT.to_in;       constant >IN
+expr &DICT.base;        constant BASE
+expr &DICT.state;       constant STATE
+
 prim: ABORT     x_abort
-prim: BASE      x_base
+
 prim: CHAR      x_char
 prim: DECIMAL   x_decimal
 prim: EVALUATE  x_evaluate
@@ -44,7 +47,6 @@ prim: LITERAL   x_literal               compile-only
 prim: POSTPONE  x_postpone              compile-only
 prim: QUIT      x_quit
 prim: SOURCE    x_source
-prim: STATE     x_state
 prim: S"        x_s_quote               compile-only
 prim: [         x_left_bracket          compile-only
 prim: ]         x_right_bracket

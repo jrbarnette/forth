@@ -20,9 +20,7 @@
  */
 
 //------  ------  ------  ------  ------  ------  ------  ------
-// >IN                   6.1.0560 CORE                   31
 // ABORT                 6.1.0670 CORE                   32
-// BASE                  6.1.0750 CORE                   34
 // CHAR                  6.1.0895 CORE                   35
 // DECIMAL               6.1.1170 CORE                   36
 // EVALUATE              6.1.1360 CORE                   38
@@ -32,7 +30,6 @@
 // QUIT                  6.1.2050 CORE                   43
 // S"                    6.1.2165 CORE                   44
 // SOURCE                6.1.2216 CORE                   45
-// STATE                 6.1.2250 CORE                   45
 // [                     6.1.2500 CORE                   48
 // ]                     6.1.2540 CORE                   49
 //
@@ -306,16 +303,6 @@ interpret_string(vmstate_p vm, char *s)
 
 /* -------------------------------------------------------------- */
 
-/* ( -- a-addr ) */
-vminstr_p
-x_to_in(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    CHECK_PUSH(vm, 1);
-    PUSH(vm, &DICT.to_in);
-    return ip;
-}
-
-
 /* ( i*x -- ) ( R: j*x -- ) */
 vminstr_p
 x_abort(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -325,16 +312,6 @@ x_abort(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     THROW(vm, -1);
     /* NOTREACHED */
     return NULL;
-}
-
-
-/* ( -- a-addr ) */
-vminstr_p
-x_base(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    CHECK_PUSH(vm, 1);
-    PUSH(vm, (cell_ft) &DICT.base);
-    return ip;
 }
 
 
@@ -470,16 +447,6 @@ x_quit(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     THROW(vm, -56);
     /* NOTREACHED */
     return NULL;
-}
-
-
-/* ( -- a-addr ) */
-vminstr_p
-x_state(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    CHECK_PUSH(vm, 1);
-    PUSH(vm, (cell_ft) &DICT.state);
-    return ip;
 }
 
 

@@ -1,0 +1,44 @@
+text defining POSTPONE
+    Append the compilation semantics of name to the current
+    definition.
+
+text defining [COMPILE]
+    If name has other than default compilation semantics, append
+    them to the current definition; otherwise append the execution
+    semantics of name.
+
+N.B. The text means that something like the below are equivalent:
+    POSTPONE LITERAL
+    [COMPILE] LITERAL
+
+These are different:
+    POSTPONE SWAP
+    [COMPILE] SWAP
+--
+the standard has two categories of definition:
+    standard semantics:
+      + in interpretation state, execute directly, so long as
+	interpretation is allowed
+      + in compilation state, append execution semantics
+    special compilation semantics:
+      + not allowed in interpretation state
+      + defined compilation semantics
+
+so, POSTPONE looks like this
+    if word has special compilation semantics
+	compile the special compilation semantics
+    else
+	compile code that compiles the target definition's execution semantics
+
+and [COMPILE] looks like this
+    if word has special compilation semantics
+	compile the special compilation semantics
+    else
+	compile the target definition's execution semantics
+
+but for [COMPILE], both special and standard semantics boil down
+to the xt out of FIND, so [COMPILE] becomes
+    compile the target definition's xt
+
+put another way
+    : [COMPILE] ' compile, ; immediate \ no-interpret

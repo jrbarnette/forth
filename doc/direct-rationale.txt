@@ -1,0 +1,130 @@
+=== This seems to be of historical interest only.
+== Example
+prim: + x_plus
+->
+    { .handler = do_s_quote },
+    { .cell = 24 },				// 3 * sizeof (cell_ft)
+    { .addr = &dictionary[BACK_LINK] },		// 1st cell
+    { .cdata = "\1+" },				// 2nd cell
+    { .handler = x_plus },			// 3rd cell
+    { .handler = do_literal },
+    { .addr = &dictionary[OFFSET_PLUS] },
+    { .handler = x_swap },
+    { .handler = x_move },
+
+Oy.  Can we simplify that?  Can we manage the complexity with
+factoring?
+
+Implementation implications:
+  * Adding a name like '+' to the target dictionary means
+    calculating where it will be stored at build time.
+
+Actually, size:  6 cells/definition.  In this case, 6 cells of
+metadata for 3 cells of dictionary data.  That's worst case, so 2:1
+ratio, or less.  But most primitives will be worst case.
+
+Do we care about the efficiency?  The goal is maintainable factoring,
+not efficiency.
+
+== Example
+: S>D dup 0< ;
+->
+    { .handler = do_s_quote },
+    { .cell = 48 },				// 6 * sizeof (cell_ft)
+    { .addr = &dictionary[BACK_LINK] },		// 1st cell
+    { .cdata = "\3S>D" },			// 2nd cell
+    { .handler = do_colon },			// 3rd cell
+    { .addr = &dictionary[OFFSET_DUP] },	// 4th cell
+    { .addr = &dictionary[OFFSET_ZERO_LESS] },	// 5th cell
+    { .addr = &dictionary[OFFSET_EXIT] },	// 6th cell
+    { .handler = do_literal },
+    { .addr = &dictionary[OFFSET_S_TO_D] },
+    { .handler = x_swap },
+    { .handler = x_move },
+
+Metadata:data ratio is 1:1.  That'll be common for Forth definitions.
+
+Implementation implications:
+  * ':' must know the definition's address in the target at build
+    time, same as for 'prim:'.
+  * Default compilation semantics is to write out the definition's
+    target address.
+  * All defining words, including ':' and 'prim:' must remember the
+    definition's target address by its name in order to support
+    compilation.
+
+That means compilation semantics would look like this:
+    : target-definition create , does> @ .addr ;
+
+== Example
+: ABS dup 0< if negate then ;
+->
+    { .handler = do_s_quote },
+    { .cell = 72 },				// 9 * sizeof (cell_ft)
+    { .addr = &dictionary[BACK_LINK] },		// 1st cell
+    { .cdata = "\3ABS" },			// 2nd cell
+    { .handler = do_colon },			// 3rd cell
+    { .addr = &dictionary[OFFSET_DUP] },	// 4th cell
+    { .addr = &dictionary[OFFSET_ZERO_LESS] },	// 5th cell
+    { .addr = &dictionary[OFFSET_DO_FSKIP] },	// 6th cell
+    { .cell = 1 },				// 7th cell
+    { .addr = &dictionary[OFFSET_NEGATE] },	// 8th cell
+    { .addr = &dictionary[OFFSET_EXIT] },	// 9th cell
+    { .handler = do_literal },
+    { .addr = &dictionary[OFFSET_ABS] },
+    { .handler = x_swap },
+    { .handler = x_move },
+
+Implementation implications:
+  * Producing exactly the output above requires backpatching the
+    FSKIP offset, which means buffering data at least until
+    backpatches are resolved; more likely buffering until ';'.
+  * Buffering is a nuisance; we have to remember not just dictionary
+    cell values, but the classification of each cell.  That's the
+    source of the ugliness under host/c-dict.
+
+Solution would be to go deeper into direct execution to construct
+the dictionary.  Two elements here:
+  * Custom initialization instructions (e.g. i_addname()).  Saves
+    memory per defintion (transfers it to a fixed cost in code
+    space).
+  * Build up indirect-threaded code, and call it as we go.  A bit
+    more complex, especially around ',', 'ALLOT', et al.  And, it
+    still requires some custom initialization instructions.
+
+This is what we have in bootstrap.meta:
+    init_dictionary() - special purpose initialization
+	just need direct-mode literal
+    init_names() - special purpose initialization
+	just need direct-mode literal
+    init_literal() - special purpose initialization
+	need direct-mode literal
+    interpret_names() - starts meta-interpretation
+    i_comma() - only one call site; initializes STATE
+	... by which time ',' has a definition?
+	... but meta-interpretation depends on initializing STATE.
+    i_addname()
+    i_setflags() - implement FLAGS in direct mode
+    i_postpone() - implement XPOSTPONE in meta mode
+    i_literal()
+    i_call()
+
+These are only used in indirect-threaded Forth code (so, they're
+misnamed):
+    i_lookup()
+    i_throw()
+
+Direct mode is mainly used for PRIM(), plus FLAGS().  High-level
+flow of initialization is controlled by CALL() from "initialize".
+Uses these operations:
+    X(instr) - direct execution of handler "instr".
+    XCOMMA(n) - equivalent to ',' using "n" as the parameter.
+    CALL(x) - subroutine call to switch tables
+    PRIM(nm, hdlr) - add primitive definition for "nm" with "hdlr".
+    FLAGS(f) - set definition flags
+	"f" should be one of IMMEDIATE, NO_INTERPRET, COMPILE
+
+Meta-interpretation depends on
+    interpret_names depends on 'STATE'
+    Early dependencies on '[', ']', 'ALLOT', and ','.
+

@@ -4,6 +4,7 @@
 
 #include <assert.h>
 #include <ctype.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -103,14 +104,14 @@ execute(vmstate_p vm, xt_ft entry_xt)
 }
 
 
-static int
+static bool
 evaluate_name(c_addr_ft s, cell_ft len, vmstate_p vm)
 {
     name_p name = lookup(vm, s, len);
     xt_ft xtok;
 
     if (name == NULL) {
-	return 0;
+	return false;
     }
 
     xtok = NAME_XT(name);
@@ -122,11 +123,23 @@ evaluate_name(c_addr_ft s, cell_ft len, vmstate_p vm)
 	THROW(vm, -14);
     }
 
-    return 1;
+    return true;
 }
 
 
-static int
+static void
+execute_literal(vmstate_p vm, cell_ft n)
+{
+    if (DICT.state == STATE_INTERP) {
+	CHECK_PUSH(vm, 1);
+	PUSH(vm, n);
+    } else {
+	compile_literal(vm, n);
+    }
+}
+
+
+static bool
 evaluate_number(c_addr_ft s, cell_ft len, vmstate_p vm)
 {
     cell_ft	base = DICT.base;
@@ -135,13 +148,13 @@ evaluate_number(c_addr_ft s, cell_ft len, vmstate_p vm)
     cell_ft	n = 0;
 
     if (len == 0 || base > 'Z' - 'A' + 11)
-	return 0;
+	return false;
 
     if (s[0] == '-') {
 	i++;
 	sign = -1;
 	if (len == 1)
-	    return 0;
+	    return false;
     }
 
     for (; i < len; i++) {
@@ -156,11 +169,11 @@ evaluate_number(c_addr_ft s, cell_ft len, vmstate_p vm)
 	    /* accepting lower-case is non-standard behavior */
 	    dig = dchar - 'a' + 10;
 	} else {
-	    return 0;
+	    return false;
 	}
 
 	if (dig >= base)
-	    return 0;
+	    return false;
 
 	/* XXX check for overflow - not specified by standard */
 	n = base * n + dig;
@@ -169,14 +182,8 @@ evaluate_number(c_addr_ft s, cell_ft len, vmstate_p vm)
     if (sign < 0)
 	n = -n;
 
-    if (DICT.state == STATE_INTERP) {
-	CHECK_PUSH(vm, 1);
-	PUSH(vm, n);
-    } else {
-	compile_literal(vm, n);
-    }
-
-    return 1;
+    execute_literal(vm, n);
+    return true;
 }
 
 

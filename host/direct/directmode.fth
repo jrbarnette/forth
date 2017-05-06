@@ -42,8 +42,10 @@ variable offset  0 offset !
      does> { dup cell+ swap @ .exec } ;
 : setflags { s" i_setflags" .exec }{ c-hex .cell } ;
 : [compile] { s" i_compile" .exec }{ parse-name .str } ;
-: literal { s" do_literal" .exec }{ c-hex .cell } ;
-: expr { s" do_literal" .exec }{ [char] ; parse .cell } ;
+: literal{ { s" do_literal" .exec }{ ;
+: }literal .cell } ;
+: literal literal{ c-hex }literal ;
+: expr literal{ [char] ; parse }literal ;
 
 : IMMEDIATE    ;
 : NO-INTERPRET ;

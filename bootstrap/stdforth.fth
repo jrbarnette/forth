@@ -85,6 +85,7 @@ decimal
     repeat 2drop
 ;
 : DEFINITIONS ( -- ) [ forth-wordlist 3 cells + ] literal @ set-current ;
+: WORDLIST ( -- wid ) here 0 , ;
 
 here forth-wordlist 3 cells + ' definitions @ , ] literal ! exit [
 : VOCABULARY create 0 , does> [ over , ] ;

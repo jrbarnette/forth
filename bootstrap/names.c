@@ -117,19 +117,18 @@ linkname(name_p name)
 vminstr_p
 i_addname(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
-    char *id = ip[0].id;
+    char *id = (ip++)->id;
     cell_ft len = strlen(id);
-    vminstr_fn hdlr = ip[1].handler;
-    linkname(addname(vm, (c_addr_ft) id, len, hdlr));
+    linkname(addname(vm, (c_addr_ft) id, len, (ip++)->handler));
 
-    return ip + 2;
+    return ip;
 }
 
 
 vminstr_p
 i_setflags(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
-    NAME_SET_TYPE(*DICT.current, ip[0].cell);
+    NAME_SET_TYPE(*DICT.current, ip->cell);
     return ip + 1;
 }
 
@@ -137,7 +136,7 @@ i_setflags(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 vminstr_p
 i_compile(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
-    char *id = ip[0].id;
+    char *id = ip->id;
     cell_ft len = strlen(id);
     name_p nm = lookup(vm, (c_addr_ft) id, len);
     COMPILE(vm, NAME_XT(nm));

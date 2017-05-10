@@ -15,8 +15,8 @@ only forth also direct-assembler definitions
 variable offset  0 offset !
 
 : {  ." /* " offset @ 3 .r ."  */ { " ;
-: }{ ."  }, { " offset @ 1+ offset ! ;
-: } ."  }," cr offset @ 1+ offset ! ;
+: }{ ."  }, { " 1 offset +! ;
+: } ."  }," cr 1 offset +! ;
 
 : escape-nul ( #nul -- )
     ?dup if 0 do ." \0" loop ." 00" then ;
@@ -32,7 +32,7 @@ variable offset  0 offset !
     over >r chars + 0 swap r> do i c@ escape 1 chars +loop drop ;
 : c-string ( c-addr u -- )
     [char] " emit escape-string [char] " emit ;
-: c-hex base @ >r hex 0 <# # #s [char] x hold [char] 0 hold #> r> base ! ;
+: c-hex base @ >r hex 0 <# #s [char] x hold [char] 0 hold #> r> base ! ;
 
 : .exec ( c-addr u -- ) ." .handler = " type ;
 : .str ( c-addr u -- ) ." .id = " c-string ;

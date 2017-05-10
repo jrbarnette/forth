@@ -22,6 +22,11 @@ extern vminstr_p i_addname(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p i_setflags(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p i_compile(vminstr_p, vmstate_p, vmarg_p);
 
+/* meta-interpretation direct threaded primitives */
+extern vminstr_p meta_interpret(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p meta_postpone(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p meta_literal(vminstr_p, vmstate_p, vmarg_p);
+
 /* dictionary primitives */
 extern vminstr_p x_comma(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_align(vminstr_p, vmstate_p, vmarg_p);
@@ -158,13 +163,27 @@ extern vminstr_p x_write_file(vminstr_p, vmstate_p, vmarg_p);
 
 #define DIRECT_FORTH(nm)	vminstr_d nm[] = {
 #define END_DIRECT		X(x_exit) };
+#define META_FORTH(nm)		DIRECT_FORTH(nm) META
+#define END_META		DIRECT END_DIRECT
 
 #define X(x)		{ .handler = x },
 #define S(s)		{ .id = s },
+#define N(n)		{ .cell = (cell_ft) (n) },
 #define CALL(x)		X(i_call) { .ip = (x) },
-#define L(x)		X(do_literal) { .cell = (cell_ft) (x) },
+#define L(x)		X(do_literal) N(x)
 #define PRIM(nm, hdlr)	X(i_addname) S(nm) { .handler = hdlr },
 #define FLAGS(f)	X(i_setflags) { .cell = NAME_TYPE_ ## f },
 #define XCOMPILE(nm)	X(i_compile) S(nm)
+
+#define META		X(meta_interpret)
+#define DIRECT		S(NULL)
+#define ML(n)		DIRECT X(meta_literal) N(n)
+
+#define XVARIABLE(nm)	DIRECT PRIM(nm, do_variable) L(CELL_SIZE) META ALLOT
+#define XCONSTANT(nm)	DIRECT PRIM(nm, do_constant) META COMMA
+#define XCOLON(nm)	DIRECT PRIM(nm, do_colon) META S("]")
+#define XSEMICOLON	EXIT S("[")
+#define XPOSTPONE	DIRECT X(meta_postpone)
+#define INTERP(code)	S("[") code S("]")
 
 #endif

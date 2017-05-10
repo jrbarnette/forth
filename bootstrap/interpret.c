@@ -300,6 +300,46 @@ interpret_string(vmstate_p vm, char *s)
 }
 
 
+vminstr_p
+meta_interpret(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    while (ip->id != NULL) {
+	if (!evaluate_name((c_addr_ft) ip->id, strlen(ip->id), vm)) {
+	    fputs(ip->id, stderr);
+	    fputc(' ', stderr);
+	    THROW(vm, -13);
+	}
+	ip++;
+    }
+    return ip + 1;
+}
+
+
+vminstr_p
+meta_postpone(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    assert(DICT.state != STATE_INTERP);
+
+    name_p name = lookup(vm, (c_addr_ft) ip->id, strlen(ip->id));
+    if (name == NULL) {
+	fprintf(stderr, "POSTPONE %s ", ip->id);
+	THROW(vm, -13);
+    }
+    // XXX is this assertion necessary/advisable?
+    assert(NAME_IS_IMMEDIATE(name));
+    COMPILE(vm, NAME_XT(name));
+    return meta_interpret(ip + 1, vm, ignore);
+}
+
+
+vminstr_p
+meta_literal(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    execute_literal(vm, ip->cell);
+    return meta_interpret(ip + 1, vm, ignore);
+}
+
+
 /* -------------------------------------------------------------- */
 
 /* ( i*x -- ) ( R: j*x -- ) */

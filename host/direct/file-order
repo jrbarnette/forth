@@ -1,5 +1,6 @@
 # Copyright 2016, by J. Richard Barnette, All Rights Reserved.
 host/direct/directmode.fth
+host/direct/metamode.fth
     host/direct/stackprim.fth
     host/direct/arithprim.fth
     host/direct/memprim.fth

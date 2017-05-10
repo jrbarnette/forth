@@ -44,6 +44,4 @@ immediate \ no-interpret
 \ XXX COMPILE, should enforce that there's a current definition
 : COMPILE, ( xt -- ) , ;
 
-: [COMPILE] ( "<spaces>name" -- )
-    bl word find if compile, else drop -13 throw then
-; immediate \ no-interpret
+: [COMPILE] ( "<spaces>name" -- ) ' compile, ; immediate \ no-interpret

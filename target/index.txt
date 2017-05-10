@@ -55,7 +55,7 @@ XOR                   6.1.2490 CORE                   48
 U>                    6.2.2350 CORE EXT               57
 WITHIN                6.2.2440 CORE EXT               58
 
-double cell arithmetic:
+double cell multiply and divide:
 *                     6.1.0090 CORE                   26
 */                    6.1.0100 CORE                   26
 */MOD                 6.1.0110 CORE                   26

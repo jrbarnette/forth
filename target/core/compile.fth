@@ -21,14 +21,16 @@ immediate \ no-interpret
     [char] " parse dup , here swap move
 ;
 
-: POSTPONE ( "<spaces>name" -- )
-    bl word find ?dup if ( xt -1 | xt 1 )
-	0< if [compile] literal [compile] compile, else compile, then
-    else ( c-addr )
-	drop -13 throw
-    then
-; immediate
 
+\ COMPILE, and [COMPILE] deliberately out of order
+\ XXX COMPILE, should enforce that there's a current definition
+: COMPILE, ( xt -- ) , ;
+: [COMPILE] ( "<spaces>name" -- ) ' compile, ; immediate \ no-interpret
+
+: POSTPONE ( "<spaces>name" -- )
+    parse-name lookup 0= if -13 throw then
+    nf-immediate and 0= if [compile] literal ['] compile, then compile,
+; immediate \ no-interpret
 
 \ ------  ------  ------  ------  ------  ------  ------  ------
 \ C"                    6.2.0855 CORE EXT               52
@@ -40,8 +42,3 @@ immediate \ no-interpret
     \ FIXME - [compile] do-c"
     [char] " parse dup c, here swap move
 ;
-
-\ XXX COMPILE, should enforce that there's a current definition
-: COMPILE, ( xt -- ) , ;
-
-: [COMPILE] ( "<spaces>name" -- ) ' compile, ; immediate \ no-interpret

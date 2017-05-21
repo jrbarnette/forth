@@ -7,9 +7,18 @@ text defining [COMPILE]
     them to the current definition; otherwise append the execution
     semantics of name.
 
-N.B. The text means that something like the below are equivalent:
+text defining "default compilation semantics"
+    [ .. ] append [ the ] execution semantics to the execution
+    semantics of the current definition
+
+N.B. The definitions mean that things like the below are equivalent:
     POSTPONE LITERAL
     [COMPILE] LITERAL
+
+and, in compilation state, these are the same:
+    [COMPILE] SWAP
+    SWAP
+(... but in interpretation state, the former is an error)
 
 These are different:
     POSTPONE SWAP
@@ -42,3 +51,10 @@ to the xt out of FIND, so [COMPILE] becomes
 
 put another way
     : [COMPILE] ' compile, ; immediate \ no-interpret
+    : POSTPONE
+	word find ?dup if
+	    0> if [compile] literal ['] compile, then compile,
+	else
+	    -13 throw
+	then
+    ; immediate \ no-interpret

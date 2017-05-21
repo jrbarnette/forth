@@ -12,6 +12,7 @@ variable >IN
 : SOURCE-ID [ >in cell+ ] literal @ ;
 : SOURCE-ID! [ >in cell+ ] literal ! ;
 
+
 \ ------  ------  ------  ------  ------  ------  ------  ------
 \ .(                    6.2.0200 CORE EXT               49
 \ PARSE                 6.2.2008 CORE EXT               55
@@ -43,6 +44,9 @@ variable >IN
     until then >in ! drop 2r> drop parse
 ;
 
+\ 2012 standard definition
+: PARSE-NAME bl parse-word ;
+
 : WORD ( char "<chars>ccc<char>" -- c-addr )
     parse-word here aligned cell+		( src u dst )
     dup >r					( R: c-addr )
@@ -56,5 +60,5 @@ pad aligned 2!
     source-id if false exit then
     [ pad aligned 2@ swap ] literal dup literal	( c-addr c-addr +n1 )
     do-accept if drop false exit then		( c-addr +n2 )
-    source! 0 >in true
+    source! 0 >in ! true
 ;

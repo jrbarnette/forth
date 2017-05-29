@@ -38,6 +38,8 @@
 // HEX                   6.2.1660 CORE EXT               54
 // PARSE                 6.2.2008 CORE EXT               55
 // REFILL                6.2.2125 CORE EXT               55
+//
+// THROW               9.6.1.2275 EXCEPTION              73
 //------  ------  ------  ------  ------  ------  ------  ------
 
 
@@ -603,5 +605,17 @@ x_refill(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_PUSH(vm, 1);
     PUSH(vm, refill());
+    return ip;
+}
+
+
+vminstr_p
+x_throw(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    CHECK_POP(vm, 1);
+    cell_ft exc = POP(vm);
+    if (exc != 0) {
+	THROW(vm, exc);
+    }
     return ip;
 }

@@ -145,6 +145,7 @@ extern vminstr_p x_c_quote(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_hex(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_parse(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_refill(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_throw(vminstr_p, vmstate_p, vmarg_p);
 
 /* file I/O primitives */
 extern vminstr_p x_bin(vminstr_p, vmstate_p, vmarg_p);

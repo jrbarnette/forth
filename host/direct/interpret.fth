@@ -24,6 +24,8 @@
 \  HEX                   6.2.1660 CORE EXT               54
 \  PARSE                 6.2.2008 CORE EXT               55
 \  REFILL                6.2.2125 CORE EXT               55
+\
+\  THROW               9.6.1.2275 EXCEPTION              73
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
 expr do_literal;    expr DO_LITERAL_XT;   !
@@ -62,3 +64,5 @@ expr do_c_quote;    ,
 prim: HEX           x_hex
 prim: PARSE         x_parse
 prim: REFILL        x_refill
+
+prim: THROW         x_throw

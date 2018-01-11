@@ -70,7 +70,7 @@ decimal
 \ SEARCH
 \ layout of dictionary for name space variables:
 \   forth-wordlist @            -> latest definition in FORTH
-\   forth-wordlist cell+ @      -> pointer to pointer to CURRENT
+\   forth-wordlist cell+        -> pointer to CURRENT wordlist
 \   forth-wordlist 2 cells + @  -> # wordlists in search order
 \   forth-wordlist 3 cells +    -> first entry in search order
 

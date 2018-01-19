@@ -1,0 +1,92 @@
+special semantics - well-known anonymous xt and machine code pointers
+
+machine code functions for creating definitions:
+    do_colon		:
+    do_constant		CONSTANT
+    do_create		CREATE
+    do_variable		VARIABLE
+
+needed once to create an anonymous xt:
+    do_c_quote		C"
+    do_do		DO ?DO
+    do_fskip		IF UNTIL
+    do_literal		LITERAL
+    do_plus_loop	+LOOP
+    do_s_quote		S"
+    do_skip		ELSE AGAIN
+
+Likely want to change ?DO to use its own primitive.
+
+==== branches and control flow
+IF
+    Compile: ( C: -- orig )
+    Run-time: ( x -- )
+    do_fskip <forward>
+
+ELSE
+    Compile: ( C: orig1 -- orig2 )
+    Run-time: ( -- )
+    do_skip <forward>
+
+UNTIL
+    Compile: ( C: dest -- )
+    Run-time: ( x -- )
+    do_fskip <back>
+
+AGAIN
+    Compile: ( C: dest -- )
+    Run-time: ( -- )
+    do_skip <back>
+
+DO
+    Run-time: ( n1|u1 n2|u2 -- ) ( R: -- loop-sys )
+    do_do
+
++LOOP
+    Run-time: ( n -- ) ( R: loop-sys1 -- | loop-sys2 )
+    partial semantics: ( n -- flag ) ( R: loop-sys1 -- loop-sys2 )
+    do_plus_loop
+    do_fskip <back>	\ POSTPONE UNTIL
+    x_unloop		\ POSTPONE UNLOOP
+    alternative:
+    do_plus_loop <back>
+    x_unloop		\ POSTPONE UNLOOP
+
+==== defining words
+:
+    Initiation: ( i*x -- i*x ) ( R: -- nest-sys )
+    do_colon		\ as mcp
+
+CONSTANT
+    name Execution: ( -- x )
+    do_constant		\ as mcp
+
+CREATE
+    name Execution: ( -- a-addr )
+    do_create		\ as mcp
+
+DOES>
+    Run-time: ( -- ) ( R: nest-sys1 -- )
+    : do-does
+	r>						 ( does> )
+	get-current @ cell+ count 31 and chars + aligned ( does> create-xt )
+	dup @ ['] do-create xor if -31 throw then
+	cell+ ! ;
+    do-does
+
+VARIABLE
+    name Execution: ( -- a-addr )
+    do_variable		\ as mcp
+
+==== literals
+LITERAL
+    Run-time: ( -- x )
+    do_literal x
+
+S"
+    Run-time: ( -- c-addr u )
+    do_s_quote c-addr u
+
+C"
+    Run-time: ( -- c-addr )
+    do_c_quote c-addr

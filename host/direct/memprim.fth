@@ -37,7 +37,7 @@ prim: C@        x_c_fetch
 \     CHAR+
 \     CHARS
 \     COUNT
-\     FILL
+prim: FILL	x_fill
 prim: MOVE      x_move
 
 \ CORE EXT

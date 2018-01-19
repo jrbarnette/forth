@@ -71,6 +71,7 @@ extern vminstr_p x_store(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_fetch(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_c_store(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_c_fetch(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_fill(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_move(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_star(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_slash(vminstr_p, vmstate_p, vmarg_p);

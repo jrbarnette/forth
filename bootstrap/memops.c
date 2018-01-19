@@ -82,3 +82,21 @@ x_move(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
     return ip;
 }
+
+
+/* ( c-addr u char -- ) */
+vminstr_p
+x_fill(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    char *dst;
+    size_t len;
+    char c;
+
+    CHECK_POP(vm, 3);
+    c = (char) POP(vm);
+    len = (size_t) POP(vm);
+    dst = (char *) POP(vm);
+    (void) memset(dst, c, len);
+
+    return ip;
+}

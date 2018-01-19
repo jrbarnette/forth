@@ -1,17 +1,18 @@
 QUIT
     reset return stack pointer
-    source management
+    input source management
     state management
     CR TYPE REFILL
     interpret
 
 interpret
-    parse-word
+    parse-name
     lookup nf-immediate nf-nointerp
     EXECUTE COMPILE, >NUMBER LITERAL
     state management
 
-parse-word -> PARSE
+parse-name
+    PARSE
     source management
 
 source management
@@ -28,6 +29,7 @@ lookup
 
 LITERAL
     ,
+    do-literal xt
 
 COMPILE, -> ,
     HERE ALLOT
@@ -36,13 +38,15 @@ state management
     [ ] STATE
 
 STATE CR TYPE REFILL BASE >IN SOURCE FORTH-WORDLIST HERE ALLOT
-    primitives dependencies
+    primitive dependencies
 
 primitive dependencies
     stack primitives
     1-cell arithmetic primitives
     memory primitives
     do-literal
+    do-constant
+    do-variable
     do-s"
     branches
     here-address

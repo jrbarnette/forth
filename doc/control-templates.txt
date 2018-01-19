@@ -44,57 +44,116 @@
 
 \     BEGIN a AGAIN
 \ L0:
-\ 	a
-\ 	goto L0
+\	a
+\	goto L0
 \ 
 \     BEGIN a UNTIL
 \ L0:
-\ 	a
-\ 	IF-FALSE goto L0
+\	a
+\	IF-FALSE goto L0
 \ 
 \     BEGIN a WHILE b REPEAT
 \ L0:
-\ 	a
-\ 	IF-FALSE goto L1
-\ 	b
-\ 	goto L0
+\	a
+\	IF-FALSE goto L1
+\	b
+\	goto L0
 \ L1:
 \ 
 \     BEGIN a WHILE b UNTIL c THEN
 \ L0:
-\ 	a
-\ 	IF-FALSE goto L1
-\ 	b
-\ 	IF goto L0
-\ 	c
+\	a
+\	IF-FALSE goto L1
+\	b
+\	IF goto L0
+\	c
 \ L1:
 \ 
 \     BEGIN a WHILE b WHILE c REPEAT d THEN
 \ L0:
-\ 	a
-\ 	IF-FALSE goto L1
-\ 	b
-\ 	IF-FALSE goto L2
-\ 	c
-\ 	goto L0
+\	a
+\	IF-FALSE goto L1
+\	b
+\	IF-FALSE goto L2
+\	c
+\	goto L0
 \ L2:
-\ 	d
+\	d
 \ L1:
 
-\ DO ( C: -- do-sys )
-\    (x x -- ) ( R: -- loop-sys )
-\ +LOOP ( C: do-sys -- )
-\    ( x -- ) ( R: loop-sys1 -- | loop-sys2 )
-\ LOOP ( C: do-sys -- )
-\    ( -- ) ( R: loop-sys1 -- | loop-sys2 )
-\ I ( -- x ) ( R: loop-sys -- loop-sys )
-\ J ( -- x ) ( R: loop-sys1 loop-sys2 -- loop-sys1 loop-sys2 )
-\ LEAVE ( C: do-sys -- do-sys ) ( -- )  ( R: loop-sys -- )
-\ UNLOOP ( C: do-sys -- do-sys ) ( -- )  ( R: loop-sys -- )
-\ ?DO ( C: -- do-sys )
-\     (x x -- ) ( R: -- loop-sys )
+\ do loops
+\ DO		( C: -- do-sys )
+\		( x1 x2 -- ) ( R: -- loop-sys )
+\ +LOOP		( C: do-sys -- )
+\		( x -- ) ( R: loop-sys1 -- | loop-sys2 )
+\ LOOP		( C: do-sys -- )
+\		( -- ) ( R: loop-sys1 -- | loop-sys2 )
+\ LEAVE		( C: do-sys -- do-sys ) ( -- ) ( R: loop-sys -- )
+\ UNLOOP	( C: do-sys -- do-sys ) ( -- ) ( R: loop-sys -- )
+\ ?DO		( C: -- do-sys )
+\		( x1 x2 -- ) ( R: -- loop-sys )
+\ I		( -- x ) ( R: loop-sys -- loop-sys )
+\ J		( -- x ) ( R: loop-sys1 loop-sys2 -- loop-sys1 loop-sys2 )
 
-\ DO - Run-time
-\     ( limit index -- )
-\ LOOP - Run-time
-\     index++
+\     DO a +LOOP
+\	DO-DO
+\ L0:
+\	a
+\	DO-+LOOP
+\	IF-FALSE goto L0
+\	UNLOOP
+\
+\     DO a IF LEAVE THEN b +LOOP
+\	DO-DO
+\ L0:
+\	a
+\	IF-FALSE goto L1
+\	goto L2
+\ L1:
+\	b
+\	DO-+LOOP
+\	IF-FALSE goto L0
+\ L2:
+\	UNLOOP
+\
+\     ?DO a +LOOP
+\	-> 2DUP = IF 2DROP ELSE DO a +LOOP THEN
+\     ?DO a +LOOP
+\	2DUP
+\	=
+\	IF-FALSE goto L0
+\	2DROP
+\	goto L2
+\ L0:
+\	DO-DO
+\ L1:
+\	a
+\	DO-+LOOP
+\	IF-FALSE goto L1
+\	UNLOOP
+\ L2:
+
+\ alternative do-loops
+\     DO a +LOOP
+\	DO-DO
+\ L0:
+\	a
+\	DO-+LOOP goto L0
+\	UNLOOP
+\
+\     ?DO a +LOOP
+\	DO-?DO goto L1
+\ L0:
+\	a
+\	DO-+LOOP goto L0
+\	UNLOOP
+\ L1:
+\
+\     ?DO a +LOOP
+\	DO-DO
+\	DO-?DO goto L1
+\ L0:
+\	a
+\	DO-+LOOP goto L0
+\ L1:
+\	UNLOOP

@@ -143,8 +143,8 @@ handler: do_literal
     dup [char] a - 26 u< if [ char A char a - ] literal + then
 ;
 
-: id= ( c-addr1 u1 c-addr1 u1 -- match? )
-    rot dup = if
+: id= ( c-addr1 u1 c-addr2 u2 -- match? )
+    rot over = if
 	begin dup while			( c-addr1 c-addr2 u )
 	    >r over c@ toupper over c@ toupper <> if
 		r> drop 2drop false exit

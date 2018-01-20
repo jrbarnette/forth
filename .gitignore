@@ -1,0 +1,7 @@
+*.[so]
+*.swp
+tmp/
+tags
+bootstrap/forth
+bootstrap.meta/forth
+bootstrap/stdforth.c

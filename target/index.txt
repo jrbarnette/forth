@@ -105,7 +105,7 @@ RESTORE-INPUT         6.2.2148 CORE EXT               56
 SAVE-INPUT            6.2.2182 CORE EXT               56
 SOURCE-ID             6.2.2218 CORE EXT               56
 
-compilation:
+compilation and literals:
 '                     6.1.0070 CORE                   25
 (                     6.1.0080 CORE                   26
 CHAR                  6.1.0895 CORE                   35
@@ -177,7 +177,7 @@ U.                    6.1.2320 CORE                   46
 .R                    6.2.0210 CORE EXT               49
 U.R                   6.2.2330 CORE EXT               57
 
-pictured string formatting:
+pictured string formatting/number conversion:
 #                     6.1.0030 CORE                   25
 #>                    6.1.0040 CORE                   25
 #S                    6.1.0050 CORE                   25

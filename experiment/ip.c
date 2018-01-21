@@ -240,6 +240,8 @@ compile(enum primitive pc, ...)
 	*here = va_arg(args, label_ft) - here - 1;
 	here++;
 	break;
+    default:
+	break;
     }
     va_end(args);
 }

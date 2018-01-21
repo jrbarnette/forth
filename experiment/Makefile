@@ -1,4 +1,4 @@
-CFLAGS = -O
+CFLAGS = -O -m32
 
 all: tos ip
 

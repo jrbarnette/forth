@@ -17,9 +17,22 @@ test0(cell_ft niter)
 }
 
 
-/* : test1 [ niter ] literal begin dup while 1 - repeat ; */
+/* : test1 [ niter ] literal begin nop 1 - dup 0= until ; */
 static void
 test1(cell_ft niter)
+{
+    label_ft	start;
+
+    LITERAL(niter);
+    start = LABEL();
+	NOP(); LITERAL(1); MINUS();
+    DUP(); ZEROP(); ZSKIP(start);
+}
+
+
+/* : test2 [ niter ] literal begin dup while 1 - repeat ; */
+static void
+test2(cell_ft niter)
 {
     label_ft	start;
     label_ft	fwd;
@@ -30,19 +43,6 @@ test1(cell_ft niter)
 	LITERAL(1); MINUS();
     SKIP(start);
     PATCH(fwd);
-}
-
-
-/* : test2 [ niter ] literal begin nop 1 - dup 0= until ; */
-static void
-test2(cell_ft niter)
-{
-    label_ft	start;
-
-    LITERAL(niter);
-    start = LABEL();
-	NOP(); LITERAL(1); MINUS();
-    DUP(); ZEROP(); ZSKIP(start);
 }
 
 
@@ -60,7 +60,7 @@ test3(cell_ft niter)
 }
 
 
-/* : test4 [ niter ] literal begin dup swap 1 - 0= until ; */
+/* : test4 [ niter ] literal begin 1 - dup swap 0= until ; */
 static void
 test4(cell_ft niter)
 {
@@ -112,13 +112,20 @@ measure(cell_ft niter, void (*func)(cell_ft), char *name)
 int
 main(int argc, char *argv[])
 {
-    cell_ft	niter;
+    char       *valid = NULL;
+    cell_ft	niter = 0;
 
-    niter = (cell_ft) atoi(argv[1]);
+    if (argc == 2) {
+	niter = (cell_ft) strtoul(argv[1], &valid, 10);
+    }
+    if (valid == NULL) {
+	fprintf(stderr, "usage: bench <niter>\n");
+	exit(EXIT_FAILURE);
+    }
     measure(niter, test0, "begin 1 - dup 0= until");
-    measure(niter, test1, "begin dup while 1 - repeat");
-    measure(niter, test2, "begin nop 1 - dup 0= until");
+    measure(niter, test1, "begin nop 1 - dup 0= until");
+    measure(niter, test2, "begin dup while 1 - repeat");
     measure(niter, test3, "begin dup drop 1 - dup 0= until");
-    measure(niter, test4, "begin dup swap 1 - 0= until");
+    measure(niter, test4, "begin 1 - dup swap 0= until");
     measure(niter, test5, "n ! begin n @ 1 - dup n ! 0= until n @");
 }

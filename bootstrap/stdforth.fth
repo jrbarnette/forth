@@ -66,6 +66,13 @@ decimal
 : COMPILE, ( xt -- ) , ; no-interpret
 : LOOP 1 postpone literal postpone +loop ; compile-only
 
+\ parse - CORE EXT (2012 standard)
+: PARSE-NAME
+    source swap >r >in @ 1-                     ( end idx ) ( R: c-addr )
+    begin 1+ 2dup > while			( end idx )
+	r@ over chars + c@ 33 127 within
+    until then >in ! drop r> drop bl parse
+;
 
 \ SEARCH
 \ layout of dictionary for name space variables:
@@ -118,11 +125,15 @@ drop					( )
 ;
 : #S ( ud1 -- ud2 ) begin # 2dup or 0= until ;
 
+: >DIGIT ( char -- u )
+    [char] 0 - 9 over u< if
+	17 - 25 over u< if 32 - 25 over u< if drop -1 exit then then 10 +
+    then
+;
+
 : >NUMBER ( ud1 c-addr1 u1 -- ud2 c-addr2 u2 )
     begin dup while			( ud c-addr u )
-	>r dup >r c@			( ud char ) ( R: u c-addr )
-	[char] 0 -
-	9 over u< if [ char 0 char A - ] literal + then
+	>r dup >r c@ >digit		( ud digit ) ( R: u c-addr )
 	dup base @ u< invert if drop r> r> exit then
 	>r base @ * >r base @ um* r> + r>
 	rot dup >r + dup r> u< negate rot +

@@ -157,3 +157,42 @@
 \	DO-+LOOP goto L0
 \ L1:
 \	UNLOOP
+
+\ case structures
+\ CASE		( C: -- case-sys )
+\		( -- )
+\ ENDCASE	( C: case-sys -- )
+\		( x -- )
+\ ENDOF		( C: case-sys1 of-sys -- case-sys2 )
+\		( -- )
+\ OF		( C: -- of-sys )
+\		( x1 x2 -- | x1 )
+
+\     CASE a b OF c ENDOF ENDCASE
+\     -> a b OVER = IF DROP c ELSE DROP THEN
+\	a
+\	b
+\	OVER = IF-FALSE goto L0
+\	DROP
+\	c
+\	goto L1
+\ L0:
+\	DROP
+\ L1:
+\
+\     CASE a b OF c ENDOF d OF e ENDOF ENDCASE
+\	a
+\	b
+\	OVER = IF-FALSE goto L0
+\	DROP
+\	c
+\	goto L2
+\ L0:
+\	d
+\	OVER = IF-FALSE goto L1
+\	DROP
+\	e
+\	goto L2
+\ L1:
+\	DROP
+\ L2:

@@ -44,10 +44,10 @@ base !
 ;
 
 : lookup ( wid ... n c-addr u -- xt flags -1 | 0 )
-    2>r begin dup while swap
+    2>r begin dup while 1- swap
 	2r@ rot wid-lookup if
-	    2>r begin dup while swap drop 1- repeat drop 2r> true
+	    2>r begin dup while 1- swap drop repeat drop 2r> true
 	    2r> 2drop exit
 	then
-    1- repeat 2r> 2drop
+    repeat 2r> 2drop
 ;

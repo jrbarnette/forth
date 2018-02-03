@@ -228,32 +228,31 @@ extern name_p lookup(vmstate_p, c_addr_ft, cell_ft);
 
 extern union dict {
     struct {
-	cell_ft		here;		/* HERE */
-	name_p		forth_wordlist;	/* FORTH-WORDLIST */
-	name_p *	current;	/* CURRENT */
+	cell_ft		here;		    /* HERE */
+	name_p		forth_wordlist;	    /* FORTH-WORDLIST */
+	name_p *	current;	    /* CURRENT */
 	cell_ft		n_search_order;
 	name_p *	search_order[MAX_SEARCH_ORDER];
 
-	definition_d	literal_instr;	/* for LITERAL runtime xt */
-	definition_d	skip_instr;	/* for ELSE runtime xt */
-	definition_d	fskip_instr;	/* for IF runtime xt */
-	definition_d	do_instr;	/* for DO runtime xt */
-	definition_d	plus_loop_instr; /* for +LOOP runtime xt */
-	definition_d	does_instr;	/* for DOES> runtime xt */
+	definition_d	literal_instr;	    /* for LITERAL runtime xt */
+	definition_d	skip_instr;	    /* for ELSE runtime xt */
+	definition_d	fskip_instr;	    /* for IF runtime xt */
+	definition_d	do_instr;	    /* for DO runtime xt */
+	definition_d	plus_loop_instr;    /* for +LOOP runtime xt */
+	definition_d	does_instr;	    /* for DOES> runtime xt */
 
-	cell_ft		state;		/* STATE */
-
-	char_ft		tib[256];	/* TIB */
+	cell_ft		state;		    /* STATE */
+	cell_ft		base;		    /* BASE */
 
 	/* the input source and parse area - 4 cells total */
-	cell_ft		source_id;	/* SOURCE-ID */
-	string_ft	source;		/* SOURCE */
-	cell_ft		to_in;		/* >IN */
-	int		source_max_len;
+	cell_ft		to_in;		    /* >IN */
+	cell_ft		source_id;	    /* SOURCE-ID */
+	string_ft	source;		    /* SOURCE */
+
+	char_ft		tib[256];	    /* TIB */
+	int		source_max_len;     /* #TIB */
 	size_t		lineno;
 	FILE *		input;
-
-	cell_ft		base;		/* BASE */
     } dict_static_data;
     addr_unit_ft	dict_space[DICTIONARY_SIZE];
 } dictionary;

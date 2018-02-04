@@ -3,15 +3,6 @@
 vocabulary DIRECT-ASSEMBLER
 only forth also direct-assembler definitions
 
-: graphic? ( char -- flag ) 33 127 within ;
-
-: PARSE-NAME ( "<spaces>name<space>" -- c-addr u )
-    source swap >r				( R: c-addr )
-    >in @ 1-
-    begin 1+ 2dup > while			( end idx )
-	dup chars r@ + c@ graphic?		( end idx graphic? )
-    until then ( end idx ) >in ! r> 2drop bl parse ;
-
 variable offset  0 offset !
 
 : {  ." /* " offset @ 3 .r ."  */ { " ;

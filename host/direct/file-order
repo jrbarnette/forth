@@ -1,6 +1,7 @@
 # Copyright 2016, by J. Richard Barnette, All Rights Reserved.
-host/namespace.fth
-host/interpret.fth
+target/internal/chartype.fth
+target/internal/namespace.fth
+target/internal/interpret.fth
 host/compile.fth
 host/direct/directmode.fth
 host/direct/metamode.fth

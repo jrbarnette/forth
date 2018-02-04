@@ -1,70 +1,13 @@
-====
-See this trick:
-    { define_name, "+LOOP",	x_plus_loop, NAME_TYPE_COMPILE },
-    { compile_name, "UNLOOP" },
+Where we are:
+    Have source that can compile Forth into direct-mode code in C;
+    it generates the content for bootstrap/initdict.c.
 
-Have a compile_name, but for xt functions.  Can use it for most
-anonymous xt literals.
+    The compilation includes COMPILE-INPUT, in host/compile.fth.
+    So, we have a custom interpretation loop, which we need for
+    compilation to handle literals and Forth compilation state.
 
-... but most of these are needed more than one place
-... still reasonable, until a function needs several literals passed
-... or it's something like BASE or STATE
-here
-    many references, especially via HERE macro
-forth_wordlist
-    many C code references in names.c
-    FORTH-WORDLIST could be a standard constant
-literal_instr
-    called from compile_literal
-    evaluate_number()
-    LITERAL
-postpone_instr
-    POSTPONE
-skip_instr
-    LEAVE
-    EXIT
-    REPEAT
-fskip_instr
-    +LOOP
-    IF
-    UNTIL
-    WHILE
-do_instr
-    DO
-plus_loop_instr
-    +LOOP
-does_instr
-    DOES>
-s_quote_instr
-    S"
-state
-    interpret_string()
-    REFILL \ ... should be QUIT...?
-    EVALUATE
-    QUIT
-    STATE
-    [
-    ]
-tib
-    QUIT
-source_id
-    interpret_string()
-    QUIT
-    EVALUATE
-source
-    interpret_string()
-    SOURCE
-    QUIT
-    EVALUATE
-    parse() - PARSE S" 
-    parse_name() - many
-to_in
-    same as source, except for SOURCE
-source_max_len
-    REFILL
-    QUIT
-base
-    DECIMAL
-    HEX
-    QUIT
-====
+Next steps:
+    Extract INTERPRET-NAME, INTERPRET-NUMBER, and INTERPRET-UNKNOWN
+    from target/internal/interpret.fth, and rewrite them for
+    direct-mode compilation.  Use that to add meta-mode compilation,
+    or whatever else we pick.

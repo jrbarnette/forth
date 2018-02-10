@@ -3,12 +3,6 @@
 vocabulary DIRECT-ASSEMBLER
 only forth also direct-assembler definitions
 
-variable offset  0 offset !
-
-: {  ." /* " offset @ 3 .r ."  */ { " ;
-: }{ ."  }, { " 1 offset +! ;
-: } ."  }," cr 1 offset +! ;
-
 : escape-nul ( #nul -- ) ?dup if 0 do ." \0" loop ." 00" then ;
 : escape-graphic ( c -- )
     dup [char] \ = over [char] " = or if [char] \ emit then emit ;
@@ -28,12 +22,30 @@ variable offset  0 offset !
 : .str ( c-addr u -- ) ." .id = " c-string ;
 : .cell ( c-addr u -- ) ." .cell = (cell_ft) (" type [char] ) emit ;
 
+variable offset  0 offset !
+
+: { ( n -- ) ." /* " offset @ 3 .r ."  */" spaces ." { " ;
+: }{ ."  }, { " 1 offset +! ;
+: } ."  }," cr 1 offset +! ;
+
+variable meta-state  0 meta-state !
+variable emit-state  0 emit-state !
+: {
+    meta-state @ emit-state @ <> if
+	emit-state @ if 5 { ." .id = NULL" } then
+	meta-state @ dup emit-state !
+	?dup if
+	    1 { 1- if s" meta_compile" else s" meta_interpret" then .exec }
+	then
+    then meta-state @ if 5 else 1 then {
+;
+
 : prim: create parse-name dup , chars here swap dup allot move
      does> { dup cell+ swap @ .exec } ;
 : setflags { s" i_setflags" .exec }{ c-hex .cell } ;
 : [compile] { s" i_compile" .exec }{ parse-name .str } ;
 : literal { s" do_literal" .exec }{ c-hex .cell } ;
-: expr { s" do_literal" .exec }{ [char] ; parse .cell } ;
+: <C> { s" do_literal" .exec }{ [char] ; parse .cell } ;
 
 : IMMEDIATE    ;
 : NO-INTERPRET ;

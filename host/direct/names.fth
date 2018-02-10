@@ -19,7 +19,7 @@
 \  SEARCH-WORDLIST    16.6.1.2192 SEARCH                120
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
-expr do_does; expr DOES_XT; !
+<C> do_does; <C> DOES_XT; !
 
 prim: '                 x_tick
 prim: :                 x_colon

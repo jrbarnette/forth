@@ -19,10 +19,10 @@
 \  WHILE                 6.1.2430 CORE                   47
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
-expr do_do;         expr DO_DO_XT;      !
-expr do_plus_loop;  expr PLUS_LOOP_XT;  !
-expr do_skip;       expr SKIP_XT;       !
-expr do_fskip;      expr FSKIP_XT;      !
+<C> do_do;         <C> DO_DO_XT;      !
+<C> do_plus_loop;  <C> PLUS_LOOP_XT;  !
+<C> do_skip;       <C> SKIP_XT;       !
+<C> do_fskip;      <C> FSKIP_XT;      !
 
 prim: UNLOOP    x_unloop        no-interpret
 

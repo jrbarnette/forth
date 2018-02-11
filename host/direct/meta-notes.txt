@@ -1,8 +1,11 @@
 vocabularies
 HOST
-DIRECT-ASSEMBLER
-META-INTERPRET
-META-COMPILE
+    stuff to be shared between DIRECT-MODE and META-MODE
+DIRECT
+    stuff that must be unique to DIRECT-MODE
+META
+    stuff that must be unique to META-MODE
+
 
 compilation states:  direct, meta-interpret, meta-compile
     separate state settings for interpreter (front-end) and
@@ -34,30 +37,22 @@ action logic
 	else if new == meta-compile
 	    emit { .handler = meta_compile },
 
-: meta-interpret> { s" meta_interpret" .exec } ;
-: meta-compile> { s" meta_compile" .exec } ;
-
-create EXIT-ACTIONS ' meta-interpret> , ' meta-compile> ,
-
-: gen-state!
-    meta-state @ gen-state @ 2dup = if 2drop exit then
-    ( new old ) if { s" NULL" .str } then
-    dup if 1- cells exit-actions + @ execute then
-    gen-state !
-;
-
 utility words:
+<HOST>
+    ONLY FORTH ALSO HOST DEFINITIONS
+    : <HOST> ONLY FORTH ALSO HOST ;
 <C> ...;
+    (in HOST vocabulary)
     C expression as { .cell = (cell_ft)(...) },
 <DIRECT>
-    switch to direct mode
-    ONLY FORTH ALSO DIRECT-ASSEMBLER
+    <HOST> DEFINITIONS
+    : <DIRECT> 0 meta-state ! <HOST> ALSO DIRECT ;
 [
-    switch to meta interpret mode
-    ONLY FORTH ALSO META-INTERPRET
+    <HOST> DEFINITIONS
+    : [ 1 meta-state ! <HOST> ALSO META ; IMMEDIATE
 ]
-    switch to meta compile mode
-    ONLY FORTH ALSO META-COMPILE
+    <HOST> DEFINITIONS
+    : ] 2 meta-state ! <HOST> ALSO META ;
 ====
 categories (vocabularies?)
     direct assembler primitives
@@ -111,30 +106,20 @@ BASE
 	... but we want to affect the compile time BASE setting
 
 ====
-{ .handler = meta_interpret },
-    { .str = "..." }, ...
-    { .str = NULL },
-
-{ .handler = meta_compile },
-    { .str = "..." }, ...
-    { .str = NULL },
-
-{ .handler = meta_postpone }, { .str = "..." },
-    { .str = "..." }, ...
-    { .str = NULL },
-
-: TRUE -1 ;
-    // ensure direct mode
-    { .handler = i_addname }, { .str = "TRUE" }, { .handler = do_colon },
-    { .handler = meta_compile },	// may be able to eliminate this
-	{ .str = NULL },		// ... and this
-    { .handler = do_literal }, { .cell = -1 },
-    { .handler = meta_compile },
-	{ .str = "LITERAL" },
-	{ .str = "EXIT" },
+To execute code in interpretation state:
+    { .handler = meta_interpret },
+	{ .str = "..." }, ...
 	{ .str = NULL },
+
+To compile tokens into the dictionary:
+    { .handler = meta_compile },
+	{ .str = "..." }, ...
+	{ .str = NULL },
+
+-1 constant TRUE
+    { .handler = do_literal }, { .cell = -1 },
+    { .handler = i_addname }, { .str = "TRUE" }, { .handler = do_constant },
     { .handler = i_linkname },
-    // now back in direct mode
 
 : CHARS ;
     { .handler = i_addname }, { .str = "CHARS" }, { .handler = do_colon },
@@ -146,12 +131,50 @@ BASE
 : CELLS <C> CELL_SIZE; * ;
     { .handler = i_addname }, { .str = "CELLS" }, { .handler = do_colon },
     { .handler = do_literal }, { .cell = CELL_SIZE },
+    { .handler = meta_interpret },
+	{ .str = "LITERAL" },
+	{ .str = NULL },
     { .handler = meta_compile },
 	{ .str = "LITERAL" },
 	{ .str = "*" },
 	{ .str = "EXIT" },
 	{ .str = NULL },
     { .handler = i_linkname },
+
+handling for IMMEDIATE words
+: >BODY ( xt -- a-addr ) [ 2 cells ] literal + ;
+    { .handler = i_addname }, { .str = ">BODY" }, { .handler = do_colon },
+    // : leaves us in meta-compile state
+    // then [ triggers meta-interpret
+    // then interpreter triggers direct mode for number literal
+    { .handler = do_literal }, { .cell = 2 },
+    // then interpreter returns to meta-interpret
+    { .handler = meta_interpret },
+	{ .str = "CELLS" },
+	// ] triggers return to meta-compile
+	// interpreter triggers meta-interpret for immediate LITERAL
+	{ .str = "LITERAL" },
+	// then interpreter returns to meta-compile
+	{ .str = NULL },
+    { .handler = meta_compile },
+	{ .str = "+" },
+	{ .str = "EXIT" },
+	{ .str = NULL },
+    { .handler = i_linkname },
+
+handling for POSTPONE
+: [CHAR] char postpone literal ; compile-only
+    { .handler = i_addname }, { .str = "[CHAR]" }, { .handler = do_colon },
+    { .handler = meta_compile },
+	{ .str = "CHAR" },
+	// POSTPONE emits LITERAL in meta-compile
+	{ .str = "LITERAL" },
+	{ .str = "EXIT" },
+	{ .str = NULL },
+    { .handler = i_linkname },
+    { .handler = meta_interpret },
+	{ .str = "COMPILE-ONLY" },
+	{ .str = NULL },
 
 ====
 direct:     (include switch to meta-compile state?)

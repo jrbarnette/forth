@@ -144,11 +144,9 @@ drop					( )
 \ terminal I/O - CORE
 : CR ( -- ) 10 emit ;
 : SPACE ( -- ) bl emit ;
-: SPACES ( n -- ) dup 0> if 0 do space loop else drop then ;
+: SPACES ( n -- ) begin dup 0> while space 1- repeat drop ;
 : TYPE ( c-addr u -- )
-    \ missing ?do :-(
-    dup 0= if 2drop exit then
-    chars over + swap do i c@ emit [ 1 chars ] literal +loop
+    chars over + swap begin 2dup > while dup c@ emit char+ repeat 2drop
 ;
 
 : . <# bl hold dup abs 0 #s rot sign #> type ;

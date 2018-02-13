@@ -25,6 +25,7 @@ cat <<END
 char $VARIABLE[] =
 $(sed '
     s/[\"]/\\&/g
+    s/	/\\t/g
     s/.*/    "&\\n"/
   ' $FILE)
 ;

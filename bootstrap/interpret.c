@@ -12,7 +12,6 @@
 #include <readline/history.h>
 
 #include "forth.h"
-#include "direct.h"
 #include "cmdline.h"
 
 /*

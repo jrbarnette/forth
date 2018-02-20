@@ -18,6 +18,7 @@ extern vminstr_d initialize_forth[];
 
 /* direct threaded primitives */
 extern vminstr_p i_call(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p i_startname(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p i_addname(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p i_setflags(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p i_compile(vminstr_p, vmstate_p, vmarg_p);

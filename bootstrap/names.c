@@ -86,7 +86,7 @@ lookup(vmstate_p vm, c_addr_ft id, cell_ft len)
  * Routines for adding named definitions into the dictionary.
  */
 static name_p
-addname(vmstate_p vm, c_addr_ft id, cell_ft len, vminstr_fn hdlr)
+addname(vmstate_p vm, c_addr_ft id, cell_ft len, vminstr_fn handler)
 {
     if (len == 0)		THROW(vm, -16);
     if (len > NAME_MAX_LENGTH)	THROW(vm, -19);
@@ -98,7 +98,7 @@ addname(vmstate_p vm, c_addr_ft id, cell_ft len, vminstr_fn hdlr)
     (void) memcpy(name->ident, id, len);
 
     xt_ft xtok = NAME_XT(name);
-    xtok->handler = hdlr;
+    xtok->handler = handler;
     assert(HERE == xtok[1].arg->data);
 
     return name;
@@ -113,6 +113,20 @@ linkname(name_p name)
 
 
 /* -------------------------------------------------------------- */
+
+vminstr_p
+i_startname(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    CHECK_PUSH(vm, 1);
+    char *id = (ip++)->id;
+    cell_ft len = strlen(id);
+    vminstr_fn handler = (ip++)->handler;
+    name_p name = addname(vm, (c_addr_ft) id, len, handler);
+    PUSH(vm, name);
+
+    return ip;
+}
+
 
 vminstr_p
 i_addname(vminstr_p ip, vmstate_p vm, vmarg_p ignore)

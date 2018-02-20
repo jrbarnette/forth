@@ -1,8 +1,8 @@
 # Copyright 2016, by J. Richard Barnette, All Rights Reserved.
 target/internal/chartype.fth
 target/internal/namespace.fth
-target/internal/interpret.fth
 host/compile.fth
+host/host.fth
 host/direct/directmode.fth
     host/direct/stackprim.fth
     host/direct/arithprim.fth

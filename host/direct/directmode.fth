@@ -1,7 +1,8 @@
 \  Copyright 2017, by J. Richard Barnette. All Rights Reserved.
 
-vocabulary DIRECT-ASSEMBLER
-only forth also direct-assembler definitions
+<HOST> also forth definitions previous
+vocabulary DIRECT
+vocabulary META
 
 : escape-nul ( #nul -- ) ?dup if 0 do ." \0" loop ." 00" then ;
 : escape-graphic ( c -- )
@@ -29,7 +30,9 @@ variable offset  0 offset !
 : } ."  }," cr 1 offset +! ;
 
 variable meta-state  0 meta-state !
+variable meta-next   0 meta-next  !
 variable emit-state  0 emit-state !
+
 : {
     meta-state @ emit-state @ <> if
 	emit-state @ if 5 { ." .id = NULL" } then
@@ -40,15 +43,26 @@ variable emit-state  0 emit-state !
     then meta-state @ if 5 else 1 then {
 ;
 
-: prim: create parse-name dup , chars here swap dup allot move
-     does> { dup cell+ swap @ .exec } ;
+<HOST> definitions
+: \ postpone \ ; immediate
+: ( postpone ( ; immediate
+: .( postpone .( ; immediate
+: <DIRECT> 0 meta-state ! only host also direct ;
+: <META> meta-state ! only meta also host ;
+: [ 1 <META> ; immediate
+: ] 2 <META> ;
+
 : setflags { s" i_setflags" .exec }{ c-hex .cell } ;
 : [compile] { s" i_compile" .exec }{ parse-name .str } ;
 : literal { s" do_literal" .exec }{ c-hex .cell } ;
 : <C> { s" do_literal" .exec }{ [char] ; parse .cell } ;
+: >>> source >in @ over >in ! swap over - >r chars + r> type cr ;
+
+: prim: create parse-name dup , chars here swap dup allot move
+     does> { dup cell+ swap @ .exec } ;
 
 : IMMEDIATE    ;
 : NO-INTERPRET ;
 : COMPILE-ONLY ;
 
-: >>> source >in @ over >in ! swap over - >r chars + r> type cr ;
+<HOST> also direct definitions

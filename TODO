@@ -11,3 +11,9 @@ Next steps:
     from target/internal/interpret.fth, and rewrite them for
     direct-mode compilation.  Use that to add meta-mode compilation,
     or whatever else we pick.
+
+My current thinking on what to do is in host/direct/meta-notes.txt.
+
+My current hold-up is discovering complexity in writing definitions
+when standard words (esp. [ and ]) depend on the current search
+order.

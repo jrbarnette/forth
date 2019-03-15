@@ -1,8 +1,17 @@
 # Copyright 2015, by J. Richard Barnette, All Rights Reserved.
+target/internal/chartype.fth
+target/internal/namespace.fth
+host/compile.fth
 host/host.fth
-host/c-dict/build-dict.fth
-host/c-dict/arithprim.fth
-host/c-dict/stackprim.fth
-host/c-dict/memprim.fth
-host/c-dict/multprim.fth
-host/c-dict/end-dict.fth
+host/c-dict/startdict.fth
+    host/c-dict/dictionary.fth
+    host/c-dict/stackprim.fth
+    host/c-dict/arithprim.fth
+    host/c-dict/memprim.fth
+    host/c-dict/multprim.fth
+    host/c-dict/terminal.fth
+    host/c-dict/names.fth
+    host/c-dict/control.fth
+    host/c-dict/interpret.fth
+    host/c-dict/fileprim.fth
+host/c-dict/enddict.fth

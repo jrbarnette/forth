@@ -1,4 +1,7 @@
-\ Copyright 2015, by J. Richard Barnette, All Rights Reserved.
+\ Copyright 2017, by J. Richard Barnette. All Rights Reserved.
+
+\  multprim.fth - Standard Forth words for single and double cell
+\    multiply and divide operations.
 
 \ ------  ------  ------  ------  ------  ------  ------  ------
 \  *                     6.1.0090 CORE                   26
@@ -14,24 +17,15 @@
 \  UM/MOD                6.1.2370 CORE                   46
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
-\   FM/MOD
-\   SM/REM
-\ : * M* DROP ;
-\ : */MOD >R M* R> FM/MOD ;
-\ : */MOD >R M* R> SM/REM ;
-\ : */ */MOD SWAP DROP ;
-\ : /MOD >R S>D R> FM/MOD ;
-\ : /MOD >R S>D R> SM/REM ;
-\ : / /MOD SWAP DROP ;
-
+\ CORE
 prim: *         x_star
-\     */        missing
-\     */MOD     missing
+\     */
+\     */MOD
 prim: /         x_slash
 prim: /MOD      x_slash_mod
-\     FM/MOD    missing
+\     FM/MOD
 prim: M*        x_m_star
 prim: MOD       x_mod
-\     SM/REM    missing
+\     SM/REM
 prim: UM*       x_u_m_star
 prim: UM/MOD    x_u_m_slash_mod

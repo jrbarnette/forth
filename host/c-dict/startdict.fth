@@ -1,36 +1,29 @@
 \ Copyright 2013, by J. Richard Barnette, All Rights Reserved.
 
-host-mode
+vocabulary TARGET
+also target definitions
 
-: graphic? ( char -- flag ) [char] ! 127 within ;
 : .{ ( -- ) ."   { " ;
 : }, ( -- ) ."  }," ;
-: .cell ( a-addr -- )
-    .{ ." .cell = " @ 1 .r },
-;
-: .str ( a-addr -- )
-    .{ ." .str = " [char] " emit
-    0 swap dup cell+ swap do			( #nul )
-	i c@					( #nul char )
-	dup 0<> if				( #nul !0 )
-	    over if swap 0 do ." \0" loop ." 00" 0 swap then
-	    dup graphic? if			( #nul graphic )
-		dup [char] \ = over [char] " = or
-		if [char] \ emit then emit
-	    else				( #nul non-graphic )
-		8 base !
-		0 <# # # # [char] \ hold #> type
-		decimal
-	    then
-	else					( #nul 0 )
-	    drop 1+
-	then
-    1 chars +loop drop
-    [char] " emit },
-;
-: .label ( a-addr -- )
-    .{ ." .label = &dictionary[" @ 1 .r ." ]" },
-;
+
+: escape-nul ( #nul -- ) ?dup if 0 do ." \0" loop ." 00" then ;
+: escape-graphic ( c -- )
+    dup [char] \ = over [char] " = or if [char] \ emit then emit ;
+: escape-non-graphic ( c -- )
+    base @ swap 8 base ! 0 <# # # # [char] \ hold #> type base ! ;
+: escape-char ( c -- )
+    dup graphic? if escape-graphic else escape-non-graphic then ;
+: escape ( #nul c -- #nul )
+    ?dup if swap escape-nul escape-char 0 else 1+ then ;
+: escape-string ( c-addr u -- )
+    over >r chars + 0 swap r> do i c@ escape 1 chars +loop drop ;
+: c-string ( c-addr u -- ) [char] " emit escape-string [char] " emit ;
+: c-decimal ( u -- ) base @ swap decimal 1 .r base ! ;
+: c-hex ( u -- c-addr u ) base @ swap hex ." 0x" 1 .r base ! ;
+
+: .cell ( a-addr -- )  .{ ." .cell = " @ c-hex }, ;
+: .str ( a-addr -- )   .{ ." .str = " 1 cells c-string }, ;
+: .label ( a-addr -- ) .{ ." .label = &dictionary[" @ c-decimal ." ]" }, ;
 : .handler ( a-addr -- ) .{ ." .handler = " @ count type }, ;
 
 here
@@ -49,8 +42,8 @@ here
 \
 \ The buffer has the following parts:
 \   data-buffer		The actual cells of the definition
-\   tags-buffer		Tags for .entry, packed as bit fields
-\   code-names-buffer	Storage for handler-names for .handler
+\   tag-buffer		Tags for .entry, packed as bit fields
+\   hdlrs-buffer	Storage for handler-names for .handler
 
 
 24 1024 *			constant  #data-buffer
@@ -111,77 +104,22 @@ variable  lp	0 lp !
     cell+ repeat 2drop
 ;
 
-: parse-word  ( char "<chars>ccc<char>" -- c-addr u )
-    >r source chars + source drop >in @ chars +
-    begin 2dup > while		( end c-addr ) ( R: char )
-	dup c@ r@ bl = if 33 - 94 u< else r@ <> then
-	if 2drop r> parse exit then
-	1 >in +! char+
-    repeat r> 2drop 0
-;
-
 : link, ( -- ) align lp @ label, ;
 : link-name ( name -- ) lp ! ;
 
 : handler: ( "<name>" -- )
-    bl parse-word				( c-addr u )
+    parse-name					( c-addr u )
     dup hnp @ dup handler, c!			( c-addr u )
     hnp @ char+ swap chars dup >r move		( ) ( R: nchars )
     r> char+ hnp +!				( )
 ;
 
-: prim:
-    here link, link-name
-    bl parse-word str,
-    handler:
-;
+: prim: here link, link-name parse-name str, handler: ;
+: compile, label, ;
 
-here constant do-literal
-handler: do_literal
-
-: toupper ( char -- char )
-    dup [char] a - 26 u< if [ char A char a - ] literal + then
-;
-
-: id= ( c-addr1 u1 c-addr2 u2 -- match? )
-    rot over = if
-	begin dup while			( c-addr1 c-addr2 u )
-	    >r over c@ toupper over c@ toupper <> if
-		r> drop 2drop false exit
-	    then char+ swap char+ swap r> 1-
-	repeat drop 2drop true
-    else
-	drop 2drop false
-    then
-;
-
-hex
-
+base @ hex
 : flags! ( flags -- ) lp @ cell+ dup >r c@ or r> c! ;
 : immediate 80 flags! ;
 : no-interpret 40 flags! ;
 : compile-only c0 flags! ;
-
-: >flags ( name -- xt ) cell+ c@ c0 and ;
-: >id ( name -- c-addr u ) cell+ count 1f and ;
-: >xt ( name -- xt ) cell+ dup c@ 1f and 1+ chars + aligned ;
-
-: target-lookup ( c-addr u -- name )
-    lp @ begin
-	>r 2dup r@ >id id= if		( id id tid ) ( R: name )
-	    2drop r> true
-	else
-	    r> @ dup if
-		data-buffer + false
-	    else
-		drop 2drop 0 true
-	    then
-	then				( c-addr u name flag )
-    until
-;
-
-: compile, label, ;
-
-decimal
-
-variable state	0 state !
+base !

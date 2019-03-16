@@ -23,7 +23,7 @@ also target definitions
 
 #target-dict #tags/cell + 1-
 #tags/cell / cells		create   tag-buffer allot
-1024 chars			create   hdlrs-buffer allot
+4096 chars			create   hdlrs-buffer allot
 
 variable  dp	target-dict dp !
 variable  hnp	hdlrs-buffer hnp !
@@ -84,7 +84,7 @@ here
 \ target dictionary operations
 \   HERE ALIGN ALLOT , C,
 \   str, handler, label,
-\   prim: handler:
+\   prim: handler: ref:
 
 : align ( -- ) mark-string? here aligned dp ! ;
 : allot ( n -- )
@@ -121,48 +121,60 @@ here
 : prim: here link, link-name parse-name str, handler: ;
 : compile, label, ;
 
-base @ hex
-40 constant NF-COMPILE-ONLY
-80 constant NF-IMMEDIATE
-c0 constant NF-COMPILE-SPECIAL
-1f constant NF-LENGTH
-e0 constant NF-FLAGS
+: ref: create here [ only forth ] , immediate does> @ [ also target ] label, ;
 
-: NAME>ID ( name -- c-addr u ) cell+ count nf-length and ;
-: NAME>XT ( name -- xt ) name>id chars + aligned ;
-: NAME>XT+FLAGS ( name -- xt flags )
-    cell+ count dup >r nf-length and chars + aligned r> nf-flags and ;
-: NAME>FIND ( name -- xt -1 | xt 1 | 0 )
-    dup if name>xt+flags nf-immediate and 0= 1 or then ;
-: FLAGS! ( flags wid -- ) @ cell+ dup >r c@ or r> c! ;
-
-: IMMEDIATE nf-immeidate lp flags! ;
+: IMMEDIATE nf-immediate lp flags! ;
 : NO-INTERPRET nf-compile-only lp flags! ;
 : COMPILE-ONLY nf-compile-special lp flags! ;
-base !
 
-: ID= ( c-addr1 u1 c-addr2 u2 -- flag )
-    rot over <> if drop 2drop false exit then
-    0 do
-	over i + c@ toupper over i + c@ toupper <> if
-	    2drop false unloop exit
-	then
-    [ 1 chars ] literal +loop 2drop true
-;
-
-: WID-LOOKUP ( c-addr u wid -- name | 0 )
-    begin @ dup while >r
-	2dup r@ name>id id= if 2drop r> exit then
-    r> repeat drop 2drop 0
-;
-
-: LOOKUP ( wid ... n c-addr u -- name | 0 )
-    2>r begin dup while 1- swap
-	2r@ rot wid-lookup ?dup if >r
-	    begin dup while 1- swap drop repeat drop
-	    r> 2r> 2drop exit
-	then
-    repeat 2r> 2drop
-;
 
 : ' lp @ 1 parse-name lookup name>xt ;
+
+\     struct {
+\ 	cell_ft		here;		    /* HERE */
+\ 	name_p		forth_wordlist;	    /* FORTH-WORDLIST */
+\ 	name_p *	current;	    /* CURRENT */
+\ 	cell_ft		n_search_order;
+\ 	name_p *	search_order[MAX_SEARCH_ORDER];
+\
+\ 	definition_d	literal_instr;	    /* for LITERAL runtime xt */
+\ 	definition_d	skip_instr;	    /* for ELSE runtime xt */
+\ 	definition_d	fskip_instr;	    /* for IF runtime xt */
+\ 	definition_d	do_instr;	    /* for DO runtime xt */
+\ 	definition_d	plus_loop_instr;    /* for +LOOP runtime xt */
+\ 	definition_d	does_instr;	    /* for DOES> runtime xt */
+\
+\ 	cell_ft		state;		    /* STATE */
+\ 	cell_ft		base;		    /* BASE */
+\
+\ 	/* the input source and parse area - 4 cells total */
+\ 	cell_ft		to_in;		    /* >IN */
+\ 	cell_ft		source_id;	    /* SOURCE-ID */
+\ 	string_ft	source;		    /* SOURCE */
+\
+\ 	char_ft		tib[256];	    /* TIB */
+\ 	int		source_max_len;     /* #TIB */
+\ 	size_t		lineno;
+\ 	FILE *		input;
+\     } dict_static_data;
+
+ref: ->here		1 cells allot
+ref: ->forth_wordlist	1 cells allot
+ref: ->current		1 cells allot
+ref: ->n_search_order	1 cells allot
+ref: ->search_order	8 cells allot
+ref: ->literal_instr	handler: do_literal
+ref: ->skip_instr	handler: do_skip
+ref: ->fskip_instr	handler: do_fskip
+ref: ->do_instr		handler: do_do
+ref: ->plus_loop_instr	handler: do_plus_loop
+ref: ->does_instr	handler: do_does
+ref: ->state		0 ,
+ref: ->base		10 ,
+ref: ->to_in		0 ,
+ref: ->source_id	0 ,
+ref: ->source		1 cells allot
+ref: ->tib		256 dup chars allot
+ref: ->source_max_len	,
+ref: ->lineno		1 cells allot
+ref: ->input		1 cells allot

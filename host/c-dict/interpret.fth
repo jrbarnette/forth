@@ -28,15 +28,11 @@
 \  THROW               9.6.1.2275 EXCEPTION              73
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
-\ <C> do_literal;    <C> DO_LITERAL_XT;   !
-
-0 \ <C> &DICT.to_in;
-constant >IN
+prim: >IN           do_constant ->to_in
 
 prim: ABORT         x_abort
 
-0 \ <C> &DICT.base; 10 literal over !
-constant BASE
+prim: BASE          do_constant ->base
 
 prim: CHAR          x_char
 prim: DECIMAL       x_decimal
@@ -44,22 +40,21 @@ prim: EVALUATE      x_evaluate
 prim: EXECUTE       x_execute
 prim: LITERAL       x_literal           compile-only
 prim: POSTPONE      x_postpone          compile-only
-\ <C> do_postpone;   ,
+handler: do_postpone
 
 prim: QUIT          x_quit
 prim: SOURCE        x_source
 
-0 \ <C> &DICT.state;
-constant STATE
+prim: STATE         do_constant ->state
 
 prim: S"            x_s_quote           compile-only
-\ <C> do_s_quote;    ,
+handler: do_s_quote
 
 prim: [             x_left_bracket      compile-only
 prim: ]             x_right_bracket
 
 prim: C"            x_c_quote           compile-only
-\ <C> do_c_quote;    ,
+handler: do_c_quote
 
 prim: HEX           x_hex
 prim: PARSE         x_parse

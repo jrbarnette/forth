@@ -27,7 +27,7 @@
 prim: UNLOOP    x_unloop        no-interpret
 
 prim: +LOOP     x_plus_loop     compile-only
-\ [compile] UNLOOP
+' UNLOOP label,
 
 prim: BEGIN     x_begin         compile-only
 prim: DO        x_do            compile-only

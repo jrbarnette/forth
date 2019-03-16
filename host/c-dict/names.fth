@@ -28,7 +28,7 @@ prim: :                 x_colon
 prim: EXIT              x_exit         no-interpret
 
 prim: ;                 x_semicolon    compile-only
-\ [compile] EXIT
+' EXIT label,
 
 prim: >BODY             x_to_body
 prim: CONSTANT          x_constant

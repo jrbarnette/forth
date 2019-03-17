@@ -160,9 +160,9 @@ here
 
 ref: ->here		1 cells allot
 ref: ->forth_wordlist	1 cells allot
-ref: ->current		1 cells allot
-ref: ->n_search_order	1 cells allot
-ref: ->search_order	8 cells allot
+ref: ->current		->forth_wordlist
+ref: ->n_search_order	1 ,
+ref: ->search_order	->forth_wordlist 7 cells allot
 ref: ->literal_instr	handler: do_literal
 ref: ->skip_instr	handler: do_skip
 ref: ->fskip_instr	handler: do_fskip
@@ -173,8 +173,8 @@ ref: ->state		0 ,
 ref: ->base		10 ,
 ref: ->to_in		0 ,
 ref: ->source_id	0 ,
-ref: ->source		1 cells allot
-ref: ->tib		256 dup chars allot
-ref: ->source_max_len	,
+ref: ->source		2 cells allot
+ref: ->tib		256 chars allot
+ref: ->source_max_len	1 cells allot
 ref: ->lineno		1 cells allot
 ref: ->input		1 cells allot

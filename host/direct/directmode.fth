@@ -1,5 +1,8 @@
 \  Copyright 2017, by J. Richard Barnette. All Rights Reserved.
 
+vocabulary HOST
+also host definitions
+: <HOST> only forth also host ;
 <HOST> also forth definitions previous
 vocabulary DIRECT
 vocabulary META

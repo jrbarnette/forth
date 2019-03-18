@@ -61,7 +61,8 @@ variable  lp	0 lp !
 : .cell ( a-addr -- )  .{ ." .cell = " @ c-hex }, ;
 : .str ( a-addr -- )   .{ ." .str = " 1 cells c-string }, ;
 : .label ( a-addr -- )
-    .{ ." .label = &dictionary[" @ target-dict - c-decimal ." ]" }, ;
+    @ target-dict -
+    .{ ." .label = &dictionary.dict_space[" c-decimal ." ]" }, ;
 : .handler ( a-addr -- ) .{ ." .handler = " @ count type }, ;
 
 here
@@ -107,6 +108,8 @@ here
 	dup dup tag@ .entry cr
     cell+ repeat 2drop
 ;
+
+: >>> source >in @ over >in ! swap over - >r chars + r> type cr ;
 
 : link, ( -- ) align lp @ label, ;
 : link-name ( name -- ) lp ! ;

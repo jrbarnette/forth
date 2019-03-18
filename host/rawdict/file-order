@@ -2,7 +2,6 @@
 target/internal/chartype.fth
 target/internal/namespace.fth
 host/compile.fth
-host/host.fth
 host/rawdict/startdict.fth
     host/rawdict/dictionary.fth
     host/rawdict/stackprim.fth

@@ -17,13 +17,13 @@ base !
     dup if name>xt+flags nf-immediate and 0= 1 or then ;
 : FLAGS! ( flags wid -- ) @ cell+ dup >r c@ or r> c! ;
 
-: ID, ( c-addr u -- )
+: STR, ( c-addr u -- )
     dup c, here swap chars dup allot move
-    \ 0 do over i chars + c@ toupper over i chars + c! loop
+    \ 0 do over i chars + c@ toupper over i chars + c! loop 2drop
 ;
 
 : NAME, ( mcp wid "<spaces>name<space>" -- name )
-    align here >r @ , parse-name id, align , r>
+    align here >r @ , parse-name str, align , r>
 ;
 
 : ID= ( c-addr1 u1 c-addr2 u2 -- flag )

@@ -41,6 +41,7 @@
     [ 1 cells dup 1- ] literal + [ negate ] literal and ;
 : CHAR+ ( c-addr1 -- c-addr2 ) [ 1 chars ] literal + ;
 : +! ( x a-addr -- ) dup >r @ + r> ! ;
+\ : +! ( x a-addr -- ) swap over @ + swap ! ;
 : 2! ( x1 x2 a-addr -- ) swap over ! cell+ ! ;
 : 2@ ( a-addr -- x1 x2 ) dup cell+ @ swap @ ;
 : COUNT ( c-addr -- c-addr u ) dup char+ swap c@ ;

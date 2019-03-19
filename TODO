@@ -6,6 +6,10 @@ Where we are:
     So, we have a custom interpretation loop, which we need for
     compilation to handle literals and Forth compilation state.
 
+Functional goal:
+    Start converting content in bootstrap/stdforth.fth into
+    definitions in their proper places under target/core.
+
 Next steps:
     Extract INTERPRET-NAME, INTERPRET-NUMBER, and INTERPRET-UNKNOWN
     from target/internal/interpret.fth, and rewrite them for
@@ -17,3 +21,12 @@ My current thinking on what to do is in host/direct/meta-notes.txt.
 My current hold-up is discovering complexity in writing definitions
 when standard words (esp. [ and ]) depend on the current search
 order.
+====
+Refactoring:
+    duplication of c-value printing - c-string, c-hex, c-decimal
+    want to share things like .{ and },
+    want to share >>> and similar
+    better separation of content from namespace.fth
+    sort out vocabulary contents
+    want to share all the primitive definition code
+        even though behavior can be quite different

@@ -22,7 +22,7 @@ My current hold-up is discovering complexity in writing definitions
 when standard words (esp. [ and ]) depend on the current search
 order.
 ====
-Refactoring:
+Refactoring between rawdict and direct:
     duplication of c-value printing - c-string, c-hex, c-decimal
     want to share things like .{ and },
     want to share >>> and similar

@@ -1,6 +1,6 @@
 \ Copyright 2017, by J. Richard Barnette. All Rights Reserved.
 
-\  interpret.c - Outer (interactive) interpreter, and related Forth
+\  interpret.fth - Outer (interactive) interpreter, and related Forth
 \    words.
 
 \ ------  ------  ------  ------  ------  ------  ------  ------

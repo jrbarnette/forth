@@ -63,13 +63,13 @@ Full logic for identifiers
     then meta-state @ meta-next !
 
 backend state action table for mode change (before -> after)
- prev | next | emit
-   D  |   I  | { .handler = meta_interpret },
-   D  |   C  | { .handler = meta_compile },
-   I  |   D  | { .id = NULL },
-   I  |   C  | { .id = NULL }, { .handler = meta_compile },
-   C  |   D  | { .id = NULL },
-   C  |   I  | { .id = NULL }, { .handler = meta_interpret },
+old | new | emit
+ D  |  I  | { .handler = meta_interpret },
+ D  |  C  | { .handler = meta_compile },
+ I  |  D  | { .id = NULL },
+ I  |  C  | { .id = NULL }, { .handler = meta_compile },
+ C  |  D  | { .id = NULL },
+ C  |  I  | { .id = NULL }, { .handler = meta_interpret },
 
 Full logic
     meta-next @

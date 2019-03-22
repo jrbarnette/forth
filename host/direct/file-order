@@ -2,7 +2,7 @@
 target/internal/chartype.fth
 target/internal/namespace.fth
 host/compile.fth
-host/direct/directmode.fth
+host/direct/target.fth
     host/direct/dictionary.fth
     host/direct/stackprim.fth
     host/direct/arithprim.fth

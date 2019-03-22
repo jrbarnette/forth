@@ -94,9 +94,7 @@ parse_name(cell_ft *p_len)
 static void
 execute(vmstate_p vm, xt_ft entry_xt)
 {
-    vminstr_p ip;
-
-    ip = entry_xt->handler(NULL, vm, entry_xt[1].arg);
+    vminstr_p ip = entry_xt->handler(NULL, vm, entry_xt[1].arg);
 
     while (ip != NULL) {
 	xt_ft xtok = ip->xtok;
@@ -305,11 +303,13 @@ vminstr_p
 meta_interpret(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     while (ip->id != NULL) {
-	if (!evaluate_name((c_addr_ft) ip->id, strlen(ip->id), vm)) {
-	    fputs(ip->id, stderr);
-	    fputc(' ', stderr);
-	    THROW(vm, -13);
+        name_p name = lookup(vm, (c_addr_ft) ip->id, strlen(ip->id));
+	if (name == NULL) {
+	    fprintf(stderr, "name %s not found\n", ip->id);
+	    abort();
 	}
+	xt_ft xtok = NAME_XT(name);
+	execute(vm, xtok);
 	ip++;
     }
     return ip + 1;
@@ -317,27 +317,19 @@ meta_interpret(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 vminstr_p
-meta_postpone(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+meta_compile(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
-    assert(DICT.state != STATE_INTERP);
-
-    name_p name = lookup(vm, (c_addr_ft) ip->id, strlen(ip->id));
-    if (name == NULL) {
-	fprintf(stderr, "POSTPONE %s ", ip->id);
-	THROW(vm, -13);
+    while (ip->id != NULL) {
+        name_p name = lookup(vm, (c_addr_ft) ip->id, strlen(ip->id));
+	if (name == NULL) {
+	    fprintf(stderr, "name %s not found\n", ip->id);
+	    abort();
+	}
+	xt_ft xtok = NAME_XT(name);
+	COMPILE(vm, xtok);
+	ip++;
     }
-    // XXX is this assertion necessary/advisable?
-    assert(NAME_IS_IMMEDIATE(name));
-    COMPILE(vm, NAME_XT(name));
-    return meta_interpret(ip + 1, vm, ignore);
-}
-
-
-vminstr_p
-meta_literal(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    execute_literal(vm, ip->cell);
-    return meta_interpret(ip + 1, vm, ignore);
+    return ip + 1;
 }
 
 

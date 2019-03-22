@@ -25,8 +25,7 @@ extern vminstr_p i_compile(vminstr_p, vmstate_p, vmarg_p);
 
 /* meta-interpretation direct threaded primitives */
 extern vminstr_p meta_interpret(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p meta_postpone(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p meta_literal(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p meta_compile(vminstr_p, vmstate_p, vmarg_p);
 
 /* dictionary primitives */
 extern vminstr_p x_comma(vminstr_p, vmstate_p, vmarg_p);

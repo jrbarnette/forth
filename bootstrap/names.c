@@ -129,6 +129,14 @@ i_startname(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 vminstr_p
+i_linkname(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    linkname((name_p) POP(vm));
+    return ip;
+}
+
+
+vminstr_p
 i_addname(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     char *id = (ip++)->id;

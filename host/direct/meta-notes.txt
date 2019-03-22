@@ -1,68 +1,18 @@
-vocabularies
-HOST
-    stuff to be shared between DIRECT-MODE and META-MODE
-DIRECT
-    stuff that must be unique to DIRECT-MODE
-	... typically emit stuff to execute specific functions:
-	{ .handler = x_dup },
-META
-    only things defined in the the target dictionary
-	... typically just emit the name of the definition:
-	{ .str = "DUP" },
-	... may be specially implemented
+---- Backend (generation) state
+Two options for generation.
 
-maybe need some special vocabularies:
-  + In meta mode, certain words sometimes shadow entries in the
-    target dictionary:
-	[ ]
-	: CONSTANT CREATE VARIABLE
-  + Shadowing rules are tricky:
-      - Most of the time, shadow in meta-compile or for POSTPONE
-	only.
-      - For [, shadow for POSTPONE only.
+1) meta_interpret and meta_compile
+    state is local at build time
 
-compilation modes:  direct, meta-interpret, meta-compile
-    separate state settings for interpreter (front-end) and
-    generation (back-end).
-      + interpreter mode determines behavior of parsed names
-      + backend mode tracks whether to issue one of the following:
-	    { .str = NULL },			// end either meta mode
-	    { .handler = meta_interpret },	// begin meta-interpret
-	    { .handler = meta_compile },	// begin meta-compile
+2) meta_interpret only
+    meta-compile vs. meta-interpret distinguished by STATE in the target
 
-"mode" is determined by "meta-state @"
-    0 meta-state !	\ direct
-    1 meta-state !	\ meta-interpret
-    2 meta-state !	\ meta-compile
+We're going with option 1 for now.
 
-front-end state actions
- mode | I | C | action
-   D  | X | F | META-EXECUTE
-   D  | X | T | error
-   I  | X | F | META-EXECUTE
-   I  | X | T | error
-   C  | F | X | META-EXECUTE
-   C  | T | X | 1 meta-next ! META-EXECUTE
 
-use this
-    : META-EXECUTE ( xt -- i*x ) EXECUTE meta-state @ meta-next ! ;
+option 1 - emit states are direct, interpret, and compile
 
-need 3 meta state variables
-    meta-state \ assign this to meta-next after each word
-    meta-next \ mode for next next dict cell emitted
-    meta-emit \ mode as of last dict cell emitted
-
-Full logic for identifiers
-    ( xt flags )
-    meta-state @ 2 and if
-	\ meta-compile
-	nf-immediate and if 1 meta-next ! then execute
-    else
-	\ meta-interpret or direct
-	nf-compile-only and if -14 throw else execute then
-    then meta-state @ meta-next !
-
-backend state action table for mode change (before -> after)
+transition table:
 old | new | emit
  D  |  I  | { .handler = meta_interpret },
  D  |  C  | { .handler = meta_compile },
@@ -71,160 +21,217 @@ old | new | emit
  C  |  D  | { .id = NULL },
  C  |  I  | { .id = NULL }, { .handler = meta_interpret },
 
-Full logic
-    meta-next @
-    dup meta-emit @ <> if
-	meta-emit @ if { ." .id = NULL" } then
-	dup meta-emit !
-	?dup if
-	    { 1- if s" meta_compile" else s" meta_interpret" then .exec }
+
+option 2 - emit states are direct/interpret, direct/compile,
+interpret, and compile
+
+allowed transitions
+old | new | emit
+D/I |  I  | { .handler = meta_interpret },
+D/I |  C  | { .handler = meta_interpret }, { .id = "]" },
+D/C |  I  | { .handler = meta_interpret }, { .id = "[" },
+D/C |  C  | { .handler = meta_interpret },
+ I  | D/I | { .id = NULL },
+ I  |  C  | { .id = "]" },
+ C  | D/C | { .id = NULL },
+ C  |  I  | { .id = "[" },
+
+---- Meta-interpreter building blocks (as source code)
+ONLY FORTH DEFINITIONS
+variable offset
+variable meta-state
+variable emit-state
+
+: .offset ( n -- ) ." /* " offset @ 3 .r ."  */ " spaces ;
+: { ." { " ;
+: }{ ."  }, { " 1 offset +! ;
+: } ."  }," cr 1 offset +! ;
+: emit-state!
+    dup emit-state @ <> if
+	emit-state @ if 4 .offset { ." .id = NULL" } then
+	dup if
+	    dup 1- if s" meta_compile" else s" meta_interpret" then
+	    1 .offset { .exec }
 	then
-    then
+    then emit-state !
+;
+: direct-emit ( -- ) 0 emit-state! 0 .offset ;
+: meta-emit ( name len -- ) emit-state! 4 .offset { .str } ;
+: meta-interpret ( name len -- ) 1 meta-emit ;
+: meta-compile ( name len -- ) 2 meta-emit ;
+: meta-literal meta-state @ 2 = if s" LITERAL" meta-interpret then ;
 
-consider these:
-    : D{ 0 meta-next ! { ;
-    : I{ 1 meta-next ! { ;
-    : C{ 2 meta-next ! { ;
-    : I" postpone I{ postpone S" postpone .str postpone } ; immediate
-    : C" postpone C{ postpone S" postpone .str postpone } ; immediate
-can we use these to get rid of meta-next?
-... but definitions in meta vocabulary don't know whether to use
-    "I" or "C".
-
-
-Full logic for literals
-    ( x )
-    D{ s" do_literal" .exec }{ c-hex .cell }
-    meta-state @ 2 = if
-	\ <HOST> ] LITERAL
-	\ I" LITERAL"
-	I{ s" LITERAL" .str }
-    then
-
-POSTPONE
-    \ lookup name in META vocabulary
-    ( xt flags )
-    nf-immediate and if
-	2 meta-next !
-    else
-	\ [COMPILE] LITERAL ['] COMPILE, COMPILE,
-	\ this is not yet right
-	0 meta-next ! { s" i_compile" .exec }
-    then execute
-
-utility words:
-<HOST>
-    ONLY FORTH ALSO HOST DEFINITIONS
-    : <HOST> ONLY FORTH ALSO HOST ;
-<C> ...;
-    (in HOST vocabulary, at least for now)
-    C expression as { .cell = (cell_ft)(...) },
-<DIRECT>
-    <HOST> DEFINITIONS
-    : <DIRECT> 0 meta-state ! ONLY HOST ALSO DIRECT ;
-[
-    <HOST> DEFINITIONS
-    : [ 1 meta-state ! ONLY HOST ALSO META ; IMMEDIATE
-]
-    <HOST> DEFINITIONS
-    : ] 2 meta-state ! ONLY HOST ALSO META ;
-
-vocabulary HOST
+vocabulary TARGET
 vocabulary DIRECT
 vocabulary META
+----  Frontend (custom interpreter loop) state
+: INTERPRET-NUMBER ( x -- | x )
+    direct-emit { s" do_literal" .exec }{ c-hex .cell } meta-literal
+;
 
-0
-variable meta-state  dup meta-state !
-variable meta-next   dup meta-next !
-variable meta-prev   dup meta-prev !
-drop
+: INTERPRET-NAME ( i*x xt flags -- j*x ) drop execute ;
 
-only forth also host definitions
-: <HOST> only forth also host ;
-: <DIRECT> 0 meta-state ! only host also direct ;
-: <META> meta-state ! only meta also host ;
-: [ 1 <META> ; immediate
-: ] 2 <META> ;
+: INTERPRET-UNKNOWN ( str len -- )
+    meta-state @ if
+	meta-state @ meta-emit
+    else
+	type space -13 throw
+    then
+;
+---- Front-end vocabularies
+TARGET vocabulary contents
+    IMMEDIATE NO-INTERPRET COMPILE-ONLY
+	emit direct code to set flags on last definition
+	if immediate flag is set, create a META vocabulary entry
+	    maybe make this a separate operation
+	    : META-IMMEDIATE
+		get-current also target definitions
+		>in @ create >in !
+		previous set-current
+                parse-name dup , here swap chars dup allot move
+		does> dup cell+ swap @ meta-interpret ;
+    META-IMMEDIATE words created as described above:
+	+LOOP BEGIN DO DOES> ELSE IF LITERAL LOOP REPEAT THEN UNTIL
+	WHILE RECURSE ?DO AGAIN CASE ENDCASE ENDOF OF
+    \ comment text
+    ( comment text )
+    .( compile time message )
+    [ - enter meta-interpret mode
+	change meta-state to meta-interpret
+        change search order to exclude DIRECT vocabulary
+    ] - enter meta-compile mode
+	change meta-state to meta-compile
+        change search order to exclude DIRECT vocabulary
+    <DIRECT> - enter direct mode
+	changes source interpreter behavior only
+	change meta-state to direct
+        change search order to include DIRECT vocabulary
+    <HOST> - enter host mode
+        in general, disable non-standard behaviors
+        (... but behaviors above don't respect standard STATE...)
+    : - start a :-definition and switch to meta-compile mode
+    ; - end a meta-: definition; return to meta-interpret mode
+    CONSTANT - emit direct code to create a constant definition
+    VARIABLE - emit direct code to create a variable definition
+    CREATE - emit direct code to create a create definition (TBD)
+    PRIM: - emit direct code to create a forth primitive definition
+    >>> - emit raw C source code
+    <C> ...; - emit direct code for a literal from a C expression
+	direct-emit { s" do_literal" .exec }{ [char] ; parse .cell }
+	    meta-literal
+    [CHAR]
+	: [CHAR] char meta-literal ;
+    [COMPILE] - escape a word defined with META-IMMEDIATE
+        \ direct-emit { s" i_compile" .exec }{ parse-name .str }
+        : [COMPILE] parse-name meta-compile ;
+    POSTPONE - (maybe don't provide)
+    parsing words - special, probably don't provide
+	." ABORT" S" ['] C" TO
+DIRECT vocabulary contents
+    forth primitives that emit no-operand handlers, e.g.
+	+ -> { s" x_plus" .exec }
+	(includes dictionary, stackprim, arithprim, and memprim)
 
-====
+Direct instructions
+    (all no operand forth primitives) - use standard forth name
+    do_literal, .cell
+        invoke from LITERAL
+        invoke from interpret loop for number in input
+    i_setflags, .cell
+        invoke from IMMEDIATE, NO-INTERPRET, COMPILE-ONLY
+    i_addname, .id, .handler
+        invoke from CONSTANT, VARIABLE (and CREATE?)
+    i_startname, .id, .handler
+        invoke from :
+    i_linkname
+        invoke from ;
+    i_compile, .id
+        invoke from [COMPILE], POSTPONE
+        should be replaced with meta_compile
+---- Code generation examples
 To execute code in meta interpretation state:
     { .handler = meta_interpret },
-	{ .str = "..." }, ...
-	{ .str = NULL },
+	{ .id = "..." }, ...
+	{ .id = NULL },
 
 To compile tokens into the dictionary:
     { .handler = meta_compile },
-	{ .str = "..." }, ...
-	{ .str = NULL },
+	{ .id = "..." }, ...
+	{ .id = NULL },
 
 -1 constant TRUE
     { .handler = do_literal }, { .cell = -1 },
-    { .handler = i_addname }, { .str = "TRUE" }, { .handler = do_constant },
+    { .handler = i_addname }, { .id = "TRUE" }, { .handler = do_constant },
     { .handler = i_linkname },
 
 : CHARS ;
-    { .handler = i_addname }, { .str = "CHARS" }, { .handler = do_colon },
+    { .handler = i_addname }, { .id = "CHARS" }, { .handler = do_colon },
     { .handler = meta_compile },
-	{ .str = "EXIT" },
-	{ .str = NULL },
+	{ .id = "EXIT" },
+	{ .id = NULL },
     { .handler = i_linkname },
 
 : CELLS <C> CELL_SIZE; * ;
-    { .handler = i_addname }, { .str = "CELLS" }, { .handler = do_colon },
+    { .handler = i_addname }, { .id = "CELLS" }, { .handler = do_colon },
     { .handler = do_literal }, { .cell = CELL_SIZE },
     { .handler = meta_interpret },
-	{ .str = "LITERAL" },
-	{ .str = NULL },
+	{ .id = "LITERAL" },
+	{ .id = NULL },
     { .handler = meta_compile },
-	{ .str = "LITERAL" },
-	{ .str = "*" },
-	{ .str = "EXIT" },
-	{ .str = NULL },
+	{ .id = "*" },
+	{ .id = "EXIT" },
+	{ .id = NULL },
     { .handler = i_linkname },
 
 handling for IMMEDIATE words
 : >BODY ( xt -- a-addr ) [ 2 cells ] literal + ;
-    { .handler = i_addname }, { .str = ">BODY" }, { .handler = do_colon },
-    // : leaves us in meta-compile state
-    // then [ triggers meta-interpret
-    // then interpreter triggers direct mode for number literal
+    // at start frontend doesn't matter, generation is direct
+    // : >BODY - gen direct
+    { .handler = i_addname }, { .id = ">BODY" }, { .handler = do_colon },
+    // : triggers meta-compile
+    // [ triggers meta-interpret
+    // 2 interpreter gen direct
     { .handler = do_literal }, { .cell = 2 },
-    // then interpreter returns to meta-interpret
+    // CELLS gen direct->interpret
     { .handler = meta_interpret },
-	{ .str = "CELLS" },
-	// ] triggers return to meta-compile
-	// interpreter triggers meta-interpret for immediate LITERAL
-	{ .str = "LITERAL" },
-	// then interpreter returns to meta-compile
-	{ .str = NULL },
+	{ .id = "CELLS" },
+	// ] triggers meta-compile
+	// LITERAL immediate gen interpret
+	{ .id = "LITERAL" },
+        // + gen interpret->compile
+	{ .id = NULL },
     { .handler = meta_compile },
-	{ .str = "+" },
-	{ .str = "EXIT" },
-	{ .str = NULL },
+	{ .id = "+" },
+        // ; gen compile
+	{ .id = "EXIT" },
+        // ; gen direct
+	{ .id = NULL },
     { .handler = i_linkname },
+    // ; triggers meta-interpret
+    // at end frontend is meta-interpret, generation is direct
 
 handling for POSTPONE
 : [CHAR] char postpone literal ; compile-only
-    { .handler = i_addname }, { .str = "[CHAR]" }, { .handler = do_colon },
+    { .handler = i_addname }, { .id = "[CHAR]" }, { .handler = do_colon },
     { .handler = meta_compile },
-	{ .str = "CHAR" },
+	{ .id = "CHAR" },
 	// POSTPONE emits LITERAL in meta-compile
-	{ .str = "LITERAL" },
-	{ .str = "EXIT" },
-	{ .str = NULL },
+	{ .id = "LITERAL" },
+	{ .id = "EXIT" },
+	{ .id = NULL },
     { .handler = i_linkname },
     { .handler = meta_interpret },
-	{ .str = "COMPILE-ONLY" },
-	{ .str = NULL },
+	{ .id = "COMPILE-ONLY" },
+	{ .id = NULL },
 
-====
+====  Other thoughts
 number literals:
     direct:
 	// literal
 	{ .handler = do_literal }, { .cell = <number value> },
     interpret:  wrap direct-mode semantics
 	// <DIRECT>
-	    { .str = NULL },
+	    { .id = NULL },
 	// literal
 	{ .handler = do_literal }, { .cell = <number value> },
 	// [
@@ -232,38 +239,38 @@ number literals:
 	{ .handler = meta_interpret },
     compile:
 	// <DIRECT> literal
-	    { .str = NULL },
+	    { .id = NULL },
 	{ .handler = do_literal }, { .cell = <number value> },
 	// ] LITERAL
 	{ .handler = meta_interpret },
-	    { .str = "LITERAL" },
+	    { .id = "LITERAL" },
 	// this will be triggered at next generation action
-	    { .str = NULL },
+	    { .id = NULL },
 	{ .handler = meta_compile },
 
 primitives - default semantics:
     definition:
 	// prim: <Forth name> <C handler>
 	{ .handler = i_addname },
-	    { .str = <Forth name> }, { .handler = <C handler> },
+	    { .id = <Forth name> }, { .handler = <C handler> },
     direct:
 	{ .handler = <handler> },
     interpret:
 	// [
-	{ .str = <Forth name> },
+	{ .id = <Forth name> },
     compile:
 	// ]
-	{ .str = <Forth name> },
+	{ .id = <Forth name> },
     postpone:
 	// <DIRECT>
-	    { .str = NULL },
-	{ .handler = i_lookup }, { .str = <Forth name> },
+	    { .id = NULL },
+	{ .handler = i_lookup }, { .id = <Forth name> },
 	// ] LITERAL
 	{ .handler = meta_interpret },
-	    { .str = "LITERAL" },
-	    { .str = NULL },
+	    { .id = "LITERAL" },
+	    { .id = NULL },
 	{ .handler = meta_compile },
-	    { .str = "," },	// really "COMPILE,"
+	    { .id = "," },	// really "COMPILE,"
     implementation:
       + DIRECT vocabulary implements direct semantics
       + META vocabulary has a word created with something like this:
@@ -290,15 +297,15 @@ immediate definitions semantics:
 	{ .handler = i_setflags }, { .cell = 0x80 },
     compile:
 	// [
-	    { .str = NULL },
+	    { .id = NULL },
 	{ .handler = meta_interpret },
-	    { .str = <Forth name> },
+	    { .id = <Forth name> },
 	// ]
-	    { .str = NULL },
+	    { .id = NULL },
 	{ .handler = meta_compile },
     postpone:
 	// in meta-compile mode
-	    { .str = <Forth name> },
+	    { .id = <Forth name> },
     implementation:
       + Compile and interpret behaviors are intrinsic to the compilation
 	interpreter
@@ -339,15 +346,15 @@ CONSTANT              6.1.0950 CORE                   35
 	// CONSTANT <Forth name>
 	// Option A) for right now
 	{ .handler = i_addname },
-	    { .str = <Forth name> }, { .handler = do_constant },
+	    { .id = <Forth name> }, { .handler = do_constant },
 	{ .handler = x_comma },
 	// Option B) consider for later
 	// <DIRECT>
 	{ .handler = i_addname },
-	    { .str = <Forth name> }, { .handler = do_constant },
+	    { .id = <Forth name> }, { .handler = do_constant },
 	// [ ,
 	{ .handler = meta_interpret },
-	    { .str = "," },
+	    { .id = "," },
     direct:
 	{ .handler = do_literal }, { .cell = <value from definition> },
     implementation:
@@ -361,17 +368,17 @@ VARIABLE              6.1.2410 CORE                   48
 	// VARIABLE <Forth name>
 	// Option A) for right now
 	{ .handler = i_addname },
-	    { .str = <Forth name> }, { .handler = do_variable },
+	    { .id = <Forth name> }, { .handler = do_variable },
 	    { .cell = 0 },
 	// Option B) available in meta-interpret mode
 	// <DIRECT>
 	{ .handler = i_addname },
-	    { .str = <Forth name> }, { .handler = do_variable },
+	    { .id = <Forth name> }, { .handler = do_variable },
 	// [ 1 cells allot
 	{ .handler = do_literal }, { .cell = 1 },
 	{ .handler = meta_interpret },
-	    { .str = "CELLS" },
-	    { .str = "ALLOT" },
+	    { .id = "CELLS" },
+	    { .id = "ALLOT" },
     direct:     error
     implementation:
       + Put option A) in the HOST vocabulary.
@@ -385,7 +392,7 @@ CREATE                6.1.1000 CORE                   36
     definition:
 	// : <Forth name>
 	{ .handler = i_startname },
-	    { .str = <Forth name> }, { .handler = do_colon },
+	    { .id = <Forth name> }, { .handler = do_colon },
 	// ]
 	// this may be triggered at next generation action
 	{ .handler = meta_compile },
@@ -400,10 +407,10 @@ CREATE                6.1.1000 CORE                   36
     interpret:  error
     compile:
 	// POSTPONE EXIT
-	    { .str = "EXIT" },
+	    { .id = "EXIT" },
 	// [
 	// this will be triggered at next generation action
-	    { .str = NULL },
+	    { .id = NULL },
 	{ .handler = i_linkname },
 	// this may be triggered at next generation action
 	{ .handler = meta_interpret },
@@ -415,7 +422,7 @@ CREATE                6.1.1000 CORE                   36
     direct:     switch to meta-compile mode
     interpret:  switch to meta-compile mode
     compile:    default semantics, i.e.
-	{ .str = "]" },
+	{ .id = "]" },
     implementation:
       + TBD
 

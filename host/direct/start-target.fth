@@ -32,16 +32,14 @@ variable emit-state  0 emit-state !
 	emit-state @ if 4 .offset { ." .id = NULL" } then
 	dup if
 	    dup 1- if s" meta_compile" else s" meta_interpret" then
-	    1 .offset { .exec }
+	    0 .offset { .exec }
 	then
     then emit-state !
 ;
 : direct-emit ( -- ) 0 emit-state! 0 .offset ;
-: meta-emit ( name len -- ) emit-state! 4 .offset { .str } ;
+: meta-emit ( name len state -- ) emit-state! 4 .offset { .str } ;
 : meta-interpret ( name len -- ) 1 meta-emit ;
 : meta-compile ( name len -- ) 2 meta-emit ;
-: meta-literal meta-state @ 2 = if s" LITERAL" meta-interpret then ;
-: meta-immediate align here create name>id , , does> 2@ meta-interpret ;
 
 : direct: : postpone direct-emit ;
 direct: setflags { s" i_setflags" .exec }{ c-hex .cell } ;
@@ -57,7 +55,11 @@ vocabulary DIRECT
 vocabulary META
 
 : <META> meta-state ! only target ;
-: <DIRECT> 0 <META> also direct ;
+: meta[ 1 <META> ;
+: ]meta 2 <META> ;
+: meta-literal
+    meta-state @ 2 = if s" LITERAL" meta-interpret then ;
+: meta-immediate align here create name>id , , does> 2@ meta-interpret ;
 
 \ Can't have these be in either FORTH or TARGET search orders
 also META definitions
@@ -66,19 +68,19 @@ also META definitions
 : IMMEDIATE    ;
 : NO-INTERPRET ;
 : COMPILE-ONLY ;
-direct: LITERAL { s" do_literal" .exec }{ c-hex .cell } ;
 
-only FORTH also TARGET definitions also META
+only FORTH also TARGET definitions META
 : <HOST> only forth ;
-: \ postpone \ ; immediate
-: ( postpone ( ; immediate
-: .( postpone .( cr ; immediate
-: [ 1 <META> ;
-: ] 2 <META> ;
+: <DIRECT> 0 <META> also direct ;
+: \ postpone \ ;
+: ( postpone ( ;
+: .( postpone .( cr ;
+: [ META[ ;
+: ] ]META ;
 
 : >>> source >in @ over >in ! swap over - >r chars + r> type cr ;
 
-: LITERAL literal meta-literal ;
+: LITERAL meta-literal ;
 direct: <C> { s" do_literal" .exec }{ [char] ; parse .cell } meta-literal ;
 direct: [compile] { s" i_compile" .exec }{ parse-name .str } ;
 
@@ -101,5 +103,8 @@ hex
 decimal
 
 : prim: 0 addname ;
+
+: : start-: ]meta ;
+: ; s" EXIT" meta-compile linkname meta[ ;
 
 only FORTH also META also DIRECT definitions

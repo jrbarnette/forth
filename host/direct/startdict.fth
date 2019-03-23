@@ -1,13 +1,6 @@
 \  Copyright 2017, by J. Richard Barnette. All Rights Reserved.
 
-only FORTH also TARGET definitions also DIRECT
-
-\ N.B. "," and "allot" here comes from the DIRECT vocabulary
-: CONSTANT s" do_constant" addname , ;
-: VARIABLE s" do_variable" addname
-    { s" do_literal" .exec }{ s" CELL_SIZE" .cell } allot ;
-
-<DIRECT>
+TARGET <DIRECT>
 
 >>> #include <stddef.h>
 >>>
@@ -21,4 +14,5 @@ only FORTH also TARGET definitions also DIRECT
 <C> &DICT.forth_wordlist; dup
     <C> &DICT.current;                 !
     <C> &DICT.search_order[0];         !
-1 literal <C> &DICT.n_search_order;    !
+1 <C> &DICT.n_search_order;    !
+[

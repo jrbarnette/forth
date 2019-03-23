@@ -35,7 +35,7 @@ constant >IN
 
 prim: ABORT         x_abort
 
-<C> &DICT.base; 10 literal over !
+<C> &DICT.base; 10 over !
 constant BASE
 
 prim: CHAR          x_char

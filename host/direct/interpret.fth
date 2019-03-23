@@ -28,14 +28,12 @@
 \  THROW               9.6.1.2275 EXCEPTION              73
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
-<C> do_literal;    <C> DO_LITERAL_XT;   !
-
 <C> &DICT.to_in;
 constant >IN
 
 prim: ABORT         x_abort
 
-<C> &DICT.base; 10 over !
+<C> &DICT.base;
 constant BASE
 
 prim: CHAR          x_char

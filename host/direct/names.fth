@@ -19,8 +19,6 @@
 \  SEARCH-WORDLIST    16.6.1.2192 SEARCH                120
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
-<C> do_does; <C> DOES_XT; !
-
 prim: '                 x_tick
 prim: :                 x_colon
 

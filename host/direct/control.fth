@@ -19,11 +19,6 @@
 \  WHILE                 6.1.2430 CORE                   47
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
-<C> do_do;         <C> DO_DO_XT;      !
-<C> do_plus_loop;  <C> PLUS_LOOP_XT;  !
-<C> do_skip;       <C> SKIP_XT;       !
-<C> do_fskip;      <C> FSKIP_XT;      !
-
 prim: UNLOOP    x_unloop        no-interpret
 
 prim: +LOOP     x_plus_loop     compile-only

@@ -11,5 +11,6 @@
 \  \                     6.2.2535 CORE EXT               58
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
-: .( [char] ) parse type ; immediate
+\ XXX not yet ready to implement type in `target`
+\ : .( [char] ) parse type ; immediate
 : \ source >in ! drop ; immediate

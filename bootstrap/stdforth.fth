@@ -137,6 +137,7 @@ drop					( )
 
 : ." postpone s" postpone type ; immediate
 
+: .( [char] ) parse type ; immediate
 : ABORT"
     postpone if postpone ." postpone abort postpone then
 ; immediate

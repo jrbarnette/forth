@@ -1,26 +1,19 @@
 Where we are:
     Have source that can compile Forth into direct-mode code in C;
-    it generates the content for bootstrap/initdict.c.
+    it generates the content for bootstrap/initdict.c.  The build
+    process supports meta interpretation during dictionary building,
+    including colon definitions.
 
-    The compilation includes COMPILE-INPUT, in host/compile.fth.
-    So, we have a custom interpretation loop, which we need for
-    compilation to handle literals and Forth compilation state.
-
-Functional goal:
-    Start converting content in bootstrap/stdforth.fth into
+Current goals:
+    Convert selected content in bootstrap/stdforth.fth into
     definitions in their proper places under target/core.
 
-Next steps:
-    Extract INTERPRET-NAME, INTERPRET-NUMBER, and INTERPRET-UNKNOWN
-    from target/internal/interpret.fth, and rewrite them for
-    direct-mode compilation.  Use that to add meta-mode compilation,
-    or whatever else we pick.
+    See if we can eliminate selected static data from the
+    dictionary.
 
-My current thinking on what to do is in host/direct/meta-notes.txt.
+    Re-implement some compilation primitives like IF, ELSE, and THEN
+    in Forth.
 
-My current hold-up is discovering complexity in writing definitions
-when standard words (esp. [ and ]) depend on the current search
-order.
 ====
 Refactoring between rawdict and direct:
     duplication of c-value printing - c-string, c-hex, c-decimal

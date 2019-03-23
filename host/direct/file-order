@@ -19,4 +19,5 @@ host/direct/startdict.fth
     host/direct/control.fth
     host/direct/interpret.fth
     host/direct/fileprim.fth
+    host/direct/memops.fth
 host/direct/enddict.fth

@@ -1,11 +1,6 @@
 char = parse Copyright 2013, by J. Richard Barnette, All Rights Reserved. =
 drop drop
 
-: CHARS ;
-: CELLS 3 lshift ;
-: CELL+ [ 1 cells ] literal + ;
-: CHAR+ [ 1 chars ] literal + ;
-
 hex
 : GET-CURRENT [ forth-wordlist cell+ ] literal @ ;
 : FLAGS! get-current @ cell+ dup >r c@ or r> c! ;

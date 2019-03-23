@@ -13,7 +13,9 @@
     over >r chars + 0 swap r> do i c@ escape 1 chars +loop drop ;
 : c-string ( c-addr u -- ) [char] " emit escape-string [char] " emit ;
 : c-hex ( u -- c-addr u )
-    base @ >r hex 0 <# #s [char] x hold [char] 0 hold #> r> base ! ;
+    base @ >r hex
+    <# dup >r abs 0 #s [char] x hold [char] 0 hold r> sign #>
+    r> base ! ;
 
 : .exec ( c-addr u -- ) ." .handler = " type ;
 : .str ( c-addr u -- ) ." .id = " c-string ;

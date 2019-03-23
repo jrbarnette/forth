@@ -48,15 +48,6 @@ decimal
 : U> ( n1 n2 -- flag ) swap u< ;
 : WITHIN ( x1 x2 x3 -- flag ) over - >r - r> u< ;
 
-\ memops - CORE
-: ALIGNED ( addr -- a-addr )
-    [ 1 cells 1- ] literal + [ -1 cells ] literal and ;
-: +! ( x a-addr -- ) dup >r @ + r> ! ;
-: 2! ( x1 x2 a-addr -- ) swap over ! cell+ ! ;
-: 2@ ( a-addr -- x1 x2 ) dup cell+ @ swap @ ;
-: COUNT ( c-addr -- c-addr u ) dup char+ swap c@ ;
-
-
 \ compile - CORE
 : COMPILE, ( xt -- ) , ; no-interpret
 : LOOP 1 postpone literal postpone +loop ; compile-only

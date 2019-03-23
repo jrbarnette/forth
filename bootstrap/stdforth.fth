@@ -1,5 +1,4 @@
-char = parse Copyright 2013, by J. Richard Barnette, All Rights Reserved. =
-drop drop
+\ Copyright 2013, by J. Richard Barnette, All Rights Reserved.
 
 hex
 : GET-CURRENT [ forth-wordlist cell+ ] literal @ ;
@@ -9,11 +8,7 @@ hex
 : COMPILE-ONLY  c0 flags! ;
 decimal
 
-: \ source >in ! drop ; immediate
-\ Whew! Now we can write real comments!
-
 : [CHAR] char postpone literal ; compile-only
-: ( [char] ) parse drop drop ; immediate
 : ['] ' postpone literal ; compile-only
 
 32 constant BL
@@ -142,7 +137,6 @@ drop					( )
 
 : ." postpone s" postpone type ; immediate
 
-: .( [char] ) parse type ; immediate
 : ABORT"
     postpone if postpone ." postpone abort postpone then
 ; immediate

@@ -84,7 +84,11 @@ only FORTH also TARGET definitions META
 
 : LITERAL meta-literal ;
 direct: <C> { s" do_literal" .exec }{ [char] ; parse .cell } meta-literal ;
-direct: [compile] { s" i_compile" .exec }{ parse-name .str } ;
+direct: [COMPILE] { s" i_compile" .exec }{ parse-name .str } ;
+direct: [CHAR] char { s" do_literal" .exec }{ c-hex .cell } meta-literal ;
+\ POSTPONE
+\ S"
+\ [']
 
 meta-immediate +LOOP
 meta-immediate BEGIN

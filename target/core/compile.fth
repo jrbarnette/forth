@@ -1,15 +1,11 @@
 \ Copyright 2013, by J. Richard Barnette, All Rights Reserved.
 \ ------  ------  ------  ------  ------  ------  ------  ------
-\ LITERAL               6.1.1780 CORE                   41
-\ POSTPONE              6.1.2033 CORE                   43
-\ S"                    6.1.2165 CORE                   44
-\ [']                   6.1.2510 CORE                   48
-\ [CHAR]                6.1.2520 CORE                   49
+\  LITERAL               6.1.1780 CORE                   41
+\  RECURSE               6.1.2120 CORE                   43
+\  S"                    6.1.2165 CORE                   44
+\  [']                   6.1.2510 CORE                   48
+\  [CHAR]                6.1.2520 CORE                   49
 \ ------  ------  ------  ------  ------  ------  ------  ------
-
-\ anonymous defintions
-\ create-prim do-literal
-\ target definitions
 
 : LITERAL ( x -- ) postpone do-literal , ; immediate \ no-interpret
 : [CHAR] ( "<spaces>name" -- ) char postpone literal ;
@@ -33,9 +29,9 @@ immediate \ no-interpret
 ; immediate \ no-interpret
 
 \ ------  ------  ------  ------  ------  ------  ------  ------
-\ C"                    6.2.0855 CORE EXT               52
-\ COMPILE,              6.2.0945 CORE EXT               52
-\ [COMPILE]             6.2.2530 CORE EXT               58
+\  C"                    6.2.0855 CORE EXT               52
+\  COMPILE,              6.2.0945 CORE EXT               52
+\  [COMPILE]             6.2.2530 CORE EXT               58
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
 : C" ( "ccc<quote>" -- )

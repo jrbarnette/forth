@@ -1,12 +1,12 @@
 # Copyright 2016, by J. Richard Barnette, All Rights Reserved.
 target/internal/chartype.fth
 target/internal/namespace.fth
-host/direct/start-target.fth
+host/direct/direct.fth
     host/direct/dictionary.fth
     host/direct/stackprim.fth
     host/direct/arithprim.fth
     host/direct/memprim.fth
-host/direct/finish-target.fth
+host/direct/target.fth
 host/direct/meta-compile.fth
 host/direct/startdict.fth
     host/direct/dictionary.fth

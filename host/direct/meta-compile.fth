@@ -5,7 +5,7 @@ only FORTH definitions
 
 : INTERPRET-NAME ( i*x xt flags -- j*x ) drop execute ;
 
-: INTERPRET-NUMBER ( x -- | x )
+: INTERPRET-NUMBER ( x -- )
     direct-emit { s" do_literal" .exec }{ c-hex .cell } meta-literal ;
 
 : INTERPRET-UNKNOWN ( str len -- )
@@ -21,19 +21,23 @@ only FORTH definitions
     ?dup if name>xt+flags interpret-name false else true then
 ;
 
-: ?TRY-NUMBER ( str len -- -1 | x? 0 )
-    base @ >r over c@                       ( str len sign? ) ( R: base )
+: ?TRY-NUMBER ( str len -- -1 | x 0 )
+    base @ >r over c@                       ( str len base? ) ( R: base )
     dup [char] # = if drop 10 true else
     dup [char] $ = if drop 16 true else
         [char] % = if 2 true else false then then then
+    ( str len base true | str len false ) ( R: base )
     if base ! 1- swap char+ swap then
-    over c@ [char] - =                      ( c-addr u neg? )
-    swap over + >r swap over chars - >r     ( neg? ) ( R: base u' c-addr' )
-    0 dup r> r> >number if                  ( neg? ul uh c-addr' )
+    ?dup 0= if r> base ! 2drop true exit then
+    over c@ [char] - = swap over +          ( c-addr neg? u' ) ( R: base )
+    ?dup 0= if r> base ! 2drop true exit then
+    \ we have at least one digit
+    >r swap over chars - >r             ( neg? ) ( R: base u' c-addr' )
+    0 dup r> r> >number if              ( neg? ul uh c-addr' )
         2drop 2drop true
-    else                                    ( neg? ul uh c-addr' )
+    else                                ( neg? ul uh c-addr' )
         2drop swap if negate then
-	interpret-number false
+        interpret-number false
     then r> base !
 ;
 

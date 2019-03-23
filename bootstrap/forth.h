@@ -292,6 +292,8 @@ extern void interpret_string(vmstate_p, char *);
 #define COMPILE(vm, xt)	COMMA(vm, xt)
 #define XALIGN(vm)	(DICT.here = XALIGNED(DICT.here))
 
+extern vminstr_d initialize_forth[];
+
 extern char init_forth_defs[];
 
 #endif

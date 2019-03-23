@@ -305,7 +305,12 @@ meta_interpret(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     while (ip->id != NULL) {
         name_p name = lookup(vm, (c_addr_ft) ip->id, strlen(ip->id));
 	if (name == NULL) {
-	    fprintf(stderr, "name %s not found\n", ip->id);
+            /*
+             * XXX ptrdiff_t wants %ld for 64-bit systems, but this
+             * could cause warnings on 32-bit systems.
+             */
+	    fprintf(stderr, "name '%s' not found at offset %ld\n",
+                    ip->id, ip - initialize_forth);
 	    abort();
 	}
 	xt_ft xtok = NAME_XT(name);
@@ -322,7 +327,12 @@ meta_compile(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     while (ip->id != NULL) {
         name_p name = lookup(vm, (c_addr_ft) ip->id, strlen(ip->id));
 	if (name == NULL) {
-	    fprintf(stderr, "name %s not found\n", ip->id);
+            /*
+             * XXX ptrdiff_t wants %ld for 64-bit systems, but this
+             * could cause warnings on 32-bit systems.
+             */
+	    fprintf(stderr, "name '%s' not found at offset %ld\n",
+                    ip->id, ip - initialize_forth);
 	    abort();
 	}
 	xt_ft xtok = NAME_XT(name);

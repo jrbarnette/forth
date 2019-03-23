@@ -14,8 +14,6 @@
  * code stored in arrays.
  */
 
-extern vminstr_d initialize_forth[];
-
 /* direct threaded primitives */
 extern vminstr_p i_call(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p i_startname(vminstr_p, vmstate_p, vmarg_p);

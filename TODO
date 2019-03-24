@@ -15,6 +15,19 @@ Current goals:
     in Forth.
 
 ====
+Clean-up
+
+Need meta POSTPONE; then we can move key parts of control.fth into
+target/core.
+
+Want to close down uses of direct-emit to restrict it to direct.fth.
+That means tinkering with the factoring around literal handling.
+
+Maybe move INTERPRET-NAME, INTERPRET-UNKNOWN, and INTERPRET-NUMBER
+from meta-compile to target.  The relationships amongst these bits
+needs a good looking at.
+
+====
 Refactoring between rawdict and direct:
     duplication of c-value printing - c-string, c-hex, c-decimal
     want to share things like .{ and },

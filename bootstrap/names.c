@@ -155,17 +155,6 @@ i_setflags(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-vminstr_p
-i_compile(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    char *id = ip->id;
-    cell_ft len = strlen(id);
-    name_p nm = lookup(vm, (c_addr_ft) id, len);
-    COMPILE(vm, NAME_XT(nm));
-    return ip + 1;
-}
-
-
 /* -------------------------------------------------------------- */
 
 /* ( "<spaces>name" -- xt ) */

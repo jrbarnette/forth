@@ -20,7 +20,6 @@ extern vminstr_p i_startname(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p i_addname(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p i_linkname(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p i_setflags(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p i_compile(vminstr_p, vmstate_p, vmarg_p);
 
 /* meta-interpretation direct threaded primitives */
 extern vminstr_p meta_interpret(vminstr_p, vmstate_p, vmarg_p);
@@ -174,7 +173,6 @@ extern vminstr_p x_write_file(vminstr_p, vmstate_p, vmarg_p);
 #define L(x)		X(do_literal) N(x)
 #define PRIM(nm, hdlr)	X(i_addname) S(nm) { .handler = hdlr },
 #define FLAGS(f)	X(i_setflags) { .cell = NAME_TYPE_ ## f },
-#define XCOMPILE(nm)	X(i_compile) S(nm)
 
 #define META		X(meta_interpret)
 #define DIRECT		S(NULL)

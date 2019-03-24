@@ -103,6 +103,7 @@
 \	IF-FALSE goto L0
 \	UNLOOP
 \
+\
 \     DO a IF LEAVE THEN b +LOOP
 \	DO-DO
 \ L0:
@@ -116,45 +117,15 @@
 \ L2:
 \	UNLOOP
 \
+\
 \     ?DO a +LOOP
-\	-> 2DUP = IF 2DROP ELSE DO a +LOOP THEN
-\     ?DO a +LOOP
-\	2DUP
-\	=
-\	IF-FALSE goto L0
-\	2DROP
-\	goto L2
-\ L0:
 \	DO-DO
-\ L1:
+\       R@
+\       IF-FALSE goto L1
+\ L0:
 \	a
 \	DO-+LOOP
-\	IF-FALSE goto L1
-\	UNLOOP
-\ L2:
-
-\ alternative do-loops
-\     DO a +LOOP
-\	DO-DO
-\ L0:
-\	a
-\	DO-+LOOP goto L0
-\	UNLOOP
-\
-\     ?DO a +LOOP
-\	DO-?DO goto L1
-\ L0:
-\	a
-\	DO-+LOOP goto L0
-\	UNLOOP
-\ L1:
-\
-\     ?DO a +LOOP
-\	DO-DO
-\	DO-?DO goto L1
-\ L0:
-\	a
-\	DO-+LOOP goto L0
+\	IF-FALSE goto L0
 \ L1:
 \	UNLOOP
 

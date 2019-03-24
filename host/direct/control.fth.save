@@ -17,6 +17,7 @@
 \  UNLOOP                6.1.2380 CORE                   47
 \  UNTIL                 6.1.2390 CORE                   47
 \  WHILE                 6.1.2430 CORE                   47
+\  AGAIN                 6.2.0700 CORE EXT               51
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
 \ <MARK
@@ -32,35 +33,27 @@ here <C> do_colon; , ] here [ 1 cells ] literal allot exit [
 here <C> do_fskip; ,
 
 ( C: >mark ?branch )
-\ : IF postpone ?branch >mark ; compile-only
 : IF ( C: -- orig ) [ over ] literal , [ rot swap over , ] ; compile-only
 
-( C: ?branch >mark )
+swap ( C: >mark ?branch )
 \ <RESOLVE ( C: dest -- )
 here <C> do_colon; , ] here - [ 1 cells ] literal / , exit [
 
-rot ( C: >mark <resolve ?branch )
-\ : UNTIL postpone ?branch <resolve ; compile-only
+swap ( C: >mark <resolve ?branch )
 : UNTIL ( C: dest -- ) [ swap ] literal , [ over , ] ; compile-only
-
 ( C: >mark <resolve )
+
 \ BRANCH
 here <C> do_skip; ,
-
 ( C: >mark <resolve branch )
-\ : AGAIN postpone branch <resolve ; compile-only
-\ : REPEAT postpone again postpone then ; compile-only
-: REPEAT ( C: orig dest -- )
-    [ over ] literal , [ rot , ] [compile] then ; compile-only
-
+: AGAIN ( C: dest -- ) [ over ] literal , [ rot , ] ; compile-only
 ( C: >mark branch )
-\ : ELSE postpone branch >mark swap postpone then ; compile-only
-: ELSE ( C: orig1 -- orig2 )
-    [ swap ] literal , [ swap , ] swap [compile] then ; compile-only
+
+: ELSE ( C: orig1 -- orig2 ) [ swap ] literal , [ swap , ] ; compile-only
 ( C: )
 
-\ prim: WHILE     x_while         compile-only
 : WHILE ( C: dest -- orig dest ) [compile] if swap ; compile-only
+: REPEAT ( C: orig dest -- ) [compile] again [compile] then ; compile-only
 
 prim: UNLOOP    x_unloop        no-interpret
 prim: +LOOP     x_plus_loop     compile-only

@@ -59,7 +59,6 @@ here <C> do_skip; ,
     [ swap ] literal , [ swap , ] swap [compile] then ; compile-only
 ( C: )
 
-\ prim: WHILE     x_while         compile-only
 : WHILE ( C: dest -- orig dest ) [compile] if swap ; compile-only
 
 prim: UNLOOP    x_unloop        no-interpret

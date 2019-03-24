@@ -83,4 +83,4 @@ variable leavers 0 leavers !
 \ OF                    6.2.1950 CORE EXT               54
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
-: AGAIN ( C: dest -- ) postpone skip dest, ; immediate
+: AGAIN ( C: dest -- ) postpone branch <resolve ; immediate

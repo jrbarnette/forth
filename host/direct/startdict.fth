@@ -18,10 +18,6 @@ TARGET <DIRECT>
 \ 	name_p *	search_order[MAX_SEARCH_ORDER];
 \
 \ 	definition_d	literal_instr;	    /* for LITERAL runtime xt */
-\ 	definition_d	skip_instr;	    /* for ELSE runtime xt */
-\ 	definition_d	fskip_instr;	    /* for IF runtime xt */
-\ 	definition_d	do_instr;	    /* for DO runtime xt */
-\ 	definition_d	plus_loop_instr;    /* for +LOOP runtime xt */
 \ 	definition_d	does_instr;	    /* for DOES> runtime xt */
 \
 \ 	cell_ft		state;		    /* STATE */
@@ -46,10 +42,6 @@ TARGET <DIRECT>
 \ search order 1..7 initialized to 0
 1                           <C> &DICT.n_search_order;   !
 <C> do_literal;             <C> &DICT.literal_instr;    !
-<C> do_skip;                <C> &DICT.skip_instr;       !
-<C> do_fskip;               <C> &DICT.fskip_instr;      !
-<C> do_do;                  <C> &DICT.do_instr;         !
-<C> do_plus_loop;           <C> &DICT.plus_loop_instr;  !
 <C> do_does;                <C> &DICT.does_instr;       !
 0                           <C> &DICT.state;            !
 10                          <C> &DICT.base;             !

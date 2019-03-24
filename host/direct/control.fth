@@ -45,12 +45,6 @@ here <C> do_fskip; ,
 : ELSE ( C: orig1 -- orig2 ) >branch swap >resolve ; compile-only
 : WHILE ( C: dest -- orig dest ) >?branch swap ; compile-only
 
-\ prim: +LOOP     x_plus_loop     compile-only
-\ [compile] UNLOOP
-
-\ prim: DO        x_do            compile-only
-\ prim: LEAVE     c_leave         compile-only
-
 variable LEAVERS 0 leavers !
 
 here <C> do_do; ,

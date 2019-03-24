@@ -16,20 +16,21 @@
 \ WHILE                 6.1.2430 CORE                   47
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
-\ anonymous defintions
-\ create-prim skip
-\ create-prim fskip
-: dest, ( dest -- ) here cell+ - , ;
-: orig> ( -- orig ) here 1 cells allot ;
-\ target definitions
+\ Forth-83 extension words
+\ prim: BRANCH  do_skip
+\ prim: ?BRANCH do_fskip
+: >MARK ( C: -- orig ) here [ 1 cells ] literal allot ;
+: >RESOLVE ( C: orig -- ) here [ 1 cells ] literal - over - swap ! ;
+: <MARK ( C: -- dest ) here ;
+: <RESOLVE ( C: dest -- ) here - [ 1 cells ] literal / , ;
 
-: THEN ( C: orig -- ) here 1 cells - over - swap ! ; immediate
-: BEGIN ( C: -- dest) here ; immediate
+: THEN ( C: orig -- ) >resolve ; immediate
+: BEGIN ( C: -- dest) <mark ; immediate
 : ELSE ( C: orig1 -- orig2 )
-    postpone skip orig> swap postpone then ; immediate
-: IF ( C: -- orig ) postpone fskip orig> ; immediate
+    postpone branch >mark swap postpone then ; immediate
+: IF ( C: -- orig ) postpone ?branch >mark ; immediate
 : WHILE ( C: dest -- orig dest ) postpone if swap ; immediate
-: UNTIL ( C: dest -- ) postpone fskip dest, ; immediate
+: UNTIL ( C: dest -- ) postpone ?branch <resolve ; immediate
 : REPEAT ( C: orig dest -- ) postpone again postpone then ; immediate
 
 \ anonymous defintions

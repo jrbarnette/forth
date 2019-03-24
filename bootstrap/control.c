@@ -14,18 +14,11 @@
 
 //------  ------  ------  ------  ------  ------  ------  ------
 // +LOOP                 6.1.0140 CORE                   27
-// BEGIN                 6.1.0760 CORE                   34
 // DO                    6.1.1240 CORE                   36
-// ELSE                  6.1.1310 CORE                   37
 // I                     6.1.1680 CORE                   39
-// IF                    6.1.1700 CORE                   40
 // J                     6.1.1730 CORE                   40
 // LEAVE                 6.1.1760 CORE                   41
-// REPEAT                6.1.2140 CORE                   44
-// THEN                  6.1.2270 CORE                   46
 // UNLOOP                6.1.2380 CORE                   47
-// UNTIL                 6.1.2390 CORE                   47
-// WHILE                 6.1.2430 CORE                   47
 //------  ------  ------  ------  ------  ------  ------  ------
 
 
@@ -185,95 +178,5 @@ x_unloop(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_RPOP(vm, 2);
     SET_RSP(vm, RSP(vm), 2);
-    return ip;
-}
-
-
-/* ( C: -- dest ) compilation semantics */
-vminstr_p
-x_begin(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    CHECK_PUSH(vm, 1);
-    PUSH(vm, (cell_ft) HERE);
-    return ip;
-}
-
-
-/* ( C: orig1 -- orig2 ) compilation semantics */
-vminstr_p
-x_else(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    vminstr_p orig1;
-    vminstr_p orig2;
-
-    CHECK_POP(vm, 1);
-    orig1 = (vminstr_p)POP(vm);
-    orig2 = compile_skip(vm, SKIP_XT);
-    patch(orig1, (vminstr_p)HERE);
-    PUSH(vm, (cell_ft)orig2);
-    return ip;
-}
-
-
-/* ( C: -- orig ) compilation semantics */
-vminstr_p
-x_if(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    CHECK_PUSH(vm, 1);
-    PUSH(vm, (cell_ft) compile_skip(vm, FSKIP_XT));
-    return ip;
-}
-
-
-/* ( C: orig dest -- ) compilation semantics */
-vminstr_p
-x_repeat(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    vminstr_p dest;
-    vminstr_p orig;
-
-    CHECK_POP(vm, 2);
-    dest = (vminstr_p) POP(vm);
-    orig = (vminstr_p) POP(vm);
-    patch(compile_skip(vm, SKIP_XT), dest);
-    patch(orig, (vminstr_p) HERE);
-    return ip;
-}
-
-
-/* ( C: orig -- ) compilation semantics */
-vminstr_p
-x_then(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    CHECK_POP(vm, 1);
-    patch((vminstr_p) POP(vm), (vminstr_p) HERE);
-    return ip;
-}
-
-
-/* ( C: dest -- ) compilation semantics */
-vminstr_p
-x_until(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    vminstr_p dest;
-
-    CHECK_POP(vm, 1);
-    dest = (vminstr_p) POP(vm);
-    patch(compile_skip(vm, FSKIP_XT), dest);
-    return ip;
-}
-
-
-/* ( C: dest -- orig dest ) compilation semantics */
-vminstr_p
-x_while(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    cell_ft dest;
-
-    CHECK_PUSH(vm, 1);
-    CHECK_POP(vm, 1);
-    dest = POP(vm);
-    PUSH(vm, (cell_ft) compile_skip(vm, FSKIP_XT));
-    PUSH(vm, dest);
     return ip;
 }

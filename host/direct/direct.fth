@@ -36,10 +36,10 @@ variable emit-state  0 emit-state !
 	    dup 1- if s" meta_compile" else s" meta_interpret" then
 	    0 .offset { .exec }
 	then
-    then emit-state !
+    then dup emit-state ! if 4 else 0 then .offset
 ;
-: direct-emit ( -- ) 0 emit-state! 0 .offset ;
-: meta-emit ( name len state -- ) emit-state! 4 .offset { .str } ;
+: direct-emit ( -- ) 0 emit-state! ;
+: meta-emit ( name len state -- ) emit-state! { .str } ;
 : meta-interpret ( name len -- ) 1 meta-emit ;
 : meta-compile ( name len -- ) 2 meta-emit ;
 

@@ -1,6 +1,26 @@
 \  Copyright 2019, by J. Richard Barnette. All Rights Reserved.
 
-only FORTH also TARGET definitions META
+only FORTH definitions
+
+variable meta-state  0 meta-state !
+vocabulary TARGET
+: <META> meta-state ! only target ;
+: meta[ 1 <META> ;
+: ]meta 2 <META> ;
+: meta-literal
+    meta-state @ 2 = if s" LITERAL" meta-interpret then ;
+: meta-immediate align here create name>id , , does> 2@ meta-interpret ;
+
+: handler? ?dup 0= if parse-name then ;
+
+direct: do-name { .exec }{ parse-name .str }{ handler? .exec } ;
+direct: linkname { s" i_linkname" .exec } ;
+direct: setflags { s" i_setflags" .exec }{ c-hex .cell } ;
+
+: addname s" i_addname" do-name ;
+: start-: s" do_colon" s" i_startname" do-name ;
+
+also TARGET definitions previous
 : <HOST> only forth ;
 : <DIRECT> 0 <META> also direct ;
 : \ postpone \ ;

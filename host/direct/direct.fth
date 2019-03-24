@@ -1,5 +1,7 @@
 \  Copyright 2019, by J. Richard Barnette. All Rights Reserved.
 
+only FORTH definitions
+
 : escape-nul ( #nul -- ) ?dup if 0 do ." \0" loop ." 00" then ;
 : escape-graphic ( c -- )
     dup [char] \ = over [char] " = or if [char] \ emit then emit ;
@@ -22,13 +24,14 @@
 : .cell ( c-addr u -- ) ." .cell = (cell_ft) (" type [char] ) emit ;
 
 variable offset      0 offset !
-variable meta-state  0 meta-state !
-variable emit-state  0 emit-state !
 
-: .offset ( n -- ) ." /* " offset @ 3 .r ."  */ " spaces ;
 : { ." { " ;
 : }{ ."  }, { " 1 offset +! ;
 : } ."  }," cr 1 offset +! ;
+
+: .offset ( n -- ) ." /* " offset @ 3 .r ."  */ " spaces ;
+
+variable emit-state  0 emit-state !
 : emit-state!
     dup emit-state @ <> if
 	emit-state @ if 4 .offset { ." .id = NULL" } then
@@ -40,35 +43,20 @@ variable emit-state  0 emit-state !
 ;
 : direct-emit ( -- ) 0 emit-state! ;
 : meta-emit ( name len state -- ) emit-state! { .str } ;
+
 : meta-interpret ( name len -- ) 1 meta-emit ;
 : meta-compile ( name len -- ) 2 meta-emit ;
-
 : direct: : postpone direct-emit ;
-direct: setflags { s" i_setflags" .exec }{ c-hex .cell } ;
 
-: handler? ?dup 0= if parse-name then ;
-direct: do-name { .exec }{ parse-name .str }{ handler? .exec } ;
-: addname s" i_addname" do-name ;
-: start-: s" do_colon" s" i_startname" do-name ;
-direct: linkname { s" i_linkname" .exec } ;
-
-vocabulary TARGET
 vocabulary DIRECT
-vocabulary META
 
-: <META> meta-state ! only target ;
-: meta[ 1 <META> ;
-: ]meta 2 <META> ;
-: meta-literal
-    meta-state @ 2 = if s" LITERAL" meta-interpret then ;
-: meta-immediate align here create name>id , , does> 2@ meta-interpret ;
-
-\ Can't have these be in either FORTH or TARGET search orders
-also META definitions
+\ We only need these while building up the DIRECT vocabulary.
+vocabulary BUILD-DIRECT
+also BUILD-DIRECT definitions
 : prim: create parse-name dup , chars here swap dup allot move
      does> direct-emit { dup cell+ swap @ .exec } ;
 : IMMEDIATE    ;
 : NO-INTERPRET ;
 : COMPILE-ONLY ;
 
-only FORTH also META also DIRECT definitions
+only FORTH also BUILD-DIRECT also DIRECT definitions

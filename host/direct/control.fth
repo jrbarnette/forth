@@ -19,47 +19,31 @@
 \  WHILE                 6.1.2430 CORE                   47
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
-\ <MARK
-: BEGIN ( C: -- dest ) here ; compile-only
+\ FORTH-83 - System Extension Word Set
+: <MARK ( -- dest ) here ;
+: <RESOLVE ( dest -- ) here - [ 1 cells ] literal / , ;
+: >MARK ( -- orig ) here [ 1 cells ] literal allot ;
+: >RESOLVE ( orig -- ) here over - [ 1 cells ] literal / swap ! ;
 
-\ >RESOLVE
-: THEN ( C: orig -- ) here over - [ 1 cells ] literal / swap ! ; compile-only
-
-\ >MARK ( C: -- orig )
-here <C> do_colon; , ] here [ 1 cells ] literal allot exit [
-
-\ ?BRANCH
-here <C> do_fskip; ,
-
-( C: >mark ?branch )
-\ : IF postpone ?branch >mark ; compile-only
-: IF ( C: -- orig ) [ over ] literal , [ rot swap over , ] ; compile-only
-
-( C: ?branch >mark )
-\ <RESOLVE ( C: dest -- )
-here <C> do_colon; , ] here - [ 1 cells ] literal / , exit [
-
-rot ( C: >mark <resolve ?branch )
-\ : UNTIL postpone ?branch <resolve ; compile-only
-: UNTIL ( C: dest -- ) [ swap ] literal , [ over , ] ; compile-only
-
-( C: >mark <resolve )
-\ BRANCH
+\ prim: BRANCH    do_skip
 here <C> do_skip; ,
+: >BRANCH ( -- orig ) [ over ] literal , >mark ;
+: <BRANCH ( dest -- ) [ swap ] literal , <resolve ;
 
-( C: >mark <resolve branch )
-\ : AGAIN postpone branch <resolve ; compile-only
-\ : REPEAT postpone again postpone then ; compile-only
-: REPEAT ( C: orig dest -- )
-    [ over ] literal , [ rot , ] [compile] then ; compile-only
+\ prim: ?BRANCH   do_fskip
+here <C> do_fskip; ,
+: >?BRANCH ( -- orig ) [ over ] literal , >mark ;
+: <?BRANCH ( dest -- ) [ swap ] literal , <resolve ;
 
-( C: >mark branch )
-\ : ELSE postpone branch >mark swap postpone then ; compile-only
-: ELSE ( C: orig1 -- orig2 )
-    [ swap ] literal , [ swap , ] swap [compile] then ; compile-only
-( C: )
-
-: WHILE ( C: dest -- orig dest ) [compile] if swap ; compile-only
+: BEGIN ( C: -- dest ) <mark ; compile-only
+: THEN ( C: orig -- ) >resolve ; compile-only
+: IF ( C: -- orig ) >?branch ; compile-only
+: UNTIL ( C: dest -- ) <?branch ; compile-only
+\ : AGAIN <branch ; compile-only
+\ : REPEAT [compile] again [compile] then ; compile-only
+: REPEAT ( C: orig dest -- ) <branch >resolve ; compile-only
+: ELSE ( C: orig1 -- orig2 ) >branch swap >resolve ; compile-only
+: WHILE ( C: dest -- orig dest ) >?branch swap ; compile-only
 
 prim: UNLOOP    x_unloop        no-interpret
 prim: +LOOP     x_plus_loop     compile-only

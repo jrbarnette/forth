@@ -45,11 +45,26 @@ here <C> do_fskip; ,
 : ELSE ( C: orig1 -- orig2 ) >branch swap >resolve ; compile-only
 : WHILE ( C: dest -- orig dest ) >?branch swap ; compile-only
 
-prim: UNLOOP    x_unloop        no-interpret
-prim: +LOOP     x_plus_loop     compile-only
-[compile] UNLOOP
+\ prim: +LOOP     x_plus_loop     compile-only
+\ [compile] UNLOOP
 
-prim: DO        x_do            compile-only
+\ prim: DO        x_do            compile-only
+\ prim: LEAVE     c_leave         compile-only
+
+variable LEAVERS 0 leavers !
+
+here <C> do_do; ,
+: DO ( C: -- do-sys )
+    [ swap ] literal , leavers @ 0 leavers ! <mark ; compile-only
+: LEAVE >branch leavers @ over ! leavers ! ; compile-only
+
+prim: UNLOOP    x_unloop        no-interpret
+here 1 cells -
 prim: I         x_i             no-interpret
 prim: J         x_j             no-interpret
-prim: LEAVE     c_leave         compile-only
+
+here <C> do_plus_loop; ,
+: +LOOP ( C: do-sys -- )
+    [ swap ] literal , <?branch leavers @ swap leavers !
+    begin dup while dup >resolve @ repeat drop [ swap ] literal ,
+; compile-only

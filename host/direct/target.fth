@@ -67,4 +67,4 @@ only FORTH also TARGET definitions DIRECT
 \ N.B. "," and "allot" here must come from the DIRECT vocabulary
 : CONSTANT s" do_constant" addname , ;
 : VARIABLE s" do_variable" addname
-    { s" do_literal" .exec }{ s" CELL_SIZE" .cell } allot ;
+    direct-emit { s" do_literal" .exec }{ s" CELL_SIZE" .cell } allot ;

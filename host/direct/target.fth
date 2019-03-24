@@ -13,7 +13,7 @@ only FORTH also TARGET definitions META
 
 : LITERAL meta-literal ;
 direct: <C> { s" do_literal" .exec }{ [char] ; parse .cell } meta-literal ;
-direct: [COMPILE] { s" i_compile" .exec }{ parse-name .str } ;
+: [COMPILE] parse-name meta-compile ;
 direct: [CHAR] char { s" do_literal" .exec }{ c-hex .cell } meta-literal ;
 \ POSTPONE
 \ S"
@@ -45,6 +45,6 @@ decimal
 only FORTH also TARGET definitions DIRECT
 
 \ N.B. "," and "allot" here must come from the DIRECT vocabulary
-: CONSTANT s" do_constant" addname direct-emit , ;
+: CONSTANT s" do_constant" addname , ;
 : VARIABLE s" do_variable" addname
-    direct-emit { s" do_literal" .exec }{ s" CELL_SIZE" .cell } allot ;
+    { s" do_literal" .exec }{ s" CELL_SIZE" .cell } allot ;

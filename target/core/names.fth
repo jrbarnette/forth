@@ -55,10 +55,12 @@ base !
 : VARIABLE ( "<spaces>name" -- ) mcp-variable create-name 0 , ;
 : CREATE ( "<spaces>name" -- )
     mcp-create create-name [ here 3 cells + ] literal , ;
-: DOES> ( C: colon-sys2 -- colon-sys2 )
-    postpone exit here over >xt cell+ !
-; immediate
 : >BODY ( xt -- a-addr ) [ 2 cells ] literal + ;
+: DO-DOES> get-current @ name>xt >body [ 1 cells ] literal - ! ;
+: DOES> ( C: colon-sys2 -- colon-sys2 )
+    here cell+ >r
+    0 postpone literal postpone do-does> postpone exit
+    here r> ! ; immediate
 
 \ ------  ------  ------  ------  ------  ------  ------  ------
 \ :NONAME               6.2.0455 CORE EXT               51

@@ -21,7 +21,8 @@ only FORTH definitions
 
 : .exec ( c-addr u -- ) ." .handler = " type ;
 : .str ( c-addr u -- ) ." .id = " c-string ;
-: .cell ( c-addr u -- ) ." .cell = (cell_ft) (" type [char] ) emit ;
+: .expr ( c-addr u -- ) ." .cell = (cell_ft) (" type [char] ) emit ;
+: .cell ( u -- ) c-hex .expr ;
 
 variable offset      0 offset !
 
@@ -47,6 +48,10 @@ variable emit-state  0 emit-state !
 : meta-interpret ( name len -- ) 1 meta-emit ;
 : meta-compile ( name len -- ) 2 meta-emit ;
 : direct: : postpone direct-emit ;
+
+direct: do-literal { s" do_literal" .exec }{ execute } ;
+: direct-expr ['] .expr do-literal ;
+: direct-literal ['] .cell do-literal ;
 
 vocabulary DIRECT
 

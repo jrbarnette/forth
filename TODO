@@ -18,10 +18,7 @@ Current goals:
 Clean-up
 
 Need meta POSTPONE; then we can move key parts of control.fth into
-target/core.
-
-Want to close down uses of direct-emit to restrict it to direct.fth.
-That means tinkering with the factoring around literal handling.
+target/core.  Also, DOES> (probably others) need this, too.
 
 Maybe move INTERPRET-NAME, INTERPRET-UNKNOWN, and INTERPRET-NUMBER
 from meta-compile to target.  The relationships amongst these bits

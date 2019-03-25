@@ -15,10 +15,9 @@ vocabulary TARGET
 
 direct: do-name { .exec }{ parse-name .str }{ handler? .exec } ;
 direct: linkname { s" i_linkname" .exec } ;
-direct: setflags { s" i_setflags" .exec }{ c-hex .cell } ;
+direct: setflags { s" i_setflags" .exec }{ .cell } ;
 
 : addname s" i_addname" do-name ;
-: start-: s" do_colon" s" i_startname" do-name ;
 
 also TARGET definitions previous
 : <HOST> only forth ;
@@ -29,12 +28,13 @@ also TARGET definitions previous
 : [ META[ ;
 : ] ]META ;
 
+: prim: 0 addname ;
+
 : >>> source >in @ over >in ! swap over - >r chars + r> type cr ;
 
-: LITERAL meta-literal ;
-direct: <C> { s" do_literal" .exec }{ [char] ; parse .cell } meta-literal ;
+: <C> [char] ; parse direct-expr meta-literal ;
 : [COMPILE] parse-name meta-compile ;
-direct: [CHAR] char { s" do_literal" .exec }{ c-hex .cell } meta-literal ;
+: [CHAR] char direct-literal meta-literal ;
 \ POSTPONE
 \ S"
 \ [']
@@ -45,26 +45,34 @@ meta-immediate DO
 meta-immediate DOES>
 meta-immediate ELSE
 meta-immediate IF
+meta-immediate LITERAL
 meta-immediate LOOP
 meta-immediate REPEAT
 meta-immediate THEN
 meta-immediate UNTIL
 meta-immediate WHILE
 
+\ XXX From here to the end, the definitions we're creating only
+\ provide correct behavior in meta-interpret mode.
+\
+\ For now, nothing needs to compile these names, so it works.
+\
+\ Eventually, we may need some way to mark definitions as "in
+\ compilation state, compile this name, even though it's in the
+\ TARGET vocabulary".  Or maybe, we just need a special defining
+\ word that makes these definitions change behavior based on
+\ meta-state.
 hex
 : IMMEDIATE    80 setflags ;
 : NO-INTERPRET 40 setflags ;
 : COMPILE-ONLY c0 setflags ;
 decimal
 
-: prim: 0 addname ;
-
-: : start-: ]meta ;
+: : s" do_colon" s" i_startname" do-name ]meta ;
 : ; s" EXIT" meta-compile linkname meta[ ;
 
-only FORTH also TARGET definitions DIRECT
+also DIRECT
 
 \ N.B. "," and "allot" here must come from the DIRECT vocabulary
 : CONSTANT s" do_constant" addname , ;
-: VARIABLE s" do_variable" addname
-    direct-emit { s" do_literal" .exec }{ s" CELL_SIZE" .cell } allot ;
+: VARIABLE s" do_variable" addname s" CELL_SIZE" direct-expr allot ;

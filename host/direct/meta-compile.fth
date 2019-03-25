@@ -5,8 +5,7 @@ only FORTH definitions
 
 : INTERPRET-NAME ( i*x xt flags -- j*x ) drop execute ;
 
-: INTERPRET-NUMBER ( x -- )
-    direct-emit { s" do_literal" .exec }{ c-hex .cell } meta-literal ;
+: INTERPRET-NUMBER ( x -- ) direct-literal meta-literal ;
 
 : INTERPRET-UNKNOWN ( str len -- )
     meta-state @ if

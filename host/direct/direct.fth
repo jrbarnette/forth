@@ -26,30 +26,37 @@ only FORTH definitions
 
 variable offset      0 offset !
 
-: { ." { " ;
-: }{ ."  }, { " 1 offset +! ;
-: } ."  }," cr 1 offset +! ;
+: { ."  { " ;
+: } ."  }," 1 offset +! ;
+: }{ } { ;
 
-: .offset ( n -- ) ." /* " offset @ 3 .r ."  */ " spaces ;
+: .offset ( n -- ) ." /* " offset @ 3 .r ."  */" spaces ;
+: { ( n -- ) .offset { ;
+: } } cr ;
 
 variable emit-state  0 emit-state !
-: emit-state!
+: emit-state! ( new-state -- )
     dup emit-state @ <> if
-	emit-state @ if 4 .offset { ." .id = NULL" } then
+	emit-state @ if 4 { ." .id = NULL" } then
 	dup if
 	    dup 1- if s" meta_compile" else s" meta_interpret" then
-	    0 .offset { .exec }
+	    0 { .exec }
 	then
-    then dup emit-state ! if 4 else 0 then .offset
+    then dup emit-state ! if 4 else 0 then
 ;
 : direct-emit ( -- ) 0 emit-state! ;
 : meta-emit ( name len state -- ) emit-state! { .str } ;
-
 : meta-interpret ( name len -- ) 1 meta-emit ;
 : meta-compile ( name len -- ) 2 meta-emit ;
-: direct: : postpone direct-emit ;
 
-direct: do-literal { s" do_literal" .exec }{ execute } ;
+: handler? ( c-addr u | 0 -- c-addr u ) ?dup 0= if parse-name then ;
+: do-name direct-emit { .exec }{ parse-name .str }{ handler? .exec } ;
+: addname ( c-addr u | 0 -- ) s" i_addname" do-name ;
+: startname ( c-addr u | 0 -- ) s" i_startname" do-name ;
+: linkname direct-emit { s" i_linkname" .exec } ;
+: setflags direct-emit { s" i_setflags" .exec }{ .cell } ;
+
+: do-literal direct-emit { s" do_literal" .exec }{ execute } ;
 : direct-expr ['] .expr do-literal ;
 : direct-literal ['] .cell do-literal ;
 
@@ -58,8 +65,8 @@ vocabulary DIRECT
 \ We only need these while building up the DIRECT vocabulary.
 vocabulary BUILD-DIRECT
 also BUILD-DIRECT definitions
-: prim: create parse-name dup , chars here swap dup allot move
-     does> direct-emit { dup cell+ swap @ .exec } ;
+: prim: create parse-name dup c, chars here swap dup allot move
+     does> direct-emit { count .exec } ;
 : IMMEDIATE    ;
 : NO-INTERPRET ;
 : COMPILE-ONLY ;

@@ -337,6 +337,14 @@ meta_compile(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
+vminstr_p
+i_lookup(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    PUSH(vm, meta_lookup(vm, ip));
+    return ip + 1;
+}
+
+
 /* -------------------------------------------------------------- */
 
 /* ( i*x -- ) ( R: j*x -- ) */

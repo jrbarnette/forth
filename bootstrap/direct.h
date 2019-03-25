@@ -19,6 +19,7 @@ extern vminstr_p i_call(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p i_startname(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p i_addname(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p i_linkname(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p i_lookup(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p i_setflags(vminstr_p, vmstate_p, vmarg_p);
 
 /* meta-interpretation direct threaded primitives */

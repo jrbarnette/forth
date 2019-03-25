@@ -30,33 +30,37 @@ variable offset      0 offset !
 : } ."  }," 1 offset +! ;
 : }{ } { ;
 
-: .offset ( n -- ) ." /* " offset @ 3 .r ."  */" spaces ;
-: { ( n -- ) .offset { ;
-: } } cr ;
+: .indent ( state -- ) if 4 else 0 then spaces ;
+: .offset ( state -- ) ." /* " offset @ 3 .r ."  */" .indent ;
 
 variable emit-state  0 emit-state !
-: emit-state! ( new-state -- )
+
+: } } cr ;
+: { ( new-state -- )
     dup emit-state @ <> if
-	emit-state @ if 4 { ." .id = NULL" } then
+	emit-state @ ?dup if .offset { ." .id = NULL" } then
 	dup if
 	    dup 1- if s" meta_compile" else s" meta_interpret" then
-	    0 { .exec }
-	then
-    then dup emit-state ! if 4 else 0 then
+	    0 .offset { .exec }
+	then dup emit-state !
+    then .offset {
 ;
-: direct-emit ( -- ) 0 emit-state! ;
-: meta-emit ( name len state -- ) emit-state! { .str } ;
+: meta-emit ( name len state -- ) { .str } ;
 : meta-interpret ( name len -- ) 1 meta-emit ;
 : meta-compile ( name len -- ) 2 meta-emit ;
 
 : handler? ( c-addr u | 0 -- c-addr u ) ?dup 0= if parse-name then ;
-: do-name direct-emit { .exec }{ parse-name .str }{ handler? .exec } ;
+: do-name 0 { .exec }{ parse-name .str }{ handler? .exec } ;
 : addname ( c-addr u | 0 -- ) s" i_addname" do-name ;
 : startname ( c-addr u | 0 -- ) s" i_startname" do-name ;
-: linkname direct-emit { s" i_linkname" .exec } ;
-: setflags direct-emit { s" i_setflags" .exec }{ .cell } ;
+: linkname 0 { s" i_linkname" .exec } ;
+: setflags 0 { s" i_setflags" .exec }{ .cell } ;
 
-: do-literal direct-emit { s" do_literal" .exec }{ execute } ;
+\ N.B. do-literal isn't _unnecessary_ complexity.  Both .offset and
+\ c-hex use pictured string formatting.  Thus, the following
+\ sequence breaks because { will plaster the output from c-hex:
+\     c-hex 0 { s" do_literal" .exec }{ .expr }
+: do-literal 0 { s" do_literal" .exec }{ execute } ;
 : direct-expr ['] .expr do-literal ;
 : direct-literal ['] .cell do-literal ;
 
@@ -66,7 +70,7 @@ vocabulary DIRECT
 vocabulary BUILD-DIRECT
 also BUILD-DIRECT definitions
 : prim: create parse-name dup c, chars here swap dup allot move
-     does> direct-emit { count .exec } ;
+     does> 0 { count .exec } ;
 : IMMEDIATE    ;
 : NO-INTERPRET ;
 : COMPILE-ONLY ;

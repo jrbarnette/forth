@@ -20,20 +20,19 @@
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
 \ FORTH-83 - System Extension Word Set
+prim: BRANCH    do_skip
+prim: ?BRANCH   do_fskip
+
 : <MARK ( -- dest ) here ;
 : <RESOLVE ( dest -- ) here - [ 1 cells ] literal / , ;
 : >MARK ( -- orig ) here [ 1 cells ] literal allot ;
 : >RESOLVE ( orig -- ) here over - [ 1 cells ] literal / swap ! ;
 
-\ prim: BRANCH    do_skip
-here <C> do_skip; ,
-: >BRANCH ( -- orig ) [ over ] literal , >mark ;
-: <BRANCH ( dest -- ) [ swap ] literal , <resolve ;
-
-\ prim: ?BRANCH   do_fskip
-here <C> do_fskip; ,
-: >?BRANCH ( -- orig ) [ over ] literal , >mark ;
-: <?BRANCH ( dest -- ) [ swap ] literal , <resolve ;
+\ These are non-standard, but useful.
+: >BRANCH ( -- orig ) postpone branch >mark ;
+: <BRANCH ( dest -- ) postpone branch <resolve ;
+: >?BRANCH ( -- orig ) postpone ?branch >mark ;
+: <?BRANCH ( dest -- ) postpone ?branch <resolve ;
 
 : BEGIN ( C: -- dest ) <mark ; compile-only
 : THEN ( C: orig -- ) >resolve ; compile-only
@@ -41,15 +40,15 @@ here <C> do_fskip; ,
 : UNTIL ( C: dest -- ) <?branch ; compile-only
 \ : AGAIN <branch ; compile-only
 \ : REPEAT [compile] again [compile] then ; compile-only
-: REPEAT ( C: orig dest -- ) <branch >resolve ; compile-only
-: ELSE ( C: orig1 -- orig2 ) >branch swap >resolve ; compile-only
-: WHILE ( C: dest -- orig dest ) >?branch swap ; compile-only
+: REPEAT ( C: orig dest -- ) <branch postpone then ; compile-only
+: ELSE ( C: orig1 -- orig2 ) >branch swap postpone then ; compile-only
+: WHILE ( C: dest -- orig dest ) postpone if swap ; compile-only
 
 variable LEAVERS 0 leavers !
 
 here <C> do_do; ,
 : DO ( C: -- do-sys )
-    [ swap ] literal , leavers @ 0 leavers ! <mark ; compile-only
+    [ swap ] literal , leavers @ 0 leavers ! postpone begin ; compile-only
 : LEAVE >branch leavers @ over ! leavers ! ; compile-only
 
 prim: UNLOOP    x_unloop        no-interpret
@@ -59,6 +58,6 @@ prim: J         x_j             no-interpret
 
 here <C> do_plus_loop; ,
 : +LOOP ( C: do-sys -- )
-    [ swap ] literal , <?branch leavers @ swap leavers !
-    begin dup while dup >resolve @ repeat drop [ swap ] literal ,
+    [ swap ] literal , postpone until leavers @ swap leavers !
+    begin dup while dup postpone then @ repeat drop [ swap ] literal ,
 ; compile-only

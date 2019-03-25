@@ -17,19 +17,10 @@ also TARGET definitions previous
 : \ postpone \ ;
 : ( postpone ( ;
 : .( postpone .( cr ;
-: [ META[ ;
-: ] ]META ;
 
 : prim: 0 addname ;
 
 : >>> source >in @ over >in ! swap over - >r chars + r> type cr ;
-
-: <C> [char] ; parse direct-expr meta-literal ;
-: [COMPILE] parse-name meta-compile ;
-: [CHAR] char direct-literal meta-literal ;
-\ POSTPONE
-\ S"
-\ [']
 
 meta-immediate +LOOP
 meta-immediate BEGIN
@@ -44,6 +35,21 @@ meta-immediate THEN
 meta-immediate UNTIL
 meta-immediate WHILE
 
+: <C> [char] ; parse direct-expr meta-literal ;
+: [CHAR] char direct-literal meta-literal ;
+: POSTPONE
+    parse-name 2dup 2>r get-order 2r> lookup ?dup if
+        name>id meta-compile 2drop
+    else
+        direct-lookup [ also target ] literal [ previous ]
+        s" ," meta-compile
+    then
+;
+: [COMPILE] parse-name meta-compile ;
+
+\ S"
+\ [']
+
 \ XXX From here to the end, the definitions we're creating only
 \ provide correct behavior in meta-interpret mode.
 \
@@ -54,6 +60,10 @@ meta-immediate WHILE
 \ TARGET vocabulary".  Or maybe, we just need a special defining
 \ word that makes these definitions change behavior based on
 \ meta-state.
+
+: [ META[ ;
+: ] ]META ;
+
 hex
 : IMMEDIATE    80 setflags ;
 : NO-INTERPRET 40 setflags ;

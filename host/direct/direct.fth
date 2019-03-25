@@ -53,8 +53,9 @@ variable emit-state  0 emit-state !
 : do-name 0 { .exec }{ parse-name .str }{ handler? .exec } ;
 : addname ( c-addr u | 0 -- ) s" i_addname" do-name ;
 : startname ( c-addr u | 0 -- ) s" i_startname" do-name ;
-: linkname 0 { s" i_linkname" .exec } ;
-: setflags 0 { s" i_setflags" .exec }{ .cell } ;
+: linkname ( -- ) 0 { s" i_linkname" .exec } ;
+: setflags ( flags -- ) 0 { s" i_setflags" .exec }{ .cell } ;
+: direct-lookup ( c-addr u -- ) 0 { s" i_lookup" .exec }{ .str } ;
 
 \ N.B. do-literal isn't _unnecessary_ complexity.  Both .offset and
 \ c-hex use pictured string formatting.  Thus, the following

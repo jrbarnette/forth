@@ -1,7 +1,9 @@
 \ Copyright 2013, by J. Richard Barnette, All Rights Reserved.
 
 hex
-: GET-CURRENT [ forth-wordlist cell+ ] literal @ ;
+forth-wordlist cell+ \ constant CURRENT
+: GET-CURRENT ( -- wid ) [ over ] literal @ ;
+: SET-CURRENT ( wid -- ) [ swap ] literal ! ;
 : FLAGS! get-current @ cell+ dup >r c@ or r> c! ;
 : IMMEDIATE     80 flags! ;
 : NO-INTERPRET  40 flags! ;
@@ -62,7 +64,6 @@ decimal
 \   forth-wordlist 2 cells + @  -> # wordlists in search order
 \   forth-wordlist 3 cells +    -> first entry in search order
 
-: SET-CURRENT ( wid -- ) [ forth-wordlist cell+ ] literal ! ;
 : GET-ORDER ( -- widn ... wid1 n )
     [ forth-wordlist 2 cells + ] literal
     dup @ dup >r swap over cells + swap

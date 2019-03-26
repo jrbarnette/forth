@@ -15,10 +15,11 @@ host/direct/startdict.fth
     host/direct/memprim.fth
     host/direct/multprim.fth
     host/direct/terminal.fth
-    host/direct/names.fth
+    host/direct/nameprim.fth
     host/direct/interpret.fth
     host/direct/fileprim.fth
     host/direct/memops.fth
+    host/direct/nameops.fth
     host/direct/control.fth
     target/core/memops.fth
     target/core/comments.fth

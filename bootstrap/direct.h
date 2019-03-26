@@ -95,7 +95,6 @@ extern vminstr_p x_constant(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p do_create(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_create(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p do_does(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_does(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_find(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p do_variable(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_variable(vminstr_p, vmstate_p, vmarg_p);
@@ -106,20 +105,10 @@ extern vminstr_p x_search_wordlist(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p do_skip(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p do_fskip(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p do_plus_loop(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_plus_loop(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p do_do(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_do(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_i(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_j(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p c_leave(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_unloop(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_begin(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_else(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_if(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_repeat(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_then(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_until(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_while(vminstr_p, vmstate_p, vmarg_p);
 
 /* interpreter primitives */
 extern vminstr_p x_to_in(vminstr_p, vmstate_p, vmarg_p);

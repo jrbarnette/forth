@@ -24,7 +24,6 @@
 // >BODY                 6.1.0550 CORE                   31
 // CONSTANT              6.1.0950 CORE                   35
 // CREATE                6.1.1000 CORE                   36
-// DOES>                 6.1.1250 CORE                   37
 // VARIABLE              6.1.2410 CORE                   47
 //
 // FORTH-WORDLIST     16.6.1.1595 SEARCH                119
@@ -301,18 +300,8 @@ do_does(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 	THROW(vm, -31);
     }
 
-    create_def[1].arg->ip = ip;
-    CHECK_RPOP(vm, 1);
-    return (vminstr_p) RPOP(vm);
-}
-
-
-/* ( C: colon-sys1 -- colon-sys2 ) compilation semantics */
-vminstr_p
-x_does(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
     CHECK_POP(vm, 1);
-    COMPILE(vm, DOES_XT);
+    create_def[1].arg->ip = (vminstr_p) POP(vm);
     return ip;
 }
 

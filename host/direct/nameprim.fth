@@ -10,7 +10,6 @@
 \  >BODY                 6.1.0550 CORE                   31
 \  CONSTANT              6.1.0950 CORE                   35
 \  CREATE                6.1.1000 CORE                   36
-\  DOES>                 6.1.1250 CORE                   37
 \  EXIT                  6.1.1380 CORE                   38
 \  FIND                  6.1.1550 CORE                   39
 \  VARIABLE              6.1.2410 CORE                   47
@@ -31,7 +30,6 @@ prim: ;                 x_semicolon    compile-only
 prim: >BODY             x_to_body
 prim: CONSTANT          x_constant
 prim: CREATE            x_create
-prim: DOES>             x_does         compile-only
 prim: FIND              x_find
 prim: VARIABLE          x_variable
 

@@ -44,23 +44,16 @@
 : ; ( C: colon-sys -- ) link-name postpone exit postpone [ ;
 immediate \ compile-only
 
-\ non-standard definition
-base @ hex
-: >XT ( colon-sys -- xt ) cell+ dup c@ 1f and 1+ chars + aligned ;
-base !
-
-: RECURSE ( colon-sys -- colon-sys ) dup >xt compile, ; immediate
+: RECURSE ( colon-sys -- colon-sys ) dup name>xt compile, ; immediate
 
 : CONSTANT ( "<spaces>name" x -- ) mcp-constant create-name , ;
 : VARIABLE ( "<spaces>name" -- ) mcp-variable create-name 0 , ;
 : CREATE ( "<spaces>name" -- )
     mcp-create create-name [ here 3 cells + ] literal , ;
-: >BODY ( xt -- a-addr ) [ 2 cells ] literal + ;
-: DO-DOES> get-current @ name>xt >body [ 1 cells ] literal - ! ;
-: DOES> ( C: colon-sys2 -- colon-sys2 )
-    here cell+ >r
-    0 postpone literal postpone do-does> postpone exit
-    here r> ! ; immediate
+: >BODY ( xt -- a-addr )
+    dup @ mcp-create = if [ 2 cells ] literal + else -31 throw then ;
+: DO-DOES> r> get-current @ name>xt >body [ 1 cells ] literal - ! ;
+: DOES> ( C: colon-sys1 -- colon-sys2 ) postpone do-does> ; immediate
 
 \ ------  ------  ------  ------  ------  ------  ------  ------
 \ :NONAME               6.2.0455 CORE EXT               51

@@ -18,9 +18,10 @@
 extern vminstr_p i_call(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p i_startname(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p i_addname(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p i_linkname(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p i_lookup(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p i_setflags(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_startname(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_linkname(vminstr_p, vmstate_p, vmarg_p);
 
 /* meta-interpretation direct threaded primitives */
 extern vminstr_p meta_interpret(vminstr_p, vmstate_p, vmarg_p);
@@ -86,19 +87,11 @@ extern vminstr_p x_emit(vminstr_p, vmstate_p, vmarg_p);
 /* name definition primitives */
 extern vminstr_p x_tick(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p do_colon(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_colon(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_semicolon(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_to_body(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_exit(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p do_constant(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_constant(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p do_create(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_create(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p do_does(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_find(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p do_variable(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_variable(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_forth_wordlist(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_search_wordlist(vminstr_p, vmstate_p, vmarg_p);
 
 /* control flow primitives */

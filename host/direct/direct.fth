@@ -53,7 +53,7 @@ variable emit-state  0 emit-state !
 : do-name 0 { .exec }{ parse-name .str }{ handler? .exec } ;
 : addname ( c-addr u | 0 -- ) s" i_addname" do-name ;
 : startname ( c-addr u | 0 -- ) s" i_startname" do-name ;
-: linkname ( -- ) 0 { s" i_linkname" .exec } ;
+: linkname ( -- ) 0 { s" x_linkname" .exec } ;
 : setflags ( flags -- ) 0 { s" i_setflags" .exec }{ .cell } ;
 : direct-lookup ( c-addr u -- ) 0 { s" i_lookup" .exec }{ .str } ;
 

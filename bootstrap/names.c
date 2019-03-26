@@ -26,7 +26,6 @@
 // CREATE                6.1.1000 CORE                   36
 // VARIABLE              6.1.2410 CORE                   47
 //
-// FORTH-WORDLIST     16.6.1.1595 SEARCH                119
 // SEARCH-WORDLIST    16.6.1.2192 SEARCH                120
 //------  ------  ------  ------  ------  ------  ------  ------
 
@@ -128,14 +127,6 @@ i_startname(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 vminstr_p
-i_linkname(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    linkname((name_p) POP(vm));
-    return ip;
-}
-
-
-vminstr_p
 i_addname(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     char *id = (ip++)->id;
@@ -151,6 +142,29 @@ i_setflags(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     NAME_SET_TYPE(*DICT.current, ip->cell);
     return ip + 1;
+}
+
+
+vminstr_p
+x_linkname(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    CHECK_POP(vm, 1);
+    linkname((name_p) POP(vm));
+    return ip;
+}
+
+
+vminstr_p
+x_startname(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    cell_ft len;
+    c_addr_ft id = parse_name(&len);
+    CHECK_POP(vm, 1);
+    cell_ft *sp = SP(vm);
+    vminstr_fn handler = (vminstr_fn) PICK(sp, 0);
+    PICK(sp, 0) = (cell_ft) addname(vm, id, len, handler);
+
+    return ip;
 }
 
 
@@ -183,49 +197,6 @@ do_colon(vminstr_p ip, vmstate_p vm, vmarg_p newip)
 }
 
 
-/* ( C: "<spaces>name" -- colon-sys ) */
-vminstr_p
-x_colon(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    cell_ft len;
-    c_addr_ft id = parse_name(&len);
-    CHECK_PUSH(vm, 1);
-    PUSH(vm, (cell_ft) addname(vm, id, len, do_colon));
-    DICT.state = STATE_COMPILE;
-    return ip;
-}
-
-
-/* ( C: colon-sys -- ) compilation semantics */
-vminstr_p
-x_semicolon(vminstr_p ip, vmstate_p vm, vmarg_p exit_xt_ptr)
-{
-    CHECK_POP(vm, 1);
-    COMPILE(vm, exit_xt_ptr->xtok);
-    linkname((name_p) POP(vm));
-    DICT.state = STATE_INTERP;
-    return ip;
-}
-
-
-/* ( xt -- a-addr ) */
-vminstr_p
-x_to_body(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    xt_ft xtok;
-    CHECK_POP(vm, 1);
-
-    xtok = (xt_ft) POP(vm);
-    if (xtok->handler != do_create) {
-	THROW(vm, -31);
-    }
-
-    addr_ft body = xtok[2].arg->data;
-    PUSH(vm, (cell_ft) body);
-    return ip;
-}
-
-
 /* ( R: nest-sys -- ) execution semantics */
 vminstr_p
 x_exit(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -245,20 +216,6 @@ do_constant(vminstr_p ip, vmstate_p vm, vmarg_p data_ptr)
 }
 
 
-/* ( “<spaces>name” -- ) */
-vminstr_p
-x_constant(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    cell_ft len;
-    c_addr_ft id = parse_name(&len);
-
-    CHECK_POP(vm, 1);
-    linkname(addname(vm, id, len, do_constant));
-    COMMA(vm, POP(vm));
-    return ip;
-}
-
-
 /* ( -- a-addr ) name execution semantics */
 vminstr_p
 do_create(vminstr_p ip, vmstate_p vm, vmarg_p data_ptr)
@@ -271,34 +228,6 @@ do_create(vminstr_p ip, vmstate_p vm, vmarg_p data_ptr)
     PUSH(vm, (cell_ft) body);
     RPUSH(vm, ip);
     return does_ptr;
-}
-
-
-/* ( “<spaces>name” -- ) */
-vminstr_p
-x_create(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    cell_ft len;
-    c_addr_ft id = parse_name(&len);
-    linkname(addname(vm, id, len, do_create));
-    return ip;
-}
-
-
-/* ( -- ) ( R: nest-sys -- ) runtime semantics */
-vminstr_p
-do_does(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    xt_ft create_def = NAME_XT(*DICT.current);
-
-    if (create_def->handler != do_create) {
-	/* XXX - this isn't *exactly* specified in the standard */
-	THROW(vm, -31);
-    }
-
-    CHECK_POP(vm, 1);
-    create_def[1].arg->ip = (vminstr_p) POP(vm);
-    return ip;
 }
 
 
@@ -341,16 +270,6 @@ x_variable(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     c_addr_ft id = parse_name(&len);
     linkname(addname(vm, id, len, do_variable));
     (void) allot(vm, CELL_SIZE);
-    return ip;
-}
-
-
-/* ( -- wid ) */
-vminstr_p
-x_forth_wordlist(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    CHECK_PUSH(vm, 1);
-    PUSH(vm, (cell_ft) &DICT.forth_wordlist);
     return ip;
 }
 

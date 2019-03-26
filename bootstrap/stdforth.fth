@@ -1,15 +1,5 @@
 \ Copyright 2013, by J. Richard Barnette, All Rights Reserved.
 
-hex
-forth-wordlist cell+ \ constant CURRENT
-: GET-CURRENT ( -- wid ) [ over ] literal @ ;
-: SET-CURRENT ( wid -- ) [ swap ] literal ! ;
-: FLAGS! get-current @ cell+ dup >r c@ or r> c! ;
-: IMMEDIATE     80 flags! ;
-: NO-INTERPRET  40 flags! ;
-: COMPILE-ONLY  c0 flags! ;
-decimal
-
 : [CHAR] char postpone literal ; compile-only
 : ['] ' postpone literal ; compile-only
 

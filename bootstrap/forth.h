@@ -235,7 +235,6 @@ extern union dict {
 	name_p *	search_order[MAX_SEARCH_ORDER];
 
 	definition_d	literal_instr;	    /* for LITERAL runtime xt */
-	definition_d	does_instr;	    /* for DOES> runtime xt */
 
 	cell_ft		state;		    /* STATE */
 	cell_ft		base;		    /* BASE */
@@ -266,7 +265,6 @@ extern union dict {
 #define PARSE_AREA_LEN		(DICT.source.len - DICT.to_in)
 
 #define DO_LITERAL_XT		(&DICT.literal_instr)
-#define DOES_XT			(&DICT.does_instr)
 
 
 /*

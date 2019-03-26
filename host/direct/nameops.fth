@@ -4,9 +4,15 @@
 \      creating definitions.
 
 \ ------  ------  ------  ------  ------  ------  ------  ------
+\  >BODY                 6.1.0550 CORE                   31
+\  CREATE                6.1.1000 CORE                   36
 \  DOES>                 6.1.1250 CORE                   37
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
-prim: DOES!             do_does
-: DO-DOES> r> does! ;
-: DOES> postpone do-does> ; compile-only
+prim: >BODY     x_to_body
+prim: DO-DOES>  do_does
+
+: DOES> r> do-does> ; no-interpret
+
+here <C> x_create; ,
+: CREATE [ swap , ] [ 1 cells ] literal allot DOES> ;

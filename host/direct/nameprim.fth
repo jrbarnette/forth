@@ -7,9 +7,7 @@
 \  '                     6.1.0070 CORE                   25
 \  :                     6.1.0450 CORE                   30
 \  ;                     6.1.0460 CORE                   30
-\  >BODY                 6.1.0550 CORE                   31
 \  CONSTANT              6.1.0950 CORE                   35
-\  CREATE                6.1.1000 CORE                   36
 \  EXIT                  6.1.1380 CORE                   38
 \  FIND                  6.1.1550 CORE                   39
 \  VARIABLE              6.1.2410 CORE                   47
@@ -27,11 +25,7 @@ prim: EXIT              x_exit         no-interpret
 prim: ;                 x_semicolon    compile-only
 [compile] EXIT
 
-prim: >BODY             x_to_body
 prim: CONSTANT          x_constant
-
-prim: CREATE            x_create
-[compile] EXIT
 
 prim: FIND              x_find
 prim: VARIABLE          x_variable

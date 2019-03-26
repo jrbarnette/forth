@@ -25,7 +25,6 @@ also TARGET definitions previous
 meta-immediate +LOOP
 meta-immediate BEGIN
 meta-immediate DO
-meta-immediate DOES>
 meta-immediate ELSE
 meta-immediate IF
 meta-immediate LITERAL

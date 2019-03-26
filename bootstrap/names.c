@@ -276,12 +276,11 @@ do_create(vminstr_p ip, vmstate_p vm, vmarg_p data_ptr)
 
 /* ( “<spaces>name” -- ) */
 vminstr_p
-x_create(vminstr_p ip, vmstate_p vm, vmarg_p default_does)
+x_create(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     cell_ft len;
     c_addr_ft id = parse_name(&len);
     linkname(addname(vm, id, len, do_create));
-    COMMA(vm, default_does);
     return ip;
 }
 

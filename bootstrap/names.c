@@ -267,24 +267,21 @@ do_create(vminstr_p ip, vmstate_p vm, vmarg_p data_ptr)
     addr_ft body = data_ptr[1].data;
 
     CHECK_PUSH(vm, 1);
+    CHECK_RPUSH(vm, 1);
     PUSH(vm, (cell_ft) body);
-    if (does_ptr != NULL) {
-	CHECK_RPUSH(vm, 1);
-	RPUSH(vm, ip);
-	ip = does_ptr;
-    }
-    return ip;
+    RPUSH(vm, ip);
+    return does_ptr;
 }
 
 
 /* ( “<spaces>name” -- ) */
 vminstr_p
-x_create(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+x_create(vminstr_p ip, vmstate_p vm, vmarg_p default_does)
 {
     cell_ft len;
     c_addr_ft id = parse_name(&len);
     linkname(addname(vm, id, len, do_create));
-    COMMA(vm, (xt_ft) NULL);
+    COMMA(vm, default_does);
     return ip;
 }
 

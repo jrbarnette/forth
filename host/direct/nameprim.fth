@@ -29,7 +29,10 @@ prim: ;                 x_semicolon    compile-only
 
 prim: >BODY             x_to_body
 prim: CONSTANT          x_constant
+
 prim: CREATE            x_create
+[compile] EXIT
+
 prim: FIND              x_find
 prim: VARIABLE          x_variable
 

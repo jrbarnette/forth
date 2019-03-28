@@ -37,7 +37,6 @@
 
 \ compile - CORE
 : COMPILE, ( xt -- ) , ; no-interpret
-: LOOP 1 postpone literal postpone +loop ; compile-only
 
 \ parse - CORE EXT (2012 standard)
 : PARSE-NAME

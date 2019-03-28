@@ -1,86 +1,66 @@
-\ Copyright 2013, by J. Richard Barnette, All Rights Reserved.
-\ ------  ------  ------  ------  ------  ------  ------  ------
-\ +LOOP                 6.1.0140 CORE                   27
-\ BEGIN                 6.1.0760 CORE                   34
-\ DO                    6.1.1240 CORE                   36
-\ ELSE                  6.1.1310 CORE                   37
-\ I                     6.1.1680 CORE                   39
-\ IF                    6.1.1700 CORE                   40
-\ J                     6.1.1730 CORE                   40
-\ LEAVE                 6.1.1760 CORE                   41
-\ LOOP                  6.1.1800 CORE                   41
-\ REPEAT                6.1.2140 CORE                   44
-\ THEN                  6.1.2270 CORE                   46
-\ UNLOOP                6.1.2380 CORE                   47
-\ UNTIL                 6.1.2390 CORE                   47
-\ WHILE                 6.1.2430 CORE                   47
-\ ------  ------  ------  ------  ------  ------  ------  ------
+\ Copyright 2017, by J. Richard Barnette. All Rights Reserved.
 
-\ Forth-83 extension words
-\ prim: BRANCH  do_skip
-\ prim: ?BRANCH do_fskip
-: >MARK ( C: -- orig ) here [ 1 cells ] literal allot ;
-: >RESOLVE ( C: orig -- ) here [ 1 cells ] literal - over - swap ! ;
-: <MARK ( C: -- dest ) here ;
-: <RESOLVE ( C: dest -- ) here - [ 1 cells ] literal / , ;
-
-: THEN ( C: orig -- ) >resolve ; immediate
-: BEGIN ( C: -- dest) <mark ; immediate
-: ELSE ( C: orig1 -- orig2 )
-    postpone branch >mark swap postpone then ; immediate
-: IF ( C: -- orig ) postpone ?branch >mark ; immediate
-: WHILE ( C: dest -- orig dest ) postpone if swap ; immediate
-: UNTIL ( C: dest -- ) postpone ?branch <resolve ; immediate
-: REPEAT ( C: orig dest -- ) postpone again postpone then ; immediate
-
-\ anonymous defintions
-variable leavers 0 leavers !
-: leavers-swap ( nleavers -- oleavers ) leavers @ swap leavers ! ;
-: next-loop ( n idx -- idx n+idx n+idx ) swap over + dup ;
-\ target definitions
-
-\ ( R: loop-sys -- ) runtime semantics
-: DO ( C: -- leavers dest )
-    postpone over postpone - postpone 2>r
-    0 leavers-swap
-    postpone begin
-; immediate
-
-\ ( R: loop-sys -- ) runtime semantics
-: UNLOOP postpone 2r> postpone 2drop ; immediate
-
-\  ( R: loop-sys -- ) execution semantics
-\ XXX does POSTPONE LEAVE work right?
-: LEAVE postpone skip here leavers-swap , ; immediate
-: +LOOP
-    ( leavers dest -- )
-    postpone r>
-    postpone next-loop
-    postpone >r
-    postpone xor
-    postpone 0<
-    postpone until
-    leavers-swap
-    begin dup while
-	dup @ swap postpone then
-    repeat drop
-    postpone unloop
-; immediate
-: LOOP 1 postpone +loop ; immediate
-
-\ XXX does POSTPONE I work right?
-: I ( -- x ) ( R: loop-sys -- loop-sys )
-    postpone 2r@ postpone +
-; immediate \ compile-only
-\ J                     6.1.1730 CORE                   40
+\  control.fth - Forth definitions for standard words relating to flow
+\      of control in compiled defintions.
 
 \ ------  ------  ------  ------  ------  ------  ------  ------
-\ ?DO                   6.2.0620 CORE EXT               51
-\ AGAIN                 6.2.0700 CORE EXT               51
-\ CASE                  6.2.0873 CORE EXT               52
-\ ENDCASE               6.2.1342 CORE EXT               53
-\ ENDOF                 6.2.1343 CORE EXT               53
-\ OF                    6.2.1950 CORE EXT               54
+\  +LOOP                 6.1.0140 CORE                   27
+\  BEGIN                 6.1.0760 CORE                   34
+\  DO                    6.1.1240 CORE                   36
+\  ELSE                  6.1.1310 CORE                   37
+\  I                     6.1.1680 CORE                   39
+\  IF                    6.1.1700 CORE                   40
+\  J                     6.1.1730 CORE                   40
+\  LEAVE                 6.1.1760 CORE                   41
+\  REPEAT                6.1.2140 CORE                   44
+\  THEN                  6.1.2270 CORE                   46
+\  UNLOOP                6.1.2380 CORE                   47
+\  UNTIL                 6.1.2390 CORE                   47
+\  WHILE                 6.1.2430 CORE                   47
+\
+\  ?DO                   6.2.0620 CORE EXT               51
+\  AGAIN                 6.2.0700 CORE EXT               51
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
-: AGAIN ( C: dest -- ) postpone branch <resolve ; immediate
+\ Building blocks - non-standard.
+: >BRANCH ( -- orig ) postpone branch >mark ;
+: <BRANCH ( dest -- ) postpone branch <resolve ;
+: >?BRANCH ( -- orig ) postpone ?branch >mark ;
+: <?BRANCH ( dest -- ) postpone ?branch <resolve ;
+
+\ Basic flow of control words
+: BEGIN ( C: -- dest ) <mark ; compile-only
+: THEN ( C: orig -- ) >resolve ; compile-only
+: IF ( C: -- orig ) >?branch ; compile-only
+: UNTIL ( C: dest -- ) <?branch ; compile-only
+: ELSE ( C: orig1 -- orig2 ) >branch swap postpone then ; compile-only
+: AGAIN <branch ; compile-only
+
+: REPEAT postpone again postpone then ; compile-only
+: WHILE ( C: dest -- orig dest ) postpone if swap ; compile-only
+
+\ Flow of control using DO, ?DO, +LOOP, and LEAVE
+variable LEAVERS 0 leavers !
+
+\ ( do-sys ) implemented as ( saved-leavers dest )
+: DO-DOPREAMBLE ( -- saved-leavers ) leavers @ postpone do-do ;
+: DO-DOBODY ( init-leavers -- dest ) leavers ! postpone begin ;
+
+\ Compilation of DO-loops
+\     DO a +LOOP ->   DO-DO a DO-+LOOP UNTIL UNLOOP
+\ Compilation of ?DO-loops
+\     ?DO a +LOOP ->  DO-DO R@ IF BEGIN a DO-+LOOP UNTIL THEN UNLOOP
+\
+\ LEAVE compiles as a forward branch to the UNLOOP at the very end.
+
+: DO ( C: -- saved-leavers dest ) do-dopreamble 0 do-dobody ; compile-only
+: ?DO ( C: -- saved-leavers dest )
+    do-dopreamble postpone r@ postpone if 0 over ! do-dobody ; compile-only
+
+: LEAVE >branch leavers @ over ! leavers ! ; compile-only
+
+: +LOOP ( C: saved-leavers dest -- )
+    postpone do-+loop postpone until leavers @ swap leavers !
+    begin dup while dup @ swap postpone then repeat drop postpone unloop
+; compile-only
+: LOOP 1 postpone literal postpone +loop ; compile-only

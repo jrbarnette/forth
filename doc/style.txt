@@ -1,0 +1,11 @@
+naming conventions
+    x_...	execution semantics; handler for xt
+    do_...	runtime semantics and initiation semantics
+    def_...	initialization for C code definition
+    ...		internal execution for C code
+
+example
+    x_colon	function executed for : by interpreter
+    do_colon	xt handler assigned to colon definitions
+    def_literal	internal function used at startup
+    allot	allocate dictionary space; roughly HERE SWAP ALLOT

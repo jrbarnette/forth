@@ -48,12 +48,12 @@ immediate \ compile-only
 
 : CONSTANT ( "<spaces>name" x -- ) mcp-constant create-name , ;
 : VARIABLE ( "<spaces>name" -- ) mcp-variable create-name 0 , ;
-: CREATE ( "<spaces>name" -- )
-    mcp-create create-name [ here 3 cells + ] literal , ;
 : >BODY ( xt -- a-addr )
     dup @ mcp-create = if [ 2 cells ] literal + else -31 throw then ;
-: DO-DOES> r> get-current @ name>xt >body [ 1 cells ] literal - ! ;
-: DOES> ( C: colon-sys1 -- colon-sys2 ) postpone do-does> ; immediate
+: DOES> ( C: colon-sys1 -- colon-sys2 )
+    r> get-current @ name>xt >body [ 1 cells ] literal - ! ; \ no-interpret
+: CREATE ( "<spaces>name" -- )
+    mcp-create create-name 0 , does> ;
 
 \ ------  ------  ------  ------  ------  ------  ------  ------
 \ :NONAME               6.2.0455 CORE EXT               51

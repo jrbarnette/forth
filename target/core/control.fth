@@ -41,10 +41,10 @@
 
 \ Flow of control using DO, ?DO, +LOOP, and LEAVE
 variable LEAVERS 0 leavers !
+: LEAVERS-SWAP ( new-leavers -- old-leavers ) leavers @ swap leavers ! ;
 
 \ ( do-sys ) implemented as ( saved-leavers dest )
-: DO-DOPREAMBLE ( -- saved-leavers ) leavers @ postpone do-do ;
-: DO-DOBODY ( init-leavers -- dest ) leavers ! postpone begin ;
+: BEGIN-DO ( init-leavers -- saved-leavers dest ) leavers-swap postpone begin ;
 
 \ Compilation of DO-loops
 \     DO a +LOOP ->   DO-DO a DO-+LOOP UNTIL UNLOOP
@@ -53,14 +53,15 @@ variable LEAVERS 0 leavers !
 \
 \ LEAVE compiles as a forward branch to the UNLOOP at the very end.
 
-: DO ( C: -- saved-leavers dest ) do-dopreamble 0 do-dobody ; compile-only
+: DO ( C: -- saved-leavers dest ) postpone do-do 0 begin-do ; compile-only
 : ?DO ( C: -- saved-leavers dest )
-    do-dopreamble postpone r@ postpone if 0 over ! do-dobody ; compile-only
+    postpone do-do postpone r@ postpone if 0 over ! begin-do ; compile-only
 
-: LEAVE >branch leavers @ over ! leavers ! ; compile-only
+: LEAVE >branch dup leavers-swap swap ! ; compile-only
 
 : +LOOP ( C: saved-leavers dest -- )
-    postpone do-+loop postpone until leavers @ swap leavers !
-    begin dup while dup @ swap postpone then repeat drop postpone unloop
+    postpone do-+loop postpone until
+    leavers-swap begin dup while dup @ swap postpone then repeat drop
+    postpone unloop
 ; compile-only
 : LOOP 1 postpone literal postpone +loop ; compile-only

@@ -4,21 +4,29 @@ Where we are:
     process supports meta interpretation during dictionary building,
     including colon definitions.
 
-Current goals:
-    Convert selected content in bootstrap/stdforth.fth into
-    definitions in their proper places under target/core.
+Goal:
+    Eliminate the static dictionary, except possibly for HERE and
+    FORTH-WORDLIST.
 
-    See if we can eliminate selected static data from the
-    dictionary.
+Plan
+    Re-implementation needs to happen mostly from the top down:
+    Suppose X and Y are C primitives, that X depends on the static
+    dictionary, and Y depends on X.  Then we have to re-implement Y
+    first, then X, so that Y doesn't have to call Forth code from C.
 
-    Re-implement some compilation primitives like IF, ELSE, and THEN
-    in Forth.
+    So, we have to re-implement QUIT in Forth before much of
+    anything else, because QUIT depends on _everything_ that uses
+    the static dictionary.
 
+    Once QUIT is done, we can hook in Forth implementations for the following:
+        Parse
+        Miscellaneous bits like STATE and BASE
+    ... basically, anything that relies on the static dictionary.
+
+    Dictionary stuff has to come last, because it's, well, pretty darn
+    tricky.
 ====
 Clean-up
-
-Need meta POSTPONE; then we can move key parts of control.fth into
-target/core.  Also, DOES> (probably others) need this, too.
 
 Maybe move INTERPRET-NAME, INTERPRET-UNKNOWN, and INTERPRET-NUMBER
 from meta-compile to target.  The relationships amongst these bits
@@ -33,3 +41,43 @@ Refactoring between rawdict and direct:
     sort out vocabulary contents
     want to share all the primitive definition code
         even though behavior can be quite different
+====
+bootstrap refactoring
+
+Create a vm.c, and move low-level set-up stuff there from forth.c.
+... Tricky, because the idioms around quit() are so screwy.
+... But we need to clean up, so that we can move QUIT to forth.
+
+Want to re-organize into the following files
+    vm.c
+        init_forth(), and initialization from command line
+        EXIT
+        EXECUTE
+        CATCH
+        THROW
+        direct interpretation loop
+        indirect interpretation loop
+        direct-mode primitives
+    TBD
+        BASE
+        DECIMAL
+        HEX
+        BL
+        TRUE
+        FALSE
+        STATE
+        [
+        ]
+        compile-special stuff like POSTPONE, [CHAR], etc.
+    parse.c
+        PARSE
+        ...
+    compile.c
+        ...
+    interpret.c
+        primitives for stack clearing
+        ABORT
+        ABORT"
+        QUIT
+        EVALUATE
+        ...

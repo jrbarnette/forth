@@ -21,7 +21,7 @@ PICK                  6.2.2030 CORE EXT               55
 ROLL                  6.2.2150 CORE EXT               56
 TUCK                  6.2.2300 CORE EXT               57
 
-execution primitives:
+vm execution primitives:
 EXECUTE               6.1.1370 CORE                   38
 EXIT                  6.1.1380 CORE                   38
 

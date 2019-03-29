@@ -12,13 +12,15 @@
  *   words relating to flow of control in compiled defintions.
  */
 
+// Contains all semantics for the following standard definitions:
 //------  ------  ------  ------  ------  ------  ------  ------
-// Full implementation for the following:
 // I                     6.1.1680 CORE                   39
 // J                     6.1.1730 CORE                   40
 // UNLOOP                6.1.2380 CORE                   47
-//
-// Supporting primitives for the following:
+//------  ------  ------  ------  ------  ------  ------  ------
+
+// Contains runtime or other partial semantics for the following:
+//------  ------  ------  ------  ------  ------  ------  ------
 // +LOOP                 6.1.0140 CORE                   27
 // BEGIN                 6.1.0760 CORE                   34
 // DO                    6.1.1240 CORE                   36

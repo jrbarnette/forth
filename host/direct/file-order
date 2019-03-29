@@ -13,6 +13,7 @@ host/direct/startdict.fth
     host/direct/stackprim.fth
     host/direct/arithprim.fth
     host/direct/memprim.fth
+    host/direct/vmprim.fth
     host/direct/multprim.fth
     host/direct/terminal.fth
     host/direct/nameprim.fth

@@ -10,7 +10,6 @@
 \  CHAR                  6.1.0895 CORE                   35
 \  DECIMAL               6.1.1170 CORE                   36
 \  EVALUATE              6.1.1360 CORE                   38
-\  EXECUTE               6.1.1370 CORE                   38
 \  LITERAL               6.1.1780 CORE                   41
 \  POSTPONE              6.1.2033 CORE                   43
 \  QUIT                  6.1.2050 CORE                   43
@@ -24,8 +23,6 @@
 \  HEX                   6.2.1660 CORE EXT               54
 \  PARSE                 6.2.2008 CORE EXT               55
 \  REFILL                6.2.2125 CORE EXT               55
-\
-\  THROW               9.6.1.2275 EXCEPTION              73
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
 <C> &DICT.to_in;
@@ -39,7 +36,6 @@ constant BASE
 prim: CHAR          x_char
 prim: DECIMAL       x_decimal
 prim: EVALUATE      x_evaluate
-prim: EXECUTE       x_execute
 prim: LITERAL       x_literal           compile-only
 prim: POSTPONE      x_postpone          compile-only
 <C> do_postpone;   ,
@@ -62,5 +58,3 @@ prim: C"            x_c_quote           compile-only
 prim: HEX           x_hex
 prim: PARSE         x_parse
 prim: REFILL        x_refill
-
-prim: THROW         x_throw

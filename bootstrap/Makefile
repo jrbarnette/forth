@@ -14,7 +14,8 @@ SOURCES =			\
 	    names.c		\
 	    stackops.c		\
 	    stdforth.c		\
-	    terminal.c
+	    terminal.c		\
+	    vm.c
 
 CHECKNONE = 0
 CHECKSTMT = 1

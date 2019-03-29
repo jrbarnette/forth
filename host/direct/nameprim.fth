@@ -14,7 +14,6 @@
 prim: '                 x_tick
 
 \ EXIT out of order for reference below
-prim: EXIT              x_exit         no-interpret
 
 prim: FIND              x_find
 

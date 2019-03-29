@@ -2,8 +2,8 @@
  * Copyright 2017, by J. Richard Barnette. All Rights Reserved.
  */
 
-#ifndef PRIMITIVES_H
-#define PRIMITIVES_H
+#ifndef DIRECT_H
+#define DIRECT_H
 
 #include "forth.h"
 
@@ -14,18 +14,24 @@
  * code stored in arrays.
  */
 
-/* direct threaded primitives */
-extern vminstr_p i_call(vminstr_p, vmstate_p, vmarg_p);
+/* direct threaded name definition primitives */
 extern vminstr_p i_startname(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p i_addname(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p i_lookup(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p i_setflags(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_startname(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_linkname(vminstr_p, vmstate_p, vmarg_p);
 
-/* meta-interpretation direct threaded primitives */
+/* vm execution and meta interpretation primitives */
 extern vminstr_p meta_interpret(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p meta_compile(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p i_lookup(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p do_colon(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p do_constant(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p do_create(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p do_variable(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_exit(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_execute(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_throw(vminstr_p, vmstate_p, vmarg_p);
 
 /* dictionary primitives */
 extern vminstr_p x_comma(vminstr_p, vmstate_p, vmarg_p);
@@ -86,12 +92,7 @@ extern vminstr_p x_emit(vminstr_p, vmstate_p, vmarg_p);
 
 /* name definition primitives */
 extern vminstr_p x_tick(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p do_colon(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_exit(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p do_constant(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p do_create(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_find(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p do_variable(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_search_wordlist(vminstr_p, vmstate_p, vmarg_p);
 
 /* control flow primitives */
@@ -110,7 +111,6 @@ extern vminstr_p x_base(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_char(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_decimal(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_evaluate(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_execute(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p do_literal(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_literal(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p do_s_quote(vminstr_p, vmstate_p, vmarg_p);
@@ -127,7 +127,6 @@ extern vminstr_p x_c_quote(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_hex(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_parse(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_refill(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_throw(vminstr_p, vmstate_p, vmarg_p);
 
 /* file I/O primitives */
 extern vminstr_p x_bin(vminstr_p, vmstate_p, vmarg_p);

@@ -272,6 +272,8 @@ extern union dict {
 
 extern addr_ft allot(vmstate_p, cell_ft);
 
+extern void execute(vmstate_p vm, xt_ft entry_xt);
+
 extern cell_ft parse(char_ft, c_addr_ft, cell_ft);
 extern c_addr_ft parse_name(cell_ft *);
 

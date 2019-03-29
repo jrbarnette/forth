@@ -51,6 +51,7 @@ Create a vm.c, and move low-level set-up stuff there from forth.c.
 Want to re-organize into the following files
     vm.c
         init_forth(), and initialization from command line
+        primitives for stack clearing
         EXIT
         EXECUTE
         CATCH
@@ -75,7 +76,6 @@ Want to re-organize into the following files
     compile.c
         ...
     interpret.c
-        primitives for stack clearing
         ABORT
         ABORT"
         QUIT

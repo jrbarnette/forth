@@ -2,7 +2,6 @@
  * Copyright 2013, by J. Richard Barnette. All Rights Reserved.
  */
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
@@ -18,13 +17,7 @@
 
 //------  ------  ------  ------  ------  ------  ------  ------
 // '                     6.1.0070 CORE                   25
-// :                     6.1.0450 CORE                   30
-// EXIT                  6.1.1380 CORE                   38
-// ;                     6.1.0460 CORE                   30
-// >BODY                 6.1.0550 CORE                   31
-// CONSTANT              6.1.0950 CORE                   35
-// CREATE                6.1.1000 CORE                   36
-// VARIABLE              6.1.2410 CORE                   47
+// FIND                  6.1.1550 CORE                   39
 //
 // SEARCH-WORDLIST    16.6.1.2192 SEARCH                120
 //------  ------  ------  ------  ------  ------  ------  ------
@@ -187,50 +180,6 @@ x_tick(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* ( R: -- nest-sys ) initiation semantics */
-vminstr_p
-do_colon(vminstr_p ip, vmstate_p vm, vmarg_p newip)
-{
-    CHECK_RPUSH(vm, 1);
-    RPUSH(vm, (cell_ft)ip);
-    return newip->vminstrs;
-}
-
-
-/* ( R: nest-sys -- ) execution semantics */
-vminstr_p
-x_exit(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    CHECK_RPOP(vm, 1);
-    return (vminstr_p)RPOP(vm);
-}
-
-
-/* ( -- x ) name execution semantics */
-vminstr_p
-do_constant(vminstr_p ip, vmstate_p vm, vmarg_p data_ptr)
-{
-    CHECK_PUSH(vm, 1);
-    PUSH(vm, data_ptr->cell);
-    return ip;
-}
-
-
-/* ( -- a-addr ) name execution semantics */
-vminstr_p
-do_create(vminstr_p ip, vmstate_p vm, vmarg_p data_ptr)
-{
-    vminstr_p does_ptr = data_ptr[0].ip;
-    addr_ft body = data_ptr[1].data;
-
-    CHECK_PUSH(vm, 1);
-    CHECK_RPUSH(vm, 1);
-    PUSH(vm, (cell_ft) body);
-    RPUSH(vm, ip);
-    return does_ptr;
-}
-
-
 /* ( c-addr - c-addr 0 | xt -1 | xt 1 ) */
 vminstr_p
 x_find(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -248,28 +197,6 @@ x_find(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 	PICK(sp, 0) = (cell_ft) NAME_XT(nm);
 	PICK(sp, -1) = NAME_IS_IMMEDIATE(nm) ? 1 : -1;
     }
-    return ip;
-}
-
-
-/* ( -- a-addr ) name execution semantics */
-vminstr_p
-do_variable(vminstr_p ip, vmstate_p vm, vmarg_p var_addr)
-{
-    CHECK_PUSH(vm, 1);
-    PUSH(vm, (cell_ft) var_addr);
-    return ip;
-}
-
-
-/* ( "<spaces>name" -- ) execution semantics */
-vminstr_p
-x_variable(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    cell_ft len;
-    c_addr_ft id = parse_name(&len);
-    linkname(addname(vm, id, len, do_variable));
-    (void) allot(vm, CELL_SIZE);
     return ip;
 }
 

@@ -100,15 +100,6 @@ handle_exception(int throwcode, vmstate_p vm, char *filename)
 }
 
 
-vminstr_p
-i_call(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    CHECK_RPUSH(vm, 1);
-    RPUSH(vm, ip + 1);
-    return ip->ip;
-}
-
-
 static void
 init_forth(vmstate_p vm)
 {

@@ -24,7 +24,6 @@
 // CHAR                  6.1.0895 CORE                   35
 // DECIMAL               6.1.1170 CORE                   36
 // EVALUATE              6.1.1360 CORE                   38
-// EXECUTE               6.1.1370 CORE                   38
 // LITERAL               6.1.1780 CORE                   41
 // POSTPONE              6.1.2033 CORE                   43
 // QUIT                  6.1.2050 CORE                   43
@@ -37,8 +36,6 @@
 // HEX                   6.2.1660 CORE EXT               54
 // PARSE                 6.2.2008 CORE EXT               55
 // REFILL                6.2.2125 CORE EXT               55
-//
-// THROW               9.6.1.2275 EXCEPTION              73
 //------  ------  ------  ------  ------  ------  ------  ------
 
 
@@ -88,18 +85,6 @@ parse_name(cell_ft *p_len)
     }
     *p_len = parse(' ', parse_area, parse_len);
     return parse_area;
-}
-
-
-static void
-execute(vmstate_p vm, xt_ft entry_xt)
-{
-    vminstr_p ip = entry_xt->handler(NULL, vm, entry_xt[1].arg);
-
-    while (ip != NULL) {
-	xt_ft xtok = ip->xtok;
-	ip = xtok->handler(ip + 1, vm, xtok[1].arg);
-    }
 }
 
 
@@ -299,52 +284,6 @@ interpret_string(vmstate_p vm, char *s)
 }
 
 
-static xt_ft
-meta_lookup(vmstate_p vm, vminstr_p ip)
-{
-    name_p name = lookup(vm, (c_addr_ft) ip->id, strlen(ip->id));
-    if (name == NULL) {
-	/*
-	 * XXX ptrdiff_t wants %ld for 64-bit systems, but this
-	 * could cause warnings on 32-bit systems.
-	 */
-	fprintf(stderr, "name '%s' not found at offset %ld\n",
-		ip->id, ip - initialize_forth);
-	abort();
-    }
-    return NAME_XT(name);
-}
-
-vminstr_p
-meta_interpret(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    while (ip->id != NULL) {
-	execute(vm, meta_lookup(vm, ip));
-	ip++;
-    }
-    return ip + 1;
-}
-
-
-vminstr_p
-meta_compile(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    while (ip->id != NULL) {
-	COMPILE(vm, meta_lookup(vm, ip));
-	ip++;
-    }
-    return ip + 1;
-}
-
-
-vminstr_p
-i_lookup(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    PUSH(vm, meta_lookup(vm, ip));
-    return ip + 1;
-}
-
-
 /* -------------------------------------------------------------- */
 
 /* ( i*x -- ) ( R: j*x -- ) */
@@ -408,18 +347,6 @@ x_evaluate(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     DICT.to_in = oto_in;
 
     return ip;
-}
-
-
-/* ( i*x xt -- i*j ) */
-vminstr_p
-x_execute(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    xt_ft xtok;
-
-    CHECK_POP(vm, 1);
-    xtok = (xt_ft)POP(vm);
-    return xtok->handler(ip, vm, xtok[1].arg);
 }
 
 
@@ -608,17 +535,5 @@ x_refill(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_PUSH(vm, 1);
     PUSH(vm, refill());
-    return ip;
-}
-
-
-vminstr_p
-x_throw(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    CHECK_POP(vm, 1);
-    cell_ft exc = POP(vm);
-    if (exc != 0) {
-	THROW(vm, exc);
-    }
     return ip;
 }

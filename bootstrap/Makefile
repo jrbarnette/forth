@@ -12,6 +12,7 @@ SOURCES =			\
 	    memops.c		\
 	    multops.c		\
 	    names.c		\
+	    parse.c		\
 	    stackops.c		\
 	    stdforth.c		\
 	    terminal.c		\

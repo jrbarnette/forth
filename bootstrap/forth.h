@@ -276,6 +276,7 @@ extern void execute(vmstate_p vm, xt_ft entry_xt);
 
 extern cell_ft parse(char_ft, c_addr_ft, cell_ft);
 extern c_addr_ft parse_name(cell_ft *);
+extern cell_ft refill(void);
 
 extern void quit(vmstate_p, FILE *);
 extern void interpret_string(vmstate_p, char *);

@@ -3,16 +3,11 @@
  */
 
 #include <assert.h>
-#include <ctype.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 
-#include <readline/readline.h>
-#include <readline/history.h>
-
 #include "forth.h"
-#include "cmdline.h"
 
 /*
  * interpret.c - Outer (interactive) interpreter, and related Forth
@@ -28,14 +23,11 @@
 // POSTPONE              6.1.2033 CORE                   43
 // QUIT                  6.1.2050 CORE                   43
 // S"                    6.1.2165 CORE                   44
-// SOURCE                6.1.2216 CORE                   45
 // [                     6.1.2500 CORE                   48
 // ]                     6.1.2540 CORE                   49
 //
 // C"                    6.2.0855 CORE EXT               52
 // HEX                   6.2.1660 CORE EXT               54
-// PARSE                 6.2.2008 CORE EXT               55
-// REFILL                6.2.2125 CORE EXT               55
 //------  ------  ------  ------  ------  ------  ------  ------
 
 
@@ -44,47 +36,6 @@ compile_literal(vmstate_p vm, cell_ft n)
 {
     COMPILE(vm, DO_LITERAL_XT);
     COMMA(vm, n);
-}
-
-
-cell_ft
-parse(char_ft c, c_addr_ft s, cell_ft len)
-{
-    if (c == ' ') {
-	unsigned i;
-	for (i = 0; i < len; i++) {
-	    if (!isgraph(s[i])) {
-		DICT.to_in = s + i - DICT.source.c_addr + 1;
-		return (cell_ft) i;
-	    }
-	}
-	DICT.to_in = DICT.source.len;
-	return len;
-    } else {
-	c_addr_ft ns = memchr(s, (char) c, len);
-	if (ns != NULL) {
-	    DICT.to_in = ns - DICT.source.c_addr + 1;
-	    return (cell_ft) (ns - s);
-	} else {
-	    DICT.to_in = DICT.source.len;
-	    return len;
-	}
-    }
-}
-
-
-c_addr_ft
-parse_name(cell_ft *p_len)
-{
-    c_addr_ft	parse_area = PARSE_AREA_PTR;
-    cell_ft	parse_len = PARSE_AREA_LEN;
-
-    while (parse_len > 0 && !isgraph(*parse_area)) {
-	parse_area++;
-	parse_len--;
-    }
-    *p_len = parse(' ', parse_area, parse_len);
-    return parse_area;
 }
 
 
@@ -189,49 +140,6 @@ evaluate(vmstate_p vm)
 	    THROW(vm, -13);
 	}
     }
-}
-
-
-static cell_ft
-refill(void)
-{
-    char *		line;
-    const char *	prompt;
-    cell_ft		len;
-
-    if (IS_INTERACTIVE(DICT.input)) {
-	if (DICT.state == STATE_INTERP) {
-	    prompt = "ok ";
-	} else {
-	    prompt = "";
-	}
-
-	rl_instream = DICT.input;
-	line = readline(prompt);
-	if (line == NULL) {
-	    return F_FALSE;
-	}
-	len = strlen(line);
-	if (len > DICT.source_max_len) {
-	    len = DICT.source_max_len;
-	    line[len] = '\0';
-	}
-	add_history(line);
-	memcpy(DICT.source.c_addr, line, len);
-    } else {
-	line = (char *) DICT.source.c_addr;
-	if (fgets(line, DICT.source_max_len, DICT.input) == NULL) {
-	    return F_FALSE;
-	}
-	len = strlen(line);
-
-	if (line[len-1] == '\n')
-	    len--;
-    }
-    DICT.source.len = len;
-    DICT.to_in = 0;
-    DICT.lineno++;
-    return F_TRUE;
 }
 
 
@@ -399,17 +307,6 @@ x_s_quote(vminstr_p ip, vmstate_p vm, vmarg_p s_quote_xt)
 }
 
 
-/* ( -- c-addr u ) */
-vminstr_p
-x_source(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    CHECK_PUSH(vm, 2);
-    PUSH(vm, DICT.source.c_addr);
-    PUSH(vm, DICT.source.len);
-    return ip;
-}
-
-
 /* ( -- )  ( R: i*x -- ) */
 vminstr_p
 x_quit(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -508,32 +405,5 @@ vminstr_p
 x_hex(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     DICT.base = 16;
-    return ip;
-}
-
-
-/* ( char "ccc<char>" -- c-addr u ) */
-vminstr_p
-x_parse(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    cell_ft	len;
-    c_addr_ft	parse_ptr = PARSE_AREA_PTR;
-    CHECK_POP(vm, 1);
-    CHECK_PUSH(vm, 1);
-
-    len = parse((char_ft) POP(vm), parse_ptr, PARSE_AREA_LEN);
-    PUSH(vm, (cell_ft) parse_ptr);
-    PUSH(vm, (cell_ft) len);
-
-    return ip;
-}
-
-
-/* ( -- flag ) */
-vminstr_p
-x_refill(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    CHECK_PUSH(vm, 1);
-    PUSH(vm, refill());
     return ip;
 }

@@ -4,7 +4,7 @@ Reading from terminal:
     SOURCE-ID is 0
     BLK is 0
     input buffer is TIB, the user terminal input buffer
-    user buffer holds  at least 80 characters
+    user buffer holds at least 80 characters
     \ comments until end of buffer
     ( parses until end of buffer
     control characters may match blank delimter
@@ -17,7 +17,8 @@ Reading from string for EVALUATE
     control characters may match blank delimter
 
 Reading from block
-    SOURCE-ID is BLK
+    BLK is non-zero block number
+    SOURCE-ID is 0
     input buffer is the block in BLK
     \ comments until end of line
     line length for \ is implementation-defined

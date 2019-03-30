@@ -1,0 +1,71 @@
+Parsing words
+    '                     6.1.0070 CORE                   25
+    (                     6.1.0080 CORE                   26
+    ."                    6.1.0190 CORE                   28
+    :                     6.1.0450 CORE                   30
+    ABORT"                6.1.0680 CORE                   32
+    CHAR                  6.1.0895 CORE                   35
+    CONSTANT              6.1.0950 CORE                   35
+    CREATE                6.1.1000 CORE                   36
+    S"                    6.1.2165 CORE                   44
+    VARIABLE              6.1.2410 CORE                   47
+    WORD                  6.1.2450 CORE                   48
+    [']                   6.1.2510 CORE                   48
+    [CHAR]                6.1.2520 CORE                   49
+    .(                    6.2.0200 CORE EXT               49
+    C"                    6.2.0855 CORE EXT               52
+    MARKER                6.2.1850 CORE EXT               54
+    PARSE                 6.2.2008 CORE EXT               55
+    TO                    6.2.2295 CORE EXT               57
+    VALUE                 6.2.2405 CORE EXT               58
+    [COMPILE]             6.2.2530 CORE EXT               58
+    \                     6.2.2535 CORE EXT               58
+
+Affects text interpreter
+    :                     6.1.0450 CORE                   30
+    ;                     6.1.0460 CORE                   30
+    ABORT                 6.1.0670 CORE                   32
+    BASE                  6.1.0750 CORE                   34
+    DECIMAL               6.1.1170 CORE                   36
+    STATE                 6.1.2250 CORE                   45
+    [                     6.1.2500 CORE                   48
+    ]                     6.1.2540 CORE                   49
+    :NONAME               6.2.0455 CORE EXT               51
+    HEX                   6.2.1660 CORE EXT               54
+
+Special semantics
+    (                     6.1.0080 CORE                   26
+    +LOOP                 6.1.0140 CORE                   27
+    ."                    6.1.0190 CORE                   28
+    ;                     6.1.0460 CORE                   30
+    ABORT"                6.1.0680 CORE                   32
+    BEGIN                 6.1.0760 CORE                   34
+    DO                    6.1.1240 CORE                   36
+    DOES>                 6.1.1250 CORE                   37
+    ELSE                  6.1.1310 CORE                   37
+    I                     6.1.1680 CORE                   39
+    IF                    6.1.1700 CORE                   40
+    J                     6.1.1730 CORE                   40
+    LEAVE                 6.1.1760 CORE                   41
+    LITERAL               6.1.1780 CORE                   41
+    LOOP                  6.1.1800 CORE                   41
+    RECURSE               6.1.2120 CORE                   43
+    REPEAT                6.1.2140 CORE                   44
+    S"                    6.1.2165 CORE                   44
+    THEN                  6.1.2270 CORE                   46
+    UNLOOP                6.1.2380 CORE                   47
+    UNTIL                 6.1.2390 CORE                   47
+    WHILE                 6.1.2430 CORE                   47
+    [                     6.1.2500 CORE                   48
+    [']                   6.1.2510 CORE                   48
+    [CHAR]                6.1.2520 CORE                   49
+    .(                    6.2.0200 CORE EXT               49
+    ?DO                   6.2.0620 CORE EXT               51
+    AGAIN                 6.2.0700 CORE EXT               51
+    C"                    6.2.0855 CORE EXT               52
+    CASE                  6.2.0873 CORE EXT               52
+    ENDCASE               6.2.1342 CORE EXT               53
+    ENDOF                 6.2.1343 CORE EXT               53
+    OF                    6.2.1950 CORE EXT               54
+    [COMPILE]             6.2.2530 CORE EXT               58
+    \                     6.2.2535 CORE EXT               58

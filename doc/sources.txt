@@ -14,7 +14,7 @@ indicators
 	    TRUE if not EOF
     BLK is 0 and source-id is fileid
 	input buffer is a file buffer
-	REFILL reads from file
+	REFILL does something like SOURCE SOURCE-ID READ-LINE
 	    FALSE at EOF
 	    TRUE if not EOF
 ====

@@ -17,8 +17,8 @@ prim: EXECUTE       x_execute
 
 prim: THROW         x_throw
 
-\ prim: CLEAR         x_clear
-\ prim: RCLEAR        x_rclear
+prim: CLEAR         x_clear
+prim: RCLEAR        x_rclear
 
 \ prim: SP0
 \ prim: SP@

@@ -9,6 +9,7 @@ vocabulary TARGET
 : ]meta 2 <META> ;
 : meta-literal
     meta-state @ 2 = if s" LITERAL" meta-interpret then ;
+: meta-char char direct-literal ;
 : meta-immediate align here create name>id , , does> 2@ meta-interpret ;
 
 also TARGET definitions previous
@@ -36,7 +37,7 @@ meta-immediate UNTIL
 meta-immediate WHILE
 
 : <C> [char] ; parse direct-expr meta-literal ;
-: [CHAR] char direct-literal meta-literal ;
+: [CHAR] meta-char meta-literal ;
 : POSTPONE
     parse-name 2dup 2>r get-order 2r> lookup ?dup if
         name>id meta-compile 2drop
@@ -51,9 +52,11 @@ meta-immediate WHILE
 \ [']
 
 \ XXX From here to the end, the definitions we're creating only
-\ provide correct behavior in meta-interpret mode.
+\ provide correct behavior in meta-interpret mode.  Generally, to
+\ compile the names into the target dictionary you must use
+\ [COMPILE]; POSTPONE will do the wrong thing.
 \
-\ For now, nothing needs to compile these names, so it works.
+\ For now, the amount of affected code is small, so it works.
 \
 \ Eventually, we may need some way to mark definitions as "in
 \ compilation state, compile this name, even though it's in the
@@ -63,6 +66,7 @@ meta-immediate WHILE
 
 : [ META[ ;
 : ] ]META ;
+: CHAR meta-char ;
 
 hex
 : IMMEDIATE    80 setflags ;

@@ -32,4 +32,5 @@ host/direct/startdict.fth
     host/direct/fileprim.fth
     host/direct/nameops.fth
     target/core/comments.fth
+    target/core/format.fth
 host/direct/enddict.fth

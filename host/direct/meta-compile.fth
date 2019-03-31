@@ -27,9 +27,10 @@ only FORTH definitions
         [char] % = if 2 true else false then then then
     ( str len base true | str len false ) ( R: base )
     if base ! 1- swap char+ swap then
-    ?dup 0= if r> base ! 2drop true exit then
+    ( str len ) ( R: base )
+    ?dup 0= if r> base ! drop true exit then
     over c@ [char] - = swap over +          ( c-addr neg? u' ) ( R: base )
-    ?dup 0= if r> base ! 2drop true exit then
+    ?dup 0= if r> base ! drop true exit then
     \ we have at least one digit
     >r swap over chars - >r             ( neg? ) ( R: base u' c-addr' )
     0 dup r> r> >number r> base ! if    ( neg? ul uh c-addr' ) ( R: )

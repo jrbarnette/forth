@@ -52,6 +52,8 @@ XOR                   6.1.2490 CORE                   48
 0<>                   6.2.0260 CORE EXT               49
 0>                    6.2.0280 CORE EXT               50
 <>                    6.2.0500 CORE EXT               50
+FALSE                 6.2.1485 CORE EXT               54
+TRUE                  6.2.2298 CORE EXT               57
 U>                    6.2.2350 CORE EXT               57
 WITHIN                6.2.2440 CORE EXT               58
 
@@ -89,8 +91,6 @@ ERASE                 6.2.1350 CORE EXT               53
 utility:
 BL                    6.1.0770 CORE                   34
 ENVIRONMENT?          6.1.1345 CORE                   38
-FALSE                 6.2.1485 CORE EXT               54
-TRUE                  6.2.2298 CORE EXT               57
 
 dictionary data space:
 ,                     6.1.0150 CORE                   27

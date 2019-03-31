@@ -15,6 +15,7 @@ host/direct/startdict.fth
     host/direct/memprim.fth
     host/direct/vmprim.fth
     host/direct/multprim.fth
+    target/core/stackops.fth
     host/direct/memops.fth
     target/core/memops.fth
     host/direct/terminal.fth

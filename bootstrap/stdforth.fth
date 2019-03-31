@@ -8,16 +8,6 @@
 1 0 = constant FALSE
 
 
-\ stackops - CORE
-: 2DROP ( x1 x2 -- ) drop drop ;
-: 2DUP ( x1 x2 -- x1 x2 x1 x2 ) over over ;
-: 2SWAP ( x1 x2 x3 x4 -- x3 x4 x1 x2 ) rot >r rot r> ;
-: 2OVER ( x1 x2 x3 x4 -- x1 x2 x3 x4 x1 x2 ) >r >r 2dup r> r> 2swap ;
-
-\ stackops - CORE EXT
-: NIP ( x1 x2 -- x2 ) swap drop ;
-: TUCK ( x1 x2 -- x2 x1 x2 ) swap over ;
-
 \ arithops - CORE
 : 0< ( n -- flag ) 0 < ;
 : 0= ( n -- flag ) 0 = ;

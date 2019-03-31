@@ -32,12 +32,12 @@ only FORTH definitions
     ?dup 0= if r> base ! 2drop true exit then
     \ we have at least one digit
     >r swap over chars - >r             ( neg? ) ( R: base u' c-addr' )
-    0 dup r> r> >number if              ( neg? ul uh c-addr' )
+    0 dup r> r> >number r> base ! if    ( neg? ul uh c-addr' ) ( R: )
         2drop 2drop true
     else                                ( neg? ul uh c-addr' )
         2drop swap if negate then
         interpret-number false
-    then r> base !
+    then
 ;
 
 : INTERPRET

@@ -13,7 +13,7 @@
 prim: EXIT          x_exit         no-interpret
 prim: EXECUTE       x_execute
 
-prim: LITERAL       x_literal           compile-only
+: LITERAL [ <C> DO_LITERAL_XT; dup , , ] , , ; compile-only
 
 prim: THROW         x_throw
 

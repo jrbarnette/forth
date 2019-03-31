@@ -4,28 +4,9 @@
 : ['] ' postpone literal ; compile-only
 
 32 constant BL
-0 0 = constant TRUE
-1 0 = constant FALSE
 
 
-\ arithops - CORE
-: 0< ( n -- flag ) 0 < ;
-: 0= ( n -- flag ) 0 = ;
-: 1+ ( x1 -- x2 ) 1 + ;
-: 1- ( x1 -- x2 ) 1 - ;
-: ABS ( n -- u ) dup 0< if negate then ;
-: MAX ( n1 n2 -- n3 ) 2dup < if swap then drop ;
-: MIN ( n1 n2 -- n3 ) 2dup > if swap then drop ;
-: S>D ( n -- d ) dup 0< ;
-
-\ arithops - CORE EXT
-: <> ( n1 n2 -- flag ) = invert ;
-: 0<> ( n -- flag ) 0 <> ;
-: 0> ( n -- flag ) 0 > ;
-: U> ( n1 n2 -- flag ) swap u< ;
-: WITHIN ( x1 x2 x3 -- flag ) over - >r - r> u< ;
-
-\ compile - CORE
+\ compile - CORE EXT
 : COMPILE, ( xt -- ) , ; no-interpret
 
 \ parse - CORE EXT (2012 standard)

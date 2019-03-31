@@ -112,7 +112,6 @@ extern vminstr_p x_char(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_decimal(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_evaluate(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p do_literal(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_literal(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p do_s_quote(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_s_quote(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_source(vminstr_p, vmstate_p, vmarg_p);

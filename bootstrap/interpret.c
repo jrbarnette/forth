@@ -19,7 +19,6 @@
 // CHAR                  6.1.0895 CORE                   35
 // DECIMAL               6.1.1170 CORE                   36
 // EVALUATE              6.1.1360 CORE                   38
-// LITERAL               6.1.1780 CORE                   41
 // POSTPONE              6.1.2033 CORE                   43
 // QUIT                  6.1.2050 CORE                   43
 // S"                    6.1.2165 CORE                   44
@@ -29,14 +28,6 @@
 // C"                    6.2.0855 CORE EXT               52
 // HEX                   6.2.1660 CORE EXT               54
 //------  ------  ------  ------  ------  ------  ------  ------
-
-
-static void
-compile_literal(vmstate_p vm, cell_ft n)
-{
-    COMPILE(vm, DO_LITERAL_XT);
-    COMMA(vm, n);
-}
 
 
 static bool
@@ -69,7 +60,8 @@ execute_literal(vmstate_p vm, cell_ft n)
 	CHECK_PUSH(vm, 1);
 	PUSH(vm, n);
     } else {
-	compile_literal(vm, n);
+	COMPILE(vm, DO_LITERAL_XT);
+	COMMA(vm, n);
     }
 }
 
@@ -265,16 +257,6 @@ do_literal(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     CHECK_PUSH(vm, 1);
     PUSH(vm, ip->cell);
     return ip + 1;
-}
-
-
-/* ( x -- ) compilation semantics */
-vminstr_p
-x_literal(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    CHECK_POP(vm, 1);
-    compile_literal(vm, POP(vm));
-    return ip;
 }
 
 

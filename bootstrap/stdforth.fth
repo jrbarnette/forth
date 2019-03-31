@@ -3,8 +3,6 @@
 : [CHAR] char postpone literal ; compile-only
 : ['] ' postpone literal ; compile-only
 
-32 constant BL
-
 
 \ compile - CORE EXT
 : COMPILE, ( xt -- ) , ; no-interpret

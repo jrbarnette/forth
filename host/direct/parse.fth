@@ -1,8 +1,5 @@
 \ Copyright 2019, by J. Richard Barnette. All Rights Reserved.
 
-\  parse.fth - Forth code and primitives relating to input stream
-\      parsing.
-
 \ ------  ------  ------  ------  ------  ------  ------  ------
 \  >IN                   6.1.0560 CORE                   31
 \  SOURCE                6.1.2216 CORE                   45
@@ -11,6 +8,8 @@
 \  REFILL                6.2.2125 CORE EXT               55
 \  SOURCE-ID             6.2.2218 CORE EXT               56
 \ ------  ------  ------  ------  ------  ------  ------  ------
+
+32 constant BL
 
 <C> &DICT.to_in;   constant >IN
 

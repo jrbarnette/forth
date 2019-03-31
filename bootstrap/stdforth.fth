@@ -51,38 +51,6 @@ here forth-wordlist 3 cells + ' definitions @ , ] literal ! exit [
 : ONLY ( -- ) -1 set-order ;
 : PREVIOUS ( -- ) get-order nip 1- set-order ;
 
-\ pictured string formatting - CORE
-1 cells 8 * 2 * 2 + chars allot align
-here 1 cells allot			( hold-addr )
-: <# ( -- ) 0 [ over ] literal ! ;
-: HOLD ( char -- ) [ over ] literal dup @ 1+ 2dup swap ! chars - c! ;
-: #> ( xd -- c-addr u ) 2drop [ over ] literal dup @ dup >r chars - r> ;
-drop					( )
-
-: SIGN ( n -- ) 0< if [char] - hold then ;
-: # ( ud1 -- ud2 )
-    0 base @ um/mod >r base @ um/mod swap
-    dup 10 u< if [char] 0 else [ char A 10 - ] literal then
-    + hold r>
-;
-: #S ( ud1 -- ud2 ) begin # 2dup or 0= until ;
-
-: >DIGIT ( char -- u )
-    [char] 0 - 9 over u< if
-	17 - 25 over u< if 32 - 25 over u< if drop -1 exit then then 10 +
-    then
-;
-
-: >NUMBER ( ud1 c-addr1 u1 -- ud2 c-addr2 u2 )
-    begin dup while			( ud c-addr u )
-	>r dup >r c@ >digit		( ud digit ) ( R: u c-addr )
-	dup base @ u< invert if drop r> r> exit then
-	>r base @ * >r base @ um* r> + r>
-	rot dup >r + dup r> u< negate rot +
-	r> char+ r> 1-
-    repeat
-;
-
 \ terminal I/O - CORE
 : CR ( -- ) 10 emit ;
 : SPACE ( -- ) bl emit ;

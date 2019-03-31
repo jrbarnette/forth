@@ -168,3 +168,21 @@ x_throw(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     }
     return ip;
 }
+
+
+/* ( i*x -- ) */
+vminstr_p
+x_clear(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    CLEAR_STACK(vm);
+    return ip;
+}
+
+
+/* ( i*x -- ) */
+vminstr_p
+x_rclear(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    CLEAR_RSTACK(vm);
+    return ip;
+}

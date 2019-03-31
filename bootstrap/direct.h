@@ -32,6 +32,8 @@ extern vminstr_p do_variable(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_exit(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_execute(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_throw(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_clear(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_rclear(vminstr_p, vmstate_p, vmarg_p);
 
 /* dictionary primitives */
 extern vminstr_p x_comma(vminstr_p, vmstate_p, vmarg_p);

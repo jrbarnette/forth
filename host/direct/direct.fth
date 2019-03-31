@@ -31,7 +31,7 @@ variable offset      0 offset !
 : }{ } { ;
 
 : .indent ( state -- ) if 4 else 0 then spaces ;
-: .offset ( state -- ) ." /* " offset @ 3 .r ."  */" .indent ;
+: .offset ( state -- ) ." /* " offset @ 4 .r ."  */" .indent ;
 
 variable emit-state  0 emit-state !
 

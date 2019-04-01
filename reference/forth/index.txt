@@ -1,0 +1,232 @@
+stackprim:
+    2DROP                 6.1.0370 CORE                   29
+    2DUP                  6.1.0380 CORE                   29
+    2OVER                 6.1.0400 CORE                   29
+    2SWAP                 6.1.0430 CORE                   30
+    >R                    6.1.0580 CORE                   32
+    ?DUP                  6.1.0630 CORE                   32
+    DEPTH                 6.1.1200 CORE                   36
+    DROP                  6.1.1260 CORE                   37
+    DUP                   6.1.1290 CORE                   37
+    OVER                  6.1.1990 CORE                   42
+    R>                    6.1.2060 CORE                   43
+    R@                    6.1.2070 CORE                   43
+    ROT                   6.1.2160 CORE                   44
+    SWAP                  6.1.2260 CORE                   45
+    2>R                   6.2.0340 CORE EXT               50
+    2R>                   6.2.0410 CORE EXT               50
+    2R@                   6.2.0415 CORE EXT               50
+    NIP                   6.2.1930 CORE EXT               54
+    PICK                  6.2.2030 CORE EXT               55
+    ROLL                  6.2.2150 CORE EXT               56
+    TUCK                  6.2.2300 CORE EXT               57
+arithprim:
+    +                     6.1.0120 CORE                   26
+    -                     6.1.0160 CORE                   27
+    0<                    6.1.0250 CORE                   28
+    0=                    6.1.0270 CORE                   28
+    1+                    6.1.0290 CORE                   28
+    1-                    6.1.0300 CORE                   29
+    2*                    6.1.0320 CORE                   29
+    2/                    6.1.0330 CORE                   29
+    <                     6.1.0480 CORE                   30
+    =                     6.1.0530 CORE                   31
+    >                     6.1.0540 CORE                   31
+    ABS                   6.1.0690 CORE                   32
+    AND                   6.1.0720 CORE                   33
+    INVERT                6.1.1720 CORE                   40
+    LSHIFT                6.1.1805 CORE                   41
+    MAX                   6.1.1870 CORE                   42
+    MIN                   6.1.1880 CORE                   42
+    NEGATE                6.1.1910 CORE                   42
+    OR                    6.1.1980 CORE                   42
+    RSHIFT                6.1.2162 CORE                   44
+    S>D                   6.1.2170 CORE                   44
+    U<                    6.1.2340 CORE                   46
+    XOR                   6.1.2490 CORE                   48
+    0<>                   6.2.0260 CORE EXT               49
+    0>                    6.2.0280 CORE EXT               50
+    <>                    6.2.0500 CORE EXT               50
+    FALSE                 6.2.1485 CORE EXT               54
+    TRUE                  6.2.2298 CORE EXT               57
+    U>                    6.2.2350 CORE EXT               57
+    WITHIN                6.2.2440 CORE EXT               58
+multprim:
+    *                     6.1.0090 CORE                   26
+    */                    6.1.0100 CORE                   26
+    */MOD                 6.1.0110 CORE                   26
+    /                     6.1.0230 CORE                   28
+    /MOD                  6.1.0240 CORE                   28
+    FM/MOD                6.1.1561 CORE                   39
+    M*                    6.1.1810 CORE                   41
+    MOD                   6.1.1890 CORE                   42
+    SM/REM                6.1.2214 CORE                   45
+    UM*                   6.1.2360 CORE                   46
+    UM/MOD                6.1.2370 CORE                   46
+memprim:
+    !                     6.1.0010 CORE                   25
+    +!                    6.1.0130 CORE                   27
+    2!                    6.1.0310 CORE                   29
+    2@                    6.1.0350 CORE                   29
+    @                     6.1.0650 CORE                   32
+    ALIGNED               6.1.0706 CORE                   33
+    C!                    6.1.0850 CORE                   34
+    C@                    6.1.0870 CORE                   34
+    CELL+                 6.1.0880 CORE                   35
+    CELLS                 6.1.0890 CORE                   35
+    CHAR+                 6.1.0897 CORE                   35
+    CHARS                 6.1.0898 CORE                   35
+    COUNT                 6.1.0980 CORE                   36
+    FILL                  6.1.1540 CORE                   39
+    MOVE                  6.1.1900 CORE                   42
+    ERASE                 6.2.1350 CORE EXT               53
+vmprim:
+    EXECUTE               6.1.1370 CORE                   38
+    EXIT                  6.1.1380 CORE                   38
+    (runtime support for LITERAL)
+    (runtime support for flow of control)
+primitives: stackprim arithprim multprim memprim vmprim
+    (aggregated dependency point for above content)
+dictionary: primitives
+    ,                     6.1.0150 CORE                   27
+    ALIGN                 6.1.0705 CORE                   33
+    ALLOT                 6.1.0710 CORE                   33
+    C,                    6.1.0860 CORE                   34
+    HERE                  6.1.1650 CORE                   39
+    COMPILE,              6.2.0945 CORE EXT               52
+    UNUSED                6.2.2395 CORE EXT               57
+compileprim: dictionary
+    (runtime support for compile operations)
+    LITERAL               6.1.1780 CORE                   41
+control: compileprim
+    +LOOP                 6.1.0140 CORE                   27
+    BEGIN                 6.1.0760 CORE                   34
+    DO                    6.1.1240 CORE                   36
+    ELSE                  6.1.1310 CORE                   37
+    I                     6.1.1680 CORE                   39
+    IF                    6.1.1700 CORE                   40
+    J                     6.1.1730 CORE                   40
+    LEAVE                 6.1.1760 CORE                   41
+    LOOP                  6.1.1800 CORE                   41
+    REPEAT                6.1.2140 CORE                   44
+    THEN                  6.1.2270 CORE                   46
+    UNLOOP                6.1.2380 CORE                   47
+    UNTIL                 6.1.2390 CORE                   47
+    WHILE                 6.1.2430 CORE                   47
+    ?DO                   6.2.0620 CORE EXT               51
+    AGAIN                 6.2.0700 CORE EXT               51
+    CASE                  6.2.0873 CORE EXT               52
+    ENDCASE               6.2.1342 CORE EXT               53
+    ENDOF                 6.2.1343 CORE EXT               53
+    OF                    6.2.1950 CORE EXT               54
+stackops: primitives
+    (alternative forth implementations of anything in stackprim)
+arithops: primitives
+    (alternative forth implementations of anything in arithprim)
+multops: primitives
+    (alternative forth implementations of anything in multprim)
+memops: primitives
+    (alternative forth implementations of anything in memprim)
+basic: stackops arithops multops memops
+immediate: basic
+    (internal namespace and wordlist structure access)
+    IMMEDIATE             6.1.1710 CORE                   40
+    GET-CURRENT        16.6.1.1643 SEARCH                119
+    SET-CURRENT        16.6.1.2195 SEARCH                120
+numbers: basic
+    >NUMBER               6.1.0570 CORE                   31
+    BASE                  6.1.0750 CORE                   34
+    DECIMAL               6.1.1170 CORE                   36
+    HEX                   6.2.1660 CORE EXT               54
+parse: basic
+    >IN                   6.1.0560 CORE                   31
+    BL                    6.1.0770 CORE                   34
+    SOURCE                6.1.2216 CORE                   45
+    WORD                  6.1.2450 CORE                   48
+    PARSE                 6.2.2008 CORE EXT               55
+    REFILL                6.2.2125 CORE EXT               55
+    RESTORE-INPUT         6.2.2148 CORE EXT               56
+    SAVE-INPUT            6.2.2182 CORE EXT               56
+    SOURCE-ID             6.2.2218 CORE EXT               56
+lookup: immediate
+    (internal lookup)
+    FIND                  6.1.1550 CORE                   39
+    FIND               16.6.1.1550 SEARCH                119
+    GET-ORDER          16.6.1.1647 SEARCH                119
+    SEARCH-WORDLIST    16.6.1.2192 SEARCH                120
+    SET-ORDER          16.6.1.2197 SEARCH                120
+compile: parse lookup compileprim
+    '                     6.1.0070 CORE                   25
+    (                     6.1.0080 CORE                   26
+    CHAR                  6.1.0895 CORE                   35
+    POSTPONE              6.1.2033 CORE                   43
+    S"                    6.1.2165 CORE                   44
+    [']                   6.1.2510 CORE                   48
+    [CHAR]                6.1.2520 CORE                   49
+    C"                    6.2.0855 CORE EXT               52
+    [COMPILE]             6.2.2530 CORE EXT               58
+    \                     6.2.2535 CORE EXT               58
+term-io: parse lookup compileprim
+    ."                    6.1.0190 CORE                   28
+    ACCEPT                6.1.0695 CORE                   33
+    CR                    6.1.0990 CORE                   36
+    EMIT                  6.1.1320 CORE                   38
+    KEY                   6.1.1750 CORE                   40
+    SPACE                 6.1.2220 CORE                   45
+    SPACES                6.1.2230 CORE                   45
+    TYPE                  6.1.2310 CORE                   46
+    .(                    6.2.0200 CORE EXT               49
+state: immediate
+    STATE                 6.1.2250 CORE                   45
+    [                     6.1.2500 CORE                   48
+    ]                     6.1.2540 CORE                   49
+interpret: parse term-io lookup compileprim
+    ABORT                 6.1.0670 CORE                   32
+    ABORT"                6.1.0680 CORE                   32
+    ENVIRONMENT?          6.1.1345 CORE                   38
+    EVALUATE              6.1.1360 CORE                   38
+    QUIT                  6.1.2050 CORE                   43
+names: immediate dictionary
+    (internal wordlist and namespace creation)
+definers: parse names compileprim state
+    :                     6.1.0450 CORE                   30
+    ;                     6.1.0460 CORE                   30
+    >BODY                 6.1.0550 CORE                   31
+    CONSTANT              6.1.0950 CORE                   35
+    CREATE                6.1.1000 CORE                   36
+    DOES>                 6.1.1250 CORE                   37
+    RECURSE               6.1.2120 CORE                   43
+    VARIABLE              6.1.2410 CORE                   47
+    :NONAME               6.2.0455 CORE EXT               51
+    MARKER                6.2.1850 CORE EXT               54
+    TO                    6.2.2295 CORE EXT               57
+    VALUE                 6.2.2405 CORE EXT               58
+picture: basic
+    #                     6.1.0030 CORE                   25
+    #>                    6.1.0040 CORE                   25
+    #S                    6.1.0050 CORE                   25
+    <#                    6.1.0490 CORE                   31
+    HOLD                  6.1.1670 CORE                   39
+    SIGN                  6.1.2210 CORE                   45
+    PAD                   6.2.2000 CORE EXT               55
+format-io: term-io picture
+    .                     6.1.0180 CORE                   27
+    U.                    6.1.2320 CORE                   46
+    .R                    6.2.0210 CORE EXT               49
+    U.R                   6.2.2330 CORE EXT               57
+search: lookup
+    DEFINITIONS        16.6.1.1180 SEARCH                119
+    FORTH-WORDLIST     16.6.1.1595 SEARCH                119
+    WORDLIST           16.6.1.2460 SEARCH                120
+    ALSO               16.6.2.0715 SEARCH EXT            120
+    FORTH              16.6.2.1590 SEARCH EXT            120
+    ONLY               16.6.2.1965 SEARCH EXT            121
+    ORDER              16.6.2.1985 SEARCH EXT            121
+    PREVIOUS           16.6.2.2037 SEARCH EXT            121
+obsolescent
+    #TIB                  6.2.0060 CORE EXT               49
+    CONVERT               6.2.0970 CORE EXT               52
+    EXPECT                6.2.1390 CORE EXT               53
+    QUERY                 6.2.2040 CORE EXT               55
+    SPAN                  6.2.2240 CORE EXT               56
+    TIB                   6.2.2290 CORE EXT               56

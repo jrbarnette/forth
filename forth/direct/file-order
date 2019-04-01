@@ -1,6 +1,6 @@
 # Copyright 2016, by J. Richard Barnette, All Rights Reserved.
-forth/internal/chartype.fth
-forth/internal/namespace.fth
+forth/common/internal/chartype.fth
+forth/common/internal/namespace.fth
 forth/direct/direct.fth
     forth/direct/dictionary.fth
     forth/direct/stackprim.fth
@@ -21,19 +21,19 @@ forth/direct/startdict.fth
     # vmprim required after the primitives above because LITERAL depends
     #   on selected primitives
     forth/direct/vmprim.fth
-    forth/core/stackops.fth
+    forth/common/core/stackops.fth
     forth/direct/memops.fth
-    forth/core/memops.fth
+    forth/common/core/memops.fth
     forth/direct/control.fth
-    forth/core/control.fth
-    forth/core/arithops.fth
+    forth/common/core/control.fth
+    forth/common/core/arithops.fth
     forth/direct/parse.fth
     forth/direct/nameprim.fth
     forth/direct/terminal.fth
     forth/direct/interpret.fth
     forth/direct/fileprim.fth
     forth/direct/nameops.fth
-    forth/core/format.fth
-    forth/core/terminal.fth
-    forth/core/comments.fth
+    forth/common/core/format.fth
+    forth/common/core/terminal.fth
+    forth/common/core/comments.fth
 forth/direct/enddict.fth

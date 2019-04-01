@@ -13,7 +13,7 @@ then
     usage
 fi
 
-FILEORDER="host/$1/file-order"
+FILEORDER="forth/$1/file-order"
 if [ ! -f $FILEORDER ]
 then
     echo "$FILEORDER: no file" >&2

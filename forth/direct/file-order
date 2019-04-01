@@ -1,0 +1,39 @@
+# Copyright 2016, by J. Richard Barnette, All Rights Reserved.
+forth/internal/chartype.fth
+forth/internal/namespace.fth
+forth/direct/direct.fth
+    forth/direct/dictionary.fth
+    forth/direct/stackprim.fth
+    forth/direct/arithprim.fth
+    forth/direct/memprim.fth
+forth/direct/target.fth
+forth/direct/meta-compile.fth
+forth/direct/startdict.fth
+    # These contain pure primitives with no dependencies on the target
+    #   dictionary.
+    forth/direct/dictionary.fth
+    forth/direct/stackprim.fth
+    forth/direct/arithprim.fth
+    forth/direct/memprim.fth
+    forth/direct/multprim.fth
+    # vmprim required before all : definitions, because it defines EXIT
+    #   and LITERAL
+    # vmprim required after the primitives above because LITERAL depends
+    #   on selected primitives
+    forth/direct/vmprim.fth
+    forth/core/stackops.fth
+    forth/direct/memops.fth
+    forth/core/memops.fth
+    forth/direct/control.fth
+    forth/core/control.fth
+    forth/core/arithops.fth
+    forth/direct/parse.fth
+    forth/direct/nameprim.fth
+    forth/direct/terminal.fth
+    forth/direct/interpret.fth
+    forth/direct/fileprim.fth
+    forth/direct/nameops.fth
+    forth/core/format.fth
+    forth/core/terminal.fth
+    forth/core/comments.fth
+forth/direct/enddict.fth

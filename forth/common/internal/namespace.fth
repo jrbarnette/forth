@@ -1,5 +1,9 @@
 \ Copyright 2018, by J. Richard Barnette, All Rights Reserved.
-\ Internal definitions relating to namespace.
+\ Internal definitions relating to namespace layout.
+
+\ FIXME - This code can't work universally:
+\   * "BASE" doesn't do what we wnat in meta-interpret code.
+\   * Number syntax "$80" doesn't work in the bootstrap interpreter.
 
 base @ hex
 40 constant NF-COMPILE-ONLY
@@ -9,10 +13,16 @@ c0 constant NF-COMPILE-SPECIAL
 e0 constant NF-FLAGS
 base !
 
-: NAME>ID ( name -- c-addr u ) cell+ count nf-length and ;
+: IMMEDIATE? ( flags+len -- imm? ) nf-immediate and ;
+: COMPILE-ONLY? ( flags+len -- imm? ) nf-compile-only and ;
+: >COUNT ( flags+len -- len ) nf-length and ;
+: >FLAGS ( flags+len -- flags ) nf-flags and ;
+
+: NAME>PREV ( name -- name ) @ ;
+: NAME>ID ( name -- c-addr u ) cell+ count >count ;
 : NAME>XT ( name -- xt ) name>id chars + aligned ;
 : NAME>XT+FLAGS ( name -- xt flags )
-    cell+ count dup >r nf-length and chars + aligned r> nf-flags and ;
+    cell+ count dup >r >count chars + aligned r> >flags ;
 : NAME>FIND ( name -- xt -1 | xt 1 | 0 )
-    dup if name>xt+flags nf-immediate and 0= 1 or then ;
-: FLAGS! ( flags wid -- ) @ cell+ dup >r c@ or r> c! ;
+    dup if name>xt+flags immediate? 0= 1 or then ;
+: NAME-FLAGS! ( flags name -- ) cell+ dup >r c@ or r> c! ;

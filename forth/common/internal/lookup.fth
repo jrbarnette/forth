@@ -11,9 +11,9 @@
 ;
 
 : WID-LOOKUP ( c-addr u wid -- name | 0 )
-    begin @ dup while >r
+    @ begin dup while >r
 	2dup r@ name>id id= if 2drop r> exit then
-    r> repeat drop 2drop 0
+    r> name>prev repeat drop 2drop 0
 ;
 
 : LOOKUP ( wid ... n c-addr u -- name | 0 )

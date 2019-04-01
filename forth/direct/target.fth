@@ -69,9 +69,9 @@ meta-immediate WHILE
 : CHAR meta-char ;
 
 hex
-: IMMEDIATE    80 setflags ;
-: NO-INTERPRET 40 setflags ;
-: COMPILE-ONLY c0 setflags ;
+: IMMEDIATE    nf-immediate setflags ;
+: NO-INTERPRET nf-compile-only setflags ;
+: COMPILE-ONLY nf-compile-special setflags ;
 decimal
 
 : : s" do_colon" startname ]meta ;

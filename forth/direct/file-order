@@ -2,7 +2,6 @@
 forth/common/internal/chartype.fth
 forth/common/internal/namespace.fth
 forth/common/internal/lookup.fth
-forth/common/internal/define.fth
 forth/direct/direct.fth
     forth/direct/dictionary.fth
     forth/direct/stackprim.fth

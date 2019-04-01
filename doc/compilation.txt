@@ -3,110 +3,116 @@ immediate word:  a Forth word whose compilation semantics are to
 default interpretation semantics are execution semantics
 default compilation semantics are to append execution semantics
 
-standard definition
-    compilation: compile xt
-    interpret: execute xt
-
-immediate definition
-    compilation: execute xt
-    interpret: execute xt
-
-no-interpret definition
-    compilation: compile xt
-    interpret: -14 throw
-
-compile-only definition
-    compilation: execute xt
-    interpret: -14 throw
-
-
-dictionary entry layout
+Assume this dictionary entry layout:
     link
     count char, name char*len
-    compile xt
     interpret xt
-    code ptr, data ...
+    compile xt
+    handler, data ...
 
-call semantics for compile and interpret xt:
-    ( i*x xt -- j*x )
-    xt is execution semantics
+Assume we're in QUIT, and a valid name has been found.  To handle,
+we convert the name to point to the interpret xt, field, then do
+this:
+    DUP STATE @ CELLS - @ EXECUTE
 
-definitions:
-    primitive definition
-	compile xt does> ,
-	interpret xt does> internal-execute
-	execution semantics
-	    code ptr
+That implies various configurations for "compile xt" and "interpret
+xt".
 
-    no-interpret primitive definition
-	compile xt does> ,
-	interpret xt does> -14 throw
-	execution semantics
-	    code ptr
+standard definition
+    compile -> COMPILE,
+    interpret -> EXECUTE
 
-    compile-only definition
-	compile xt does> internal-execute
-	interpret xt does> -14 throw
-	execution semantics
-	    code ptr
+immediate definition
+    compile -> EXECUTE
+    interpret -> EXECUTE
 
-    : definition
-	compile xt does> ,
-	interpret xt does> internal-execute
-	execution semantics
-	    do-:, xt ...
+no-interpret definition
+    compile -> COMPILE,
+    interpret -> -14 THROW
 
-    CONSTANT definition
-	compile xt does> internal-execute postpone literal
-	interpret xt does> internal-execute
-	execution semantics
-	    do-constant, cell
+compile-only definition
+    compile -> EXECUTE
+    interpret -> -14 THROW
 
-    VARIABLE definition
-	compile xt does> internal-execute postpone literal
-	interpret xt does> internal-execute
-	execution semantics
-	    do-variable, cell
+constant definition
+    compile -> EXECUTE POSTPONE LITERAL
+    interpret -> EXECUTE
 
-    CREATE definition before DOES>
-	compile xt does> postpone literal
-	interpret xt does>
-	definition layout
-	    data ...
+variable definition
+    compile -> EXECUTE POSTPONE LITERAL
+    interpret -> EXECUTE
 
-    CREATE definition after DOES>
-	compile xt does> postpone literal <does-ptr> compile,
-	interpret xt is does-ptr
-	definition layout
-	    data ...
+Note that for the interpret XT, the only available options are these:
+    EXECUTE
+    -14 THROW
 
-    changing a word to IMMEDIATE
-	compile xt is interpret xt
-	interpret xt is unchanged
-	definition layout is unchanged
+So, we could instead use a flag in the name's count char, providing
+us with this layout:
+    link
+    count char | flag, name char*len
+    compile xt
+    handler, data ...
 
-    changing a word to NO-INTERPRET
-	set a flag in the name header
+Then QUIT would do this
+    ( compile-ptr flag )
+    STATE @ IF
+        DROP DUP CELL+ SWAP @ EXECUTE
+    ELSE
+        IF -14 THROW ELSE CELL+ EXECUTE THEN
+    THEN
 
-    changing a word to COMPILE-ONLY
-	equivalent to
-	    IMMEDIATE NO-INTERPRET
+But then we lose the ability to customize.  One interesting customization
+would be that we could implement CREATE to get rid of a separate
+DOES> pointer.
 
-Peculiarities:
-    xt from ', FIND, ['] points to <compile,interpret> pair
-    EXECUTE invokes execution semantics
-	... must extract data pointer, too
-    COMPILE, invokes compile semantics
-	... must extract data pointer, too
-    ??? what does this do:
-	: FUBAR ['] EXIT EXECUTE ;
-    QUIT logic:
-	( i*x xt -- j*x )
-	STATE @ IF internal-compile, ELSE internal-execute THEN
-    POSTPONE logic:
-	( xt -- ) COMPILE,
-    [COMPILE] logic:
-	if IMMEDIATE	\ ??? is this right?
-	    COMPILE,
-	else
-	    POSTPONE LITERAL POSTPONE EXECUTE
+First, change QUIT behavior to be this:
+    DUP CELL+ SWAP STATE @ CELLS - @ EXECUTE
+
+So, both interpret and compile XTs would see the interpret pointer
+at TOS.  That implies the following behavior configurations:
+
+standard definition
+    compile -> CELL+ COMPILE,
+    interpret -> CELL+ EXECUTE
+
+immediate definition
+    compile -> CELL+ EXECUTE
+    interpret -> CELL+ EXECUTE
+
+no-interpret definition
+    compile -> CELL+ COMPILE,
+    interpret -> -14 THROW
+
+compile-only definition
+    compile -> CELL+ EXECUTE
+    interpret -> -14 THROW
+
+CONSTANT definition
+    compile -> CELL+ @ POSTPONE LITERAL
+    ... or -> DUP @ EXECUTE POSTPONE LITERAL
+    interpret -> CELL+ @
+
+VARIABLE definition
+    compile -> CELL+ POSTPONE LITERAL
+    ... or -> DUP @ EXECUTE POSTPONE LITERAL
+    interpret -> CELL+
+
+CREATE definition:
+    compile -> CELL+ POSTPONE LITERAL @ COMPILE,
+    interpret -> CELL+ SWAP @ EXECUTE
+
+CREATE IMMEDIATE definition:
+    compile -> CELL+ SWAP @ EXECUTE
+    interpret -> CELL+ SWAP @ EXECUTE
+
+We could create a magic xt for CONSTANT and VARIABLE such that
+COMPILE, would skip it (e.g. a well-known NOP xt).  A well-known
+NOP would also be useful to allow CHARS to compile to nothing.
+Then CONSTANT and VARIABLE would be the famous
+    : CONSTANT CREATE , DOES> @ ;
+    : VARIABLE CREATE 0 , ;
+
+----
+It could be that the xt returned by ' et al. should be the
+pointer to the (interpret, compile) pair in the definition.
+Then we'd to have COMPILE, and EXECUTE be special.  (How?)

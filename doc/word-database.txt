@@ -1,0 +1,27 @@
+Relevant data about a definition for a glossary database:
+    Name
+    Stack diagrams:
+        data stack
+        return stack
+        compilation stack
+    Semantics configuration:
+        default
+        default immediate
+        compile-only immediate
+        execution only
+        compilation only
+            POSTPONE
+            RECURSE
+        compilation + runtime
+        default + <name>
+        default + initiation + <name>
+            includes anonymous definitions identified by <xt>
+        compilation + runtime + initiation + <name>
+            DOES>
+    Index category (see catgories.txt)
+    Nominal target dictionary dependencies
+    Standard reference
+        section #
+        word set name
+        standard (1994 or 2012)
+        prononuciation

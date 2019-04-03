@@ -42,12 +42,12 @@ dry_run() {
 }
 
 MODE=gen
-while getopts gbdlns opt
+while getopts gbtlns opt
 do
     case $opt in
         g) MODE=gen ;;
         b) MODE=build ;;
-        d) MODE=changes ;;
+        t) MODE=changes ;;
         l) MODE=list ;;
         n) MODE=dry_run ;;
         s) MODE=cat ;;

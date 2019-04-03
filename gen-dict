@@ -41,8 +41,16 @@ dry_run() {
     gen "$@" >/dev/null
 }
 
+regen() {
+    cd bootstrap
+    git checkout initdict.c
+    make
+    cd ..
+    gen "$@" >bootstrap/initdict.c
+}
+
 MODE=gen
-while getopts gbtlns opt
+while getopts gbtlnsr opt
 do
     case $opt in
         g) MODE=gen ;;
@@ -51,6 +59,7 @@ do
         l) MODE=list ;;
         n) MODE=dry_run ;;
         s) MODE=cat ;;
+        r) MODE=regen ;;
         \?) usage ;;
     esac
 done

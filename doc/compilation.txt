@@ -1,22 +1,125 @@
-immediate word:  a Forth word whose compilation semantics are to
-    perform its execution semantics.
-default interpretation semantics are execution semantics
-default compilation semantics are to append execution semantics
-
-Assume this dictionary entry layout:
+==== Dictionary layout
     link
-    count char, name char*len
+    count+flags char, name char*len
+    definition data
+
+For the convenience of FIND, there should always be an "immediate"
+flag (is this true?).  The "compile-only" flag is optional.
+
+Semantics are specified by a combination of flags and definition
+data.
+
+Known behavior configurations in definition data:
+    default ->
+    interpret: execute
+    compile: append execution semantics
+    execute: found in definition
+
+    immediate ->
+    interpret: execute
+    compile: execute
+    execute: found in definition
+
+    interpretation not allowed ->
+    interpret: undefined; -14 THROW is allowed
+    compile: append execution semantics
+    execute: found in definition
+
+    special compilation ->
+    interpret: undefined; -14 THROW is allowed
+    compile: found in definition
+    execute: inaccessible to a standard program
+
+    like [ ->
+    interpret: undefined; -14 THROW is allowed
+    compile: append execution semantics
+    execute: found in definition
+
+    like TO ->
+    interpret: custom interpretation; maybe state-smart
+    compile: custom compilation; maybe state-smart
+    execute: inaccessible to a standard program
+
+    like S" ->
+    interpret: custom interpretation; maybe state-smart
+    compile: custom compilation; maybe state-smart
+    execute: omitted from standard
+
+==== Current definition data
+    handler, data ...
+
+QUIT behavior
+    ( def-data flags )
+    STATE @ IF
+        IMMEDIATE? IF EXECUTE ELSE COMPILE, THEN
+    ELSE
+        COMPILE-ONLY? IF -14 THROW ELSE EXECUTE THEN
+    THEN
+
+POSTPONE behavior
+    ( def-data flags )
+    IMMEDIATE? 0= IF [COMPILE] LITERAL ['] COMPILE, THEN COMPILE,
+
+[COMPILE] behavior
+    ( def-data flags )
+    DROP COMPILE,
+
+FIND returns pointer to definition data
+EXECUTE -> primitive
+COMPILE, -> ,
+
+==== Hack option
+    Use current layout
+
+Use a flag bit to indicate "state-smart" words.  The bit is only
+meaningful if the word is also immediate.
+
+QUIT behavior
+    ( def-data flags )
+    STATE @ IF
+        IMMEDIATE? IF EXECUTE ELSE COMPILE, THEN
+    ELSE
+        DROP EXECUTE
+    THEN
+
+Define the following:
+    VARIABLE POSTPONE-STATE
+    : BEGIN-POSTPONE STATE @ POSTPONE-STATE ! -1 STATE ! ;
+    : END-POSTPONE POSTPONE-STATE @ STATE ! ;
+    : [ 0 STATE ! 0 POSTPONE-STATE ! ; IMMEDIATE
+    : ] -1 STATE ! -1 POSTPONE-STATE ! ;
+
+Then, POSTPONE would do the following:
+    ( def-data flags )
+    DUP IMMEDIATE? IF
+        STATE-SMART? IF
+            ['] BEGIN-POSTPONE COMPILE, COMPILE, ['] END-POSTPONE
+        THEN
+    ELSE
+        DROP [COMPILE] LITERAL ['] COMPILE,
+    THEN COMPILE,
+
+[COMPILE] behavior (relies on "state-smart" implying "immediate")
+    ( def-data flags )
+    STATE-SMART? IF
+        ['] BEGIN-POSTPONE COMPILE, COMPILE, ['] END-POSTPONE
+    THEN COMPILE,
+
+==== Option A
     interpret xt
     compile xt
     handler, data ...
+No "compile-only" flag
 
-Assume we're in QUIT, and a valid name has been found.  To handle,
-we convert the name to point to the interpret xt, field, then do
-this:
-    DUP STATE @ CELLS - @ EXECUTE
+QUIT behavior
+    ( def-data )
+    DUP 2 CELLS + SWAP STATE @ CELLS - @ EXECUTE
 
-That implies various configurations for "compile xt" and "interpret
-xt".
+FIND returns pointer to handler, data...
+EXECUTE -> primitive
+COMPILE, -> ,
+
+Possible configurations for "compile xt" and "interpret xt".
 
 standard definition
     compile -> COMPILE,
@@ -42,25 +145,39 @@ variable definition
     compile -> EXECUTE POSTPONE LITERAL
     interpret -> EXECUTE
 
-Note that for the interpret XT, the only available options are these:
-    EXECUTE
-    -14 THROW
-
-So, we could instead use a flag in the name's count char, providing
-us with this layout:
-    link
-    count char | flag, name char*len
+==== Option B
     compile xt
     handler, data ...
 
-Then QUIT would do this
-    ( compile-ptr flag )
+QUIT behavior
+    ( def-data compile-only? )
     STATE @ IF
-        DROP DUP CELL+ SWAP @ EXECUTE
+        DROP DUP CELL+ SWAP @
     ELSE
-        IF -14 THROW ELSE CELL+ EXECUTE THEN
-    THEN
+        IF -14 THROW ELSE CELL+ THEN
+    THEN EXECUTE
 
+FIND returns pointer to handler, data...
+EXECUTE -> primitive
+COMPILE, -> ,
+
+==== Option C
+    do_create
+    compile xt
+    handler, data ...
+
+QUIT behavior
+    ( def-data compile-only? )
+    STATE @ IF DROP ELSE COMPILE-ONLY? IF -14 THROW ELSE >BODY THEN EXECUTE
+
+FIND returns depends on STATE
+    ( def-data )
+    STATE @ 0= IF >BODY THEN
+EXECUTE -> primitive
+COMPILE, -> >BODY ,
+
+==== Option D
+...
 But then we lose the ability to customize.  One interesting customization
 would be that we could implement CREATE to get rid of a separate
 DOES> pointer.

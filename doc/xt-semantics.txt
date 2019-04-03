@@ -1,0 +1,59 @@
+immediate word:  a Forth word whose compilation semantics are to
+    perform its execution semantics.
+default interpretation semantics are execution semantics
+default compilation semantics are to append execution semantics
+special compilation words have no execution semantics
+some words have valid interpretation and compilation semantics,
+    but no execution semantics
+
+An "xt" is defined as
+    A value that identifies the execution semantics of a definition.
+
+In practice the definition simply affirms the allowed operations on
+an xt
+  * perform the execution semantics
+  * append the execution semantics to the current definition
+  * get the data pointer of an xt created by CREATE
+  * in ANS 2012, various operations to fetch or store an xt
+    from or to an xt created by DEFER
+
+FIND is allowed to return a different xt depending on STATE, but the
+standard doesn't seem to allow that the returned value could
+invalidate any of the above operations, even if the xt depended on
+STATE.
+
+Moreover, the standard says that it's an ambiguous condition to try
+and get an xt for any name that has no interpretation semantics.
+This would include all special compilation words.
+
+(The purpose of the language in the standard seems to be to validate
+implementations that optimize compilation by having xt values that
+include extra information for the compiler and COMPILE, at the expense
+of making EXECUTE more expensive or at least more complicated.)
+
+Definitions using semantics
+    QUIT
+        after looking up word, perform either interpretation
+        or compilation semantics based on STATE.
+    POSTPONE
+        append compilation semantics.
+    [COMPILE]
+        if compilation semantics are default, append execution
+        semantics, otherwise append compilation semantics.
+    EXECUTE
+        perform the execution semantics
+    COMPILE,
+        append the execution semantics
+
+interpretation semantics usage:
+  * in QUIT, in interpretation state
+
+compilation semantics usage:
+  * in QUIT, in compilation state
+  * in POSTPONE
+  * in [COMPILE] when the target has non-default compilation
+    semantics
+
+execution semantics usage:
+  * in EXECUTE
+  * in COMPILE,

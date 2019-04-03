@@ -12,10 +12,10 @@ forth/common/internal/lookup.fth
 forth/direct/direct.fth
     # These files are repeated below.  They can contain only
     # prim: definitions.
-    forth/direct/dictionary.fth
-    forth/direct/stackprim.fth
-    forth/direct/arithprim.fth
-    forth/direct/memprim.fth
+    forth/direct/core/dictionary.fth
+    forth/direct/core/stackprim.fth
+    forth/direct/core/arithprim.fth
+    forth/direct/core/memprim.fth
 
 # Now start building up the TARGET vocabulary and meta-compiler.
 forth/direct/target.fth
@@ -29,37 +29,37 @@ forth/direct/startdict.fth
     # Colon definitions can't work until we load vmprim because ";"
     # depends on "EXIT".  Also, colon definitions are only as useful
     # as the set of primitives we have available.
-    forth/direct/dictionary.fth
-    forth/direct/stackprim.fth
-    forth/direct/arithprim.fth
-    forth/direct/memprim.fth
-    forth/direct/multprim.fth
-    forth/direct/vmprim.fth
+    forth/direct/core/dictionary.fth
+    forth/direct/core/stackprim.fth
+    forth/direct/core/arithprim.fth
+    forth/direct/core/memprim.fth
+    forth/direct/core/multprim.fth
+    forth/direct/core/vmprim.fth
 
     # From here forward we can make colon definitions, with
     # limitations.  We need to implement control-flow words early,
     # because they're implemented in the target dictionary.
-    # However, there are dependencies:
+    # However, the ordering is interleaved because of internal
+    # dependencies:
     #   * The "control" defintions depend on some of the "stack"
     #     and "mem" operations.
     #   * Some "arith" defintions depend on IF ... ELSE ... THEN.
-    # however, that the control-flow defintions depend
     forth/common/core/stackops.fth
-    forth/direct/memops.fth
+    forth/direct/core/memops.fth
     forth/common/core/memops.fth
-    forth/direct/control.fth
+    forth/direct/core/control.fth
     forth/common/core/control.fth
     forth/common/core/arithops.fth
 
     # At this point we have working definitions for "dictionary",
     # "stack", "arith", "mem", "mult", and "control" words.  We're
     # ready to start making more complicated definitions.
-    forth/direct/parse.fth
-    forth/direct/nameprim.fth
-    forth/direct/terminal.fth
-    forth/direct/quit.fth
-    forth/direct/fileprim.fth
-    forth/direct/nameops.fth
+    forth/direct/core/parse.fth
+    forth/direct/core/nameprim.fth
+    forth/direct/core/terminal.fth
+    forth/direct/core/quit.fth
+    forth/direct/file/fileprim.fth
+    forth/direct/core/nameops.fth
     forth/common/core/format.fth
     forth/common/core/terminal.fth
     forth/common/core/comments.fth

@@ -42,3 +42,10 @@ drop					( )
 	r> char+ r> 1-
     repeat
 ;
+
+: . <# bl hold dup abs 0 #s rot sign #> type ;
+: ." postpone s" postpone type ; compile-only
+: U. <# bl hold 0 #s #> type ;
+
+: .R ( n1 n2 -- ) >r <# dup abs 0 #s rot sign #> r> over - spaces type ;
+: U.R ( u n -- ) >r <# 0 #s #> r> over - spaces type ;

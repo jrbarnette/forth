@@ -57,12 +57,12 @@ forth/direct/startdict.fth
     forth/direct/core/parse.fth
     forth/direct/core/nameprim.fth
     forth/direct/core/terminal.fth
+    forth/common/core/terminal.fth
 
     forth/direct/core/quit.fth
 
     forth/direct/core/nameops.fth
     forth/common/core/format.fth
-    forth/common/core/terminal.fth
     forth/common/core/comments.fth
     forth/direct/file/fileprim.fth
 forth/direct/enddict.fth

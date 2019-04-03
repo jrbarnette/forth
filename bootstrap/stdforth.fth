@@ -49,19 +49,6 @@ here forth-wordlist 3 cells + ' definitions @ , ] literal ! exit [
 : ONLY ( -- ) -1 set-order ;
 : PREVIOUS ( -- ) get-order nip 1- set-order ;
 
-\ terminal I/O - CORE
-: CR ( -- ) 10 emit ;
-: SPACE ( -- ) bl emit ;
-: SPACES ( n -- ) begin dup 0> while space 1- repeat drop ;
-: TYPE ( c-addr u -- )
-    chars over + swap begin 2dup > while dup c@ emit char+ repeat 2drop
-;
-
-: . <# bl hold dup abs 0 #s rot sign #> type ;
-: U. <# bl hold 0 #s #> type ;
-: .R ( n1 n2 -- ) >r <# dup abs 0 #s rot sign #> r> over - spaces type ;
-: U.R ( u n -- ) >r <# 0 #s #> r> over - spaces type ;
-
 : ." postpone s" postpone type ; immediate
 
 : .( [char] ) parse type ; immediate

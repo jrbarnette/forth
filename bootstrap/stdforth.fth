@@ -1,8 +1,5 @@
 \ Copyright 2013, by J. Richard Barnette, All Rights Reserved.
 
-\ compile - CORE EXT
-: COMPILE, ( xt -- ) , ; no-interpret
-
 \ parse - CORE EXT (2012 standard)
 : PARSE-NAME
     source swap >r >in @ 1-                     ( end idx ) ( R: c-addr )

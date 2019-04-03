@@ -53,6 +53,7 @@ forth/direct/startdict.fth
     forth/direct/core/control.fth
     forth/common/core/control.fth
     forth/common/core/arithops.fth
+    forth/common/core/compileexec.fth
 
     # At this point we have working definitions for "dictionary",
     # "stack", "arith", "mem", "mult", and "control" words.  We're
@@ -64,8 +65,8 @@ forth/direct/startdict.fth
     forth/common/core/number.fth
     forth/direct/core/terminal.fth
     forth/common/core/terminal.fth
-    forth/direct/core/compile.fth
 
+    forth/direct/core/compile.fth
     forth/direct/core/quit.fth
 
     forth/direct/core/nameops.fth

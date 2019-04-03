@@ -38,9 +38,9 @@ forth/direct/startdict.fth
 
     # From here forward we can make colon definitions, with
     # limitations.  We need to implement control-flow words early,
-    # because they're implemented in the target dictionary.
-    # However, the ordering is interleaved because of internal
-    # dependencies:
+    # because the implementation requires them to be in the target
+    # dictionary before we can use them.  However, the ordering is
+    # interleaved because of internal dependencies:
     #   * The "control" defintions depend on some of the "stack"
     #     and "mem" operations.
     #   * Some "arith" defintions depend on IF ... ELSE ... THEN.

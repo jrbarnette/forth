@@ -1,23 +1,25 @@
 # Copyright 2016, by J. Richard Barnette, All Rights Reserved.
 
-# These first three items from forth/common represent function
-# that we may eventually want to build into the base interpreter.
+# We may eventually want to build this into the base interpreter.
 forth/common/internal/chartype.fth
+
+# The namespace code included here should get cleaned up once it can
+# be incorporated into the bootstrap interpreter.
 forth/common/internal/namespace.fth
 forth/common/internal/lookup.fth
 
 # This next set of files builds up the DIRECT vocabulary that's
-# responible for primitives to emit syntactically correct direct
+# responsible for primitives to emit syntactically correct direct
 # execution code.
 forth/direct/direct.fth
-    # These files are repeated below.  They can contain only
-    # prim: definitions.
+    # These files will be repeated later.  To be reusable in this way,
+    # they can contain only prim: definitions.
     forth/direct/core/dictionary.fth
     forth/direct/core/stackprim.fth
     forth/direct/core/arithprim.fth
     forth/direct/core/memprim.fth
 
-# Now start building up the TARGET vocabulary and meta-compiler.
+# These next files build up the TARGET vocabulary and meta-compiler.
 forth/direct/target.fth
 forth/direct/tokens.fth
 forth/common/internal/interpret.fth
@@ -38,9 +40,9 @@ forth/direct/startdict.fth
 
     # From here forward we can make colon definitions, with
     # limitations.  We need to implement control-flow words early,
-    # because they're implemented in the target dictionary.
-    # However, the ordering is interleaved because of internal
-    # dependencies:
+    # because the implementation requires them to be in the target
+    # dictionary before we can use them.  However, the ordering is
+    # interleaved because of internal dependencies:
     #   * The "control" defintions depend on some of the "stack"
     #     and "mem" operations.
     #   * Some "arith" defintions depend on IF ... ELSE ... THEN.

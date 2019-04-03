@@ -3,7 +3,7 @@
 
 : ?TRY-NAME ( i*x str len -- i*x -1 | j*x 0 )
     2>r get-order 2r> lookup
-    ?dup if name>xt+flags interpret-name false else true then
+    ?dup if interpret-name false else true then
 ;
 
 : ?TRY-NUMBER ( str len -- -1 | x 0 )

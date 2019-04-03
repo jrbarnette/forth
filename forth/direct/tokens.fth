@@ -3,7 +3,7 @@
 
 only FORTH definitions
 
-: INTERPRET-NAME ( i*x xt flags -- j*x ) drop execute ;
+: INTERPRET-NAME ( i*x name -- j*x ) name>xt execute ;
 
 : INTERPRET-NUMBER ( x -- ) direct-literal meta-literal ;
 

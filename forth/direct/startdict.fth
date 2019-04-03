@@ -1,5 +1,11 @@
 \  Copyright 2017, by J. Richard Barnette. All Rights Reserved.
 
+only FORTH definitions
+
+: COMPILE-INPUT begin interpret refill 0= until ;
+
+COMPILE-INPUT
+\ Starting with this line, input is processed by the meta-interpreter.
 TARGET <DIRECT>
 
 >>> #include <stddef.h>

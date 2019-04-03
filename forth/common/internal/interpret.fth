@@ -1,19 +1,5 @@
-\ Copyright 2018, by J. Richard Barnette, All Rights Reserved.
-\ Internal definitions relating to text interpretation.
-
-only FORTH definitions
-
-: INTERPRET-NAME ( i*x xt flags -- j*x ) drop execute ;
-
-: INTERPRET-NUMBER ( x -- ) direct-literal meta-literal ;
-
-: INTERPRET-UNKNOWN ( str len -- )
-    meta-state @ if
-	meta-state @ meta-emit
-    else
-	type space -13 throw
-    then
-;
+\ Copyright 2019, by J. Richard Barnette, All Rights Reserved.
+\ Definition of INTERPRET, and supporting code
 
 : ?TRY-NAME ( i*x str len -- i*x -1 | j*x 0 )
     2>r get-order 2r> lookup
@@ -46,7 +32,3 @@ only FORTH definitions
         2r@ ?try-name if 2r@ ?try-number if 2r@ interpret-unknown then then
     2r> 2drop repeat 2drop
 ;
-
-: COMPILE-INPUT begin interpret refill 0= until ;
-
-COMPILE-INPUT

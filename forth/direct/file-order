@@ -19,15 +19,16 @@ forth/direct/direct.fth
 
 # Now start building up the TARGET vocabulary and meta-compiler.
 forth/direct/target.fth
-forth/direct/meta-compile.fth
+forth/direct/tokens.fth
+forth/common/internal/interpret.fth
 forth/direct/startdict.fth
     # Repeat our early primitive definitions, this time to generate
     # initial dictionary content.
     #
     # These initial files can contain only "prim:" definitions.
     # Colon definitions can't work until we load vmprim because ";"
-    # depends on "EXIT".  Also, there's no point in a colon
-    # definition without a healty set of primitives available.
+    # depends on "EXIT".  Also, colon definitions are only as useful
+    # as the set of primitives we have available.
     forth/direct/dictionary.fth
     forth/direct/stackprim.fth
     forth/direct/arithprim.fth
@@ -56,7 +57,7 @@ forth/direct/startdict.fth
     forth/direct/parse.fth
     forth/direct/nameprim.fth
     forth/direct/terminal.fth
-    forth/direct/interpret.fth
+    forth/direct/quit.fth
     forth/direct/fileprim.fth
     forth/direct/nameops.fth
     forth/common/core/format.fth

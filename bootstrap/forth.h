@@ -91,8 +91,8 @@ typedef struct {
  * in these key functions: execute(), do_colon(), do_exit().
  */
 
-#define STACK_SIZE	32
-#define RSTACK_SIZE	64
+#define STACK_SIZE	256
+#define RSTACK_SIZE	512
 
 typedef struct vmstate *		vmstate_p;
 typedef union definition_data		definition_d;

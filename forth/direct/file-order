@@ -70,6 +70,6 @@ forth/direct/startdict.fth
 
     forth/direct/core/nameops.fth
     forth/common/core/format.fth
-    forth/common/core/comments.fth
+    forth/common/core/compile.fth
     forth/direct/file/fileprim.fth
 forth/direct/enddict.fth

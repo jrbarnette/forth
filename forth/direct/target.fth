@@ -66,7 +66,7 @@ meta-immediate WHILE
 
 : [ META[ ;
 : ] ]META ;
-: CHAR meta-char ;
+: CHAR meta-state @ 2 = if s" CHAR" meta-compile else meta-char then ;
 
 hex
 : IMMEDIATE    nf-immediate setflags ;

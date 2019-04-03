@@ -1,9 +1,5 @@
 \ Copyright 2013, by J. Richard Barnette, All Rights Reserved.
 
-: [CHAR] char postpone literal ; compile-only
-: ['] ' postpone literal ; compile-only
-
-
 \ compile - CORE EXT
 : COMPILE, ( xt -- ) , ; no-interpret
 
@@ -51,7 +47,6 @@ here forth-wordlist 3 cells + ' definitions @ , ] literal ! exit [
 
 : ." postpone s" postpone type ; immediate
 
-: .( [char] ) parse type ; immediate
 : ABORT"
     postpone if postpone ." postpone abort postpone then
 ; immediate

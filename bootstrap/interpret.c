@@ -17,7 +17,6 @@
 //------  ------  ------  ------  ------  ------  ------  ------
 // ABORT                 6.1.0670 CORE                   32
 // CHAR                  6.1.0895 CORE                   35
-// DECIMAL               6.1.1170 CORE                   36
 // EVALUATE              6.1.1360 CORE                   38
 // POSTPONE              6.1.2033 CORE                   43
 // QUIT                  6.1.2050 CORE                   43
@@ -26,7 +25,6 @@
 // ]                     6.1.2540 CORE                   49
 //
 // C"                    6.2.0855 CORE EXT               52
-// HEX                   6.2.1660 CORE EXT               54
 //------  ------  ------  ------  ------  ------  ------  ------
 
 
@@ -214,15 +212,6 @@ x_char(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* ( -- ) */
-vminstr_p
-x_decimal(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    DICT.base = 10;
-    return ip;
-}
-
-
 /* ( i*x c-addr u -- j*x ) */
 vminstr_p
 x_evaluate(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -378,14 +367,5 @@ x_c_quote(vminstr_p ip, vmstate_p vm, vmarg_p c_quote_xt)
     str_dst = allot(vm, XALIGNED(len + 1));
     str_dst[0] = (char_ft) len;
     memcpy(str_dst + 1, str_src, len);
-    return ip;
-}
-
-
-/* ( -- ) */
-vminstr_p
-x_hex(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    DICT.base = 16;
     return ip;
 }

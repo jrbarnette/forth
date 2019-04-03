@@ -3,6 +3,9 @@
 # These first three items from forth/common represent function
 # that we may eventually want to build into the base interpreter.
 forth/common/internal/chartype.fth
+
+# The namespace code included here should get cleaned up once it can
+# be incorporated into the bootstrap interpreter.
 forth/common/internal/namespace.fth
 forth/common/internal/lookup.fth
 
@@ -61,6 +64,7 @@ forth/direct/startdict.fth
     forth/common/core/number.fth
     forth/direct/core/terminal.fth
     forth/common/core/terminal.fth
+    forth/direct/core/compile.fth
 
     forth/direct/core/quit.fth
 

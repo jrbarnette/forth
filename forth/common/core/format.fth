@@ -5,7 +5,6 @@
 \  #>                    6.1.0040 CORE                   25
 \  #S                    6.1.0050 CORE                   25
 \  <#                    6.1.0490 CORE                   31
-\  >NUMBER               6.1.0570 CORE                   31
 \  HOLD                  6.1.1670 CORE                   39
 \  SIGN                  6.1.2210 CORE                   45
 \ ------  ------  ------  ------  ------  ------  ------  ------
@@ -26,22 +25,6 @@ drop					( )
 ;
 : #S ( ud1 -- ud2 ) begin # 2dup or 0= until ;
 : SIGN ( n -- ) 0< if [char] - hold then ;
-
-: >DIGIT ( char -- u )
-    [char] 0 - 9 over u< if
-	17 - 25 over u< if 32 - 25 over u< if drop -1 exit then then 10 +
-    then
-;
-
-: >NUMBER ( ud1 c-addr1 u1 -- ud2 c-addr2 u2 )
-    begin dup while			( ud c-addr u )
-	>r dup >r c@ >digit		( ud digit ) ( R: u c-addr )
-	dup base @ u< invert if drop r> r> exit then
-	>r base @ * >r base @ um* r> + r>
-	rot dup >r + dup r> u< negate rot +
-	r> char+ r> 1-
-    repeat
-;
 
 : . <# bl hold dup abs 0 #s rot sign #> type ;
 : ." postpone s" postpone type ; compile-only

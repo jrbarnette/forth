@@ -11,3 +11,4 @@ constant FORTH-WORDLIST
 
 : GET-CURRENT <C> &DICT.current; @ ;
 : SET-CURRENT <C> &DICT.current; ! ;
+: DEFINITIONS ( -- ) <C> &DICT.search_order; @ set-current ;

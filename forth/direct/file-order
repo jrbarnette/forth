@@ -70,6 +70,7 @@ forth/direct/startdict.fth
     forth/direct/core/compile.fth
     forth/direct/core/quit.fth
     forth/direct/search/current.fth
+    forth/common/search/order.fth
     forth/common/internal/chartype.fth
     forth/common/internal/nameflags.fth
     forth/common/internal/namespace.fth

@@ -1,5 +1,6 @@
 \  Copyright 2019, by J. Richard Barnette. All Rights Reserved.
 
+QUIT
 only FORTH definitions
 
 : escape-nul ( #nul -- ) ?dup if 0 do ." \0" loop ." 00" then ;

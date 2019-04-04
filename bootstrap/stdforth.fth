@@ -38,7 +38,7 @@ here 256 dup chars allot    \ constant TIB
     \ No prompt just yet: we need to know whether this is
     \ interactive, and we need an interface into the C readline()
     \ library.
-    begin refill while interpret repeat cr 0 >r
+    begin refill while interpret repeat 0 >r
 ;
 
 : ABORT clear quit ;

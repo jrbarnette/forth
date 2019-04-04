@@ -180,7 +180,7 @@ state: immediate
     STATE                 6.1.2250 CORE                   45
     [                     6.1.2500 CORE                   48
     ]                     6.1.2540 CORE                   49
-interpret: parse term-io lookup compileprim
+interpret: parse term-io lookup compileprim state
     ABORT                 6.1.0670 CORE                   32
     ABORT"                6.1.0680 CORE                   32
     ENVIRONMENT?          6.1.1345 CORE                   38

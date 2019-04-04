@@ -14,10 +14,10 @@
 <C> &DICT.to_in;   constant >IN
 
 : SOURCE   ( -- c-addr u )  <C> &DICT.source;  2@ ;
-\ : SOURCE!  ( c-addr u -- )  <C> &DICT.source;  2! ;
+: SOURCE!  ( c-addr u -- )  <C> &DICT.source;  2! ;
 
 prim: PARSE         x_parse
 prim: REFILL        x_refill
 
 : SOURCE-ID <C> &DICT.source_id; @ ;
-\ : SOURCE-ID! <C> &DICT.source_id; ! ;
+: SOURCE-ID! <C> &DICT.source_id; ! ;

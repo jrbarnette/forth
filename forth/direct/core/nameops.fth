@@ -24,13 +24,11 @@ prim: linkname          x_linkname
 : CONSTANT <C> do_constant; addname , ;
 
 : current-name ( -- name ) get-current @ ;
-: name>xt ( name -- xt ) cell+ count 31 and chars + aligned ;
 : DOES> r> current-name name>xt created? cell+ ! ; no-interpret
 : CREATE <C> do_create; addname 0 , DOES> ;
 
-: flags! current-name cell+ dup >r c@ or r> c! ; 
-: IMMEDIATE     $80 flags! ;
-: NO-INTERPRET  $40 flags! ;
-: COMPILE-ONLY  $c0 flags! ;
+: IMMEDIATE     nf-immediate        current-name name-flags! ;
+: NO-INTERPRET  nf-compile-only     current-name name-flags! ;
+: COMPILE-ONLY  nf-compile-special  current-name name-flags! ;
 
 : VARIABLE <C> do_variable; addname 0 , ;

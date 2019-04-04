@@ -1,18 +1,6 @@
 \ Copyright 2018, by J. Richard Barnette, All Rights Reserved.
 \ Internal definitions relating to namespace layout.
 
-\ FIXME - This code can't work universally:
-\   * "BASE" doesn't do what we wnat in meta-interpret code.
-\   * Number syntax "$80" doesn't work in the bootstrap interpreter.
-
-base @ hex
-40 constant NF-COMPILE-ONLY
-80 constant NF-IMMEDIATE
-c0 constant NF-COMPILE-SPECIAL
-1f constant NF-LENGTH
-e0 constant NF-FLAGS
-base !
-
 : IMMEDIATE? ( flags+len -- imm? ) nf-immediate and ;
 : COMPILE-ONLY? ( flags+len -- imm? ) nf-compile-only and ;
 : >COUNT ( flags+len -- len ) nf-length and ;

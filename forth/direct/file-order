@@ -6,7 +6,7 @@ forth/common/internal/chartype.fth
 
 # The namespace code included here should get cleaned up once it can
 # be incorporated into the bootstrap interpreter.
-# forth/direct/internal/nameflags.fth
+forth/direct/internal/nameflags.fth
 forth/common/internal/namespace.fth
 forth/common/internal/lookup.fth
 
@@ -68,14 +68,14 @@ forth/direct/startdict.fth
 
     forth/common/core/compileexec.fth
     forth/direct/core/compile.fth
+    forth/direct/core/quit.fth
     forth/direct/search/current.fth
-    # forth/common/internal/chartype.fth
-    # forth/common/internal/nameflags.fth
-    # forth/common/internal/namespace.fth
+    forth/common/internal/chartype.fth
+    forth/common/internal/nameflags.fth
+    forth/common/internal/namespace.fth
     # forth/common/internal/lookup.fth
     # forth/common/internal/tokens.fth
     # forth/common/internal/interpret.fth
-    forth/direct/core/quit.fth
     # forth/common/core/quit.fth
 
     forth/direct/core/nameops.fth

@@ -1,83 +1,49 @@
-Where we are:
+==== Where we are:
     Have source that can compile Forth into direct-mode code in C;
     it generates the content for bootstrap/initdict.c.  The build
     process supports meta interpretation during dictionary building,
     including colon definitions.
 
-Goal:
+    The current implementation of QUIT is in bootstrap/stdforth.fth.
+    However, when the interpreter starts up, it's running a text
+    interpreter from quit() in C code.  You have to explicitly invoke
+    QUIT to get the Forth version.  The two versions are supposed to
+    be the same, but that assertion is not well tested.
+
+BUG
+    If you invoke QUIT at the terminal, then EOF (^D) doesn't terminate,
+    it hands control back to quit().  So, you have to use EOF twice to
+    terminate.
+
+Long-term Goal:
     Eliminate the static dictionary, except possibly for HERE and
     FORTH-WORDLIST.
 
 Plan
-    Re-implementation needs to happen mostly from the top down:
-    Suppose X and Y are C primitives, that X depends on the static
-    dictionary, and Y depends on X.  Then we have to re-implement Y
-    first, then X, so that Y doesn't have to call Forth code from C.
+    Rip out the C based quit().  Generally, clean up main() to be
+    less complicated.
 
-    So, we have to re-implement QUIT in Forth before much of
-    anything else, because QUIT depends on _everything_ that uses
-    the static dictionary.
-
-    Once QUIT is done, we can hook in Forth implementations for the following:
+    The C-based quit() is the last dependency on the static dictionary,
+    so once it's gone, we can convert the final C dependencies:
         Parse
         Miscellaneous bits like STATE and BASE
-    ... basically, anything that relies on the static dictionary.
 
-    Dictionary stuff has to come last, because it's, well, pretty darn
-    tricky.
-====
-Clean-up
+    Dictionary stuff has to come last, because, well ... it's pretty
+    darn tricky.
 
-Maybe move INTERPRET-NAME, INTERPRET-UNKNOWN, and INTERPRET-NUMBER
-from meta-compile to target.  The relationships amongst these bits
-needs a good looking at.
+==== bootstrap refactoring
+Generally, reorganize the C code so that the C source content is
+named with the same basic conventions as the Forth sources.
 
-====
-Refactoring between rawdict and direct:
-    duplication of c-value printing - c-string, c-hex, c-decimal
-    want to share things like .{ and },
-    want to share >>> and similar
-    better separation of content from namespace.fth
-    sort out vocabulary contents
-    want to share all the primitive definition code
-        even though behavior can be quite different
-====
-bootstrap refactoring
+Some ideas for what names apply to what content are outlined in
+reference/forth/index.txt.
 
-Create a vm.c, and move low-level set-up stuff there from forth.c.
-... Tricky, because the idioms around quit() are so screwy.
-... But we need to clean up, so that we can move QUIT to forth.
+==== What to do with rawdict:
+It used to be able to generate a working bootstrap interpreter.
+However, the meta-interpret stuff has probably pretty well busted
+that.  So, the code is dead in that sense.
 
-Want to re-organize into the following files
-    vm.c
-        init_forth(), and initialization from command line
-        primitives for stack clearing
-        EXIT
-        EXECUTE
-        CATCH
-        THROW
-        direct interpretation loop
-        indirect interpretation loop
-        direct-mode primitives
-    TBD
-        BASE
-        DECIMAL
-        HEX
-        BL
-        TRUE
-        FALSE
-        STATE
-        [
-        ]
-        compile-special stuff like POSTPONE, [CHAR], etc.
-    parse.c
-        PARSE
-        ...
-    compile.c
-        ...
-    interpret.c
-        ABORT
-        ABORT"
-        QUIT
-        EVALUATE
-        ...
+OTOH, the rawdict stuff could be used to build an assembler for
+direct-mode Forth.  That, in turn, might set the meta-interpreter on
+sounder footing, and allow factoring the code to have machine-code
+based primitives with no dependencies on C code.

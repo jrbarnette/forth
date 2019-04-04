@@ -1,8 +1,7 @@
 # Copyright 2016, by J. Richard Barnette, All Rights Reserved.
 
-# This next set of files builds up the DIRECT vocabulary that's
-# responible for primitives to emit syntactically correct direct
-# execution code.
+# First, build up the DIRECT vocabulary that's responsible for
+# primitives to emit syntactically correct direct execution code.
 forth/direct/direct.fth
     # These files are repeated below.  They can contain only
     # prim: definitions.
@@ -63,7 +62,6 @@ forth/direct/startdict.fth
     forth/direct/search/current.fth
     forth/common/search/order.fth
     forth/common/internal/chartype.fth
-    forth/common/internal/nameflags.fth
     forth/common/internal/namespace.fth
     forth/common/internal/lookup.fth
     # forth/common/internal/tokens.fth

@@ -6,6 +6,7 @@ forth/common/internal/chartype.fth
 
 # The namespace code included here should get cleaned up once it can
 # be incorporated into the bootstrap interpreter.
+# forth/direct/internal/nameflags.fth
 forth/common/internal/namespace.fth
 forth/common/internal/lookup.fth
 
@@ -53,7 +54,6 @@ forth/direct/startdict.fth
     forth/direct/core/control.fth
     forth/common/core/control.fth
     forth/common/core/arithops.fth
-    forth/common/core/compileexec.fth
 
     # At this point we have working definitions for "dictionary",
     # "stack", "arith", "mem", "mult", and "control" words.  We're
@@ -66,8 +66,17 @@ forth/direct/startdict.fth
     forth/direct/core/terminal.fth
     forth/common/core/terminal.fth
 
+    forth/common/core/compileexec.fth
     forth/direct/core/compile.fth
+    forth/direct/search/current.fth
+    # forth/common/internal/chartype.fth
+    # forth/common/internal/nameflags.fth
+    # forth/common/internal/namespace.fth
+    # forth/common/internal/lookup.fth
+    # forth/common/internal/tokens.fth
+    # forth/common/internal/interpret.fth
     forth/direct/core/quit.fth
+    # forth/common/core/quit.fth
 
     forth/direct/core/nameops.fth
     forth/common/core/format.fth

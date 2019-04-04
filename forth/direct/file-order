@@ -59,6 +59,7 @@ forth/direct/startdict.fth
     # "stack", "arith", "mem", "mult", and "control" words.  We're
     # ready to start making more complicated definitions.
     forth/direct/core/parse.fth
+    forth/common/core/parse.fth
     forth/direct/core/nameprim.fth
 
     forth/direct/core/number.fth

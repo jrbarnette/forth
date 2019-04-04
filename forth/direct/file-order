@@ -1,7 +1,5 @@
 # Copyright 2016, by J. Richard Barnette, All Rights Reserved.
 
-forth/common/internal/lookup.fth
-
 # This next set of files builds up the DIRECT vocabulary that's
 # responible for primitives to emit syntactically correct direct
 # execution code.

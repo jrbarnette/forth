@@ -1,13 +1,5 @@
 # Copyright 2016, by J. Richard Barnette, All Rights Reserved.
 
-# These first three items from forth/common represent function
-# that we may eventually want to build into the base interpreter.
-forth/common/internal/chartype.fth
-
-# The namespace code included here should get cleaned up once it can
-# be incorporated into the bootstrap interpreter.
-forth/direct/internal/nameflags.fth
-forth/common/internal/namespace.fth
 forth/common/internal/lookup.fth
 
 # This next set of files builds up the DIRECT vocabulary that's
@@ -75,7 +67,7 @@ forth/direct/startdict.fth
     forth/common/internal/chartype.fth
     forth/common/internal/nameflags.fth
     forth/common/internal/namespace.fth
-    # forth/common/internal/lookup.fth
+    forth/common/internal/lookup.fth
     # forth/common/internal/tokens.fth
     # forth/common/internal/interpret.fth
     # forth/common/core/quit.fth

@@ -279,7 +279,7 @@ extern c_addr_ft parse_name(cell_ft *);
 extern cell_ft refill(void);
 
 extern void quit(vmstate_p, FILE *);
-extern void interpret_string(vmstate_p, char *);
+extern void interpret_lines(vmstate_p, char **);
 
 #define COMMA(vm, x)	(*(a_addr_ft)allot((vm), CELL_SIZE) = (cell_ft) (x))
 #define COMPILE(vm, xt)	COMMA(vm, xt)
@@ -287,6 +287,6 @@ extern void interpret_string(vmstate_p, char *);
 
 extern vminstr_d initialize_forth[];
 
-extern char init_forth_defs[];
+extern char *init_forth_defs[];
 
 #endif

@@ -125,10 +125,12 @@ init_forth(vmstate_p vm)
 
 struct options forth_options;
 
-char dictionary_stats[] =
-    "unused here forth-wordlist - cell+         ( free inuse )\n"
-    "2dup + rot rot                             ( total free inuse )\n"
-    ".( dictionary: ) . .( in use / ) . .( free / ) . .( total ) cr\n";
+char *dictionary_stats[] = {
+    "unused here forth-wordlist - cell+         ( free inuse )",
+    "2dup + rot rot                             ( total free inuse )",
+    ".( dictionary: ) . .( in use / ) . .( free / ) . .( total ) cr",
+    NULL,
+};
 
 int
 main(int argc, char *argv[])
@@ -140,7 +142,7 @@ main(int argc, char *argv[])
     init_forth(&vmstate);
 
     if ((throwcode = setjmp(vmstate.interp_loop)) == 0) {
-	interpret_string(&vmstate, init_forth_defs);
+	interpret_lines(&vmstate, init_forth_defs);
     } else {
 	handle_exception(throwcode, &vmstate, NULL);
     }
@@ -169,7 +171,7 @@ main(int argc, char *argv[])
     if (!forth_options.argc) {
 	if (IS_INTERACTIVE(stdin)) {
 	    if ((throwcode = setjmp(vmstate.interp_loop)) == 0) {
-		interpret_string(&vmstate, dictionary_stats);
+		interpret_lines(&vmstate, dictionary_stats);
 	    } else {
 		handle_exception(throwcode, &vmstate, NULL);
 	    }

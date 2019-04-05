@@ -22,11 +22,12 @@ cat <<END
  */
 #include "forth.h"
 
-char $VARIABLE[] =
+char *$VARIABLE[] = {
 $(sed '
     s/[\"]/\\&/g
     s/	/\\t/g
-    s/.*/    "&\\n"/
+    s/.*/    "&",/
   ' $FILE)
-;
+  NULL,
+};
 END

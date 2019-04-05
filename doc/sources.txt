@@ -1,3 +1,20 @@
+input source specification: A set of information describing a
+    particular state of the input source, input buffer, and parse
+    area. This information is sufficient, when saved and restored
+    properly, to enable the nesting of parsing operations on the
+    same or different input sources.
+input source: The device, file, block, or other entity that supplies
+    characters to refill the input buffer.
+input buffer: A region of memory containing the sequence of
+    characters from the input source that is currently accessible to
+    a program.
+parse area: The portion of the input buffer that has not yet been
+    parsed, and is thus available to the system for subsequent
+    processing by the text interpreter and other parsing operations.
+parse: To select and exclude a character string from the parse area
+    using a specified set of delimiting characters, called
+    delimiters.
+====
 indicators
     BLK is not 0
 	input buffer is specified block
@@ -15,6 +32,7 @@ indicators
     BLK is 0 and source-id is fileid
 	input buffer is a file buffer
 	REFILL does something like SOURCE SOURCE-ID READ-LINE
+	    must remember FILE-POSITION associated with buffer
 	    FALSE at EOF
 	    TRUE if not EOF
 ====
@@ -41,3 +59,30 @@ class terminal extends input-source
 
 class seekable-file extends terminal
     file-offset
+====
+Nesting input
+    source-id is -1 - 3 cells
+	save source
+	save >in
+    source-id is 0 - 1 cell
+	(source buffer is implicitly TIB)
+	save >in
+    source-id is fileid - 3 cells
+	(source buffer is shared with all files)
+	save source file seek offset
+	save >in
+
+Optional - when nesting (from any source) and new source is a
+file, mark the shared source file buffer "invalid"
+
+Unnesting input
+    source-id is -1
+	restore >in
+	restore source
+    source-id is 0
+	restore >in
+    source-id is fileid
+	restore >in
+	seek to saved offset
+	refill buffer
+	    optional - only if shared buffer is marked "invalid"

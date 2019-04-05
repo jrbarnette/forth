@@ -13,6 +13,7 @@
 : BASE? number-base base ! number-end? ;
 : SIGN? [char] - = number-end? ;
 : NUMBER? >number >r 2drop r> ;
+\ FIXME - don't yet support '<char>' syntax.
 : BASE-SIGN-NUMBER
     over c@ base? if 2drop false exit then >r chars - r>
     over c@ sign? if 2drop false exit then >r tuck chars - >r

@@ -36,7 +36,7 @@ meta-immediate THEN
 meta-immediate UNTIL
 meta-immediate WHILE
 
-: <C> [char] ; parse direct-expr meta-literal ;
+: <C> ';' parse direct-expr meta-literal ;
 : [CHAR] meta-char meta-literal ;
 : POSTPONE
     parse-name 2dup 2>r get-order 2r> lookup ?dup if

@@ -5,24 +5,24 @@ only FORTH definitions
 
 : escape-nul ( #nul -- ) ?dup if 0 do ." \0" loop ." 00" then ;
 : escape-graphic ( c -- )
-    dup [char] \ = over [char] " = or if [char] \ emit then emit ;
+    dup '\' = over '"' = or if '\' emit then emit ;
 : escape-non-graphic ( c -- )
-    base @ >r 8 base ! 0 <# # # # [char] \ hold #> type r> base ! ;
+    base @ >r 8 base ! 0 <# # # # '\' hold #> type r> base ! ;
 : escape-char ( c -- )
     dup graphic? if escape-graphic else escape-non-graphic then ;
 : escape ( #nul c -- #nul )
     ?dup if swap escape-nul escape-char 0 else 1+ then ;
 : escape-string ( c-addr u -- )
     over >r chars + 0 swap r> do i c@ escape 1 chars +loop drop ;
-: c-string ( c-addr u -- ) [char] " emit escape-string [char] " emit ;
+: c-string ( c-addr u -- ) '"' emit escape-string '"' emit ;
 : c-hex ( u -- c-addr u )
     base @ >r hex
-    <# dup >r abs 0 #s [char] x hold [char] 0 hold r> sign #>
+    <# dup >r abs 0 #s 'x' hold '0' hold r> sign #>
     r> base ! ;
 
 : .exec ( c-addr u -- ) ." .handler = " type ;
 : .str ( c-addr u -- ) ." .id = " c-string ;
-: .expr ( c-addr u -- ) ." .cell = (cell_ft) (" type [char] ) emit ;
+: .expr ( c-addr u -- ) ." .cell = (cell_ft) (" type ')' emit ;
 : .cell ( u -- ) c-hex .expr ;
 
 variable offset      0 offset !

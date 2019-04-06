@@ -18,13 +18,11 @@ drop					( )
 
 : # ( ud1 -- ud2 )
     0 base @ um/mod >r base @ um/mod swap
-    \ XXX meta-interpretation can't handle `char`
-    dup 10 u< if [char] 0 else [ char A 10 - ] literal then
-    \ dup 10 u< if [char] 0 else [char] A 10 - then
+    dup 10 u< if '0' else [ 'A' 10 - ] literal then
     + hold r>
 ;
 : #S ( ud1 -- ud2 ) begin # 2dup or 0= until ;
-: SIGN ( n -- ) 0< if [char] - hold then ;
+: SIGN ( n -- ) 0< if '-' hold then ;
 
 : . <# bl hold dup abs 0 #s rot sign #> type ;
 : ." postpone s" postpone type ; compile-only

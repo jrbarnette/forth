@@ -3,5 +3,5 @@
 : GRAPHIC? ( char -- flag ) 33 127 within ;
 
 : TOUPPER ( char -- uc-char )
-    dup [char] a - 26 u< if [ char A char a - ] literal + then
+    dup 'a' - 26 u< if [ 'A' 'a' - ] literal + then
 ;

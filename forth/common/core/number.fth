@@ -8,7 +8,7 @@
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
 : >DIGIT ( char -- u )
-    [char] 0 - 9 over u< if
+    '0' - 9 over u< if
 	17 - 25 over u< if 32 - 25 over u< if drop -1 exit then then 10 +
     then
 ;

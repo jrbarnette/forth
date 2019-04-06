@@ -2577,7 +2577,9 @@ DIRECT_FORTH(initialize_forth) // {
 /* 3199 */ { .handler = i_addname }, { .id = "R/O" }, { .handler = x_r_o },
 /* 3202 */ { .handler = i_addname }, { .id = "R/W" }, { .handler = x_r_w },
 /* 3205 */ { .handler = i_addname }, { .id = "READ-FILE" }, { .handler = x_read_file },
-/* 3208 */ { .handler = i_addname }, { .id = "REPOSITION-FILE" }, { .handler = x_reposition_file },
-/* 3211 */ { .handler = i_addname }, { .id = "W/O" }, { .handler = x_w_o },
-/* 3214 */ { .handler = i_addname }, { .id = "WRITE-FILE" }, { .handler = x_write_file },
+/* 3208 */ { .handler = i_addname }, { .id = "READ-LINE" }, { .handler = x_read_line },
+/* 3211 */ { .handler = i_addname }, { .id = "REPOSITION-FILE" }, { .handler = x_reposition_file },
+/* 3214 */ { .handler = i_addname }, { .id = "W/O" }, { .handler = x_w_o },
+/* 3217 */ { .handler = i_addname }, { .id = "WRITE-FILE" }, { .handler = x_write_file },
+/* 3220 */ { .handler = i_addname }, { .id = "WRITE-LINE" }, { .handler = x_write_line },
 END_DIRECT // }

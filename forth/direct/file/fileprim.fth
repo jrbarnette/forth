@@ -42,14 +42,14 @@ prim: OPEN-FILE         x_open_file
 prim: R/O               x_r_o
 prim: R/W               x_r_w
 prim: READ-FILE         x_read_file
-\     READ-LINE
+prim: READ-LINE         x_read_line
 prim: REPOSITION-FILE   x_reposition_file
 \     RESIZE-FILE
 \     S"
 \     SOURCE-ID
 prim: W/O               x_w_o
 prim: WRITE-FILE        x_write_file
-\     WRITE-LINE
+prim: WRITE-LINE        x_write_line
 
 \     FILE-STATUS
 \     FLUSH-FILE

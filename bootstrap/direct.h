@@ -134,9 +134,11 @@ extern vminstr_p x_open_file(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_r_o(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_r_w(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_read_file(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_read_line(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_reposition_file(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_w_o(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_write_file(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_write_line(vminstr_p, vmstate_p, vmarg_p);
 
 
 #define DIRECT_FORTH(nm)	vminstr_d nm[] = {

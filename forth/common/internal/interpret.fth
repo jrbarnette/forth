@@ -3,20 +3,26 @@
 
 : NAME-TOKEN? ( i*x str len -- i*x -1 | j*x 0 ) 2>r get-order 2r> lookup ;
 
-: NUMBER-BASE
+: 'CHAR' ( c-addr u -- char true | false )
+    3 <> if drop false exit then
+    char+ dup c@ swap char+
+    c@ [char] ' = if true else drop false then
+;
+: 'CHAR'? over c@ [char] ' = if 'char' true else false then ;
+: CHAR-BASE
     dup [char] # = if drop true #10 exit then \ decimal
     dup [char] $ = if drop true $10 exit then \ hex
 	[char] % = if      true %10 exit then \ binary
     false base @ ;
 
 : NUMBER-END? swap over + ?dup 0= ;
-: BASE? number-base base ! number-end? ;
-: SIGN? [char] - = number-end? ;
+: BASE? over c@ char-base base ! number-end? ;
+: SIGN? over c@ [char] - = number-end? ;
 : NUMBER? >number >r 2drop r> ;
-\ FIXME - don't yet support '<char>' syntax.
 : BASE-SIGN-NUMBER
-    over c@ base? if 2drop false exit then >r chars - r>
-    over c@ sign? if 2drop false exit then >r tuck chars - >r
+    'char'? if exit then
+    base? if 2drop false exit then >r chars - r>
+    sign? if 2drop false exit then >r tuck chars - >r
     0 dup r> r> number? if 2drop false exit then
     swap if negate then true ;
 

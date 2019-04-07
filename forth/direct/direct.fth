@@ -4,16 +4,24 @@ QUIT
 only FORTH definitions
 
 : escape-nul ( #nul -- ) ?dup if 0 do ." \0" loop ." 00" then ;
-: escape-graphic ( c -- )
-    dup '\' = over '"' = or if '\' emit then emit ;
-: escape-non-graphic ( c -- )
-    base @ >r 8 base ! 0 <# # # # '\' hold #> type r> base ! ;
-: escape-char ( c -- )
-    dup graphic? if escape-graphic else escape-non-graphic then ;
+: escaped '\' emit ;
+: escape? ( c -- )
+    dup   7 = if drop escaped 'a' exit then
+    dup   8 = if drop escaped 'b' exit then
+    dup   9 = if drop escaped 't' exit then
+    dup  10 = if drop escaped 'n' exit then
+    dup  12 = if drop escaped 'f' exit then
+    dup  13 = if drop escaped 'r' exit then
+    dup '"' = if escaped exit then
+    dup '\' = if escaped exit then
+;
+: octal-escape base @ >r 8 base ! 0 <# # # # #> r> base ! escaped type ;
+: escape-char
+    escape? dup printable? if emit else octal-escape then ;
 : escape ( #nul c -- #nul )
     ?dup if swap escape-nul escape-char 0 else 1+ then ;
 : escape-string ( c-addr u -- )
-    over >r chars + 0 swap r> do i c@ escape 1 chars +loop drop ;
+    over >r chars + 0 swap r> ?do i c@ escape 1 chars +loop drop ;
 : c-string ( c-addr u -- ) '"' emit escape-string '"' emit ;
 : c-hex ( u -- c-addr u )
     base @ >r hex

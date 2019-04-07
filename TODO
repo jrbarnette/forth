@@ -26,6 +26,13 @@ BUG
     it hands control back to quit().  So, you have to use EOF twice to
     terminate.
 
+Short term problems:
+    The split-brain nature of quit(), evaluate() and refill() is a
+    bit of a problem.  The Forth QUIT creates its own buffer, but
+    actually initializing that buffer for refill() is tricky.  I
+    think it only works because we call quit() to initialize the
+    input file before we invoke QUIT.
+
 Long-term Goal:
     Eliminate the static dictionary, except possibly for HERE and
     FORTH-WORDLIST.

@@ -58,7 +58,7 @@ forth/direct/startdict.fth
 
     forth/common/core/compileexec.fth
     forth/direct/core/compile.fth
-    forth/direct/core/quit.fth
+    forth/direct/core/state.fth
     forth/direct/search/current.fth
     forth/common/search/order.fth
     forth/common/internal/chartype.fth

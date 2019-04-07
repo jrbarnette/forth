@@ -14,7 +14,8 @@
 <C> &DICT.to_in;   constant >IN
 
 : SOURCE   ( -- c-addr u )  <C> &DICT.source;  2@ ;
-: SOURCE!  ( c-addr u -- )  <C> &DICT.source;  2! ;
+: SOURCE!  ( c-addr u -- )
+    <C> &DICT.source_max_len; ! <C> &DICT.source.c_addr; ! ;
 
 prim: PARSE         x_parse
 prim: REFILL        x_refill

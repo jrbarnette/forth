@@ -171,18 +171,6 @@ interpret_lines(vmstate_p vm, char **lines)
 
 /* -------------------------------------------------------------- */
 
-/* ( i*x -- ) ( R: j*x -- ) */
-vminstr_p
-x_abort(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    CLEAR_STACK(vm);
-    CLEAR_RSTACK(vm);
-    THROW(vm, -1);
-    /* NOTREACHED */
-    return NULL;
-}
-
-
 /* ( "<spaces>name" -- char ) */
 vminstr_p
 x_char(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -195,33 +183,6 @@ x_char(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
     CHECK_PUSH(vm, 1);
     PUSH(vm, (cell_ft) *id);
-    return ip;
-}
-
-
-/* ( i*x c-addr u -- j*x ) */
-vminstr_p
-x_evaluate(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    cell_ft	osource_id = DICT.source_id;
-    c_addr_ft	osource_addr = DICT.source.c_addr;
-    cell_ft	osource_len = DICT.source.len;
-    cell_ft	oto_in = DICT.to_in;
-
-    CHECK_POP(vm, 2);
-
-    DICT.source_id = SOURCE_ID_EVALUATE;
-    DICT.source.len = POP(vm);
-    DICT.source.c_addr = (c_addr_ft) POP(vm);
-    DICT.to_in = 0;
-
-    evaluate(vm);
-
-    DICT.source_id = osource_id;
-    DICT.source.len = osource_len;
-    DICT.source.c_addr = osource_addr;
-    DICT.to_in = oto_in;
-
     return ip;
 }
 
@@ -262,17 +223,6 @@ x_s_quote(vminstr_p ip, vmstate_p vm, vmarg_p s_quote_xt)
     str_dst = allot(vm, XALIGNED(len));
     memcpy(str_dst, str_src, len);
     return ip;
-}
-
-
-/* ( -- )  ( R: i*x -- ) */
-vminstr_p
-x_quit(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    CLEAR_RSTACK(vm);
-    THROW(vm, -56);
-    /* NOTREACHED */
-    return NULL;
 }
 
 

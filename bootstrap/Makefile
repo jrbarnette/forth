@@ -14,7 +14,6 @@ SOURCES =			\
 	    names.c		\
 	    parse.c		\
 	    stackops.c		\
-	    stdforth.c		\
 	    terminal.c		\
 	    vm.c
 
@@ -34,9 +33,6 @@ forth: $(OBJECTS)
 	$(CC) $(LDFLAGS) -o $@ $(OBJECTS)
 
 $(OBJECTS): forth.h
-
-stdforth.c: gen_cforth stdforth.fth
-	./gen_cforth init_forth_defs stdforth.fth > $@
 
 tags: $(SOURCES)
 	ctags $(SOURCES)

@@ -1,14 +1,25 @@
 ==== Where we are:
-    Have source that can compile Forth into direct-mode code in C;
-    it generates the content for bootstrap/initdict.c.  The build
-    process supports meta interpretation during dictionary building,
-    including colon definitions.
+The bootstrap Forth dictionary is built through the following
+process:
+  * Forth code reads through the Forth sources using a special
+    interpretation loop.  The output is direct-threaded code in an
+    array named init_dictionary.
+  * After completing the direct-threaded code output, the build
+    runs through more source code, emitting each source line as a
+    C string in an array of strings named init_forth_defs.
 
-    The current implementation of QUIT is in bootstrap/stdforth.fth.
-    However, when the interpreter starts up, it's running a text
-    interpreter from quit() in C code.  You have to explicitly invoke
-    QUIT to get the Forth version.  The two versions are supposed to
-    be the same, but that assertion is not well tested.
+The output of the two steps above is written into initdict.c.  At
+startup time the interpreter executes the direct-threaded code in
+init_dictionary.  Then it interprets each source line in
+init_forth_defs.  Then it passes control to the C quit() function.
+
+There's a Forth implementation of QUIT here:
+    forth/common/internal/stdforth.fth
+However, when the interpreter starts up, it's running the text
+interpreter from quit() in C code.  You have to explicitly invoke
+QUIT to get the Forth version.  There are some differences between
+them; especially relating to ANS2012 number syntax.  There may also
+be differences I don't know about...
 
 BUG
     If you invoke QUIT at the terminal, then EOF (^D) doesn't terminate,

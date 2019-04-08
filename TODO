@@ -1,48 +1,54 @@
 ==== Where we are:
-The bootstrap Forth dictionary is built through the following
-process:
-  * Forth code reads through the Forth sources using a special
-    interpretation loop.  The output is direct-threaded code in an
-    array named init_dictionary.
-  * After completing the direct-threaded code output, the build
-    runs through more source code, emitting each source line as a
-    C string in an array of strings named init_forth_defs.
+All Forth code now lives under forth/, and gets built (one way or
+another) into initdict.c.  This includes the source code built into
+the interpreter for interpretation at startup.
 
-The output of the two steps above is written into initdict.c.  At
-startup time the interpreter executes the direct-threaded code in
-init_dictionary.  Then it interprets each source line in
-init_forth_defs.  Then it passes control to the C quit() function.
-
-There's a Forth implementation of QUIT here:
-    forth/common/internal/stdforth.fth
-However, when the interpreter starts up, it's running the text
-interpreter from quit() in C code.  You have to explicitly invoke
-QUIT to get the Forth version.  There are some differences between
-them; especially relating to ANS2012 number syntax.  There may also
-be differences I don't know about...
+QUIT has an implementation in the source text that we interpret at
+startup.
 
 BUG
-    If you invoke QUIT at the terminal, then EOF (^D) doesn't terminate,
-    it hands control back to quit().  So, you have to use EOF twice to
-    terminate.
+    If you invoke QUIT at the terminal, then EOF (^D) doesn't
+    terminate, it hands control back to C-based quit().  So, you
+    have to use EOF twice to terminate.
 
-Short term problems:
-    The split-brain nature of quit(), evaluate() and refill() is a
-    bit of a problem.  The Forth QUIT creates its own buffer, but
-    actually initializing that buffer for refill() is tricky.  I
-    think it only works because we call quit() to initialize the
-    input file before we invoke QUIT.
+Short term TODO list
+    Break up forth/common/internal/stdforth.fth into properly named
+    files.
+
+    Need to fix refill() to be on firmer footing:  Define the
+    interface between Forth code and C code around this, especially
+    around initialization of DICT.input.  Probably, focus just on
+    correctly handling QUIT and EVALUATE for now.
+
+    main() commandline processing is the last piece that needs
+    C-based quit() and interpret().  Figure out how to get those to
+    call Forth code instead.
+
+    Error handling is rotten.  It ought to be not too much trouble
+    to report errors with something like this:
+        ok 1 2 + dupe cr
+        1 2 + dupe cr
+              ^^^^
+        undefined word
+    That means tinkering with the internals of PARSE and REFILL...
+
+    Want to implement INCLUDE-FILE and INCLUDED.  Mostly, that means
+    shaking out the details of REFILL.
+
+    Change COMPILE-FILE behavior from "read from terminal input" to
+    "read from designated file".
+
+    Once we change COMPILE-FILE as planned and implement INCLUDED,
+    then we can get rid of file-order.
 
 Long-term Goal:
     Eliminate the static dictionary, except possibly for HERE and
     FORTH-WORDLIST.
 
 Plan
-    Rip out the C based quit().  Generally, clean up main() to be
-    less complicated.
-
-    The C-based quit() is the last dependency on the static dictionary,
-    so once it's gone, we can convert the final C dependencies:
+    The C-based quit() is the root dependency on the static
+    dictionary, so once it's gone, we can convert the other C
+    dependencies piecemeal:
         Parse
         Miscellaneous bits like STATE and BASE
 

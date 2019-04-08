@@ -72,4 +72,5 @@ forth/direct/startdict.fth
     forth/common/core/format.fth
     forth/common/core/compile.fth
     forth/direct/file/fileprim.fth
+    forth/common/core/evaluate.fth
 forth/direct/enddict.fth

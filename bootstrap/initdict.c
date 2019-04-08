@@ -2605,18 +2605,12 @@ END_DIRECT // }
 
 
 char *init_forth_defs[] = {
-    "\\ Copyright 2013, by J. Richard Barnette, All Rights Reserved.",
+    "\\ Copyright 2019, by J. Richard Barnette, All Rights Reserved.",
     "",
+    "\\ XXX - this doesn't belong here, but it can't go into the compiled",
+    "\\ dictionary, because the meta-interpreter won't handle postpone s\"",
+    "\\ properly.",
     ": .\" postpone s\" postpone type ; immediate",
-    "",
-    ": EVALUATE\t\t\t( i*x c-addr u -- j*x )",
-    "    \\ save current source specification",
-    "    >in @ source-id 2>r source 2>r",
-    "    \\ make the string the input source",
-    "    source! -1 source-id! 0 >in ! interpret",
-    "    \\ restore original source specification",
-    "    2r> source! 2r> source-id! >in !",
-    ";",
     "",
     "here 256 dup chars allot    \\ constant TIB",
     ": QUIT",

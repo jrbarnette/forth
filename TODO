@@ -12,9 +12,6 @@ BUG
     have to use EOF twice to terminate.
 
 Short term TODO list
-    Break up forth/common/internal/stdforth.fth into properly named
-    files.
-
     Need to fix refill() to be on firmer footing:  Define the
     interface between Forth code and C code around this, especially
     around initialization of DICT.input.  Probably, focus just on

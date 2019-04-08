@@ -17,6 +17,7 @@ TARGET <DIRECT>
 >>> char *init_forth_defs[] = {
 <HOST> QUIT
         include-source-text: forth/common/internal/stdforth.fth
+        include-source-text: forth/common/search/vocab.fth
 TARGET <DIRECT>
 >>>     NULL,
 >>> };

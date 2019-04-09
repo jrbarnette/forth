@@ -245,7 +245,7 @@ extern union dict {
 	string_ft	source;		    /* SOURCE */
 
 	char_ft		tib[256];	    /* TIB */
-	int		source_max_len;     /* #TIB */
+	cell_ft		source_max_len;     /* #TIB */
 	size_t		lineno;
 	FILE *		input;
     } dict_static_data;

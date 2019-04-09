@@ -5,15 +5,12 @@
 \ properly.
 : ." postpone s" postpone type ; immediate
 
-here 256 dup chars allot    \ constant TIB
+here 256 dup chars allot        \ constant #TIB constant TIB
+( C: TIB #TIB )
 : QUIT
-    rclear
-    \ make the terminal buffer the input source
-    [ rot ] literal [ swap ] literal source! 0 source-id! 0 >in !
+    rclear [ rot ] literal [ swap ] literal source<terminal
+    \ For now, REFILL does the "OK" prompt.  That's (mostly) wrong.
     postpone [
-    \ No prompt just yet: we need to know whether this is
-    \ interactive, and we need an interface into the C readline()
-    \ library.
     begin refill while interpret repeat 0 >r
 ;
 

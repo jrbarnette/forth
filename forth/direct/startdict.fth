@@ -23,8 +23,6 @@ TARGET <DIRECT>
 \	cell_ft		n_search_order;
 \	name_p *	search_order[MAX_SEARCH_ORDER];
 \
-\	definition_d	literal_instr;	    /* for LITERAL runtime xt */
-\
 \	cell_ft		state;		    /* STATE */
 \	cell_ft		base;		    /* BASE */
 \
@@ -46,7 +44,6 @@ TARGET <DIRECT>
                             <C> &DICT.search_order[0];  !
 \ search order 1..7 initialized to 0
 1                           <C> &DICT.n_search_order;   !
-<C> do_literal;             <C> &DICT.literal_instr;    !
 0                           <C> &DICT.state;            !
 10                          <C> &DICT.base;             !
 \ remaining fields initialized to 0.

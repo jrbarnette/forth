@@ -240,9 +240,8 @@ extern union dict {
 	cell_ft		to_in;		    /* >IN */
 	cell_ft		source_id;	    /* SOURCE-ID */
 	string_ft	source;		    /* SOURCE */
-
-	char_ft		tib[256];	    /* TIB */
 	cell_ft		source_max_len;     /* #TIB */
+
 	size_t		lineno;
 	FILE *		input;
     } dict_static_data;

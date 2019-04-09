@@ -30,7 +30,6 @@ TARGET <DIRECT>
 \	cell_ft		source_id;	    /* SOURCE-ID */
 \	string_ft	source;		    /* SOURCE */
 \
-\	char_ft		tib[256];	    /* TIB */
 \	int		source_max_len;     /* #TIB */
 \	size_t		lineno;
 \	FILE *		input;

@@ -2,10 +2,15 @@
 
 \ ------  ------  ------  ------  ------  ------  ------  ------
 \  >NUMBER               6.1.0570 CORE                   31
+\  BASE                  6.1.0750 CORE                   34
 \  DECIMAL               6.1.1170 CORE                   36
 \
 \  HEX                   6.2.1660 CORE EXT               54
 \ ------  ------  ------  ------  ------  ------  ------  ------
+
+variable BASE
+: DECIMAL #10 base ! ;
+decimal
 
 : >DIGIT ( char -- u )
     '0' - 9 over u< if
@@ -22,7 +27,5 @@
 	r> char+ r> 1-
     repeat
 ;
-
-: DECIMAL #10 base ! ;
 
 : HEX $10 base ! ;

@@ -51,7 +51,6 @@ forth/direct/startdict.fth
     forth/common/core/parse.fth
     forth/direct/core/nameprim.fth
 
-    forth/direct/core/number.fth
     forth/common/core/number.fth
     forth/direct/core/terminal.fth
     forth/common/core/terminal.fth

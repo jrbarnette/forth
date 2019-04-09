@@ -24,7 +24,6 @@ TARGET <DIRECT>
 \	name_p *	search_order[MAX_SEARCH_ORDER];
 \
 \	cell_ft		state;		    /* STATE */
-\	cell_ft		base;		    /* BASE */
 \
 \	/* the input source and parse area - 4 cells total */
 \	cell_ft		to_in;		    /* >IN */
@@ -45,7 +44,6 @@ TARGET <DIRECT>
 \ search order 1..7 initialized to 0
 1                           <C> &DICT.n_search_order;   !
 0                           <C> &DICT.state;            !
-10                          <C> &DICT.base;             !
 \ remaining fields initialized to 0.
 
 [

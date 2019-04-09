@@ -2,6 +2,7 @@
  * Copyright 2019, by J. Richard Barnette. All Rights Reserved.
  */
 
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -87,6 +88,38 @@ i_lookup(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     PUSH(vm, meta_lookup(vm, ip));
     return ip + 1;
+}
+
+
+void
+interpret_lines(vmstate_p vm, char **lines)
+{
+    char id[] = "EVALUATE";
+    name_p name = lookup(vm, (c_addr_ft) id, sizeof (id) - 1);
+    assert(name != NULL);
+    xt_ft xt = NAME_XT(name);
+    while (*lines != NULL) {
+        char *s = *lines++;
+	PUSH(vm, (cell_ft) s);
+	PUSH(vm, (cell_ft) strlen(s));
+	execute(vm, xt);
+    }
+
+    assert(DICT.state == STATE_INTERP);
+    /* assert stacks are empty */
+}
+
+
+void
+quit(vmstate_p vm, FILE *input)
+{
+    char id[] = "QUIT";
+    name_p name = lookup(vm, (c_addr_ft) id, sizeof (id) - 1);
+    assert(name != NULL);
+    xt_ft xt = NAME_XT(name);
+    DICT.lineno = 0;
+    DICT.input = input;
+    execute(vm, xt);
 }
 
 

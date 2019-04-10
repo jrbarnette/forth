@@ -2,6 +2,7 @@
 
 \ ------  ------  ------  ------  ------  ------  ------  ------
 \  (                     6.1.0080 CORE
+\  CHAR                  6.1.0895 CORE
 \  [']                   6.1.2510 CORE
 \  [CHAR]                6.1.2520 CORE
 \
@@ -10,6 +11,7 @@
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
 : ( [char] ) parse drop drop ; immediate
+: CHAR parse-name 0= if -16 throw then c@ ;
 : ['] ' postpone literal ; compile-only
 : [CHAR] char postpone literal ; compile-only
 

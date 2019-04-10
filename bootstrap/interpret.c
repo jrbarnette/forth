@@ -15,7 +15,6 @@
  */
 
 //------  ------  ------  ------  ------  ------  ------  ------
-// CHAR                  6.1.0895 CORE                   35
 // POSTPONE              6.1.2033 CORE                   43
 // S"                    6.1.2165 CORE                   44
 // [                     6.1.2500 CORE                   48
@@ -23,22 +22,6 @@
 //
 // C"                    6.2.0855 CORE EXT               52
 //------  ------  ------  ------  ------  ------  ------  ------
-
-
-/* ( "<spaces>name" -- char ) */
-vminstr_p
-x_char(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    cell_ft len;
-    c_addr_ft id = parse_name(&len);
-
-    if (len == 0)
-	THROW(vm, -16);
-
-    CHECK_PUSH(vm, 1);
-    PUSH(vm, (cell_ft) *id);
-    return ip;
-}
 
 
 /* ( -- x ) runtime semantics */

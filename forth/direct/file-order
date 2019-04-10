@@ -28,6 +28,7 @@ forth/direct/startdict.fth
     forth/direct/core/memprim.fth
     forth/direct/core/multprim.fth
     forth/direct/core/vmprim.fth
+    forth/common/core/compileexec.fth
 
     # From here forward we can make colon definitions, with
     # limitations.  We need to implement control-flow words early,
@@ -55,7 +56,6 @@ forth/direct/startdict.fth
     forth/direct/core/terminal.fth
     forth/common/core/terminal.fth
 
-    forth/common/core/compileexec.fth
     forth/direct/core/compile.fth
     forth/direct/core/state.fth
     forth/direct/search/current.fth

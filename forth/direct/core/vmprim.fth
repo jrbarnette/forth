@@ -1,20 +1,16 @@
 \ Copyright 2019, by J. Richard Barnette. All Rights Reserved.
 
-\  vmprim.fth - Forth primitives for inner VM operation.
-
 \ ------  ------  ------  ------  ------  ------  ------  ------
-\  EXECUTE               6.1.1370 CORE                   38
-\  EXIT                  6.1.1380 CORE                   38
-\  LITERAL               6.1.1780 CORE                   41
+\  EXECUTE               6.1.1370 CORE
+\  EXIT                  6.1.1380 CORE
 \ 
-\  THROW               9.6.1.2275 EXCEPTION              73
+\  THROW               9.6.1.2275 EXCEPTION
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
 prim: EXIT          x_exit         no-interpret
 prim: EXECUTE       x_execute
 
-here handler: do_literal ,
-: LITERAL [ swap dup , , ] , , ; compile-only
+prim: DO-LITERAL    do_literal     no-interpret
 
 prim: THROW         x_throw
 

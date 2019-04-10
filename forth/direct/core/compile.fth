@@ -10,10 +10,10 @@
 
 prim: CHAR          x_char
 prim: POSTPONE      x_postpone          compile-only
-<C> do_postpone;   ,
+handler: do_postpone   ,
 
 prim: S"            x_s_quote           compile-only
-<C> do_s_quote;    ,
+handler: do_s_quote    ,
 
 prim: C"            x_c_quote           compile-only
-<C> do_c_quote;    ,
+handler: do_c_quote    ,

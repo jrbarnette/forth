@@ -15,20 +15,20 @@ prim: startname         x_startname
 prim: linkname          x_linkname
 : addname startname linkname ;
 
-: : <C> do_colon; startname [compile] ] ;
+: : handler: do_colon startname [compile] ] ;
 : ; postpone EXIT linkname [compile] [ ; compile-only
 
-: created? dup @ <C> do_create; = invert if -31 throw then ;
+: created? dup @ handler: do_create = invert if -31 throw then ;
 : >BODY ( xt -- a-addr ) created? [ 2 cells ] literal + ;
 
-: CONSTANT <C> do_constant; addname , ;
+: CONSTANT handler: do_constant addname , ;
 
 : current-name ( -- name ) get-current @ ;
 : DOES> r> current-name name>xt created? cell+ ! ; no-interpret
-: CREATE <C> do_create; addname 0 , DOES> ;
+: CREATE handler: do_create addname 0 , DOES> ;
 
 : IMMEDIATE     nf-immediate        current-name name-flags! ;
 : NO-INTERPRET  nf-compile-only     current-name name-flags! ;
 : COMPILE-ONLY  nf-compile-special  current-name name-flags! ;
 
-: VARIABLE <C> do_variable; addname 0 , ;
+: VARIABLE handler: do_variable addname 0 , ;

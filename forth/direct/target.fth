@@ -9,7 +9,7 @@ vocabulary TARGET
 : ]meta 2 <META> ;
 : meta-literal
     meta-state @ 2 = if s" LITERAL" meta-interpret then ;
-: meta-char char direct-literal ;
+: meta-char char literal-cell ;
 : meta-immediate align here create name>id , , does> 2@ meta-interpret ;
 
 also TARGET definitions previous
@@ -36,7 +36,8 @@ meta-immediate THEN
 meta-immediate UNTIL
 meta-immediate WHILE
 
-: <C> ';' parse direct-expr meta-literal ;
+: <C> ';' parse literal-expr meta-literal ;
+: handler: parse-name literal-handler meta-literal ;
 : [CHAR] meta-char meta-literal ;
 : POSTPONE
     parse-name 2dup 2>r get-order 2r> lookup ?dup if
@@ -81,4 +82,4 @@ also DIRECT
 
 \ N.B. "," and "allot" here must come from the DIRECT vocabulary
 : CONSTANT s" do_constant" addname , ;
-: VARIABLE s" do_variable" addname s" CELL_SIZE" direct-expr allot ;
+: VARIABLE s" do_variable" addname s" CELL_SIZE" literal-expr allot ;

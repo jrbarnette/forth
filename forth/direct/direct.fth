@@ -71,8 +71,9 @@ variable emit-state  0 emit-state !
 \ sequence breaks because { will plaster the output from c-hex:
 \     c-hex 0 { s" do_literal" .exec }{ .expr }
 : do-literal 0 { s" do_literal" .exec }{ execute } ;
-: direct-expr ['] .expr do-literal ;
-: direct-literal ['] .cell do-literal ;
+: literal-expr ['] .expr do-literal ;
+: literal-cell ['] .cell do-literal ;
+: literal-handler ['] .exec do-literal ;
 
 vocabulary DIRECT
 

@@ -13,7 +13,7 @@
 prim: EXIT          x_exit         no-interpret
 prim: EXECUTE       x_execute
 
-here <C> do_literal; ,
+here handler: do_literal ,
 : LITERAL [ swap dup , , ] , , ; compile-only
 
 prim: THROW         x_throw

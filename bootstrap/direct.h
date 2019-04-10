@@ -92,11 +92,6 @@ extern vminstr_p x_u_m_slash_mod(vminstr_p, vmstate_p, vmarg_p);
 /* terminal I/O primitives */
 extern vminstr_p x_emit(vminstr_p, vmstate_p, vmarg_p);
 
-/* name definition primitives */
-extern vminstr_p x_tick(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_find(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_search_wordlist(vminstr_p, vmstate_p, vmarg_p);
-
 /* control flow primitives */
 extern vminstr_p do_skip(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p do_fskip(vminstr_p, vmstate_p, vmarg_p);

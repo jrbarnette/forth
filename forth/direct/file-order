@@ -50,7 +50,6 @@ forth/direct/startdict.fth
     forth/common/internal/chartype.fth
     forth/direct/core/parse.fth
     forth/common/core/parse.fth
-    forth/direct/core/nameprim.fth
 
     forth/common/core/number.fth
     forth/direct/core/terminal.fth

@@ -103,13 +103,11 @@ extern vminstr_p x_unloop(vminstr_p, vmstate_p, vmarg_p);
 /* interpreter primitives */
 extern vminstr_p do_literal(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p do_s_quote(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_s_quote(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p do_postpone(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_postpone(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_left_bracket(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_right_bracket(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p do_c_quote(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_c_quote(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_parse(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_refill(vminstr_p, vmstate_p, vmarg_p);
 

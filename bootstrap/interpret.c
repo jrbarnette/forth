@@ -47,22 +47,6 @@ do_s_quote(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* ( "ccc<quote>" -- ) compilation semantics */
-vminstr_p
-x_s_quote(vminstr_p ip, vmstate_p vm, vmarg_p s_quote_xt)
-{
-    char_ft *str_src = PARSE_AREA_PTR;
-    cell_ft len = parse('"', str_src, PARSE_AREA_LEN);
-    char_ft *str_dst;
-
-    COMPILE(vm, s_quote_xt);
-    COMMA(vm, len);
-    str_dst = allot(vm, XALIGNED(len));
-    memcpy(str_dst, str_src, len);
-    return ip;
-}
-
-
 /* ( -- ) execution semantics for default compilation semantics */
 vminstr_p
 do_postpone(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -126,20 +110,4 @@ do_c_quote(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     CHECK_PUSH(vm, 1);
     PUSH(vm, &ip->cdata[0]);
     return (vminstr_p) ((cell_ft) ip + XALIGNED(len + 1));
-}
-
-
-/* ( "ccc<quote>" -- ) compilation semantics */
-vminstr_p
-x_c_quote(vminstr_p ip, vmstate_p vm, vmarg_p c_quote_xt)
-{
-    char_ft *str_src = PARSE_AREA_PTR;
-    cell_ft len = parse('"', str_src, PARSE_AREA_LEN);
-    char_ft *str_dst;
-
-    COMPILE(vm, c_quote_xt);
-    str_dst = allot(vm, XALIGNED(len + 1));
-    str_dst[0] = (char_ft) len;
-    memcpy(str_dst + 1, str_src, len);
-    return ip;
 }

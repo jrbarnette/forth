@@ -11,6 +11,8 @@ prim: EXIT          x_exit         no-interpret
 prim: EXECUTE       x_execute
 
 prim: DO-LITERAL    do_literal     no-interpret
+prim: DO-S"         do_s_quote     no-interpret
+prim: DO-C"         do_c_quote     no-interpret
 
 prim: THROW         x_throw
 

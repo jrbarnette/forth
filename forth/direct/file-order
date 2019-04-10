@@ -44,6 +44,7 @@ forth/direct/startdict.fth
     forth/direct/core/control.fth
     forth/common/core/control.fth
     forth/common/core/arithops.fth
+    forth/common/internal/dictionary.fth
 
     # At this point we have working definitions for "dictionary",
     # "stack", "arith", "mem", "mult", and "control" words.  We're

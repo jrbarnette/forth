@@ -11,13 +11,11 @@
 \  VARIABLE              6.1.2410 CORE
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
-: STR, ( c-addr u -- ) dup c, here swap chars dup allot move ;
-
 : current-name ( -- name ) get-current @ ;
 : link-name ( name -- ) get-current ! ;
 
 : ID, ( c-addr u -- )
-    dup 0= if -16 throw then here >r str, r>
+    dup 0= if -16 throw then here >r counted, r>
     count 0 do dup c@ toupper over c! char+ loop drop ;
 : NAME, ( hdlr c-addr u -- name )
     align here >r current-name , id, align , r> ;

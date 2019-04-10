@@ -47,6 +47,7 @@ forth/direct/startdict.fth
     # At this point we have working definitions for "dictionary",
     # "stack", "arith", "mem", "mult", and "control" words.  We're
     # ready to start making more complicated definitions.
+    forth/common/internal/chartype.fth
     forth/direct/core/parse.fth
     forth/common/core/parse.fth
     forth/direct/core/nameprim.fth
@@ -60,7 +61,6 @@ forth/direct/startdict.fth
     forth/direct/core/state.fth
     forth/direct/search/current.fth
     forth/common/search/order.fth
-    forth/common/internal/chartype.fth
     forth/common/internal/namespace.fth
     forth/common/internal/lookup.fth
     forth/common/internal/tokens.fth

@@ -11,24 +11,34 @@
 \  VARIABLE              6.1.2410 CORE
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
-prim: startname         x_startname
-prim: linkname          x_linkname
-: addname startname linkname ;
+: STR, ( c-addr u -- ) dup c, here swap chars dup allot move ;
 
-: : handler: do_colon startname [compile] ] ;
-: ; postpone EXIT linkname [compile] [ ; compile-only
+: current-name ( -- name ) get-current @ ;
+: link-name ( name -- ) get-current ! ;
+
+: ID, ( c-addr u -- )
+    dup 0= if -16 throw then here >r str, r>
+    count 0 do dup c@ toupper over c! char+ loop drop ;
+: NAME, ( hdlr c-addr u -- name )
+    align here >r current-name , id, align , r> ;
+
+: create-name ( hdlr "name" -- name )
+    parse-name dup 0= if -16 throw then name, ;
+: add-name ( hdlr "name" -- ) create-name link-name ;
+
+: : handler: do_colon create-name [compile] ] ;
+: ; postpone EXIT link-name [compile] [ ; compile-only
 
 : created? dup @ handler: do_create = invert if -31 throw then ;
 : >BODY ( xt -- a-addr ) created? [ 2 cells ] literal + ;
 
-: CONSTANT handler: do_constant addname , ;
+: CONSTANT handler: do_constant add-name , ;
 
-: current-name ( -- name ) get-current @ ;
 : DOES> r> current-name name>xt created? cell+ ! ; no-interpret
-: CREATE handler: do_create addname 0 , DOES> ;
+: CREATE handler: do_create add-name 0 , DOES> ;
 
 : IMMEDIATE     nf-immediate        current-name name-flags! ;
 : NO-INTERPRET  nf-compile-only     current-name name-flags! ;
 : COMPILE-ONLY  nf-compile-special  current-name name-flags! ;
 
-: VARIABLE handler: do_variable addname 0 , ;
+: VARIABLE handler: do_variable add-name 0 , ;

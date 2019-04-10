@@ -18,8 +18,7 @@
 extern vminstr_p i_startname(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p i_addname(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p i_setflags(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_startname(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_linkname(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p i_linkname(vminstr_p, vmstate_p, vmarg_p);
 
 /* vm execution and meta interpretation primitives */
 extern vminstr_p meta_interpret(vminstr_p, vmstate_p, vmarg_p);

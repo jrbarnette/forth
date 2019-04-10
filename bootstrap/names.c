@@ -139,23 +139,9 @@ i_setflags(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 vminstr_p
-x_linkname(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+i_linkname(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_POP(vm, 1);
     linkname((name_p) POP(vm));
-    return ip;
-}
-
-
-vminstr_p
-x_startname(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    cell_ft len;
-    c_addr_ft id = parse_name(&len);
-    CHECK_POP(vm, 1);
-    cell_ft *sp = SP(vm);
-    vminstr_fn handler = (vminstr_fn) PICK(sp, 0);
-    PICK(sp, 0) = (cell_ft) addname(vm, id, len, handler);
-
     return ip;
 }

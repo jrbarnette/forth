@@ -65,7 +65,7 @@ forth/direct/startdict.fth
     forth/common/internal/tokens.fth
     forth/common/internal/interpret.fth
 
-    forth/direct/core/nameops.fth
+    forth/common/core/definers.fth
     forth/common/core/format.fth
     forth/common/core/compile.fth
     forth/direct/file/fileprim.fth

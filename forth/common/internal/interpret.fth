@@ -1,8 +1,6 @@
 \ Copyright 2019, by J. Richard Barnette, All Rights Reserved.
 \ Definition of INTERPRET, and supporting code
 
-: NAME-TOKEN? ( i*x str len -- i*x -1 | j*x 0 ) 2>r get-order 2r> lookup ;
-
 : 'CHAR' ( c-addr u -- char true | false )
     3 <> if drop false exit then
     char+ dup c@ swap char+
@@ -24,7 +22,7 @@
     signed-number ;
 
 : INTERPRET-TOKEN
-    2dup name-token? ?dup if >r 2drop r> interpret-name exit then
+    2dup lookup ?dup if >r 2drop r> interpret-name exit then
     2dup number-token? if >r 2drop r> interpret-number exit then
     interpret-unknown
 ;

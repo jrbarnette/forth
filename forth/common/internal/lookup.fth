@@ -16,9 +16,9 @@
     r> name>prev repeat drop 2drop 0
 ;
 
-: LOOKUP ( wid ... n c-addr u -- name | 0 )
+: LOOKUP ( c-addr u -- name | 0 )
     dup 0= if -16 throw then
-    2>r begin dup while 1- swap
+    2>r get-order begin dup while 1- swap
 	2r@ rot wid-lookup ?dup if >r
 	    begin dup while 1- swap drop repeat drop
 	    r> 2r> 2drop exit

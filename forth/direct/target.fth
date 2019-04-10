@@ -40,7 +40,7 @@ meta-immediate WHILE
 : handler: parse-name literal-handler meta-literal ;
 : [CHAR] meta-char meta-literal ;
 : POSTPONE
-    parse-name 2dup 2>r get-order 2r> lookup ?dup if
+    parse-name 2dup lookup ?dup if
         name>id meta-compile 2drop
     else
         direct-lookup [ also target ] literal [ previous ]

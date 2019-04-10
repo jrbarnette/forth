@@ -15,12 +15,8 @@
  */
 
 //------  ------  ------  ------  ------  ------  ------  ------
-// POSTPONE              6.1.2033 CORE                   43
-// S"                    6.1.2165 CORE                   44
 // [                     6.1.2500 CORE                   48
 // ]                     6.1.2540 CORE                   49
-//
-// C"                    6.2.0855 CORE EXT               52
 //------  ------  ------  ------  ------  ------  ------  ------
 
 
@@ -44,42 +40,6 @@ do_s_quote(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     PUSH(vm, ip + 1);
     PUSH(vm, len);
     return (vminstr_p) ((cell_ft) ip + XALIGNED(len + CELL_SIZE));
-}
-
-
-/* ( -- ) execution semantics for default compilation semantics */
-vminstr_p
-do_postpone(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    COMPILE(vm, ip->xtok);
-    return ip + 1;
-}
-
-
-/* ( "<spaces>name" -- ) compilation semantics */
-vminstr_p
-x_postpone(vminstr_p ip, vmstate_p vm, vmarg_p do_postpone_xt)
-{
-    cell_ft	len;
-    c_addr_ft	id = parse_name(&len);
-    name_p	name = lookup(vm, id, len);
-    xt_ft	xtok;
-
-    if (name == NULL) {
-	fputs("POSTPONE ", stderr);
-	fwrite(id, sizeof (*id), len, stderr);
-	fputc(' ', stderr);
-	THROW(vm, -13);
-    }
-
-    xtok = NAME_XT(name);
-    if (NAME_IS_IMMEDIATE(name)) {
-	COMPILE(vm, xtok);
-    } else {
-	COMPILE(vm, do_postpone_xt);
-	COMMA(vm, xtok);
-    }
-    return ip;
 }
 
 

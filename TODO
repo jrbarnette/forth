@@ -4,7 +4,7 @@ another) into initdict.c.  This includes the source code built into
 the interpreter for interpretation at startup.
 
 QUIT has an implementation in the source text that we interpret at
-startup.
+startup, and a fair amount of the static dictionary is gone.
 
 Short term TODO list
     Need to fix up refill():
@@ -47,17 +47,15 @@ Long-term Goal:
     special primitives.
 
 Plan
-    Move PARSE, REFILL, and STATE to Forth, probably in that order.
-    (Getting rid of STATE definitely requires fixing REFILL first).
+    Organize C sources so that the .c file names better match the
+    .fth file names they feed into.
+
+    Move REFILL and STATE to Forth, in that order.
 
     Take care of search order stuff.
 
-    Clean up forth/direct/core/compile.fth
-
-    Git rid of forth/direct/core/nameprim.fth
-
-    Dictionary stuff has to come last, because, well ... it's pretty
-    darn tricky.
+    Dictionary and lookup primitives have to come last, because,
+    well ... it's pretty darn tricky.
 
 ==== bootstrap refactoring
 Generally, reorganize the C code so that the C source content is

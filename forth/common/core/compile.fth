@@ -19,11 +19,11 @@
 : CHAR parse-name 0= if -16 throw then c@ ;
 : POSTPONE
     parse-name lookup name>xt+flags immediate?
-    0= if postpone literal ['] compile, then compile, ; compile-only
-: S" '"' parse postpone do-s" dup , chars, align ; compile-only
-: ['] ' postpone literal ; compile-only
-: [CHAR] char postpone literal ; compile-only
+    0= if postpone literal ['] compile, then compile, ; compile-special
+: S" '"' parse postpone do-s" dup , chars, align ; compile-special
+: ['] ' postpone literal ; compile-special
+: [CHAR] char postpone literal ; compile-special
 
 : .( [char] ) parse type ; immediate
-: C" '"' parse postpone do-c" counted, align ; compile-only
+: C" '"' parse postpone do-c" counted, align ; compile-special
 : \ source >in ! drop ; immediate

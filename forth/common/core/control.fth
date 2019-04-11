@@ -1,25 +1,22 @@
 \ Copyright 2017, by J. Richard Barnette. All Rights Reserved.
 
-\  control.fth - Forth definitions for standard words relating to flow
-\      of control in compiled defintions.
-
 \ ------  ------  ------  ------  ------  ------  ------  ------
-\  +LOOP                 6.1.0140 CORE                   27
-\  BEGIN                 6.1.0760 CORE                   34
-\  DO                    6.1.1240 CORE                   36
-\  ELSE                  6.1.1310 CORE                   37
-\  I                     6.1.1680 CORE                   39
-\  IF                    6.1.1700 CORE                   40
-\  J                     6.1.1730 CORE                   40
-\  LEAVE                 6.1.1760 CORE                   41
-\  REPEAT                6.1.2140 CORE                   44
-\  THEN                  6.1.2270 CORE                   46
-\  UNLOOP                6.1.2380 CORE                   47
-\  UNTIL                 6.1.2390 CORE                   47
-\  WHILE                 6.1.2430 CORE                   47
+\  +LOOP                 6.1.0140 CORE
+\  BEGIN                 6.1.0760 CORE
+\  DO                    6.1.1240 CORE
+\  ELSE                  6.1.1310 CORE
+\  I                     6.1.1680 CORE
+\  IF                    6.1.1700 CORE
+\  J                     6.1.1730 CORE
+\  LEAVE                 6.1.1760 CORE
+\  REPEAT                6.1.2140 CORE
+\  THEN                  6.1.2270 CORE
+\  UNLOOP                6.1.2380 CORE
+\  UNTIL                 6.1.2390 CORE
+\  WHILE                 6.1.2430 CORE
 \
-\  ?DO                   6.2.0620 CORE EXT               51
-\  AGAIN                 6.2.0700 CORE EXT               51
+\  ?DO                   6.2.0620 CORE EXT
+\  AGAIN                 6.2.0700 CORE EXT
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
 \ Building blocks - non-standard.
@@ -29,15 +26,15 @@
 : <?BRANCH ( dest -- ) postpone ?branch <resolve ;
 
 \ Basic flow of control words
-: BEGIN ( C: -- dest ) <mark ; compile-only
-: THEN ( C: orig -- ) >resolve ; compile-only
-: IF ( C: -- orig ) >?branch ; compile-only
-: UNTIL ( C: dest -- ) <?branch ; compile-only
-: ELSE ( C: orig1 -- orig2 ) >branch swap postpone then ; compile-only
-: AGAIN <branch ; compile-only
+: BEGIN ( C: -- dest ) <mark ; compile-special
+: THEN ( C: orig -- ) >resolve ; compile-special
+: IF ( C: -- orig ) >?branch ; compile-special
+: UNTIL ( C: dest -- ) <?branch ; compile-special
+: ELSE ( C: orig1 -- orig2 ) >branch swap postpone then ; compile-special
+: AGAIN <branch ; compile-special
 
-: REPEAT postpone again postpone then ; compile-only
-: WHILE ( C: dest -- orig dest ) postpone if swap ; compile-only
+: REPEAT postpone again postpone then ; compile-special
+: WHILE ( C: dest -- orig dest ) postpone if swap ; compile-special
 
 \ Flow of control using DO, ?DO, +LOOP, and LEAVE
 variable LEAVERS 0 leavers !
@@ -53,15 +50,15 @@ variable LEAVERS 0 leavers !
 \
 \ LEAVE compiles as a forward branch to the UNLOOP at the very end.
 
-: DO ( C: -- saved-leavers dest ) postpone do-do 0 begin-do ; compile-only
+: DO ( C: -- saved-leavers dest ) postpone do-do 0 begin-do ; compile-special
 : ?DO ( C: -- saved-leavers dest )
-    postpone do-do postpone r@ postpone if 0 over ! begin-do ; compile-only
+    postpone do-do postpone r@ postpone if 0 over ! begin-do ; compile-special
 
-: LEAVE >branch dup leavers-swap swap ! ; compile-only
+: LEAVE >branch dup leavers-swap swap ! ; compile-special
 
 : +LOOP ( C: saved-leavers dest -- )
     postpone do-+loop postpone until
     leavers-swap begin dup while dup @ swap postpone then repeat drop
     postpone unloop
-; compile-only
-: LOOP 1 postpone literal postpone +loop ; compile-only
+; compile-special
+: LOOP 1 postpone literal postpone +loop ; compile-special

@@ -25,7 +25,7 @@
 : add-name ( hdlr "name" -- ) create-name link-name ;
 
 : : handler: do_colon create-name [compile] ] ;
-: ; postpone EXIT link-name [compile] [ ; compile-only
+: ; postpone EXIT link-name [compile] [ ; compile-special
 
 : created? dup @ handler: do_create = invert if -31 throw then ;
 : >BODY ( xt -- a-addr ) created? [ 2 cells ] literal + ;
@@ -35,8 +35,8 @@
 : DOES> r> current-name name>xt created? cell+ ! ; no-interpret
 : CREATE handler: do_create add-name 0 , DOES> ;
 
-: IMMEDIATE     nf-immediate        current-name name-flags! ;
-: NO-INTERPRET  nf-compile-only     current-name name-flags! ;
-: COMPILE-ONLY  nf-compile-special  current-name name-flags! ;
+: IMMEDIATE        nf-immediate        current-name name-flags! ;
+: NO-INTERPRET     nf-compile-only     current-name name-flags! ;
+: COMPILE-SPECIAL  nf-compile-special  current-name name-flags! ;
 
 : VARIABLE handler: do_variable add-name 0 , ;

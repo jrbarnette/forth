@@ -70,9 +70,9 @@ meta-immediate WHILE
 : CHAR meta-state @ 2 = if s" CHAR" meta-compile else meta-char then ;
 
 hex
-: IMMEDIATE    nf-immediate setflags ;
-: NO-INTERPRET nf-compile-only setflags ;
-: COMPILE-ONLY nf-compile-special setflags ;
+: IMMEDIATE        nf-immediate setflags ;
+: NO-INTERPRET     nf-compile-only setflags ;
+: COMPILE-SPECIAL  nf-compile-special setflags ;
 decimal
 
 : : s" do_colon" startname ]meta ;

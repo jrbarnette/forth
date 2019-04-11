@@ -8,7 +8,6 @@ SOURCES =			\
 	    fileops.c		\
 	    forth.c		\
 	    initdict.c		\
-	    interpret.c		\
 	    memops.c		\
 	    multops.c		\
 	    names.c		\

@@ -28,16 +28,16 @@
 \ FORTH-83 - System Extension Word Set
 prim: BRANCH      do_skip
 prim: ?BRANCH     do_fskip
-: <MARK ( -- dest ) here ; no-interpret
-: <RESOLVE ( dest -- ) here - [ 1 cells ] literal / , ; no-interpret
-: >MARK ( -- orig ) here [ 1 cells ] literal allot ; no-interpret
-: >RESOLVE ( orig -- ) here over - [ 1 cells ] literal / swap ! ; no-interpret
+: <MARK ( -- dest ) here ; compile-only
+: <RESOLVE ( dest -- ) here - [ 1 cells ] literal / , ; compile-only
+: >MARK ( -- orig ) here [ 1 cells ] literal allot ; compile-only
+: >RESOLVE ( orig -- ) here over - [ 1 cells ] literal / swap ! ; compile-only
 
 \ Internal primitive building blocks for DO loops.
-prim: DO-DO       do_do           no-interpret
-prim: DO-+LOOP    do_plus_loop    no-interpret
+prim: DO-DO       do_do           compile-only
+prim: DO-+LOOP    do_plus_loop    compile-only
 
 \ Standard primitives for DO loops.
-prim: UNLOOP      x_unloop        no-interpret
-prim: I           x_i             no-interpret
-prim: J           x_j             no-interpret
+prim: UNLOOP      x_unloop        compile-only
+prim: I           x_i             compile-only
+prim: J           x_j             compile-only

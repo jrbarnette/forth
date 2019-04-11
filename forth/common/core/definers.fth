@@ -32,11 +32,11 @@
 
 : CONSTANT handler: do_constant add-name , ;
 
-: DOES> r> current-name name>xt created? cell+ ! ; no-interpret
+: DOES> r> current-name name>xt created? cell+ ! ; compile-only
 : CREATE handler: do_create add-name 0 , DOES> ;
 
 : IMMEDIATE        nf-immediate        current-name name-flags! ;
-: NO-INTERPRET     nf-compile-only     current-name name-flags! ;
+: COMPILE-ONLY     nf-compile-only     current-name name-flags! ;
 : COMPILE-SPECIAL  nf-compile-special  current-name name-flags! ;
 
 : VARIABLE handler: do_variable add-name 0 , ;

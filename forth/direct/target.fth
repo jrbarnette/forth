@@ -71,7 +71,7 @@ meta-immediate WHILE
 
 hex
 : IMMEDIATE        nf-immediate setflags ;
-: NO-INTERPRET     nf-compile-only setflags ;
+: COMPILE-ONLY     nf-compile-only setflags ;
 : COMPILE-SPECIAL  nf-compile-special setflags ;
 decimal
 

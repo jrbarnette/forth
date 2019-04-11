@@ -83,7 +83,7 @@ also BUILD-DIRECT definitions
 : prim: create parse-name dup c, chars here swap dup allot move
      does> 0 { count .exec } ;
 : IMMEDIATE    ;
-: NO-INTERPRET ;
 : COMPILE-ONLY ;
+: COMPILE-SPECIAL ;
 
 only FORTH also BUILD-DIRECT also DIRECT definitions

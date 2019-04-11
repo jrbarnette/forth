@@ -2464,7 +2464,7 @@ DIRECT_FORTH(initialize_forth) // {
 /* 3012 */     { .id = "EXIT" },
 /* 3013 */     { .id = NULL },
 /* 3014 */ { .handler = i_linkname },
-/* 3015 */ { .handler = i_startname }, { .id = "NO-INTERPRET" }, { .handler = do_colon },
+/* 3015 */ { .handler = i_startname }, { .id = "COMPILE-ONLY" }, { .handler = do_colon },
 /* 3018 */ { .handler = meta_compile },
 /* 3019 */     { .id = "nf-compile-only" },
 /* 3020 */     { .id = "current-name" },

@@ -32,21 +32,21 @@
 \     2DUP
 \     2OVER
 \     2SWAP
-prim: >R        x_to_r              no-interpret
+prim: >R        x_to_r              compile-only
 prim: ?DUP      x_question_dup
 prim: DEPTH     x_depth
 prim: DROP      x_drop
 prim: DUP       x_dup
 prim: OVER      x_over
-prim: R>        x_r_from            no-interpret
-prim: R@        x_r_fetch           no-interpret
+prim: R>        x_r_from            compile-only
+prim: R@        x_r_fetch           compile-only
 prim: ROT       x_rot
 prim: SWAP      x_swap
 
 \ CORE EXT
-prim: 2>R       x_two_to_r          no-interpret
-prim: 2R>       x_two_r_from        no-interpret
-prim: 2R@       x_two_r_fetch       no-interpret
+prim: 2>R       x_two_to_r          compile-only
+prim: 2R>       x_two_r_from        compile-only
+prim: 2R@       x_two_r_fetch       compile-only
 \     NIP
 prim: PICK      x_pick
 \     ROLL

@@ -7,7 +7,7 @@
 \  PAD                   6.2.2000 CORE EXT
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
-: COMPILE, ( xt -- ) , ; no-interpret
+: COMPILE, ( xt -- ) , ; compile-only
 
 : LITERAL do-literal do-literal compile, , ; compile-special
 

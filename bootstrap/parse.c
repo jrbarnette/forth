@@ -26,47 +26,6 @@
 
 
 cell_ft
-parse(char_ft c, c_addr_ft s, cell_ft len)
-{
-    if (c == ' ') {
-	unsigned i;
-	for (i = 0; i < len; i++) {
-	    if (!isgraph(s[i])) {
-		DICT.to_in = s + i - DICT.source.c_addr + 1;
-		return (cell_ft) i;
-	    }
-	}
-	DICT.to_in = DICT.source.len;
-	return len;
-    } else {
-	c_addr_ft ns = memchr(s, (char) c, len);
-	if (ns != NULL) {
-	    DICT.to_in = ns - DICT.source.c_addr + 1;
-	    return (cell_ft) (ns - s);
-	} else {
-	    DICT.to_in = DICT.source.len;
-	    return len;
-	}
-    }
-}
-
-
-c_addr_ft
-parse_name(cell_ft *p_len)
-{
-    c_addr_ft	parse_area = PARSE_AREA_PTR;
-    cell_ft	parse_len = PARSE_AREA_LEN;
-
-    while (parse_len > 0 && !isgraph(*parse_area)) {
-	parse_area++;
-	parse_len--;
-    }
-    *p_len = parse(' ', parse_area, parse_len);
-    return parse_area;
-}
-
-
-cell_ft
 refill(void)
 {
     char *		line;
@@ -110,23 +69,6 @@ refill(void)
 
 
 /* -------------------------------------------------------------- */
-
-
-/* ( char "ccc<char>" -- c-addr u ) */
-vminstr_p
-x_parse(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    cell_ft	len;
-    c_addr_ft	parse_ptr = PARSE_AREA_PTR;
-    CHECK_POP(vm, 1);
-    CHECK_PUSH(vm, 1);
-
-    len = parse((char_ft) POP(vm), parse_ptr, PARSE_AREA_LEN);
-    PUSH(vm, (cell_ft) parse_ptr);
-    PUSH(vm, (cell_ft) len);
-
-    return ip;
-}
 
 
 /* ( -- flag ) */

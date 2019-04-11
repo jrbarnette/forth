@@ -106,7 +106,6 @@ extern vminstr_p do_s_quote(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_left_bracket(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_right_bracket(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p do_c_quote(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_parse(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_refill(vminstr_p, vmstate_p, vmarg_p);
 
 /* file I/O primitives */

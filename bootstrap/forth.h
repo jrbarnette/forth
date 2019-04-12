@@ -190,12 +190,15 @@ extern vminstr_p i_linkname(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p meta_interpret(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p meta_compile(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p i_lookup(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p do_literal(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p do_s_quote(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p do_c_quote(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p do_colon(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p do_constant(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p do_create(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p do_variable(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_exit(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_execute(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_exit(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_throw(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_clear(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_rclear(vminstr_p, vmstate_p, vmarg_p);
@@ -240,12 +243,16 @@ extern vminstr_p x_or(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_rshift(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_u_less(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_xor(vminstr_p, vmstate_p, vmarg_p);
+
+/* memory primitives */
 extern vminstr_p x_store(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_fetch(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_c_store(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_c_fetch(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_fill(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_move(vminstr_p, vmstate_p, vmarg_p);
+
+/* multiple cell multiply and divide primitives */
 extern vminstr_p x_star(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_slash(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_slash_mod(vminstr_p, vmstate_p, vmarg_p);
@@ -266,12 +273,7 @@ extern vminstr_p x_i(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_j(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_unloop(vminstr_p, vmstate_p, vmarg_p);
 
-/* interpreter primitives */
-extern vminstr_p do_literal(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p do_s_quote(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_left_bracket(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_right_bracket(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p do_c_quote(vminstr_p, vmstate_p, vmarg_p);
+/* parse primitives */
 extern vminstr_p x_refill(vminstr_p, vmstate_p, vmarg_p);
 
 /* file I/O primitives */

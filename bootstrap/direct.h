@@ -5,7 +5,7 @@
 #ifndef DIRECT_H
 #define DIRECT_H
 
-#include <stdddef.h>
+#include <stddef.h>
 
 #include "forth.h"
 #include "dictionary.h"

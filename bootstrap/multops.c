@@ -3,7 +3,6 @@
  */
 
 #include "forth.h"
-#include "direct.h"
 
 /*
  * multops.c - Standard Forth words for single and double cell

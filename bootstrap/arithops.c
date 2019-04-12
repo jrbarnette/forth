@@ -3,7 +3,6 @@
  */
 
 #include "forth.h"
-#include "direct.h"
 
 /*
  * arithops.c - Standard Forth words for single cell arithmetic and

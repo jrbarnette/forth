@@ -5,7 +5,6 @@
 #include <stddef.h>
 
 #include "forth.h"
-#include "direct.h"
 
 /*
  * control.c - C primitives to implement run-time behavior of Forth

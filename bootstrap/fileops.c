@@ -10,7 +10,6 @@
 #include <string.h>
 
 #include "forth.h"
-#include "direct.h"
 
 /*
  * fileops.c - Standard Forth words for the optional File-Access

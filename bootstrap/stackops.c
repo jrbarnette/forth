@@ -3,7 +3,6 @@
  */
 
 #include "forth.h"
-#include "direct.h"
 
 /*
  * stackops.c - Standard Forth words for stack operations.

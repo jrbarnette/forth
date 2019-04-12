@@ -8,7 +8,7 @@
 #include <assert.h>
 
 #include "forth.h"
-#include "direct.h"
+#include "dictionary.h"
 
 /*
  * names.c - C internal functions and Forth standard words for

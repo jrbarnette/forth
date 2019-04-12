@@ -9,7 +9,7 @@
 #include <assert.h>
 
 #include "forth.h"
-#include "direct.h"
+#include "dictionary.h"
 
 /*
  * dictionary.c - C internal functions and Forth standard words for

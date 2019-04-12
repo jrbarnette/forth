@@ -6,11 +6,7 @@
 #define FORTH_H
 
 #include <setjmp.h>
-#include <stdbool.h>
-#include <stddef.h>
 #include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
 
 
 /*
@@ -181,99 +177,117 @@ union definition_data {
 
 
 /*
- * C definitions and declarations relating to "name space" in the
- * dictionary.  See section 3.3.1, p 15.
+ * Initialization and direct threaded interpretation primitives.
  */
 
-#define NAME_TYPE_DEFAULT		0x00
-#define NAME_TYPE_NO_INTERPRET		0x40
-#define NAME_TYPE_IMMEDIATE		0x80
-#define NAME_TYPE_COMPILE		0xc0
-#define NAME_IS_IMMEDIATE(nm)		(((nm)->flags & 0x80) != 0)
-#define NAME_IS_INTERPRETABLE(nm)	(((nm)->flags & 0x40) == 0)
-#define NAME_CLEAR_TYPE(nm)		((nm)->flags &= 0x1f)
-#define NAME_SET_TYPE(nm, type)		((nm)->flags |= (type))
-#define NAME_MAKE_IMMEDIATE(nm)		NAME_SET_TYPE(NAME_TYPE_IMMEDIATE)
-#define NAME_MAX_LENGTH			31
-#define NAME_LENGTH(nm)			((nm)->flags & 0x1f)
-#define NAME_SIZE(len)			\
-	    XALIGNED(offsetof(struct name_header, ident) + (len))
-#define NAME_XT(nm)			\
-	    ((xt_ft) ((addr_ft)(nm) + NAME_SIZE(NAME_LENGTH(nm))))
+/* direct threaded name definition primitives */
+extern vminstr_p i_startname(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p i_addname(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p i_setflags(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p i_linkname(vminstr_p, vmstate_p, vmarg_p);
 
-typedef struct name_header *	name_p;
+/* vm execution and meta interpretation primitives */
+extern vminstr_p meta_interpret(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p meta_compile(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p i_lookup(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p do_colon(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p do_constant(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p do_create(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p do_variable(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_exit(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_execute(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_throw(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_clear(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_rclear(vminstr_p, vmstate_p, vmarg_p);
 
-struct name_header {
-    name_p		prev;
-    char_ft		flags;
-    char_ft		ident[NAME_MAX_LENGTH];
-};
+/* dictionary primitives */
+extern vminstr_p x_comma(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_align(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_allot(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_c_comma(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_here(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_unused(vminstr_p, vmstate_p, vmarg_p);
 
-extern name_p lookup(vmstate_p, c_addr_ft, cell_ft);
+/* stack primitives */
+extern vminstr_p x_to_r(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_question_dup(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_depth(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_drop(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_dup(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_over(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_r_from(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_r_fetch(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_rot(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_swap(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_two_to_r(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_two_r_from(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_two_r_fetch(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_pick(vminstr_p, vmstate_p, vmarg_p);
 
-#define MAX_SEARCH_ORDER	8
+/* arithmetic and logical primitives */
+extern vminstr_p x_plus(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_minus(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_two_star(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_two_slash(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_less_than(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_equals(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_greater_than(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_and(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_invert(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_lshift(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_negate(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_or(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_rshift(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_u_less(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_xor(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_store(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_fetch(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_c_store(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_c_fetch(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_fill(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_move(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_star(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_slash(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_slash_mod(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_m_star(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_mod(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_u_m_star(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_u_m_slash_mod(vminstr_p, vmstate_p, vmarg_p);
 
+/* terminal I/O primitives */
+extern vminstr_p x_emit(vminstr_p, vmstate_p, vmarg_p);
 
-/*
- * C definitions and declarations relating to the Forth dictionary,
- * including structures for initialization.
- *
- * For ALIGN to produce an aligned data space pointer, the
- * dictionary space must be cell-aligned.  To prevent ALIGN from
- * overflowing the dictionary space, DICTIONARY_SIZE must also be a
- * multiple of CELL_SIZE.
- */
+/* control flow primitives */
+extern vminstr_p do_skip(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p do_fskip(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p do_plus_loop(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p do_do(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_i(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_j(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_unloop(vminstr_p, vmstate_p, vmarg_p);
 
-#define DICTIONARY_SIZE		(0x10000 XCELLS)
+/* interpreter primitives */
+extern vminstr_p do_literal(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p do_s_quote(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_left_bracket(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_right_bracket(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p do_c_quote(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_refill(vminstr_p, vmstate_p, vmarg_p);
 
-extern union dict {
-    struct {
-	cell_ft		here;		    /* HERE */
-	name_p		forth_wordlist;	    /* FORTH-WORDLIST */
-	name_p *	current;	    /* CURRENT */
-	cell_ft		n_search_order;
-	name_p *	search_order[MAX_SEARCH_ORDER];
+/* file I/O primitives */
+extern vminstr_p x_bin(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_close_file(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_create_file(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_file_position(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_file_size(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_open_file(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_r_o(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_r_w(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_read_file(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_read_line(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_reposition_file(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_w_o(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_write_file(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_write_line(vminstr_p, vmstate_p, vmarg_p);
 
-	cell_ft		state;		    /* STATE */
-
-	/* the input source and parse area - 4 cells total */
-	cell_ft		to_in;		    /* >IN */
-	cell_ft		source_id;	    /* SOURCE-ID */
-	string_ft	source;		    /* SOURCE */
-	cell_ft		source_max_len;     /* #TIB */
-
-	size_t		lineno;
-	FILE *		input;
-    } dict_static_data;
-    addr_unit_ft	dict_space[DICTIONARY_SIZE];
-} dictionary;
-
-#define DICT		dictionary.dict_static_data
-#define HERE		(dictionary.dict_space + DICT.here)
-
-#define STATE_INTERP		F_FALSE
-#define STATE_COMPILE		F_TRUE
-
-#define SOURCE_ID_TERMINAL	((cell_ft) 0)
-#define SOURCE_ID_EVALUATE	((cell_ft) -1)
-
-#define PARSE_AREA_PTR		(DICT.source.c_addr + DICT.to_in)
-#define PARSE_AREA_LEN		(DICT.source.len - DICT.to_in)
-
-
-/*
- */
-
-extern addr_ft allot(vmstate_p, cell_ft);
-
-#define COMMA(vm, x)	(*(a_addr_ft)allot((vm), CELL_SIZE) = (cell_ft) (x))
-#define COMPILE(vm, xt)	COMMA(vm, xt)
-#define XALIGN(vm)	(DICT.here = XALIGNED(DICT.here))
-
-extern void quit(vmstate_p, FILE *);
-extern void interpret_lines(vmstate_p, char **);
-
-extern vminstr_d initialize_forth[];
-extern char *init_forth_defs[];
-
-#endif
+#endif // FORTH_H

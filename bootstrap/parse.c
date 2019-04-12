@@ -12,6 +12,7 @@
 #include <readline/history.h>
 
 #include "forth.h"
+#include "dictionary.h"
 #include "cmdline.h"
 
 /*

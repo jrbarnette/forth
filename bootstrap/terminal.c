@@ -5,7 +5,6 @@
 #include <stdio.h>
 
 #include "forth.h"
-#include "direct.h"
 
 /*
  * terminal.c - Standard Forth words for user terminal I/O.

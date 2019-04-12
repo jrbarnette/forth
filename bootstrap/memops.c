@@ -5,7 +5,6 @@
 #include <string.h>
 
 #include "forth.h"
-#include "direct.h"
 
 /*
  * memops.c - Standard Forth words for memory fetch/store, and

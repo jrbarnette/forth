@@ -20,6 +20,9 @@
     then >in +! r> swap r> drop
 ;
 
+\ Oh my, I'm surely going to pay for this...
+: WORD here dup rot parse counted, bl c, here - allot ;
+
 \ CORE EXT (2012 standard)
 : PARSE-NAME
     source swap >r >in @ 1-                     ( end idx ) ( R: c-addr )

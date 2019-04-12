@@ -266,19 +266,14 @@ extern union dict {
 
 extern addr_ft allot(vmstate_p, cell_ft);
 
-extern void execute(vmstate_p vm, xt_ft entry_xt);
-
-extern cell_ft refill(void);
-
-extern void quit(vmstate_p, FILE *);
-extern void interpret_lines(vmstate_p, char **);
-
 #define COMMA(vm, x)	(*(a_addr_ft)allot((vm), CELL_SIZE) = (cell_ft) (x))
 #define COMPILE(vm, xt)	COMMA(vm, xt)
 #define XALIGN(vm)	(DICT.here = XALIGNED(DICT.here))
 
-extern vminstr_d initialize_forth[];
+extern void quit(vmstate_p, FILE *);
+extern void interpret_lines(vmstate_p, char **);
 
+extern vminstr_d initialize_forth[];
 extern char *init_forth_defs[];
 
 #endif

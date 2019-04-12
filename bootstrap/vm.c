@@ -34,7 +34,7 @@
 //------  ------  ------  ------  ------  ------  ------  ------
 
 
-void
+static void
 execute(vmstate_p vm, xt_ft entry_xt)
 {
     vminstr_p ip = entry_xt->handler(NULL, vm, entry_xt[1].arg);

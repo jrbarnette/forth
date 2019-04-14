@@ -25,12 +25,6 @@ TARGET <DIRECT>
 \
 \	cell_ft		state;		    /* STATE */
 \
-\	/* the input source and parse area - 4 cells total */
-\	cell_ft		to_in;		    /* >IN */
-\	cell_ft		source_id;	    /* SOURCE-ID */
-\	string_ft	source;		    /* SOURCE */
-\
-\	int		source_max_len;     /* #TIB */
 \	size_t		lineno;
 \	FILE *		input;
 \   } dict_static_data;

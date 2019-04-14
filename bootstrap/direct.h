@@ -8,7 +8,6 @@
 #include <stddef.h>
 
 #include "forth.h"
-#include "dictionary.h"
 
 /*
  * Support for dictionary initialization by interpreting direct-threaded

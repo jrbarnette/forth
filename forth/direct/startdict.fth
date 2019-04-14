@@ -11,6 +11,7 @@ TARGET <DIRECT>
 >>> #include <stddef.h>
 >>>
 >>> #include "forth.h"
+>>> #include "dictionary.h"
 >>> #include "direct.h"
 >>>
 >>>

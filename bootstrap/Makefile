@@ -20,14 +20,17 @@ SOURCES =			\
 	    terminal.c		\
 	    vm.c
 
+OBJECTS =   $(SOURCES:.c=.o)
+
 CMDLINE_DEP = forth.o parse.o exception.o cmdline.o
+
 DICT_DEP =  dictionary.o	\
 	    exception.o		\
 	    forth.o		\
 	    initdict.o		\
+	    meta.o		\
 	    names.o		\
-	    parse.o		\
-	    vm.o
+	    parse.o
 
 PRIM_DEP =  $(DICT_DEP)         \
             arithops.o		\
@@ -38,15 +41,14 @@ PRIM_DEP =  $(DICT_DEP)         \
 	    memops.o		\
 	    multops.o		\
 	    stackops.o		\
-	    terminal.o
+	    terminal.o		\
+	    vm.o
 
 CHECKNONE = 0
 CHECKSTMT = 1
 CHECKEXPR = 2
 CHECKMODE = EXPR
 CHECKFLAG = -DCHECKMODE=$(CHECK$(CHECKMODE))
-
-OBJECTS = $(SOURCES:.c=.o)
 
 CFLAGS = -O -g $(CHECKFLAG) -Wall
 LDFLAGS = -lreadline
@@ -60,8 +62,6 @@ initdict.o: direct.h
 
 forth: $(OBJECTS)
 	$(CC) $(LDFLAGS) -o $@ $(OBJECTS)
-
-$(OBJECTS): forth.h
 
 tags: $(SOURCES)
 	ctags $(SOURCES)

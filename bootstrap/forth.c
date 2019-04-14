@@ -8,7 +8,6 @@
 
 #include "forth.h"
 #include "dictionary.h"
-#include "direct.h"
 #include "cmdline.h"
 
 /*

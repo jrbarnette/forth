@@ -7,10 +7,6 @@ QUIT has an implementation in the source text that we interpret at
 startup, and a fair amount of the static dictionary is gone.
 
 Short term TODO list
-    Need to fix up refill():
-      + Define how Forth sets the prompt for readline()
-      + When the source is EVALUATE, return FALSE
-
     main() command-line processing is overly complicated; clean it up.
 
     Error handling is rotten.  It ought to be not too much trouble
@@ -49,8 +45,6 @@ Long-term Goal:
 Plan
     Organize C sources so that the .c file names better match the
     .fth file names they feed into.
-
-    Move REFILL and STATE to Forth, in that order.
 
     Take care of search order stuff.
 

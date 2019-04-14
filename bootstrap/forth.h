@@ -147,6 +147,7 @@ union definition_data {
 #define SET_SP(vm, nsp, n)	((vm)->sp = (nsp) + (n))
 #define SET_RSP(vm, nsp, n)	((vm)->rsp = (nsp) + (n))
 
+#define CATCH(vm)		(setjmp((vm)->interp_loop))
 #define THROW(vm, n)		(longjmp((vm)->interp_loop, (n)))
 
 #ifdef CHECKMODE
@@ -174,6 +175,8 @@ union definition_data {
 #define PUSH(vm, c)	(*--(vm)->sp = (cell_ft)(c))
 #define RPOP(vm)	(*(vm)->rsp++)
 #define RPUSH(vm, c)	(*--(vm)->rsp = (cell_ft)(c))
+
+extern void handle_exception(int, vmstate_p, char *);
 
 
 /*

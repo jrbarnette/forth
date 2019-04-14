@@ -5,10 +5,13 @@ SOURCES =			\
 	    cmdline.c		\
 	    control.c		\
 	    dictionary.c	\
+	    direct.c		\
+	    exception.c		\
 	    fileops.c		\
 	    forth.c		\
 	    initdict.c		\
 	    memops.c		\
+	    meta.c		\
 	    multops.c		\
 	    names.c		\
 	    parse.c		\
@@ -16,8 +19,9 @@ SOURCES =			\
 	    terminal.c		\
 	    vm.c
 
-CMDLINE_DEP = forth.o parse.o cmdline.o
+CMDLINE_DEP = forth.o parse.o exception.o cmdline.o
 DICT_DEP =  dictionary.o	\
+	    exception.o		\
 	    forth.o		\
 	    initdict.o		\
 	    names.o		\
@@ -27,6 +31,7 @@ DICT_DEP =  dictionary.o	\
 PRIM_DEP =  $(DICT_DEP)         \
             arithops.o		\
 	    control.o		\
+	    direct.o		\
 	    fileops.o		\
 	    memops.o		\
 	    multops.o		\
@@ -49,7 +54,7 @@ all: forth tags
 $(CMDLINE_DEP): cmdline.h
 $(DICT_DEP): dictionary.h
 $(PRIM_DEP): forth.h
-initdict.o: direct.h
+direct.o initdict.o: direct.h
 
 forth: $(OBJECTS)
 	$(CC) $(LDFLAGS) -o $@ $(OBJECTS)

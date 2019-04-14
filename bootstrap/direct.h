@@ -28,4 +28,6 @@
 #define DIRECT_FORTH(nm)	vminstr_d nm[] = {
 #define END_DIRECT		X(x_exit) };
 
+extern void direct_execute(vmstate_p, vminstr_p);
+
 #endif // DIRECT_H

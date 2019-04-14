@@ -5,8 +5,9 @@
 #ifndef DICTIONARY_H
 #define DICTIONARY_H
 
-#include <stdio.h>
+#include <stdbool.h>
 #include <stddef.h>
+#include <stdio.h>
 
 #include "forth.h"
 
@@ -89,8 +90,8 @@ extern addr_ft allot(vmstate_p, cell_ft);
 #define COMPILE(vm, xt)	COMMA(vm, xt)
 #define XALIGN(vm)	(DICT.here = XALIGNED(DICT.here))
 
-extern void quit(vmstate_p, FILE *);
 extern void interpret_lines(vmstate_p, char **);
+extern int interpret_file(vmstate_p, char *);
 
 extern vminstr_d initialize_forth[];
 extern char *init_forth_defs[];

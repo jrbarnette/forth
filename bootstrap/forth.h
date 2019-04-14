@@ -176,7 +176,14 @@ union definition_data {
 #define RPOP(vm)	(*(vm)->rsp++)
 #define RPUSH(vm, c)	(*--(vm)->rsp = (cell_ft)(c))
 
+/*
+ * C utility functions that are intrinsic to the inner VM (both
+ * direct and indirect threaded).
+ */
+
 extern void handle_exception(int, vmstate_p, char *);
+extern void direct_execute(vmstate_p, vminstr_p);
+extern void execute(vmstate_p, xt_ft);
 
 
 /*
@@ -189,23 +196,6 @@ extern vminstr_p i_addname(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p i_setflags(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p i_linkname(vminstr_p, vmstate_p, vmarg_p);
 
-/* vm execution and meta interpretation primitives */
-extern vminstr_p meta_interpret(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p meta_compile(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p i_lookup(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p do_literal(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p do_s_quote(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p do_c_quote(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p do_colon(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p do_constant(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p do_create(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p do_variable(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_execute(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_exit(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_throw(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_clear(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_rclear(vminstr_p, vmstate_p, vmarg_p);
-
 /* dictionary primitives */
 extern vminstr_p x_comma(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_align(vminstr_p, vmstate_p, vmarg_p);
@@ -213,6 +203,25 @@ extern vminstr_p x_allot(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_c_comma(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_here(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_unused(vminstr_p, vmstate_p, vmarg_p);
+
+/* vm execution and meta interpretation primitives */
+extern vminstr_p meta_interpret(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p meta_compile(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p i_lookup(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p do_literal(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p do_s_quote(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p do_c_quote(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_exit(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_throw(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_clear(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_rclear(vminstr_p, vmstate_p, vmarg_p);
+
+/* indirect threaded interpretation primitives */
+extern vminstr_p do_colon(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p do_constant(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p do_create(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p do_variable(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_execute(vminstr_p, vmstate_p, vmarg_p);
 
 /* stack primitives */
 extern vminstr_p x_to_r(vminstr_p, vmstate_p, vmarg_p);

@@ -17,18 +17,6 @@
  */
 
 
-static void
-execute(vmstate_p vm, xt_ft entry_xt)
-{
-    vminstr_p ip = entry_xt->handler(NULL, vm, entry_xt[1].arg);
-
-    while (ip != NULL) {
-	xt_ft xtok = ip->xtok;
-	ip = xtok->handler(ip + 1, vm, xtok[1].arg);
-    }
-}
-
-
 static xt_ft
 meta_lookup(vmstate_p vm, vminstr_p ip)
 {

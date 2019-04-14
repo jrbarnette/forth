@@ -6,7 +6,6 @@
 #include <stdlib.h>
 
 #include "forth.h"
-#include "direct.h"
 
 /*
  * direct.c - C utility functions to enable direct-threaded

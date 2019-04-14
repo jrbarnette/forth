@@ -9,6 +9,7 @@ SOURCES =			\
 	    exception.c		\
 	    fileops.c		\
 	    forth.c		\
+	    indirect.c		\
 	    initdict.c		\
 	    memops.c		\
 	    meta.c		\
@@ -33,6 +34,7 @@ PRIM_DEP =  $(DICT_DEP)         \
 	    control.o		\
 	    direct.o		\
 	    fileops.o		\
+	    indirect.o		\
 	    memops.o		\
 	    multops.o		\
 	    stackops.o		\
@@ -54,7 +56,7 @@ all: forth tags
 $(CMDLINE_DEP): cmdline.h
 $(DICT_DEP): dictionary.h
 $(PRIM_DEP): forth.h
-direct.o initdict.o: direct.h
+initdict.o: direct.h
 
 forth: $(OBJECTS)
 	$(CC) $(LDFLAGS) -o $@ $(OBJECTS)

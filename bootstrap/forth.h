@@ -204,10 +204,12 @@ extern vminstr_p x_c_comma(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_here(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_unused(vminstr_p, vmstate_p, vmarg_p);
 
-/* vm execution and meta interpretation primitives */
+/* meta interpretation primitives */
 extern vminstr_p meta_interpret(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p meta_compile(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p i_lookup(vminstr_p, vmstate_p, vmarg_p);
+
+/* vm execution primitives */
 extern vminstr_p do_literal(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p do_s_quote(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p do_c_quote(vminstr_p, vmstate_p, vmarg_p);

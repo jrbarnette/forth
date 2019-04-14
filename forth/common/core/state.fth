@@ -6,8 +6,7 @@
 \  ]                     6.1.2540 CORE
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
-<C> &DICT.state;
-constant STATE
+variable STATE 0 state !
 
 : [ 0 state ! ; immediate
 : ] -1 state ! ;

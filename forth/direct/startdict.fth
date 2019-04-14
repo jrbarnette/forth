@@ -23,8 +23,6 @@ TARGET <DIRECT>
 \	cell_ft		n_search_order;
 \	name_p *	search_order[MAX_SEARCH_ORDER];
 \
-\	cell_ft		state;		    /* STATE */
-\
 \	size_t		lineno;
 \	FILE *		input;
 \   } dict_static_data;
@@ -36,7 +34,6 @@ TARGET <DIRECT>
                             <C> &DICT.search_order[0];  !
 \ search order 1..7 initialized to 0
 1                           <C> &DICT.n_search_order;   !
-0                           <C> &DICT.state;            !
 \ remaining fields initialized to 0.
 
 [

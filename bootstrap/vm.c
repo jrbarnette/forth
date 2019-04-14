@@ -110,8 +110,14 @@ interpret_lines(vmstate_p vm, char **lines)
 	execute(vm, xt);
     }
 
-    assert(DICT.state == STATE_INTERP);
-    /* assert stacks are empty */
+    char getstate[] = "STATE @";
+    PUSH(vm, getstate);
+    PUSH(vm, sizeof (getstate) - 1);
+    execute(vm, xt);
+    cell_ft state = POP(vm);
+    assert(state == 0);
+    assert(EMPTY(vm));
+    assert(REMPTY(vm));
 }
 
 

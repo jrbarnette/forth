@@ -89,8 +89,7 @@ handle_exception(int throwcode, vmstate_p vm, char *filename)
     char *excdesc = forth_exceptions[-throwcode-1];
 
     if (filename != NULL) {
-	fprintf(stderr, "error in %s:%lu col %lu\n",
-		filename, DICT.lineno, DICT.to_in + 1);
+	fprintf(stderr, "error in %s:%lu\n", filename, DICT.lineno);
     }
     if (excdesc != NULL) {
 	CLEAR_RSTACK(vm);

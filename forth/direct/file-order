@@ -57,7 +57,7 @@ forth/direct/startdict.fth
     forth/direct/core/terminal.fth
     forth/common/core/terminal.fth
 
-    forth/direct/core/state.fth
+    forth/common/core/state.fth
     forth/direct/search/current.fth
     forth/common/search/order.fth
     forth/common/internal/namespace.fth

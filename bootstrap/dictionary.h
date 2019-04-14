@@ -63,14 +63,6 @@ extern union dict {
 	cell_ft		n_search_order;
 	name_p *	search_order[MAX_SEARCH_ORDER];
 
-	cell_ft		state;		    /* STATE */
-
-	/* the input source and parse area - 4 cells total */
-	cell_ft		to_in;		    /* >IN */
-	cell_ft		source_id;	    /* SOURCE-ID */
-	string_ft	source;		    /* SOURCE */
-	cell_ft		source_max_len;     /* #TIB */
-
 	size_t		lineno;
 	FILE *		input;
     } dict_static_data;

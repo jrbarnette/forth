@@ -274,7 +274,7 @@ extern vminstr_p x_j(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_unloop(vminstr_p, vmstate_p, vmarg_p);
 
 /* parse primitives */
-extern vminstr_p x_refill(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_refill_terminal(vminstr_p, vmstate_p, vmarg_p);
 
 /* file I/O primitives */
 extern vminstr_p x_bin(vminstr_p, vmstate_p, vmarg_p);

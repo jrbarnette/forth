@@ -10,9 +10,9 @@ here 256 dup chars allot        \ constant #TIB constant TIB
 ( C: TIB #TIB )
 : QUIT
     rclear [ rot ] literal [ swap ] literal source<terminal
-    \ For now, REFILL does the "OK" prompt.  That's (mostly) wrong.
     postpone [
-    begin refill while interpret repeat 0 >r
+    begin state @ if s" " else s" ok " then prompt!
+	refill while interpret repeat 0 >r
 ;
 
 : ABORT clear quit ;

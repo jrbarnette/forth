@@ -12,7 +12,7 @@
 
 : SOURCE   ( -- c-addr u )  <C> &DICT.source;  2@ ;
 
-prim: REFILL        x_refill
+prim: REFILL-TERMINAL   x_refill_terminal
 
 : SOURCE-ID   <C> &DICT.source_id; @ ;
 
@@ -27,3 +27,10 @@ prim: REFILL        x_refill
 
 : SOURCE<TERMINAL ( source-addr #source -- ) 0 swap 0 0 source-data! ;
 : SOURCE<EVALUATE ( c-addr u -- ) 0 0 -1 source-data! ;
+
+here 80 chars allot constant PROMPT 0 prompt c!
+: PROMPT! ( c-addr u -- ) prompt swap chars 2dup + >r move 0 r> c! ;
+: REFILL
+    source-id 0< if false exit then
+    <C> &DICT.source.c_addr; @ <C> &DICT.source_max_len; @ prompt
+    refill-terminal <C> &DICT.source.len; ! dup if 0 >in ! then ;

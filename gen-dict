@@ -28,13 +28,13 @@ END_HEAD
 }
 
 build() {
-    gen "$@" >bootstrap/initdict.c
+    gen "$@" >$FILE
     cd bootstrap
     make
 }
 
 changes() {
-    gen "$@" | diff - bootstrap/initdict.c
+    gen "$@" | diff - $FILE
 }
 
 dry_run() {
@@ -46,11 +46,12 @@ regen() {
     git checkout initdict.c
     make
     cd ..
-    gen "$@" >bootstrap/initdict.c
+    gen "$@" >$FILE
 }
 
 MODE=gen
-while getopts gbtlnsr opt
+FILE=bootstrap/initdict.c
+while getopts gbtlnsrf: opt
 do
     case $opt in
         g) MODE=gen ;;
@@ -60,6 +61,7 @@ do
         n) MODE=dry_run ;;
         s) MODE=cat ;;
         r) MODE=regen ;;
+        f) FILE=$OPTARG ;;
         \?) usage ;;
     esac
 done

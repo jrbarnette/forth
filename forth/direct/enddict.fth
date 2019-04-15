@@ -15,7 +15,7 @@ TARGET <DIRECT>
 >>>
 >>>
 >>> char *init_forth_defs[] = {
-<HOST> QUIT
+<HOST>
         include-source-text: forth/common/core/format.fth
         include-source-text: forth/common/core/quit.fth
         include-source-text: forth/common/search/find.fth

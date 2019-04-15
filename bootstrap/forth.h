@@ -91,12 +91,11 @@ typedef struct {
 #define RSTACK_SIZE	512
 
 typedef struct vmstate *		vmstate_p;
-typedef union definition_data		definition_d;
-typedef union definition_data *		xt_ft;
+typedef struct definition_data *	xt_ft;
 typedef union instruction_data		vminstr_d;
 typedef union instruction_data *	vminstr_p;
-typedef union argument_data		vmarg_d;
-typedef union argument_data *		vmarg_p;
+typedef union parameter_data		vmarg_d;
+typedef union parameter_data *		vmarg_p;
 
 typedef vminstr_p (*vminstr_fn)(vminstr_p, vmstate_p, vmarg_p);
 
@@ -122,7 +121,7 @@ union instruction_data {
     void *		ptr;
 };
 
-union argument_data {
+union parameter_data {
     vminstr_p		ip;
     xt_ft		xtok;
     cell_ft		cell;
@@ -131,7 +130,7 @@ union argument_data {
     vminstr_d		vminstrs[1];
 };
 
-union definition_data {
+struct definition_data {
     vminstr_fn		handler;
     vmarg_d		arg[1];
 };

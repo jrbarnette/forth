@@ -47,6 +47,8 @@ main(int argc, char *argv[])
 
     process_args(argc, argv, &forth_options);
     direct_execute(&vmstate, initialize_forth);
+    assert(EMPTY(&vmstate));
+    assert(REMPTY(&vmstate));
     interpret_lines(&vmstate, init_forth_defs);
 
     if (forth_options.startup_file != NULL) {

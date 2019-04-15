@@ -29,7 +29,4 @@ direct_execute(vmstate_p vm, vminstr_p ip)
     while (ip != NULL) {
 	ip = ip->handler(ip + 1, vm, NULL);
     }
-
-    assert(EMPTY(vm));
-    assert(REMPTY(vm));
 }

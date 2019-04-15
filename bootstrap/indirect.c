@@ -28,11 +28,11 @@
 void
 execute(vmstate_p vm, xt_ft entry_xt)
 {
-    vminstr_p ip = entry_xt->handler(NULL, vm, entry_xt[1].arg);
+    vminstr_p ip = entry_xt->handler(NULL, vm, entry_xt->arg);
 
     while (ip != NULL) {
 	xt_ft xtok = ip->xtok;
-	ip = xtok->handler(ip + 1, vm, xtok[1].arg);
+	ip = xtok->handler(ip + 1, vm, xtok->arg);
     }
 }
 
@@ -90,5 +90,5 @@ x_execute(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
     CHECK_POP(vm, 1);
     xtok = (xt_ft)POP(vm);
-    return xtok->handler(ip, vm, xtok[1].arg);
+    return xtok->handler(ip, vm, xtok->arg);
 }

@@ -1,28 +1,33 @@
 # Copyright 2010, by J. Richard Barnette
 
-SOURCES =			\
+COMMON_SRC =			\
 	    arithops.c		\
 	    cmdline.c		\
 	    control.c		\
-	    dictionary.c	\
 	    direct.c		\
 	    exception.c		\
 	    fileops.c		\
-	    forth.c		\
 	    indirect.c		\
-	    initdict.c		\
 	    memops.c		\
-	    meta.c		\
 	    multops.c		\
-	    names.c		\
 	    parse.c		\
 	    stackops.c		\
 	    terminal.c		\
 	    vm.c
 
-OBJECTS =   $(SOURCES:.c=.o)
+FORTH_SRC =			\
+	    dictionary.c	\
+	    forth.c		\
+	    initdict.c		\
+	    meta.c		\
+	    names.c
 
-CMDLINE_DEP = forth.o parse.o exception.o cmdline.o
+DIRECT_SRC = direct_test.c
+
+FORTH_OBJ =   $(COMMON_SRC:.c=.o) $(FORTH_SRC:.c=.o)
+DIRECT_OBJ =   $(COMMON_SRC:.c=.o) $(DIRECT_SRC:.c=.o)
+
+CMDLINE_DEP = forth.o parse.o exception.o cmdline.o direct_test.o
 
 DICT_DEP =  dictionary.o	\
 	    exception.o		\
@@ -60,11 +65,14 @@ $(DICT_DEP): dictionary.h
 $(PRIM_DEP): forth.h
 initdict.o: direct.h
 
-forth: $(OBJECTS)
-	$(CC) $(LDFLAGS) -o $@ $(OBJECTS)
+forth: $(FORTH_OBJ)
+	$(CC) $(LDFLAGS) -o $@ $(FORTH_OBJ)
+
+direct_test: $(DIRECT_OBJ)
+	$(CC) $(LDFLAGS) -o $@ $(DIRECT_OBJ)
 
 tags: $(SOURCES)
 	ctags $(SOURCES)
 
 clean:
-	rm -f forth tags $(OBJECTS) stdforth.c
+	rm -f forth tags $(FORTH_OBJ) $(DIRECT_OBJ) stdforth.c

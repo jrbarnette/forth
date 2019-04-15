@@ -61,8 +61,9 @@ LDFLAGS = -lreadline
 all: forth tags
 
 $(CMDLINE_DEP): cmdline.h
-$(DICT_DEP): dictionary.h
+$(DICT_DEP): names.h dictionary.h
 $(PRIM_DEP): forth.h
+direct_test.o: names.h
 initdict.o: direct.h
 
 forth: $(FORTH_OBJ)

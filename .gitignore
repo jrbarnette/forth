@@ -3,5 +3,6 @@
 tmp/
 tags
 bootstrap/forth
+bootstrap/direct_test
 bootstrap.meta/forth
 bootstrap/stdforth.c

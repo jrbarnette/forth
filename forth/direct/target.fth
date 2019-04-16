@@ -25,6 +25,7 @@ also TARGET definitions previous
 : >>> source >in @ over >in ! swap over - >r chars + r> type cr ;
 
 meta-immediate +LOOP
+meta-immediate ?DO
 meta-immediate AGAIN
 meta-immediate BEGIN
 meta-immediate DO

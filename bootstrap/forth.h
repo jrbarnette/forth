@@ -118,7 +118,6 @@ union instruction_data {
     vminstr_fn		handler;
     vminstr_p		ip;
     char *		id;
-    void *		ptr;
 };
 
 union parameter_data {

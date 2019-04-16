@@ -56,6 +56,7 @@ forth/direct/startdict.fth
     forth/common/core/number.fth
     forth/direct/core/terminal.fth
     forth/common/core/terminal.fth
+    forth/common/internal/error.fth
 
     forth/common/core/state.fth
     forth/direct/search/current.fth

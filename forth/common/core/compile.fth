@@ -14,9 +14,9 @@
 \  \                     6.2.2535 CORE EXT
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
-: ' parse-name lookup dup 0= if -13 throw then name>xt ;
+: ' parse-name lookup dup 0= if .error -13 throw then name>xt ;
 : ( [char] ) parse drop drop ; immediate
-: CHAR parse-name 0= if -16 throw then c@ ;
+: CHAR parse-name 0= if .error -16 throw then c@ ;
 : POSTPONE
     parse-name lookup name>xt+flags immediate?
     0= if postpone literal ['] compile, then compile, ; compile-special

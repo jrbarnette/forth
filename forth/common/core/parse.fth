@@ -38,7 +38,9 @@ variable >IN 4 cells allot
 : SOURCE<TERMINAL  ( source-addr #source -- ) 0 swap 0 0 source-data! ;
 : SOURCE<EVALUATE  ( c-addr u -- ) 0 0 -1 source-data! ;
 
+variable >IN-START
 : PARSE ( char "ccc<char>" -- c-addr u )
+    >in @ >in-start !
     >r source swap >in @ chars + >r		( R: delim c-addr )
     >in @ - -1
     begin 1+ 2dup > while			( end cnt )

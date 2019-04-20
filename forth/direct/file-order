@@ -51,6 +51,7 @@ forth/direct/startdict.fth
     # ready to start making more complicated definitions.
     forth/common/internal/chartype.fth
     forth/direct/core/parse.fth
+    forth/common/core/source.fth
     forth/common/core/parse.fth
 
     forth/common/core/number.fth

@@ -6,11 +6,9 @@
 \  QUIT                  6.1.2050 CORE
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
-here 256 dup chars allot        \ constant #TIB constant TIB
 ( C: TIB #TIB )
 : QUIT
-    rclear [ rot ] literal [ swap ] literal source<terminal
-    postpone [
+    rclear source<terminal postpone [
     begin state @ if s" " else s" ok " then prompt!
 	refill while interpret repeat 0 >r
 ;

@@ -20,17 +20,20 @@ variable >IN 4 cells allot
 
 : SOURCE  ( -- c-addr u )  [ >in 2 cells + ] literal 2@ ;
 
-: SOURCE-DATA@
+: SOURCE-DATA@  ( -- buffer len max-len >in source-id )
     source [ >in 4 cells + ] literal @ >in @ source-id ;
-: SOURCE-DATA!
+: SOURCE-DATA!  ( buffer len max-len >in source-id -- )
     [ >in cell+ ] literal ! >in ! [ >in 4 cells + ] literal !
     [ >in 2 cells + ] literal 2! ;
 
 : NEST-SOURCE    r> source-data@ >r >r >r 2>r >r ;
 : UNNEST-SOURCE  r> 2r> r> r> r> source-data! >r ;
 
-: SOURCE<TERMINAL  ( source-addr #source -- ) 0 swap 0 0 source-data! ;
 : SOURCE<EVALUATE  ( c-addr u -- ) 0 0 -1 source-data! ;
+
+here 256 dup chars allot        ( TIB #TIB )
+: SOURCE<TERMINAL  ( -- )
+    [ rot ] literal 0 [ swap ] literal 0 0 source-data! ;
 
 
 here 80 chars allot constant PROMPT 0 prompt c!

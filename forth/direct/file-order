@@ -51,6 +51,7 @@ forth/direct/startdict.fth
     # ready to start making more complicated definitions.
     forth/common/internal/chartype.fth
     forth/direct/core/parse.fth
+    forth/direct/file/fileprim.fth
     forth/common/core/source.fth
     forth/common/core/parse.fth
 
@@ -69,6 +70,5 @@ forth/direct/startdict.fth
 
     forth/common/core/definers.fth
     forth/common/core/compile.fth
-    forth/direct/file/fileprim.fth
     forth/common/core/evaluate.fth
 forth/direct/enddict.fth

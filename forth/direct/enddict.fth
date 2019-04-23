@@ -18,6 +18,7 @@ TARGET <DIRECT>
 <HOST>
         include-source-text: forth/common/core/format.fth
         include-source-text: forth/common/core/quit.fth
+        include-source-text: forth/common/file/include.fth
         include-source-text: forth/common/search/find.fth
         include-source-text: forth/common/search/vocab.fth
 TARGET <DIRECT>

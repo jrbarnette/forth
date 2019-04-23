@@ -4,8 +4,11 @@
 \  >IN                   6.1.0560 CORE
 \  SOURCE                6.1.2216 CORE
 \
-\  REFILL                6.2.2125 CORE EXT
 \  SOURCE-ID             6.2.2218 CORE EXT
+\  SOURCE-ID          11.6.1.2218 FILE
+\
+\  REFILL                6.2.2125 CORE EXT
+\  REFILL             11.6.2.2125 FILE EXT
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
 \ >IN CELL+         ->  SOURCE-ID
@@ -35,7 +38,7 @@ here 80 chars allot constant PROMPT 0 prompt c!
     source-buffer source-id 0= if
         prompt refill-terminal
     else
-        source-id file-position source-pos 2! refill-file
+        source-id file-position drop source-pos 2! refill-file
     then source-addr ! dup if 0 >in ! then ;
 : RESTORE-SOURCE
     source-id 0> 0= if exit then

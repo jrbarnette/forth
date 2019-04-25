@@ -1,22 +1,5 @@
 \  Copyright 2017, by J. Richard Barnette. All Rights Reserved.
 
-only FORTH definitions
-
-: COMPILE-INPUT begin interpret refill 0= until ;
-
-COMPILE-INPUT
-\ Starting with this line, input is processed by the meta-interpreter.
-TARGET <DIRECT>
-
->>> #include <stddef.h>
->>>
->>> #include "forth.h"
->>> #include "dictionary.h"
->>> #include "direct.h"
->>>
->>>
->>> DIRECT_FORTH(initialize_forth) // {
-
 \   struct {
 \	cell_ft		here;		    /* HERE */
 \	name_p		forth_wordlist;	    /* FORTH-WORDLIST */

@@ -1,0 +1,30 @@
+#!/bin/bash
+
+HEAD="\\\\ ------  ------  ------  ------  ------  ------  ------  ------"
+INDEX=index.txt
+awk '
+    group && /(CORE|SEARCH)/ {
+        if (!header) {
+            print group
+            print "'"$HEAD"'"
+            header = 1
+        }
+        print
+    }
+    /^[a-z].*:/ {
+        if (header) {
+            print "'"$HEAD"'"
+        }
+        group = $1
+        header = 0
+    }
+    /^obsolescent$/ { group = "" }
+    END {
+        if (header) {
+            print "'"$HEAD"'"
+        }
+    }
+' $INDEX | sed '
+    s=^    =\\  =
+    s=  *[0-9][0-9]*$==
+'

@@ -83,10 +83,9 @@ memprim:
 vmprim:
     EXECUTE               6.1.1370 CORE                   38
     EXIT                  6.1.1380 CORE                   38
-    (runtime support for LITERAL)
+    (runtime support for LITERAL S" C")
     (runtime support for flow of control)
 primitives: stackprim arithprim multprim memprim vmprim
-    (aggregated dependency point for above content)
 dictionary: primitives
     ,                     6.1.0150 CORE                   27
     ALIGN                 6.1.0705 CORE                   33
@@ -94,9 +93,10 @@ dictionary: primitives
     C,                    6.1.0860 CORE                   34
     HERE                  6.1.1650 CORE                   39
     COMPILE,              6.2.0945 CORE EXT               52
+    PAD                   6.2.2000 CORE EXT               55
     UNUSED                6.2.2395 CORE EXT               57
 compileprim: dictionary
-    (runtime support for compile operations)
+    (runtime support for control operations)
     LITERAL               6.1.1780 CORE                   41
 control: compileprim
     +LOOP                 6.1.0140 CORE                   27
@@ -138,16 +138,17 @@ numbers: basic
     BASE                  6.1.0750 CORE                   34
     DECIMAL               6.1.1170 CORE                   36
     HEX                   6.2.1660 CORE EXT               54
-parse: basic
+source: basic
     >IN                   6.1.0560 CORE                   31
-    BL                    6.1.0770 CORE                   34
     SOURCE                6.1.2216 CORE                   45
-    WORD                  6.1.2450 CORE                   48
-    PARSE                 6.2.2008 CORE EXT               55
     REFILL                6.2.2125 CORE EXT               55
     RESTORE-INPUT         6.2.2148 CORE EXT               56
     SAVE-INPUT            6.2.2182 CORE EXT               56
     SOURCE-ID             6.2.2218 CORE EXT               56
+parse: source
+    BL                    6.1.0770 CORE                   34
+    WORD                  6.1.2450 CORE                   48
+    PARSE                 6.2.2008 CORE EXT               55
 lookup: immediate
     (internal lookup)
     FIND                  6.1.1550 CORE                   39
@@ -166,8 +167,7 @@ compile: parse lookup compileprim
     C"                    6.2.0855 CORE EXT               52
     [COMPILE]             6.2.2530 CORE EXT               58
     \                     6.2.2535 CORE EXT               58
-term-io: parse lookup compileprim
-    ."                    6.1.0190 CORE                   28
+terminal: control
     ACCEPT                6.1.0695 CORE                   33
     CR                    6.1.0990 CORE                   36
     EMIT                  6.1.1320 CORE                   38
@@ -175,17 +175,20 @@ term-io: parse lookup compileprim
     SPACE                 6.1.2220 CORE                   45
     SPACES                6.1.2230 CORE                   45
     TYPE                  6.1.2310 CORE                   46
+output: parse compileprim terminal
+    ."                    6.1.0190 CORE                   28
     .(                    6.2.0200 CORE EXT               49
 state: immediate
     STATE                 6.1.2250 CORE                   45
     [                     6.1.2500 CORE                   48
     ]                     6.1.2540 CORE                   49
-interpret: parse term-io lookup compileprim state
+interpret: parse output lookup compileprim state
     ABORT                 6.1.0670 CORE                   32
     ABORT"                6.1.0680 CORE                   32
-    ENVIRONMENT?          6.1.1345 CORE                   38
     EVALUATE              6.1.1360 CORE                   38
     QUIT                  6.1.2050 CORE                   43
+environment: compileprim
+    ENVIRONMENT?          6.1.1345 CORE                   38
 names: immediate dictionary
     (internal wordlist and namespace creation)
 definers: parse names compileprim state
@@ -208,7 +211,6 @@ picture: basic
     <#                    6.1.0490 CORE                   31
     HOLD                  6.1.1670 CORE                   39
     SIGN                  6.1.2210 CORE                   45
-    PAD                   6.2.2000 CORE EXT               55
 format-io: term-io picture
     .                     6.1.0180 CORE                   27
     U.                    6.1.2320 CORE                   46

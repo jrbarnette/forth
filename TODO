@@ -6,27 +6,21 @@ the interpreter for interpretation at startup.
 QUIT has an implementation in the source text that we interpret at
 startup, and a fair amount of the static dictionary is gone.
 
+There's a sample of how replace things like x_comma and i_startname
+in bootstrap/direct_test.c.  For that to work, we need control flow
+support in DIRECT.  That means we need to resurrect/appropriate the
+rawdict code for DIRECT.
+
 Short term TODO list
     main() command-line processing is overly complicated; clean it up.
 
-    Error handling is rotten.  It ought to be not too much trouble
-    to report errors with something like this:
-        ok 1 2 + dupe cr
-        1 2 + dupe cr
-              ^^^^
-        undefined word
-    That means tinkering with the internals of PARSE and REFILL...
+    Error handling is dodgy.  Errors get flagged by printing the last
+    source line, with a ^^^ indicator for the token at the failure.
+    But, that goes to stdout.  Then, the exception is raised, and the
+    exception message goes to stderr.
 
-    Want to implement INCLUDE-FILE and INCLUDED.  Mostly, that means
-    shaking out the details of REFILL.
-
-    Change COMPILE-FILE behavior from "read from terminal input" to
-    "read from designated file".  This depends on interpret, which
-    depends on PARSE.  PARSE depends implicitly on REFILL, because
-    PARSE and REFILL operate on the shared input buffer.
-
-    Once we change COMPILE-FILE as planned and implement INCLUDED,
-    then we can get rid of file-order.
+    We are ready to get rid of file-order, by using INCLUDE-FILE and
+    other code to load directly from source.
 
     Implement ACCEPT.  And KEY, for good measure
 
@@ -57,13 +51,3 @@ named with the same basic conventions as the Forth sources.
 
 Some ideas for what names apply to what content are outlined in
 reference/forth/index.txt.
-
-==== What to do with rawdict:
-It used to be able to generate a working bootstrap interpreter.
-However, the meta-interpret stuff has probably pretty well busted
-that.  So, the code is dead in that sense.
-
-OTOH, the rawdict stuff could be used to build an assembler for
-direct-mode Forth.  That, in turn, might set the meta-interpreter on
-sounder footing, and allow factoring the code to have machine-code
-based primitives with no dependencies on C code.

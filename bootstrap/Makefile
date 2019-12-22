@@ -26,6 +26,7 @@ DIRECT_SRC = direct_test.c
 
 FORTH_OBJ =   $(COMMON_SRC:.c=.o) $(FORTH_SRC:.c=.o)
 DIRECT_OBJ =   $(COMMON_SRC:.c=.o) $(DIRECT_SRC:.c=.o)
+SOURCES = $(COMMON_SRC) $(FORTH_SRC) $(DIRECT_SRC)
 
 CMDLINE_DEP = forth.o parse.o exception.o cmdline.o direct_test.o
 

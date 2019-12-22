@@ -11,27 +11,29 @@
  *   words relating to flow of control in compiled defintions.
  */
 
-// Contains all semantics for the following standard definitions:
-//------  ------  ------  ------  ------  ------  ------  ------
-// I                     6.1.1680 CORE                   39
-// J                     6.1.1730 CORE                   40
-// UNLOOP                6.1.2380 CORE                   47
-//------  ------  ------  ------  ------  ------  ------  ------
+/* Contains all semantics for the following standard definitions:
+ *------  ------  ------  ------  ------  ------  ------  ------
+ * I                     6.1.1680 CORE                   39
+ * J                     6.1.1730 CORE                   40
+ * UNLOOP                6.1.2380 CORE                   47
+ *------  ------  ------  ------  ------  ------  ------  ------
+ */
 
-// Contains runtime or other partial semantics for the following:
-//------  ------  ------  ------  ------  ------  ------  ------
-// +LOOP                 6.1.0140 CORE                   27
-// BEGIN                 6.1.0760 CORE                   34
-// DO                    6.1.1240 CORE                   36
-// ELSE                  6.1.1310 CORE                   37
-// IF                    6.1.1700 CORE                   40
-// LEAVE                 6.1.1760 CORE                   41
-// LOOP                  6.1.1800 CORE                   41
-// REPEAT                6.1.2140 CORE                   44
-// THEN                  6.1.2270 CORE                   46
-// UNTIL                 6.1.2390 CORE                   47
-// WHILE                 6.1.2430 CORE                   47
-//------  ------  ------  ------  ------  ------  ------  ------
+/* Contains runtime or other partial semantics for the following:
+ *------  ------  ------  ------  ------  ------  ------  ------
+ * +LOOP                 6.1.0140 CORE                   27
+ * BEGIN                 6.1.0760 CORE                   34
+ * DO                    6.1.1240 CORE                   36
+ * ELSE                  6.1.1310 CORE                   37
+ * IF                    6.1.1700 CORE                   40
+ * LEAVE                 6.1.1760 CORE                   41
+ * LOOP                  6.1.1800 CORE                   41
+ * REPEAT                6.1.2140 CORE                   44
+ * THEN                  6.1.2270 CORE                   46
+ * UNTIL                 6.1.2390 CORE                   47
+ * WHILE                 6.1.2430 CORE                   47
+ *------  ------  ------  ------  ------  ------  ------  ------
+ */
 
 
 vminstr_p

@@ -11,18 +11,20 @@
  *   interpretation.
  */
 
-// Contains all semantics for the following standard definitions:
-//------  ------  ------  ------  ------  ------  ------  ------
-// EXECUTE               6.1.1370 CORE
-//------  ------  ------  ------  ------  ------  ------  ------
+/* Contains all semantics for the following standard definitions:
+ *------  ------  ------  ------  ------  ------  ------  ------
+ * EXECUTE               6.1.1370 CORE
+ *------  ------  ------  ------  ------  ------  ------  ------
+ */
 
-// Contains runtime or other partial semantics for the following:
-//------  ------  ------  ------  ------  ------  ------  ------
-// :                     6.1.0450 CORE
-// CONSTANT              6.1.0950 CORE
-// CREATE                6.1.1000 CORE
-// VARIABLE              6.1.2410 CORE
-//------  ------  ------  ------  ------  ------  ------  ------
+/* Contains runtime or other partial semantics for the following:
+ *------  ------  ------  ------  ------  ------  ------  ------
+ * :                     6.1.0450 CORE
+ * CONSTANT              6.1.0950 CORE
+ * CREATE                6.1.1000 CORE
+ * VARIABLE              6.1.2410 CORE
+ *------  ------  ------  ------  ------  ------  ------  ------
+ */
 
 
 void

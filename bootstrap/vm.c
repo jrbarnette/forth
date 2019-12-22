@@ -8,20 +8,22 @@
  * vm.c - Forth primitives and other C code for inner VM operation.
  */
 
-// Contains all semantics for the following standard definitions:
-//------  ------  ------  ------  ------  ------  ------  ------
-// EXIT                  6.1.1380 CORE
-//
-// THROW               9.6.1.2275 EXCEPTION
-//------  ------  ------  ------  ------  ------  ------  ------
+/* Contains all semantics for the following standard definitions:
+ *------  ------  ------  ------  ------  ------  ------  ------
+ * EXIT                  6.1.1380 CORE
+ *
+ * THROW               9.6.1.2275 EXCEPTION
+ *------  ------  ------  ------  ------  ------  ------  ------
+ */
 
-// Contains runtime or other partial semantics for the following:
-//------  ------  ------  ------  ------  ------  ------  ------
-// LITERAL               6.1.1780 CORE
-// S"                    6.1.2165 CORE
-//
-// C"                    6.2.0855 CORE EXT
-//------  ------  ------  ------  ------  ------  ------  ------
+/* Contains runtime or other partial semantics for the following:
+ *------  ------  ------  ------  ------  ------  ------  ------
+ * LITERAL               6.1.1780 CORE
+ * S"                    6.1.2165 CORE
+ *
+ * C"                    6.2.0855 CORE EXT
+ *------  ------  ------  ------  ------  ------  ------  ------
+ */
 
 
 /* ( -- x ) runtime semantics */

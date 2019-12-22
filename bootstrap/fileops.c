@@ -16,22 +16,23 @@
  *   word set.
  */
 
-//------  ------  ------  ------  ------  ------  ------  ------
-// BIN                11.6.1.0765 FILE                   80
-// CLOSE-FILE         11.6.1.0900 FILE                   80
-// CREATE-FILE        11.6.1.1010 FILE                   81
-// FILE-POSITION      11.6.1.1520 FILE                   81
-// FILE-SIZE          11.6.1.1522 FILE                   81
-// OPEN-FILE          11.6.1.1970 FILE                   82
-// R/O                11.6.1.2054 FILE                   82
-// R/W                11.6.1.2056 FILE                   83
-// READ-FILE          11.6.1.2080 FILE                   83
-// READ-LINE          11.6.1.2090 FILE                   83
-// REPOSITION-FILE    11.6.1.2142 FILE                   84
-// W/O                11.6.1.2425 FILE                   85
-// WRITE-FILE         11.6.1.2480 FILE                   85
-// WRITE-LINE         11.6.1.2485 FILE                   85
-//------  ------  ------  ------  ------  ------  ------  ------
+/*------  ------  ------  ------  ------  ------  ------  ------
+ * BIN                11.6.1.0765 FILE                   80
+ * CLOSE-FILE         11.6.1.0900 FILE                   80
+ * CREATE-FILE        11.6.1.1010 FILE                   81
+ * FILE-POSITION      11.6.1.1520 FILE                   81
+ * FILE-SIZE          11.6.1.1522 FILE                   81
+ * OPEN-FILE          11.6.1.1970 FILE                   82
+ * R/O                11.6.1.2054 FILE                   82
+ * R/W                11.6.1.2056 FILE                   83
+ * READ-FILE          11.6.1.2080 FILE                   83
+ * READ-LINE          11.6.1.2090 FILE                   83
+ * REPOSITION-FILE    11.6.1.2142 FILE                   84
+ * W/O                11.6.1.2425 FILE                   85
+ * WRITE-FILE         11.6.1.2480 FILE                   85
+ * WRITE-LINE         11.6.1.2485 FILE                   85
+ *------  ------  ------  ------  ------  ------  ------  ------
+ */
 
 
 #define UNKNOWN_ERROR   ((cell_ft) -1)

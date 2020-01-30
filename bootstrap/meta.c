@@ -22,11 +22,7 @@ meta_lookup(vmstate_p vm, vminstr_p ip)
 {
     name_p name = lookup(vm, (c_addr_ft) ip->id, strlen(ip->id));
     if (name == NULL) {
-	/*
-	 * XXX ptrdiff_t wants %ld for 64-bit systems, but this
-	 * could cause warnings on 32-bit systems.
-	 */
-	fprintf(stderr, "name '%s' not found at offset %ld\n",
+	fprintf(stderr, "name '%s' not found at offset %td\n",
 		ip->id, ip - initialize_forth);
 	abort();
     }

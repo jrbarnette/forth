@@ -113,6 +113,9 @@ union instruction_data {
     vminstr_fn		handler;
     vminstr_p		ip;
     char *		id;
+
+    /* rawdict only */
+    addr_ft		ptr;
 };
 
 union parameter_data {

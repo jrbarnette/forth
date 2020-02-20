@@ -16,7 +16,7 @@ create SOURCE-LINE 256 dup chars allot constant LINE-SIZE
 : INCLUDE-SOURCE-TEXT: ( "filename" -- )
     open-source-file
     begin dup >r source-line dup line-size r> read-line drop while
-        4 spaces c-string ',' emit cr
+        4 spaces .c-string ',' emit cr
     repeat 2drop close-file drop ;
 
 

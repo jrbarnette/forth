@@ -2,6 +2,7 @@
 
 # First, build up the DIRECT vocabulary that's responsible for
 # primitives to emit syntactically correct direct execution code.
+forth/common/c-gen/c-gen.fth
 forth/direct/direct.fth
     # These files are repeated below.  They can contain only
     # prim: definitions.

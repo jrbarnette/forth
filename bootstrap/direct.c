@@ -2,7 +2,7 @@
  * Copyright 2019, by J. Richard Barnette. All Rights Reserved.
  */
 
-#include <stddef.h>
+#include <stdlib.h>
 
 #include "forth.h"
 

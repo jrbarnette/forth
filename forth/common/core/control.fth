@@ -21,8 +21,8 @@
 
 \ Building blocks - non-standard.
 : >BRANCH ( -- orig ) postpone branch >mark ;
-: <BRANCH ( dest -- ) postpone branch <resolve ;
 : >?BRANCH ( -- orig ) postpone ?branch >mark ;
+: <BRANCH ( dest -- ) postpone branch <resolve ;
 : <?BRANCH ( dest -- ) postpone ?branch <resolve ;
 
 \ Basic flow of control words
@@ -44,7 +44,7 @@ variable LEAVERS 0 leavers !
 : BEGIN-DO ( init-leavers -- saved-leavers dest ) leavers-swap postpone begin ;
 
 \ Compilation of DO-loops
-\     DO a +LOOP ->   DO-DO a DO-+LOOP UNTIL UNLOOP
+\     DO a +LOOP ->   DO-DO BEGIN a DO-+LOOP UNTIL UNLOOP
 \ Compilation of ?DO-loops
 \     ?DO a +LOOP ->  DO-DO R@ IF BEGIN a DO-+LOOP UNTIL THEN UNLOOP
 \

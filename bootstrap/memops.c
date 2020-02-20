@@ -16,6 +16,7 @@
  * @                     6.1.0650 CORE                   32
  * C!                    6.1.0850 CORE                   34
  * C@                    6.1.0870 CORE                   34
+ * FILL                  6.1.1540 CORE                   39
  * MOVE                  6.1.1900 CORE                   42
  *------  ------  ------  ------  ------  ------  ------  ------
  */
@@ -67,23 +68,6 @@ x_c_fetch(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-/* ( addr1 addr2 u -- ) */
-vminstr_p
-x_move(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    char *src, *dst;
-    size_t len;
-
-    CHECK_POP(vm, 3);
-    len = (size_t) POP(vm);
-    dst = (char *) POP(vm);
-    src = (char *) POP(vm);
-    (void) memmove(dst, src, len);
-
-    return ip;
-}
-
-
 /* ( c-addr u char -- ) */
 vminstr_p
 x_fill(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -97,6 +81,23 @@ x_fill(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     len = (size_t) POP(vm);
     dst = (char *) POP(vm);
     (void) memset(dst, c, len);
+
+    return ip;
+}
+
+
+/* ( addr1 addr2 u -- ) */
+vminstr_p
+x_move(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    char *src, *dst;
+    size_t len;
+
+    CHECK_POP(vm, 3);
+    len = (size_t) POP(vm);
+    dst = (char *) POP(vm);
+    src = (char *) POP(vm);
+    (void) memmove(dst, src, len);
 
     return ip;
 }

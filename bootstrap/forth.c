@@ -11,7 +11,7 @@
 #include "cmdline.h"
 
 /*
- * main.c - Initialization and main() for bootstrap Forth
+ * forth.c - Initialization and main() for bootstrap Forth
  *   interpreter.
  */
 

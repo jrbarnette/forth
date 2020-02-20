@@ -2,8 +2,7 @@
  * Copyright 2019, by J. Richard Barnette. All Rights Reserved.
  */
 
-#include <assert.h>
-#include <stdlib.h>
+#include <stddef.h>
 
 #include "forth.h"
 

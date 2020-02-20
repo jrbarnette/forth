@@ -274,7 +274,6 @@ x_read_file(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 	} else {
 	    PICK(sp, 1) = UNKNOWN_ERROR;
 	}
-	clearerr(fp);
     }
     PICK(sp, 2) = nresponse;
     SET_SP(vm, sp, 1);

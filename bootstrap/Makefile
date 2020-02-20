@@ -4,10 +4,10 @@ COMMON_SRC =			\
 	    arithops.c		\
 	    cmdline.c		\
 	    control.c		\
+	    definers.c		\
 	    direct.c		\
 	    exception.c		\
 	    fileops.c		\
-	    indirect.c		\
 	    memops.c		\
 	    multops.c		\
 	    parse.c		\

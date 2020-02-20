@@ -9,8 +9,7 @@
 #include "cmdline.h"
 
 /*
- * main.c - Initialization and main() for bootstrap Forth
- *   interpreter.
+ * exception.c - Exception handling for VM interpretation.
  */
 
 

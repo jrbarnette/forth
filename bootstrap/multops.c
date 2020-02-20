@@ -9,19 +9,23 @@
  *   multiply and divide operations.
  */
 
-//------  ------  ------  ------  ------  ------  ------  ------
-// *                     6.1.0090 CORE                   26
+/*------  ------  ------  ------  ------  ------  ------  ------
+ * *                     6.1.0090 CORE                   26
+ * /                     6.1.0230 CORE                   28
+ * /MOD                  6.1.0240 CORE                   28
+ * M*                    6.1.1810 CORE                   41
+ * MOD                   6.1.1890 CORE                   42
+ * UM*                   6.1.2360 CORE                   46
+ * UM/MOD                6.1.2370 CORE                   46
+ *------  ------  ------  ------  ------  ------  ------  ------
+ */
+
+
+// FIXME - missing the following:
 // */                    6.1.0100 CORE                   26
 // */MOD                 6.1.0110 CORE                   26
-// /                     6.1.0230 CORE                   28
-// /MOD                  6.1.0240 CORE                   28
 // FM/MOD                6.1.1561 CORE                   39
-// M*                    6.1.1810 CORE                   41
-// MOD                   6.1.1890 CORE                   42
 // SM/REM                6.1.2214 CORE                   45
-// UM*                   6.1.2360 CORE                   46
-// UM/MOD                6.1.2370 CORE                   46
-//------  ------  ------  ------  ------  ------  ------  ------
 
 
 #define HIGH_BIT	(~(~(cell_ft) 0 >> 1))
@@ -174,10 +178,3 @@ x_u_m_slash_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
     return ip;
 }
-
-
-// XXX - missing the following:
-// */                    6.1.0100 CORE                   26
-// */MOD                 6.1.0110 CORE                   26
-// FM/MOD                6.1.1561 CORE                   39
-// SM/REM                6.1.2214 CORE                   45

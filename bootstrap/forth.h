@@ -53,18 +53,13 @@ typedef struct {
     c_addr_ft		c_addr;
 } string_ft;
 
-#define SHIFT(s)	((((s) & 0xaa) != 0) | ((((s) & 0xcc) != 0) << 1) | \
-			    ((((s) & 0xf0) != 0) << 2))
-
 #define CELL_SIZE	(sizeof (cell_ft))
 #define XALIGNED(n)	(((n) + CELL_SIZE-1) & -CELL_SIZE)
 #define XCELLS		* CELL_SIZE
-#define CELL_SHIFT	SHIFT(CELL_SIZE)
 
 /* The following would change if char_ft changes (e.g. to UTF-16) */
 #define CHAR_SIZE	(sizeof (char_ft))
 #define XCHARS
-#define CHAR_SHIFT	0
 
 
 /*
@@ -84,7 +79,7 @@ typedef struct {
  * The defintion data for a colon definition is an array of
  * virtual machine instructions (execution tokens) to be executed in
  * order.  The execution logic and the data structures come together
- * in these key functions: execute(), do_colon(), do_exit().
+ * in these key functions: execute(), do_colon(), x_exit().
  */
 
 #define STACK_SIZE	256
@@ -112,7 +107,7 @@ union instruction_data {
     xt_ft		xtok;
     cell_ft		cell;
     snumber_ft		offset;
-    char_ft		cdata[1];
+    char_ft		cdata[CELL_SIZE];
 
     /* direct execution only */
     vminstr_fn		handler;
@@ -124,8 +119,8 @@ union parameter_data {
     vminstr_p		ip;
     xt_ft		xtok;
     cell_ft		cell;
-    char_ft		cdata[1];
-    addr_unit_ft	data[1];
+    char_ft		cdata[CELL_SIZE];
+    addr_unit_ft	data[CELL_SIZE];
     vminstr_d		vminstrs[1];
 };
 
@@ -208,20 +203,20 @@ extern vminstr_p meta_compile(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p i_lookup(vminstr_p, vmstate_p, vmarg_p);
 
 /* vm execution primitives */
+extern vminstr_p x_exit(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_execute(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p do_literal(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p do_s_quote(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p do_c_quote(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_exit(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_throw(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_clear(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_rclear(vminstr_p, vmstate_p, vmarg_p);
 
-/* indirect threaded interpretation primitives */
+/* name definers interpretation primitives */
 extern vminstr_p do_colon(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p do_constant(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p do_create(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p do_variable(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_execute(vminstr_p, vmstate_p, vmarg_p);
 
 /* stack primitives */
 extern vminstr_p x_to_r(vminstr_p, vmstate_p, vmarg_p);

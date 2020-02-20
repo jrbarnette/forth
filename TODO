@@ -12,8 +12,6 @@ support in DIRECT.  That means we need to resurrect/appropriate the
 rawdict code for DIRECT.
 
 Short term TODO list
-    main() command-line processing is overly complicated; clean it up.
-
     Error handling is dodgy.  Errors get flagged by printing the last
     source line, with a ^^^ indicator for the token at the failure.
     But, that goes to stdout.  Then, the exception is raised, and the

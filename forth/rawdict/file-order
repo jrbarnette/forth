@@ -9,6 +9,8 @@ forth/rawdict/startdict.fth
     forth/c-gen/core/memprim.fth
 
     forth/c-gen/core/multprim.fth
+    forth/c-gen/core/vmprim.fth
+
     forth/c-gen/core/terminal.fth
 
     forth/c-gen/file/fileprim.fth

@@ -1,5 +1,36 @@
 \ Copyright 2013, by J. Richard Barnette, All Rights Reserved.
 
+: escaped '\' emit ;
+: escape? ( char quote -- )
+       over = if escaped exit then
+    dup '\' = if escaped exit then
+    dup   7 = if drop escaped 'a' exit then
+    dup   8 = if drop escaped 'b' exit then
+    dup   9 = if drop escaped 't' exit then
+    dup  10 = if drop escaped 'n' exit then
+    dup  12 = if drop escaped 'f' exit then
+    dup  13 = if drop escaped 'r' exit then
+;
+: octal-escape ( ctrl-char -- )
+    base @ >r 8 base ! 0 <# # # # #> r> base ! escaped type ;
+: escape ( char quote -- )
+    escape? dup printable? if emit else octal-escape then ;
+: escape-nul ( #nul -- ) ?dup if 0 do ." \0" loop ." 00" then ;
+: escape-nul? ( #nul c -- #nul )
+    ?dup if swap escape-nul [char] " escape 0 else 1+ then ;
+: escape-string ( c-addr u -- )
+    0 tuck ?do over i chars + c@ escape-nul? loop 2drop ;
+
+: .c-char ( char -- ) [char] ' dup emit dup >r escape r> emit ;
+: .c-string ( c-addr u -- ) '"' emit escape-string '"' emit ;
+: .c-decimal ( u -- ) base @ swap decimal 1 .r base ! ;
+: .c-hex ( u -- )
+    base @ swap hex
+    <# dup >r abs 0 #s 'x' hold '0' hold r> sign #> type
+    base ! ;
+: .c-cell ( c-addr u -- ) ." (cell_ft) (" type ." )" ;
+
+
 vocabulary TARGET
 also target definitions
 
@@ -40,29 +71,14 @@ variable  lp	0 lp !
 \ dictionary cell, given a pointer to the cell in the buffer and the
 \ tag.
 
-: escape-nul ( #nul -- ) ?dup if 0 do ." \0" loop ." 00" then ;
-: escape-graphic ( c -- )
-    dup [char] \ = over [char] " = or if [char] \ emit then emit ;
-: escape-non-graphic ( c -- )
-    base @ swap 8 base ! 0 <# # # # [char] \ hold #> type base ! ;
-: escape-non-nul ( c -- )
-    dup graphic? if escape-graphic else escape-non-graphic then ;
-: escape ( #nul c -- #nul )
-    ?dup if swap escape-nul escape-non-nul 0 else 1+ then ;
-: escape-string ( c-addr u -- )
-    over >r chars + 0 swap r> do i c@ escape 1 chars +loop drop ;
-: c-string ( c-addr u -- ) [char] " emit escape-string [char] " emit ;
-: c-decimal ( u -- ) base @ swap decimal 1 .r base ! ;
-: c-hex ( u -- c-addr u ) base @ swap hex ." 0x" 1 .r base ! ;
-
 : .{ ( -- ) ."   { " ;
 : }, ( -- ) ."  }," ;
 
-: .cell ( a-addr -- )  .{ ." .cell = " @ c-hex }, ;
-: .str ( a-addr -- )   .{ ." .str = " 1 cells c-string }, ;
+: .cell ( a-addr -- )  .{ ." .cell = " @ .c-hex }, ;
+: .str ( a-addr -- )   .{ ." .str = " 1 cells .c-string }, ;
 : .label ( a-addr -- )
     @ target-dict -
-    .{ ." .label = &dictionary.dict_space[" c-decimal ." ]" }, ;
+    .{ ." .label = &dictionary.dict_space[" .c-decimal ." ]" }, ;
 : .handler ( a-addr -- ) .{ ." .handler = " @ count type }, ;
 
 here
@@ -126,58 +142,29 @@ here
 
 : ref: create here [ only forth ] , immediate does> @ [ also target ] label, ;
 
-: IMMEDIATE nf-immediate lp flags! ;
-: NO-INTERPRET nf-compile-only lp flags! ;
-: COMPILE-ONLY nf-compile-special lp flags! ;
+: IMMEDIATE nf-immediate lp @ name-flags! ;
+: COMPILE-ONLY nf-compile-only lp @ name-flags! ;
+: COMPILE-SPECIAL nf-compile-special lp @ name-flags! ;
 
 
 : ' lp @ 1 parse-name lookup name>xt ;
 
-\     struct {
-\ 	cell_ft		here;		    /* HERE */
-\ 	name_p		forth_wordlist;	    /* FORTH-WORDLIST */
-\ 	name_p *	current;	    /* CURRENT */
-\ 	cell_ft		n_search_order;
-\ 	name_p *	search_order[MAX_SEARCH_ORDER];
+\   struct {
+\	cell_ft		here;		    /* HERE */
+\	name_p		forth_wordlist;	    /* FORTH-WORDLIST */
+\	name_p *	current;	    /* CURRENT */
+\	cell_ft		n_search_order;
+\	name_p *	search_order[MAX_SEARCH_ORDER];
 \
-\ 	definition_d	literal_instr;	    /* for LITERAL runtime xt */
-\ 	definition_d	skip_instr;	    /* for ELSE runtime xt */
-\ 	definition_d	fskip_instr;	    /* for IF runtime xt */
-\ 	definition_d	do_instr;	    /* for DO runtime xt */
-\ 	definition_d	plus_loop_instr;    /* for +LOOP runtime xt */
-\ 	definition_d	does_instr;	    /* for DOES> runtime xt */
-\
-\ 	cell_ft		state;		    /* STATE */
-\ 	cell_ft		base;		    /* BASE */
-\
-\ 	/* the input source and parse area - 4 cells total */
-\ 	cell_ft		to_in;		    /* >IN */
-\ 	cell_ft		source_id;	    /* SOURCE-ID */
-\ 	string_ft	source;		    /* SOURCE */
-\
-\ 	char_ft		tib[256];	    /* TIB */
-\ 	int		source_max_len;     /* #TIB */
-\ 	size_t		lineno;
-\ 	FILE *		input;
-\     } dict_static_data;
+\	size_t		lineno;
+\	FILE *		input;
+\   } dict_static_data;
 
 ref: ->here		1 cells allot
 ref: ->forth_wordlist	1 cells allot
 ref: ->current		->forth_wordlist
 ref: ->n_search_order	1 ,
 ref: ->search_order	->forth_wordlist 7 cells allot
-ref: ->literal_instr	handler: do_literal
-ref: ->skip_instr	handler: do_skip
-ref: ->fskip_instr	handler: do_fskip
-ref: ->do_instr		handler: do_do
-ref: ->plus_loop_instr	handler: do_plus_loop
-ref: ->does_instr	handler: do_does
-ref: ->state		0 ,
-ref: ->base		10 ,
-ref: ->to_in		0 ,
-ref: ->source_id	0 ,
-ref: ->source		2 cells allot
-ref: ->tib		256 chars allot
-ref: ->source_max_len	1 cells allot
+
 ref: ->lineno		1 cells allot
 ref: ->input		1 cells allot

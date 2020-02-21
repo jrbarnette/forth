@@ -30,9 +30,9 @@ variable emit-state  0 emit-state !
 : direct-lookup ( c-addr u -- ) 0 { s" i_lookup" .exec }{ .str } ;
 
 \ N.B. do-literal isn't _unnecessary_ complexity.  Both .offset and
-\ c-hex use pictured string formatting.  Thus, the following
+\ .c-hex use pictured string formatting.  Thus, the following
 \ sequence breaks because { will plaster the output from c-hex:
-\     c-hex 0 { s" do_literal" .exec }{ .expr }
+\     .c-hex 0 { s" do_literal" .exec }{ .expr }
 : do-literal 0 { s" do_literal" .exec }{ execute } ;
 : literal-expr ['] .expr do-literal ;
 : literal-cell ['] .cell do-literal ;
@@ -43,8 +43,7 @@ vocabulary DIRECT
 \ We only need these while building up the DIRECT vocabulary.
 vocabulary BUILD-DIRECT
 also BUILD-DIRECT definitions
-: prim: create parse-name dup c, chars here swap dup allot move
-     does> 0 { count .exec } ;
+: prim: create parse-name counted, does> 0 { count .exec } ;
 : IMMEDIATE    ;
 : COMPILE-ONLY ;
 : COMPILE-SPECIAL ;

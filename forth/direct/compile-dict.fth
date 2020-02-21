@@ -37,12 +37,12 @@ create SOURCE-LINE 256 dup chars allot constant LINE-SIZE
     \ Colon definitions can't work until we load vmprim because ";"
     \ depends on "EXIT".  Also, colon definitions are only as useful
     \ as the set of primitives we have available.
-    compile-file: forth/direct/core/dictionary.fth
-    compile-file: forth/direct/core/stackprim.fth
-    compile-file: forth/direct/core/arithprim.fth
-    compile-file: forth/direct/core/memprim.fth
-    compile-file: forth/direct/core/multprim.fth
-    compile-file: forth/direct/core/vmprim.fth
+    compile-file: forth/c-gen/core/dictionary.fth
+    compile-file: forth/c-gen/core/stackprim.fth
+    compile-file: forth/c-gen/core/arithprim.fth
+    compile-file: forth/c-gen/core/memprim.fth
+    compile-file: forth/c-gen/core/multprim.fth
+    compile-file: forth/c-gen/core/vmprim.fth
     compile-file: forth/common/core/compileprim.fth
 
     \ From here forward we can make colon definitions, with
@@ -54,9 +54,9 @@ create SOURCE-LINE 256 dup chars allot constant LINE-SIZE
     \     and "mem" operations.
     \   * Some "arith" defintions depend on IF ... ELSE ... THEN.
     compile-file: forth/common/core/stackops.fth
-    compile-file: forth/direct/core/memops.fth
+    compile-file: forth/c-gen/core/memops.fth
     compile-file: forth/common/core/memops.fth
-    compile-file: forth/direct/core/control.fth
+    compile-file: forth/c-gen/core/control.fth
     compile-file: forth/common/core/control.fth
     compile-file: forth/common/core/arithops.fth
     compile-file: forth/common/internal/dictionary.fth
@@ -65,13 +65,13 @@ create SOURCE-LINE 256 dup chars allot constant LINE-SIZE
     \ "stack", "arith", "mem", "mult", and "control" words.  We're
     \ ready to start making more complicated definitions.
     compile-file: forth/common/internal/chartype.fth
-    compile-file: forth/direct/core/parse.fth
-    compile-file: forth/direct/file/fileprim.fth
+    compile-file: forth/c-gen/core/parse.fth
+    compile-file: forth/c-gen/file/fileprim.fth
     compile-file: forth/common/core/source.fth
     compile-file: forth/common/core/parse.fth
 
     compile-file: forth/common/core/number.fth
-    compile-file: forth/direct/core/terminal.fth
+    compile-file: forth/c-gen/core/terminal.fth
     compile-file: forth/common/core/terminal.fth
     compile-file: forth/common/internal/error.fth
 

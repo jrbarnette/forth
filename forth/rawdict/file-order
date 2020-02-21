@@ -1,0 +1,15 @@
+# Copyright 2015, by J. Richard Barnette, All Rights Reserved.
+
+# forth/common/c-gen/c-gen.fth
+# reference/host/compile.fth
+forth/rawdict/startdict.fth
+    forth/c-gen/core/dictionary.fth
+    forth/c-gen/core/stackprim.fth
+    forth/c-gen/core/arithprim.fth
+    forth/c-gen/core/memprim.fth
+
+    forth/c-gen/core/multprim.fth
+    forth/c-gen/core/terminal.fth
+
+    forth/c-gen/file/fileprim.fth
+forth/rawdict/enddict.fth

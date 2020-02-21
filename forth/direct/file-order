@@ -2,14 +2,15 @@
 
 # First, build up the DIRECT vocabulary that's responsible for
 # primitives to emit syntactically correct direct execution code.
-forth/common/c-gen/c-gen.fth
+forth/c-gen/c-data.fth
+forth/c-gen/entry.fth
 forth/direct/direct.fth
-    # These files are repeated below.  They can contain only
-    # prim: definitions.
-    forth/direct/core/dictionary.fth
-    forth/direct/core/stackprim.fth
-    forth/direct/core/arithprim.fth
-    forth/direct/core/memprim.fth
+    # These files are repeated in compile-dict.  They can contain
+    # only prim: definitions.
+    forth/c-gen/core/dictionary.fth
+    forth/c-gen/core/stackprim.fth
+    forth/c-gen/core/arithprim.fth
+    forth/c-gen/core/memprim.fth
 
 # Now start building up the TARGET vocabulary and meta-compiler.
 forth/direct/target.fth

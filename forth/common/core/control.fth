@@ -5,13 +5,10 @@
 \  BEGIN                 6.1.0760 CORE
 \  DO                    6.1.1240 CORE
 \  ELSE                  6.1.1310 CORE
-\  I                     6.1.1680 CORE
 \  IF                    6.1.1700 CORE
-\  J                     6.1.1730 CORE
 \  LEAVE                 6.1.1760 CORE
 \  REPEAT                6.1.2140 CORE
 \  THEN                  6.1.2270 CORE
-\  UNLOOP                6.1.2380 CORE
 \  UNTIL                 6.1.2390 CORE
 \  WHILE                 6.1.2430 CORE
 \

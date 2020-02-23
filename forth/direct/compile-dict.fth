@@ -2,7 +2,8 @@
 
 only FORTH definitions
 
-: OPEN-SOURCE-FILE parse-name r/o open-file abort" failed to open file" ;
+: OPEN-SOURCE-FILE ( "filename" -- fileid )
+    parse-name r/o open-file abort" failed to open file" ;
 : COMPILE-FILE: ( "filename" -- )
     open-source-file nest-source source<file
     \ XXX TARGET overrides [ and ], so this construct fails:
@@ -76,7 +77,7 @@ create SOURCE-LINE 256 dup chars allot constant LINE-SIZE
     compile-file: forth/common/internal/error.fth
 
     compile-file: forth/common/core/state.fth
-    compile-file: forth/direct/search/current.fth
+    compile-file: forth/c-gen/search/current.fth
     compile-file: forth/common/search/order.fth
     compile-file: forth/common/internal/namespace.fth
     compile-file: forth/common/internal/lookup.fth

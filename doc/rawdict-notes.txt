@@ -1,0 +1,67 @@
+---- Raw dict generation
+TARGET compilation state:
+    search order:
+	HOST-COMPILE
+	TARGET
+    name in HOST-COMPILE vocabulary:
+	execute the definition
+    name in TARGET vocabulary:
+	if immediate
+	    error
+	compile to target dictionary as a label
+    number
+	execute LITERAL from HOST-COMPILE vocabulary
+    unknown
+	error
+
+TARGET interpretation state:
+    search order:
+	HOST-INTERPRET
+	FORTH
+    some entries in HOST-INTERPRET need to shadow FORTH vocabulary
+    maybe need something special for TARGET?  e.g. to make this work:
+	variable LEAVERS 0 leavers !
+
+HOST-COMPILE contents (immediate and compile-special definitions)
+    ( .( \
+	use implementation from FORTH vocabulary
+    [
+	switch to TARGET interpretation mode
+    ;
+	(re-compile using TARGET?)
+    LITERAL
+	re-compile - common/core/compileprim.fth
+	uses HOST-INTERPRET COMPILE, - must wrap LABEL,
+    +LOOP BEGIN DO ELSE IF LOOP REPEAT THEN UNTIL WHILE ?DO AGAIN
+	re-compile (goal) - common/core/control.fth
+    ."
+	extract, recompile - common/core/format.fth
+    ABORT"
+	extract, recompile - common/core/quit.fth
+    DOES>
+	(implementation is not compile-special)
+    S" [CHAR] C"
+	extract, recompile - common/core/compile.fth
+    [']
+	extract, recompile - common/core/compile.fth
+	must use COMPILE, from HOST-INTERPRET
+	must use HOST-INTERPRET version of ' to search TARGET only
+    POSTPONE [COMPILE]
+	???
+
+HOST-INTERPRET contents
+    dictionary allocation:
+	, ALIGN ALLOT C, HERE UNUSED
+	COMPILE,
+	    COMPILE, is a wrapper for LABEL,
+    name definition:
+	: CONSTANT CREATE VARIABLE
+    name alteration
+	IMMEDIATE, et al.
+    name lookup:
+	(really?)
+	' FIND
+    state-related
+	[ ]
+    ! C!
+	maybe need to customize?

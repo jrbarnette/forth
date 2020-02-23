@@ -1,0 +1,24 @@
+Interactive behaviors:
+    whether to read a start-up file (also: what file?)
+        unless disabled
+    whether to prompt (possibly also: what prompt, and when?)
+        when input is a tty, or
+        when an option requires it
+    whether to use readline() for reading
+        when input is a tty
+
+ACCEPT logic
+    if isatty(stdin) {
+        gnu-readline(prompt)
+    } else {
+        if options.interactive
+            fputs(prompt, stdout)
+        fgets(..., stdin)
+    }
+
+REFILL logic
+    if source-id == 0
+        accept
+    else
+        readline(source-id)
+

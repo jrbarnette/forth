@@ -56,7 +56,7 @@ variable emit-state
     then emit-state !
 ;
 : direct-emit ( -- ) 0 emit-state! 0 .offset ;
-: meta-emit ( name len -- ) emit-state! 4 .offset { .str } ;
+: meta-emit ( name len state -- ) emit-state! 4 .offset { .str } ;
 : meta-interpret ( name len -- ) 1 meta-emit ;
 : meta-compile ( name len -- ) 2 meta-emit ;
 : meta-literal meta-state @ 2 = if s" LITERAL" meta-interpret then ;

@@ -1,3 +1,31 @@
+comments
+    ( .( \
+    use host definition
+
+compilation semantics
+    flow control, DOES> and LITERAL
+    use host logic with target dictionary operations
+
+compilation special semantics - parse and lookup
+    POSTPONE ['] [COMPILE]
+
+ordinary semantics - parses
+    ' CHAR PARSE
+
+compilation special semantics - parse
+    ." ABORT" S" [CHAR] C"
+    use host parsing then target dictionary operations
+
+modifies dictionary
+    IMMEDIATE et al.
+
+adds name to dictionary
+    : CONSTANT CREATE VARIABLE
+
+alters interpreter behavior
+    : ; STATE [ ]
+
+====
 Parsing words
     '                     6.1.0070 CORE                   25
     (                     6.1.0080 CORE                   26
@@ -7,6 +35,7 @@ Parsing words
     CHAR                  6.1.0895 CORE                   35
     CONSTANT              6.1.0950 CORE                   35
     CREATE                6.1.1000 CORE                   36
+    POSTPONE              6.1.2033 CORE                   43
     S"                    6.1.2165 CORE                   44
     VARIABLE              6.1.2410 CORE                   47
     WORD                  6.1.2450 CORE                   48
@@ -49,6 +78,7 @@ Special semantics
     LEAVE                 6.1.1760 CORE                   41
     LITERAL               6.1.1780 CORE                   41
     LOOP                  6.1.1800 CORE                   41
+    POSTPONE              6.1.2033 CORE                   43
     RECURSE               6.1.2120 CORE                   43
     REPEAT                6.1.2140 CORE                   44
     S"                    6.1.2165 CORE                   44

@@ -1,0 +1,8 @@
+success with terminator:
+    ( c-addr u1 fileid -- u2 -1 0 ) \ u2 < u1, doesn't include terminator
+success without terminator:
+    ( c-addr u1 fileid -- u1 -1 0 )
+file position is at end:
+    ( c-addr u1 fileid -- 0 0 0 )
+exception during operation:
+    ( c-addr u1 fileid -- ? ? x )

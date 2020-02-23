@@ -13,8 +13,6 @@ vocabulary TARGET
 : meta-immediate align here create name>id , , does> 2@ meta-interpret ;
 : meta-' ( c-addr u -- ) direct-lookup meta-literal ;
 
-: >>> source >in @ over >in ! swap over - >r chars + r> type cr ;
-
 also TARGET definitions previous
 : <HOST> only forth ;
 : <DIRECT> 0 <META> also direct ;

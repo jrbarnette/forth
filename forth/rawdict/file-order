@@ -1,7 +1,6 @@
 # Copyright 2015, by J. Richard Barnette, All Rights Reserved.
 
-# forth/common/c-gen/c-gen.fth
-# reference/host/compile.fth
+forth/c-gen/c-data.fth
 forth/rawdict/startdict.fth
     forth/c-gen/core/dictionary.fth
     forth/c-gen/core/stackprim.fth

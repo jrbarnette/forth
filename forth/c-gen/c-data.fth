@@ -29,3 +29,5 @@
     <# dup >r abs 0 #s 'x' hold '0' hold r> sign #> type
     base ! ;
 : .c-cell ( c-addr u -- ) ." (cell_ft) (" type ." )" ;
+
+: >>> source >in @ over >in ! swap over - >r chars + r> type cr ;

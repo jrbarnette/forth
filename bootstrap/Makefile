@@ -26,7 +26,8 @@ DIRECT_SRC = direct_test.c
 
 FORTH_OBJ =   $(COMMON_SRC:.c=.o) $(FORTH_SRC:.c=.o)
 DIRECT_OBJ =   $(COMMON_SRC:.c=.o) $(DIRECT_SRC:.c=.o)
-SOURCES = $(COMMON_SRC) $(FORTH_SRC) $(DIRECT_SRC)
+HEADER_SRC = cmdline.h dictionary.h direct.h forth.h names.h
+SOURCES = $(COMMON_SRC) $(FORTH_SRC) $(DIRECT_SRC) $(HEADER_SRC)
 
 CMDLINE_DEP = forth.o parse.o exception.o cmdline.o direct_test.o
 
@@ -74,7 +75,7 @@ direct_test: $(DIRECT_OBJ)
 	$(CC) $(LDFLAGS) -o $@ $(DIRECT_OBJ)
 
 tags: $(SOURCES)
-	ctags $(SOURCES)
+	ctags -w $(SOURCES)
 
 clean:
 	rm -f forth tags $(FORTH_OBJ) $(DIRECT_OBJ) stdforth.c

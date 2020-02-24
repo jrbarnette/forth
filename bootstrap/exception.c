@@ -84,7 +84,7 @@ handle_exception(int throwcode, vmstate_p vm, char *filename)
 
     if (filename != NULL) {
 	fprintf(stderr, "error in %s, line %zu\n", filename, DICT.lineno);
-    } else if (!IS_INTERACTIVE(DICT.input)) {
+    } else if (DICT.input != NULL && !IS_INTERACTIVE(DICT.input)) {
 	fprintf(stderr, "error at line %zu\n", DICT.lineno);
     }
     if (excdesc != NULL) {

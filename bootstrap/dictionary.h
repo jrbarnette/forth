@@ -30,9 +30,6 @@ extern union dict {
     struct {
 	cell_ft		here;		    /* HERE */
 	name_p		forth_wordlist;	    /* FORTH-WORDLIST */
-	name_p *	current;	    /* CURRENT */
-	cell_ft		n_search_order;
-	name_p *	search_order[MAX_SEARCH_ORDER];
 
 	size_t		lineno;
 	FILE *		input;

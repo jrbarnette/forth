@@ -77,8 +77,8 @@ create SOURCE-LINE 256 dup chars allot constant LINE-SIZE
     compile-file: forth/common/internal/error.fth
 
     compile-file: forth/common/core/state.fth
-    compile-file: forth/c-gen/search/current.fth
-    compile-file: forth/common/search/order.fth
+    compile-file: forth/c-gen/search/base.fth
+    compile-file: forth/common/search/base.fth
     compile-file: forth/common/internal/namespace.fth
     compile-file: forth/common/internal/lookup.fth
     compile-file: forth/common/internal/tokens.fth

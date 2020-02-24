@@ -25,52 +25,27 @@
 
 
 /*
- * Look up a definition in a wordlist, and return a pointer to its
- * name header.  Return NULL if not found.
+ * Look up a definition in forth_wordlist, and return a pointer to
+ * its name header.  Return NULL if not found.
  */
-static name_p
-search_wordlist(name_p *names, c_addr_ft id, cell_ft len)
+name_p
+lookup(vmstate_p vm, c_addr_ft id, cell_ft len)
 {
-    name_p	cur;
+    if (len == 0)
+	THROW(vm, -16);
 
-    for (cur = *names; cur != NULL; cur = cur->prev) {
-	int i;
-
+    for (name_p cur = DICT.forth_wordlist; cur != NULL; cur = cur->prev) {
 	if (len != NAME_LENGTH(cur))
 	    continue;
 
-	i = 0;
+	cell_ft i = 0;
 	while (toupper(id[i]) == toupper(cur->ident[i])) {
 	    i++;
 	    if (i == len)
 		return cur;
 	}
     }
-
     return NULL;
-}
-
-
-/*
- * Look up a definition in the search order, and return a pointer to
- * its name header.  Return NULL if not found.
- */
-name_p
-lookup(vmstate_p vm, c_addr_ft id, cell_ft len)
-{
-    name_p nm = NULL;
-    cell_ft i;
-
-    if (len == 0)
-	THROW(vm, -16);
-
-    for (i = 0; i < DICT.n_search_order; i++) {
-	nm = search_wordlist(DICT.search_order[i], id, len);
-	if (nm != NULL) {
-	    break;
-	}
-    }
-    return nm;
 }
 
 
@@ -85,7 +60,7 @@ addname(vmstate_p vm, c_addr_ft id, cell_ft len, vminstr_fn handler)
 
     XALIGN(vm);
     name_p name = (name_p) allot(vm, NAME_SIZE(len) + CELL_SIZE);
-    name->prev = *DICT.current;
+    name->prev = DICT.forth_wordlist;
     name->flags = len;
     (void) memcpy(name->ident, id, len);
 
@@ -100,7 +75,7 @@ addname(vmstate_p vm, c_addr_ft id, cell_ft len, vminstr_fn handler)
 static void
 linkname(name_p name)
 {
-    *DICT.current = name;
+    DICT.forth_wordlist = name;
 }
 
 
@@ -134,7 +109,7 @@ i_addname(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 vminstr_p
 i_setflags(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
-    NAME_SET_TYPE(*DICT.current, ip->cell);
+    NAME_SET_TYPE(DICT.forth_wordlist, ip->cell);
     return ip + 1;
 }
 

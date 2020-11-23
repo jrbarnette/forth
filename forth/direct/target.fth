@@ -77,8 +77,6 @@ decimal
 : : s" do_colon" startname ]meta ;
 : ; s" EXIT" meta-compile linkname meta[ ;
 
-also DIRECT
-
-\ N.B. "," and "allot" here must come from the DIRECT vocabulary
-: CONSTANT s" do_constant" addname , ;
-: VARIABLE s" do_variable" addname s" CELL_SIZE" literal-expr allot ;
+: CONSTANT s" do_constant" addname s" ," meta-interpret ;
+: VARIABLE s" do_variable" addname
+    s" CELL_SIZE" literal-expr s" ALLOT" meta-interpret ;

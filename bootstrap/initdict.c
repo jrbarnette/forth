@@ -12,7 +12,7 @@
 
 
 DIRECT_FORTH(initialize_forth) // {
-/*    0 */ { .handler = do_literal }, { .cell = (cell_ft) (sizeof (DICT)) },
+/*    0 */ { .handler = do_literal }, { .cell = (cell_ft) ((&DICT) + 1) },
 /*    2 */ { .handler = do_literal }, { .cell = (cell_ft) (&DICT.here) },
 /*    4 */ { .handler = x_store },
 /*    5 */ { .handler = i_addname }, { .id = "," }, { .handler = x_comma },

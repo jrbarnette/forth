@@ -22,13 +22,11 @@
  * multiple of CELL_SIZE.
  */
 
-#define MAX_SEARCH_ORDER	8
-
 #define DICTIONARY_SIZE		(0x10000 XCELLS)
 
 extern union dict {
     struct {
-	cell_ft		here;		    /* HERE */
+	addr_ft		here;		    /* HERE */
 	name_p		forth_wordlist;	    /* FORTH-WORDLIST */
 
 	size_t		lineno;
@@ -37,8 +35,9 @@ extern union dict {
     addr_unit_ft	dict_space[DICTIONARY_SIZE];
 } dictionary;
 
-#define DICT		dictionary.dict_static_data
-#define HERE		(dictionary.dict_space + DICT.here)
+#define DICT		(dictionary.dict_static_data)
+#define DICTIONARY_END	(&dictionary.dict_space[DICTIONARY_SIZE])
+#define HERE		(DICT.here)
 
 #define STATE_INTERP		F_FALSE
 #define STATE_COMPILE		F_TRUE
@@ -55,7 +54,7 @@ extern addr_ft allot(vmstate_p, cell_ft);
 
 #define COMMA(vm, x)	(*(a_addr_ft)allot((vm), CELL_SIZE) = (cell_ft) (x))
 #define COMPILE(vm, xt)	COMMA(vm, xt)
-#define XALIGN(vm)	(DICT.here = XALIGNED(DICT.here))
+#define XALIGN(vm)	(DICT.here = (addr_ft)XALIGNED((cell_ft) DICT.here))
 
 extern void interpret_lines(vmstate_p, char **);
 extern int interpret_file(vmstate_p, char *);

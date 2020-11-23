@@ -38,13 +38,13 @@ union dict dictionary;
 addr_ft
 allot(vmstate_p vm, size_t n)
 {
-    cell_ft	h = DICT.here;
-    cell_ft	nh = h + n;
+    addr_ft	h = DICT.here;
+    addr_ft	nh = h + n;
 
-    if (nh >= DICTIONARY_SIZE)	THROW(vm, -8);
+    if (nh >= DICTIONARY_END)	THROW(vm, -8);
     DICT.here = nh;
 
-    return dictionary.dict_space + h;
+    return h;
 }
 
 
@@ -104,6 +104,6 @@ vminstr_p
 x_unused(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_PUSH(vm, 1);
-    PUSH(vm, DICTIONARY_SIZE - DICT.here);
+    PUSH(vm, DICTIONARY_END - HERE);
     return ip;
 }

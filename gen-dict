@@ -3,8 +3,21 @@
 
 cd $(dirname $0)
 
+MODE=gen
+FILE=bootstrap/initdict.c
+
 usage() {
-    echo "usage: $(basename $0) target-type" >&2
+cat <<END >&2
+usage: $(basename $0) [ options ] target-type
+available options:
+-l	list the file-order on stdout
+-g	(default) write generated output to stdout
+-b	generate new $FILE and rebuild bootstrap/forth
+-t	test changes; diff generated output against current file
+-n	generate no output; allow errors to show
+-r	reset $FILE from git, rebuild, then regenerate
+-f	specify name of the output file; default is $FILE
+END
     exit 1
 }
 
@@ -61,8 +74,6 @@ regen() {
     gen "$@" >$FILE
 }
 
-MODE=gen
-FILE=bootstrap/initdict.c
 while getopts gbtlnsrf: opt
 do
     case $opt in

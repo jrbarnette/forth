@@ -7,7 +7,6 @@ forth/c-gen/entry.fth
 forth/direct/direct.fth
     # These files are repeated in compile-dict.  They can contain
     # only prim: definitions.
-    forth/c-gen/core/dictionary.fth
     forth/c-gen/core/stackprim.fth
     forth/c-gen/core/arithprim.fth
     forth/c-gen/core/memprim.fth

@@ -189,14 +189,6 @@ extern vminstr_p i_addname(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p i_setflags(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p i_linkname(vminstr_p, vmstate_p, vmarg_p);
 
-/* dictionary primitives */
-extern vminstr_p x_comma(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_align(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_allot(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_c_comma(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_here(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_unused(vminstr_p, vmstate_p, vmarg_p);
-
 /* meta interpretation primitives */
 extern vminstr_p meta_interpret(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p meta_compile(vminstr_p, vmstate_p, vmarg_p);

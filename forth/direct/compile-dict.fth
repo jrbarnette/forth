@@ -32,31 +32,34 @@ create SOURCE-LINE 256 dup chars allot constant LINE-SIZE
 0 meta-state !
     compile-file: forth/direct/startdict.fth
     \ Repeat our early primitive definitions, this time to generate
-    \ initial dictionary content.
+    \ initial target dictionary content.
     \
     \ These initial files can contain only "prim:" definitions.
     \ Colon definitions can't work until we load vmprim because ";"
     \ depends on "EXIT".  Also, colon definitions are only as useful
     \ as the set of primitives we have available.
-    compile-file: forth/c-gen/core/dictionary.fth
     compile-file: forth/c-gen/core/stackprim.fth
     compile-file: forth/c-gen/core/arithprim.fth
     compile-file: forth/c-gen/core/memprim.fth
     compile-file: forth/c-gen/core/multprim.fth
     compile-file: forth/c-gen/core/vmprim.fth
-    compile-file: forth/common/core/compileprim.fth
 
-    \ From here forward we can make colon definitions, with
-    \ limitations.  We need to implement control-flow words early,
-    \ because the implementation requires them to be in the target
-    \ dictionary before we can use them.  However, the ordering is
-    \ interleaved because of internal dependencies:
-    \   * The "control" defintions depend on some of the "stack"
-    \     and "mem" operations.
-    \   * Some "arith" defintions depend on IF ... ELSE ... THEN.
-    compile-file: forth/common/core/stackops.fth
+    \ From here forward we can make colon definitions, minding
+    \ internal dependencies.
+
+    \ Some constructs have implicit dependencies on LITERAL, so get
+    \ that done first.
+    compile-file: forth/c-gen/core/literal.fth
+
+    \ The "dictops" depend on "memops", and these are lower-level, so
+    \ do them early.
     compile-file: forth/c-gen/core/memops.fth
     compile-file: forth/common/core/memops.fth
+    compile-file: forth/c-gen/core/dictops.fth
+
+    \ We want "arithops" early, but that depends on "control", which
+    \ then depends on "stackops".
+    compile-file: forth/common/core/stackops.fth
     compile-file: forth/c-gen/core/control.fth
     compile-file: forth/common/core/control.fth
     compile-file: forth/common/core/arithops.fth

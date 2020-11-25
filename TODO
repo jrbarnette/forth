@@ -6,8 +6,13 @@ the interpreter for interpretation at startup.
 QUIT has an implementation in the source text that we interpret at
 startup, and a fair amount of the static dictionary is gone.
 
-There's a sample of how replace things like x_comma and i_startname
-in bootstrap/direct_test.c.  For that to work, we need control flow
+At this point, everything that might plausibly be in Forth in the
+target dictionary is now in Forth.  The only C code left to
+eliminate is the stuff used for direct mode and meta-interpretation
+during dictionary construction at startup.
+
+There's a sample of how replace things like i_startname in
+bootstrap/direct_test.c.  For that to work, we need control flow
 support in DIRECT.  That means we need to resurrect/appropriate the
 rawdict code for DIRECT.
 
@@ -23,11 +28,8 @@ Short term TODO list
     Implement ACCEPT.  And KEY, for good measure
 
 Long-term Goal:
-    Eliminate the static dictionary, except possibly for HERE and
-    FORTH-WORDLIST.
-
-    Eliminate special primitives relating to dictionary allocation
-    and name creation and lookup.
+    Eliminate special C primitives relating to name creation and
+    lookup.  These duplicate Forth code.
 
     Turn direct-mode into a kind of assembler, as a proof of concept
     for real assembly.  Probably, build on rawdict to make it so.

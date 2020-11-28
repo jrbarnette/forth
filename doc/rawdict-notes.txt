@@ -2,17 +2,17 @@
 TARGET compilation state:
     search order:
 	HOST-COMPILE
-	TARGET
     name in HOST-COMPILE vocabulary:
 	execute the definition
-    name in TARGET vocabulary:
-	if immediate
-	    error
-	compile to target dictionary as a label
     number
 	execute LITERAL from HOST-COMPILE vocabulary
     unknown
-	error
+	lookup name in TARGET vocabulary
+	if not found
+	    error
+	if immediate
+	    error
+	compile to target dictionary as a label
 
 TARGET interpretation state:
     search order:
@@ -21,17 +21,18 @@ TARGET interpretation state:
     some entries in HOST-INTERPRET need to shadow FORTH vocabulary
     maybe need something special for TARGET?  e.g. to make this work:
 	variable LEAVERS 0 leavers !
+    ... or could just handle this as direct code in initialize_forth.
 
 HOST-COMPILE contents (immediate and compile-special definitions)
     ( .( \
 	use implementation from FORTH vocabulary
     [
-	switch to TARGET interpretation mode
+	switch to TARGET interpretation state
     ;
 	(re-compile using TARGET?)
     LITERAL
 	re-compile - common/core/compileprim.fth
-	uses HOST-INTERPRET COMPILE, - must wrap LABEL,
+	uses HOST-INTERPRET COMPILE, - wraps LABEL,
     +LOOP BEGIN DO ELSE IF LOOP REPEAT THEN UNTIL WHILE ?DO AGAIN
 	re-compile (goal) - common/core/control.fth
     ."
@@ -39,7 +40,7 @@ HOST-COMPILE contents (immediate and compile-special definitions)
     ABORT"
 	extract, recompile - common/core/quit.fth
     DOES>
-	(implementation is not compile-special)
+	(nothing - implementation is not compile-special)
     S" [CHAR] C"
 	extract, recompile - common/core/compile.fth
     [']
@@ -55,13 +56,24 @@ HOST-INTERPRET contents
 	COMPILE,
 	    COMPILE, is a wrapper for LABEL,
     name definition:
-	: CONSTANT CREATE VARIABLE
+	:
+	    create in target dictionary
+	    compile handler for do_colon
+	    enter TARGET compilation state
+	CONSTANT VARIABLE
+	    create in target dictionary
+	    compile handler for do_constant/do_variable
+	    allocate cell in target dictionary
+	CREATE
+	    create in target dictionary
+	    compile handler for do_create
+	    .. but maybe not viable in host interpret state?
+		(what about DOES> ?)
     name alteration
 	IMMEDIATE, et al.
     name lookup:
-	(really?)
-	' FIND
+	' FIND lookup
     state-related
 	[ ]
-    ! C!
+    @ ! C@ C! (... maybe also MOVE FILL)
 	maybe need to customize?

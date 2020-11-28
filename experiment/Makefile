@@ -1,6 +1,11 @@
 CFLAGS = -O
 
-all: tos ip
+TARGETS = tos ip
+
+all: $(TARGETS)
+
+clean:
+	rm $(TARGETS)
 
 tos: bench.h bench.c tos.c
 	$(CC) -o $@ $(CFLAGS) bench.c tos.c

@@ -2,15 +2,15 @@
 
 forth/c-gen/c-data.fth
 forth/rawdict/startdict.fth
-    forth/c-gen/core/dictionary.fth
     forth/c-gen/core/stackprim.fth
     forth/c-gen/core/arithprim.fth
     forth/c-gen/core/memprim.fth
-
     forth/c-gen/core/multprim.fth
+
     forth/c-gen/core/vmprim.fth
+    forth/c-gen/core/control.fth
 
-    forth/c-gen/core/terminal.fth
-
+    forth/c-gen/core/parse.fth
     forth/c-gen/file/fileprim.fth
+    forth/c-gen/core/terminal.fth
 forth/rawdict/enddict.fth

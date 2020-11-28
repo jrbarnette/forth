@@ -16,14 +16,8 @@ flush-target-dictionary
 
 >>> };
 >>>
- .( #define WORDLIST ) lp @ target-dict - 1 .r cr
->>>
 >>> DIRECT_FORTH(initialize_forth) // {
 >>>         L(raw_dictionary) L(dictionary.dict_space)
->>>         L(sizeof (raw_dictionary)) X(x_move)
->>>
->>>         L(sizeof (raw_dictionary)) L(&DICT.here) X(x_store)
->>>
->>>         L(&dictionary.dict_space[WORDLIST])
->>>         L(&DICT.forth_wordlist) X(x_store)
+>>>         L(sizeof (raw_dictionary))
+>>>         X(x_move)
 >>> END_DIRECT // }

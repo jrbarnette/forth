@@ -1,8 +1,5 @@
 \ Copyright 2013, by J. Richard Barnette, All Rights Reserved.
 
-vocabulary TARGET
-also target definitions
-
 \ We accumulate the target dictionary into a local buffer that we
 \ flush at the end of processing.
 \
@@ -25,9 +22,7 @@ also target definitions
 #tags/cell / cells		create   tag-buffer allot
 4096 chars			create   strings-buffer allot
 
-variable  dp	target-dict dp !
 variable  strp	strings-buffer strp !
-variable  lp	0 lp !
 
 : tag-addr ( a-addr -- shift a-addr )
     target-dict - 1 cells /
@@ -36,16 +31,16 @@ variable  lp	0 lp !
 : tag@ ( a-addr -- tag ) tag-addr @ swap rshift tag-mask and ;
 : tag! ( tag a-addr -- ) tag-addr >r lshift r@ @ or r> ! ;
 
-: .{ ( -- ) ."   { " ;
+: .{ ( -- ) ." { " ;
 : }, ( -- ) ."  }," ;
 
 : .counted ( a-addr -- )  @ count type ;
-: .cell-ptr ( a-addr -- )  @ .c-hex ;
+: .cell-number ( a-addr -- )  @ .c-hex ;
 : .cell-expr ( a-addr -- )  ." (cell_ft) (" .counted ." )" ;
 
 : .value ( xt -- )  .{ ." .cell = " execute }, ;
 
-: .cell ( a-addr -- )  ['] .cell-ptr .value ;
+: .cell ( a-addr -- )  ['] .cell-number .value ;
 : .str ( a-addr -- )   .{ ." .str = " 1 cells .c-string }, ;
 : .label ( a-addr -- )
     @ target-dict -
@@ -53,7 +48,7 @@ variable  lp	0 lp !
 : .handler ( a-addr -- ) .{ ." .handler = " .counted }, ;
 : .expr ( a-addr -- )  ['] .cell-expr .value ;
 
-: .invalid ." invalid tag at offset " target-dict - 1 .r cr ;
+: .invalid ." invalid tag at offset " target-dict - 1 u.r cr ;
 
 \ .entry is a defintion that will print the value of a target
 \ dictionary cell, given a pointer to the cell in the buffer and the
@@ -71,46 +66,52 @@ here
 : .entry ( a-addr tag -- ) cells [ swap ] literal + @ execute ;
 
 
-: here dp @ ;
-\ must be careful now; we have two versions of HERE
+vocabulary HOST
+vocabulary TARGET
 
-: mark-string  1 here 1 cells - tag! ;
-: mark-label   2 here 1 cells - tag! ;
-: mark-handler 3 here 1 cells - tag! ;
-: mark-expr    4 here 1 cells - tag! ;
-: mark-string? here dup aligned <> if 1 here tag! then ;
-
+only FORTH also HOST definitions
 
 \ target dictionary operations
 \   HERE ALIGN ALLOT , C,
 \   str, handler, label,
 \   prim: handler: ref:
 
-: align ( -- ) mark-string? here aligned dp ! ;
-: allot ( n -- )
-    here + dup aligned here aligned <> if mark-string? then dp !
+: HERE target-dict @ ;
+\ must be careful now; we have two versions of HERE
+
+: mark-string  here swap begin 2dup u> while 1 over tag! cell+ repeat 2drop ;
+: mark-string? here dup aligned <> if 1 here tag! then ;
+: mark-label   2 here 1 cells - tag! ;
+: mark-handler 3 here 1 cells - tag! ;
+: mark-expr    4 here 1 cells - tag! ;
+
+
+: ALIGN ( -- ) mark-string? here aligned target-dict ! ;
+: ALLOT ( n -- )
+    here + dup aligned here aligned <> if mark-string? then target-dict !
 ;
 : , ( x -- ) here 1 cells allot ! ;
-: c, ( char -- ) here 1 chars allot c! ;
+: C, ( char -- ) here 1 chars allot c! ;
+
+\ Non-standard allocation definitions; used to ensure cells are
+\ properly tagged.
+
+\ str, - allot storage for a string.
+\ handler, - allot storage for a pointer to a handler function.
+\ label, - allot storage for a dictionary address reference.
+\ expr, - allot storage for a cell value calculated with a C expression.
+
 : str, ( c-addr u -- )
-    align here >r dup c, here swap chars dup allot move
-    here r> begin 2dup u> while 1 over tag! cell+ repeat 2drop
+    align here >r dup c, here swap chars dup allot move r> mark-string
 ;
 : handler, ( c-addr -- ) align , mark-handler ;
 : label, ( addr -- ) align dup , if mark-label then ;
 : expr, ( c-addr -- ) align , mark-expr ;
 
 
-: flush-target-dictionary
-    decimal
-    align here target-dict begin 2dup > while
-	dup target-dict - ." /* " 5 .r ."  */"
-	dup dup tag@ .entry cr
-    cell+ repeat 2drop
-;
-
-: link, ( -- ) align lp @ label, ;
-: link-name ( name -- ) lp ! ;
+: link@ ( -- ) target-dict cell+ @ ;
+: link, ( -- ) align link@ label, ;
+: link-name ( name -- ) target-dict cell+ ! ;
 
 : >strings ( c-addr u -- c-addr' )
     strp @ 2dup c! char+ swap chars dup >r move strp @ r> char+ strp +! ;
@@ -121,31 +122,33 @@ here
 : prim: here link, link-name parse-name str, handler: ;
 : compile, label, ;
 
-: ref: create here [ only forth ] , immediate does> @ [ also target ] label, ;
+: ref: create here [ only forth ] , immediate does> @ [ also host ] label, ;
 
-: IMMEDIATE nf-immediate lp @ name-flags! ;
-: COMPILE-ONLY nf-compile-only lp @ name-flags! ;
-: COMPILE-SPECIAL nf-compile-special lp @ name-flags! ;
+: IMMEDIATE nf-immediate link@ name-flags! ;
+: COMPILE-ONLY nf-compile-only link@ name-flags! ;
+: COMPILE-SPECIAL nf-compile-special link@ name-flags! ;
 
 
-: ' lp @ 1 parse-name lookup name>xt ;
+: ' parse-name link@ wid-lookup ?dup if name>xt else -13 throw then ;
 
-\   struct {
-\	cell_ft		here;		    /* HERE */
-\	name_p		forth_wordlist;	    /* FORTH-WORDLIST */
-\	name_p *	current;	    /* CURRENT */
-\	cell_ft		n_search_order;
-\	name_p *	search_order[MAX_SEARCH_ORDER];
+: flush-target-dictionary
+    decimal
+    align here target-dict begin 2dup > while
+	dup target-dict - ." /* " 5 u.r ."  */  "
+	dup dup tag@ .entry cr
+    cell+ repeat 2drop
+;
+
+\     struct {
+\ 	addr_ft		here;		    /* HERE */
+\ 	name_p		forth_wordlist;	    /* FORTH-WORDLIST */
 \
-\	size_t		lineno;
-\	FILE *		input;
-\   } dict_static_data;
+\ 	size_t		lineno;
+\ 	FILE *		input;
+\     } dict_static_data;
 
-ref: ->here		1 cells allot
-ref: ->forth_wordlist	1 cells allot
-ref: ->current		->forth_wordlist
-ref: ->n_search_order	1 ,
-ref: ->search_order	->forth_wordlist 7 cells allot
+ref: ->here		target-dict dup cell+ swap ! mark-label
+ref: ->forth_wordlist	0 , mark-label
 
 ref: ->lineno		1 cells allot
 ref: ->input		1 cells allot

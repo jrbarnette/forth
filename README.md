@@ -7,11 +7,18 @@ The code has a small handful of dependencies:
   * The C sources depend on a modern standard C compiler.  Anything
     supporting the C99 standard or later should work.
   * The C sources depend on POSIX `getopt()`.
+  * The C sources depend on GNU `readline()`.
   * The `gen-dict` script depends on a Bourne/POSIX style shell.  This
     script is used to rebuild the dictionary after changing the Forth
     source.
 
-The POSIX dependencies are minor, and could be easily replaced.
+The POSIX dependencies are minor, and should be easy to replace.
+
+The dependency on GNU `readline()` is isolated to a single file, and
+should also be easy to replace.
+
+The code is known to build and run on macOS and Linux systems.  I
+haven't tested any other target.
 
 The source is available under the terms of the GNU General Public
 License, v2.0.  See the LICENSE file.

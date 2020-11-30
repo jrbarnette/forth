@@ -113,9 +113,9 @@ x_m_star(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     CHECK_POP(vm, 2);
     cell_ft n1 = PICK(sp, 1);
     cell_ft n2 = PICK(sp, 0);
-    cell_ft s1 = -((snumber_ft) n1 >= 0);
-    cell_ft s2 = -((snumber_ft) n2 >= 0);
-    cell_ft sign = ((s1 & -n1) + (s2 & -n2)) & (s1 ^ s2);
+    cell_ft s1 = -((snumber_ft) n1 < 0);
+    cell_ft s2 = -((snumber_ft) n2 < 0);
+    cell_ft sign = ((s1 & -n2) + (s2 & -n1));
     dmult(sp, n1, n2, sign);
 
     return ip;

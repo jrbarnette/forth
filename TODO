@@ -1,15 +1,25 @@
+==== Bugs
+Testing with the ANS forth test suite is flagging some bugs in
+UM/MOD when the divisor is large.  I don't yet know the exact scope
+of the bug, or the fix.
+
+Sample of the failure:
+    ok hex -1 2 um* -1 um/mod u. u. cr
+    0 -2
+The proper result should have been
+    -1 0
+
 ==== Where we are:
 All Forth code now lives under forth/, and gets built (one way or
 another) into initdict.c.  This includes the source code built into
 the interpreter for interpretation at startup.
 
 QUIT has an implementation in the source text that we interpret at
-startup, and a fair amount of the static dictionary is gone.
-
-At this point, everything that might plausibly be in Forth in the
-target dictionary is now in Forth.  The only C code left to
-eliminate is the stuff used for direct mode and meta-interpretation
-during dictionary construction at startup.
+startup, and the static dictionary is gone, except for HERE and
+FORTH-WORDLIST. So, at this point, everything that might plausibly
+be in Forth in the target dictionary is now in Forth.  The only C
+code left to eliminate is the stuff used for direct mode and
+meta-interpretation during dictionary construction at startup.
 
 There's a sample of how replace things like i_startname in
 bootstrap/direct_test.c.  For that to work, we need control flow

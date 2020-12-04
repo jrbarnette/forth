@@ -1,0 +1,43 @@
+#!/bin/sh
+
+cd $(dirname $0)/..
+NITER=${1:-100000000}
+
+echo "null benchmark:"
+time bootstrap/forth <<END
+: benchmark 0 do 0 0 0 drop 2drop loop ;
+\\ : benchmark 0 do loop ;
+$NITER benchmark
+END
+
+echo "UM/MOD divisor high bit set:"
+time bootstrap/forth <<END
+: benchmark 0 do
+    0 1 [ 0 invert 1 rshift invert 1 + ] literal um/mod 2drop loop ;
+
+$NITER benchmark
+END
+
+echo "UM/MOD divisor high bit clear:"
+time bootstrap/forth <<END
+: benchmark 0 do
+    0 1 [ 0 invert 1 rshift invert 1 - ] literal um/mod 2drop loop ;
+
+$NITER benchmark
+END
+
+echo "UM/MOD divisor half-cell divisor:"
+time bootstrap/forth <<END
+: benchmark 0 do
+    0 1 [ 1 1 cells 4 * lshift 1 - ] literal um/mod 2drop loop ;
+
+$NITER benchmark
+END
+
+echo "UM/MOD 1-cell dividend:"
+time bootstrap/forth <<END
+: benchmark 0 do
+    1 0 [ 1 1 cells 4 * lshift ] literal um/mod 2drop loop ;
+
+$NITER benchmark
+END

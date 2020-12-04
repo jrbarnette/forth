@@ -174,6 +174,15 @@ x_u_m_slash_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 	// This is the easy case.
 	rem = d_lo % v;
 	quot = d_lo / v;
+    } else if (v <= HALF_MASK) {
+	cell_ft u_hi = HI(d_lo);
+	cell_ft u_lo = LO(d_lo);
+	cell_ft u = ((d_hi % v) << HALF_SHIFT) + u_hi;
+	rem = u % v;
+	quot = u / v;
+	u = (rem << HALF_SHIFT) + u_lo;
+	rem = u % v;
+	quot = (quot << HALF_SHIFT) + u / v;
     } else if (v > HIGH_BIT) {
 	// This is Algorithm D from Knuth Vol. 2, "Seminumerical
 	// Algorithms".  We're using "digits" of a half cell,

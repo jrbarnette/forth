@@ -1,14 +1,3 @@
-==== Bugs
-Testing with the ANS forth test suite is flagging some bugs in
-UM/MOD when the divisor is large.  I don't yet know the exact scope
-of the bug, or the fix.
-
-Sample of the failure:
-    ok hex -1 2 um* -1 um/mod u. u. cr
-    0 -2
-The proper result should have been
-    -1 0
-
 ==== Where we are:
 All Forth code now lives under forth/, and gets built (one way or
 another) into initdict.c.  This includes the source code built into

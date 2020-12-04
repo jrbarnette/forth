@@ -29,8 +29,10 @@
 
 
 #define HIGH_BIT	(~(~(cell_ft) 0 >> 1))
-#define HALF_SHIFT	((cell_ft) (4 * CELL_SIZE))
-#define HALF_MASK	(~(cell_ft) 0 >> HALF_SHIFT)
+#define HALF_SHIFT	(4 * CELL_SIZE)
+#define HI(x)		((cell_ft) (x) >> HALF_SHIFT)
+#define HALF_MASK	HI(~(cell_ft) 0)
+#define LO(x)		((cell_ft) (x) & HALF_MASK)
 
 
 static void
@@ -166,14 +168,81 @@ x_u_m_slash_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     cell_ft d_hi = PICK(sp, 1);
     cell_ft d_lo = PICK(sp, 2);
 
-    cell_ft r_hi = d_hi % v;
-    cell_ft factor = (HIGH_BIT / v) << 1;
-    cell_ft factor_rem = (HIGH_BIT % v) << 1;
-    cell_ft q_lo = d_lo / v + r_hi * factor;
-    cell_ft rem = d_lo % v + r_hi * factor_rem;
-
-    PICK(sp, 2) = rem % v;
-    PICK(sp, 1) = q_lo + rem / v;
+    cell_ft rem;
+    cell_ft quot;
+    if (d_hi == 0) {
+	// This is the easy case.
+	rem = d_lo % v;
+	quot = d_lo / v;
+    } else if (v > HIGH_BIT) {
+	// This is Algorithm D from Knuth Vol. 2, "Seminumerical
+	// Algorithms".  We're using "digits" of a half cell,
+	// meaning the algorithm parameters are:
+	//   b = HALF_MASK + 1 (the arithmetic base)
+	//   n = 2 (the number of digits in the divisor)
+	//   m = 2 (m + n is the number of digits in the dividend)
+	//
+	// The code is specialized for things that are known at
+	// compile time:
+	//  a) Because we know that v > HIGH_BIT we can skip steps
+	//     D1 and D8 (normalize/unnormalize).
+	//  b) Since n = 2, a number of the intermediate results
+	//     can be stored as single-cell values.
+	//  c) Since n = 2, we can skip steps D5 and D6 (test
+	//     remainder and add back).
+	//  d) Since we only return a single cell for the quotient,
+	//     we throw away the first quotient digit by starting
+	//     with rem = d_hi % v.
+	rem = d_hi;
+	quot = 0;
+	if (rem >= v) {
+	    rem -= v;
+	}
+	cell_ft v_hi = HI(v);
+	cell_ft v_lo = LO(v);
+	cell_ft u[] = { HI(d_lo), LO(d_lo) };
+	for (int i = 0; i < sizeof (u) / sizeof (u[0]); i++) {
+	    cell_ft rhat;
+	    cell_ft qhat;
+	    // N.B. If HI(rem) = v_hi = HALF_MASK, then qhat must be
+	    // HALF_MASK, and the calculation of qv_total below would
+	    // overflow a single cell.  So, we handle that case
+	    // specially.
+	    if (HI(rem) >= v_hi) {
+		if (v_hi == HALF_MASK) {
+		    cell_ft rem_hi = HALF_MASK + LO(rem) - v_lo;
+		    rem = (rem_hi << HALF_SHIFT) + v_lo + u[i];
+		    quot = (quot << HALF_SHIFT) + HALF_MASK;
+		    continue;
+		}
+		rhat = rem - (v_hi << HALF_SHIFT) + v_hi;
+		qhat = HALF_MASK;
+	    } else {
+		rhat = rem % v_hi;
+		qhat = rem / v_hi;
+	    }
+	    cell_ft qv_lo = qhat * v_lo;
+	    cell_ft qv_total = (rhat << HALF_SHIFT) + u[i];
+	    while (qv_lo > qv_total) {
+		qhat--;
+		qv_lo -= v_lo;
+		qv_total += v_hi << HALF_SHIFT;
+	    }
+	    rem = qv_total - qv_lo;
+	    quot = (quot << HALF_SHIFT) + qhat;
+	}
+    } else {
+	// To use Knuth's Algorithm D in this case would require the
+	// normalize/unnormalize steps.  That's kind of expensive, so
+	// here's a formula that works so long as (v <= HIGH_BIT).
+	cell_ft r_hi = d_hi % v;
+	cell_ft rem_part = d_lo % v + r_hi * ((HIGH_BIT % v) << 1);
+	cell_ft q_part = d_lo / v + r_hi * ((HIGH_BIT / v) << 1);
+	rem = rem_part % v;
+	quot = q_part + rem_part / v;
+    }
+    PICK(sp, 2) = rem;
+    PICK(sp, 1) = quot;
     SET_SP(vm, sp, 1);
 
     return ip;

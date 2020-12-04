@@ -175,12 +175,10 @@ x_u_m_slash_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 	rem = d_lo % v;
 	quot = d_lo / v;
     } else if (v <= HALF_MASK) {
-	cell_ft u_hi = HI(d_lo);
-	cell_ft u_lo = LO(d_lo);
-	cell_ft u = ((d_hi % v) << HALF_SHIFT) + u_hi;
+	cell_ft u = ((d_hi % v) << HALF_SHIFT) + HI(d_lo);
 	rem = u % v;
 	quot = u / v;
-	u = (rem << HALF_SHIFT) + u_lo;
+	u = (rem << HALF_SHIFT) + LO(d_lo);
 	rem = u % v;
 	quot = (quot << HALF_SHIFT) + u / v;
     } else if (v > HIGH_BIT) {
@@ -193,12 +191,12 @@ x_u_m_slash_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 	//
 	// The code is specialized for things that are known at
 	// compile time:
-	//  a) Because we know that v > HIGH_BIT we can skip steps
-	//     D1 and D8 (normalize/unnormalize).
-	//  b) Since n = 2, a number of the intermediate results
-	//     can be stored as single-cell values.
-	//  c) Since n = 2, we can skip steps D5 and D6 (test
-	//     remainder and add back).
+	//  a) The condition v > HIGH_BIT means that v1 > b / 2, so
+	//     we can skip steps D1 and D8 (normalize/unnormalize).
+	//  b) Since n = 2, a number of intermediate results can be
+	//     stored as single-cell values.
+	//  c) The value of qhat will be exact when n = 2, so we
+	//     skip steps D5 and D6 (test remainder and add back).
 	//  d) Since we only return a single cell for the quotient,
 	//     we throw away the first quotient digit by starting
 	//     with rem = d_hi % v.

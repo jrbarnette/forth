@@ -23,9 +23,9 @@ prim: *         x_star
 \     */MOD
 prim: /         x_slash
 prim: /MOD      x_slash_mod
-\     FM/MOD
+prim: FM/MOD    x_f_m_slash_mod
 prim: M*        x_m_star
 prim: MOD       x_mod
-\     SM/REM
+prim: SM/REM    x_s_m_slash_rem
 prim: UM*       x_u_m_star
 prim: UM/MOD    x_u_m_slash_mod

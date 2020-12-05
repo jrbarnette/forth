@@ -255,8 +255,10 @@ extern vminstr_p x_move(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_star(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_slash(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_slash_mod(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_f_m_slash_mod(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_m_star(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_mod(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_s_m_slash_rem(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_u_m_star(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_u_m_slash_mod(vminstr_p, vmstate_p, vmarg_p);
 

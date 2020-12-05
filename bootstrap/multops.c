@@ -13,8 +13,10 @@
  * *                     6.1.0090 CORE                   26
  * /                     6.1.0230 CORE                   28
  * /MOD                  6.1.0240 CORE                   28
+ * FM/MOD                6.1.1561 CORE                   39
  * M*                    6.1.1810 CORE                   41
  * MOD                   6.1.1890 CORE                   42
+ * SM/REM                6.1.2214 CORE                   45
  * UM*                   6.1.2360 CORE                   46
  * UM/MOD                6.1.2370 CORE                   46
  *------  ------  ------  ------  ------  ------  ------  ------
@@ -24,8 +26,6 @@
 // FIXME - missing the following:
 // */                    6.1.0100 CORE                   26
 // */MOD                 6.1.0110 CORE                   26
-// FM/MOD                6.1.1561 CORE                   39
-// SM/REM                6.1.2214 CORE                   45
 
 
 #define HIGH_BIT	(~(~(cell_ft) 0 >> 1))
@@ -61,113 +61,9 @@ dmult(cell_ft *sp, cell_ft n1, cell_ft n2, cell_ft sign)
 }
 
 
-/* ( x1 x2 -- x ) */
-vminstr_p
-x_star(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+static void
+ddivide(cell_ft *sp, cell_ft d_hi, cell_ft d_lo, cell_ft v)
 {
-    cell_ft *sp = SP(vm);
-    CHECK_POP(vm, 2);
-    PICK(sp, 1) = PICK(sp, 1) * PICK(sp, 0);
-    SET_SP(vm, sp, 1);
-    return ip;
-}
-
-
-/* ( n1 n2 -- n ) */
-vminstr_p
-x_slash(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    cell_ft *sp = SP(vm);
-    CHECK_POP(vm, 2);
-    snumber_ft n1 = PICK(sp, 1);
-    snumber_ft n2 = PICK(sp, 0);
-    if (n2 == 0) {
-	THROW(vm, -10);
-    }
-    PICK(sp, 1) = (cell_ft) (n1 / n2);
-    SET_SP(vm, sp, 1);
-    return ip;
-}
-
-
-/* ( n1 n2 -- n3 n4 ) */
-vminstr_p
-x_slash_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    cell_ft *sp = SP(vm);
-    CHECK_POP(vm, 2);
-    snumber_ft n1 = PICK(sp, 1);
-    snumber_ft n2 = PICK(sp, 0);
-    if (n2 == 0) {
-	THROW(vm, -10);
-    }
-    PICK(sp, 1) = (cell_ft) (n1 % n2);
-    PICK(sp, 0) = (cell_ft) (n1 / n2);
-    return ip;
-}
-
-
-/* ( n1 n2 -- d ) */
-vminstr_p
-x_m_star(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    cell_ft *sp = SP(vm);
-    CHECK_POP(vm, 2);
-    cell_ft n1 = PICK(sp, 1);
-    cell_ft n2 = PICK(sp, 0);
-    cell_ft s1 = -((snumber_ft) n1 < 0);
-    cell_ft s2 = -((snumber_ft) n2 < 0);
-    cell_ft sign = ((s1 & -n2) + (s2 & -n1));
-    dmult(sp, n1, n2, sign);
-
-    return ip;
-}
-
-
-/* ( n1 n2 -- n ) */
-vminstr_p
-x_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    cell_ft *sp = SP(vm);
-    CHECK_POP(vm, 2);
-    cell_ft n1 = PICK(sp, 1);
-    cell_ft n2 = PICK(sp, 0);
-    if (n2 == 0) {
-	THROW(vm, -10);
-    }
-    PICK(sp, 1) = (cell_ft) (n1 % n2);
-    SET_SP(vm, sp, 1);
-    return ip;
-}
-
-
-/* ( u1 u2 -- ud ) */
-vminstr_p
-x_u_m_star(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    cell_ft *sp = SP(vm);
-    CHECK_POP(vm, 2);
-    cell_ft n1 = PICK(sp, 1);
-    cell_ft n2 = PICK(sp, 0);
-    dmult(sp, n1, n2, 0);
-
-    return ip;
-}
-
-
-/* ( ud u1 -- u2 u3 ) */
-vminstr_p
-x_u_m_slash_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
-{
-    cell_ft *sp = SP(vm);
-    CHECK_POP(vm, 3);
-    cell_ft v = PICK(sp, 0);
-    if (v == 0) {
-	THROW(vm, -10);
-    }
-    cell_ft d_hi = PICK(sp, 1);
-    cell_ft d_lo = PICK(sp, 2);
-
     cell_ft rem;
     cell_ft quot;
     if (d_hi == 0) {
@@ -248,9 +144,209 @@ x_u_m_slash_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 	rem = rem_part % v;
 	quot = q_part + rem_part / v;
     }
-    PICK(sp, 2) = rem;
-    PICK(sp, 1) = quot;
+    PICK(sp, 1) = rem;
+    PICK(sp, 0) = quot;
+}
+
+
+/* ( x1 x2 -- x ) */
+vminstr_p
+x_star(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    cell_ft *sp = SP(vm);
+    CHECK_POP(vm, 2);
+    PICK(sp, 1) = PICK(sp, 1) * PICK(sp, 0);
     SET_SP(vm, sp, 1);
+    return ip;
+}
+
+
+/* ( n1 n2 -- n ) */
+vminstr_p
+x_slash(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    cell_ft *sp = SP(vm);
+    CHECK_POP(vm, 2);
+    snumber_ft n1 = PICK(sp, 1);
+    snumber_ft n2 = PICK(sp, 0);
+    if (n2 == 0) {
+	THROW(vm, -10);
+    }
+    PICK(sp, 1) = (cell_ft) (n1 / n2);
+    SET_SP(vm, sp, 1);
+    return ip;
+}
+
+
+/* ( n1 n2 -- n3 n4 ) */
+vminstr_p
+x_slash_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    cell_ft *sp = SP(vm);
+    CHECK_POP(vm, 2);
+    snumber_ft n1 = PICK(sp, 1);
+    snumber_ft n2 = PICK(sp, 0);
+    if (n2 == 0) {
+	THROW(vm, -10);
+    }
+    PICK(sp, 1) = (cell_ft) (n1 % n2);
+    PICK(sp, 0) = (cell_ft) (n1 / n2);
+    return ip;
+}
+
+
+/* ( d n1 -- n2 n3 ) */
+vminstr_p
+x_f_m_slash_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    cell_ft *sp = SP(vm);
+    CHECK_POP(vm, 3);
+    cell_ft v = PICK(sp, 0);
+    if (v == 0) {
+	THROW(vm, -10);
+    }
+    cell_ft d_hi = PICK(sp, 1);
+    cell_ft d_lo = PICK(sp, 2);
+    SET_SP(vm, sp, 1);
+
+    cell_ft s_d = -((snumber_ft) d_hi < 0);
+    cell_ft s_v = -((snumber_ft) v < 0);
+
+    if (s_d) {
+	if (d_lo) {
+	    d_lo = -d_lo;
+	    d_hi = ~d_hi;
+	} else {
+	    d_hi = -d_hi;
+	}
+    }
+    if (s_v) {
+	v = -v;
+    }
+    if (s_d != s_v) {
+	cell_ft t_lo = d_lo;
+	d_lo += v - 1;
+	d_hi += (d_lo < t_lo);
+    }
+
+    sp = SP(vm);
+    ddivide(sp, d_hi, d_lo, v);
+    if (s_d != s_v) {
+	PICK(sp, 1) -= v - 1;
+	PICK(sp, 0) = -PICK(sp, 0);
+    }
+    if (s_d) {
+	PICK(sp, 1) = -PICK(sp, 1);
+    }
+
+    return ip;
+}
+
+
+/* ( n1 n2 -- d ) */
+vminstr_p
+x_m_star(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    cell_ft *sp = SP(vm);
+    CHECK_POP(vm, 2);
+    cell_ft n1 = PICK(sp, 1);
+    cell_ft n2 = PICK(sp, 0);
+    cell_ft s1 = -((snumber_ft) n1 < 0);
+    cell_ft s2 = -((snumber_ft) n2 < 0);
+    cell_ft sign = ((s1 & -n2) + (s2 & -n1));
+    dmult(sp, n1, n2, sign);
+
+    return ip;
+}
+
+
+/* ( n1 n2 -- n ) */
+vminstr_p
+x_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    cell_ft *sp = SP(vm);
+    CHECK_POP(vm, 2);
+    snumber_ft n1 = PICK(sp, 1);
+    snumber_ft n2 = PICK(sp, 0);
+    if (n2 == 0) {
+	THROW(vm, -10);
+    }
+    PICK(sp, 1) = (cell_ft) (n1 % n2);
+    SET_SP(vm, sp, 1);
+    return ip;
+}
+
+
+/* ( d n1 -- n2 n3 ) */
+vminstr_p
+x_s_m_slash_rem(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    cell_ft *sp = SP(vm);
+    CHECK_POP(vm, 3);
+    cell_ft v = PICK(sp, 0);
+    if (v == 0) {
+	THROW(vm, -10);
+    }
+    cell_ft d_hi = PICK(sp, 1);
+    cell_ft d_lo = PICK(sp, 2);
+    SET_SP(vm, sp, 1);
+
+    cell_ft s_d = -((snumber_ft) d_hi < 0);
+    cell_ft s_v = -((snumber_ft) v < 0);
+
+    if (s_d) {
+	if (d_lo) {
+	    d_lo = -d_lo;
+	    d_hi = ~d_hi;
+	} else {
+	    d_hi = -d_hi;
+	}
+    }
+    if (s_v) {
+	v = -v;
+    }
+
+    sp = SP(vm);
+    ddivide(sp, d_hi, d_lo, v);
+    if (s_d != s_v) {
+	PICK(sp, 0) = -PICK(sp, 0);
+    }
+    if (s_d) {
+	PICK(sp, 1) = -PICK(sp, 1);
+    }
+
+    return ip;
+}
+
+
+/* ( u1 u2 -- ud ) */
+vminstr_p
+x_u_m_star(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    cell_ft *sp = SP(vm);
+    CHECK_POP(vm, 2);
+    cell_ft n1 = PICK(sp, 1);
+    cell_ft n2 = PICK(sp, 0);
+    dmult(sp, n1, n2, 0);
+
+    return ip;
+}
+
+
+/* ( ud u1 -- u2 u3 ) */
+vminstr_p
+x_u_m_slash_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    cell_ft *sp = SP(vm);
+    CHECK_POP(vm, 3);
+    cell_ft v = PICK(sp, 0);
+    if (v == 0) {
+	THROW(vm, -10);
+    }
+    cell_ft d_hi = PICK(sp, 1);
+    cell_ft d_lo = PICK(sp, 2);
+    SET_SP(vm, sp, 1);
+    ddivide(SP(vm), d_hi, d_lo, v);
 
     return ip;
 }

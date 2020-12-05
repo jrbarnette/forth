@@ -253,6 +253,8 @@ extern vminstr_p x_move(vminstr_p, vmstate_p, vmarg_p);
 
 /* multiple cell multiply and divide primitives */
 extern vminstr_p x_star(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_star_slash(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_star_slash_mod(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_slash(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_slash_mod(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_f_m_slash_mod(vminstr_p, vmstate_p, vmarg_p);

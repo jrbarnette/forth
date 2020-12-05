@@ -17,10 +17,9 @@
 \  UM/MOD                6.1.2370 CORE                   46
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
-\ CORE
 prim: *         x_star
-\     */
-\     */MOD
+prim: */        x_star_slash
+prim: */MOD     x_star_slash_mod
 prim: /         x_slash
 prim: /MOD      x_slash_mod
 prim: FM/MOD    x_f_m_slash_mod

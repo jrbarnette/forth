@@ -9,23 +9,20 @@
  *   multiply and divide operations.
  */
 
-/*------  ------  ------  ------  ------  ------  ------  ------
- * *                     6.1.0090 CORE                   26
- * /                     6.1.0230 CORE                   28
- * /MOD                  6.1.0240 CORE                   28
- * FM/MOD                6.1.1561 CORE                   39
- * M*                    6.1.1810 CORE                   41
- * MOD                   6.1.1890 CORE                   42
- * SM/REM                6.1.2214 CORE                   45
- * UM*                   6.1.2360 CORE                   46
- * UM/MOD                6.1.2370 CORE                   46
- *------  ------  ------  ------  ------  ------  ------  ------
- */
-
-
-// FIXME - missing the following:
+// N.B. The names "*/" and "*/MOD" can't appear in /* */ comments.
+//------  ------  ------  ------  ------  ------  ------  ------
+// *                     6.1.0090 CORE                   26
 // */                    6.1.0100 CORE                   26
 // */MOD                 6.1.0110 CORE                   26
+// /                     6.1.0230 CORE                   28
+// /MOD                  6.1.0240 CORE                   28
+// FM/MOD                6.1.1561 CORE                   39
+// M*                    6.1.1810 CORE                   41
+// MOD                   6.1.1890 CORE                   42
+// SM/REM                6.1.2214 CORE                   45
+// UM*                   6.1.2360 CORE                   46
+// UM/MOD                6.1.2370 CORE                   46
+//------  ------  ------  ------  ------  ------  ------  ------
 
 
 #define HIGH_BIT	(~(~(cell_ft) 0 >> 1))
@@ -149,6 +146,33 @@ ddivide(cell_ft *sp, cell_ft d_hi, cell_ft d_lo, cell_ft v)
 }
 
 
+static void
+dmult_divide(cell_ft *sp, cell_ft n1, cell_ft n2, cell_ft n3)
+{
+    cell_ft s1 = -((snumber_ft) n1 < 0);
+    cell_ft s2 = -((snumber_ft) n2 < 0);
+    cell_ft s3 = -((snumber_ft) n3 < 0);
+    if (s1) {
+	n1 = -n1;
+    }
+    if (s2) {
+	n2 = -n2;
+    }
+    if (s3) {
+	n3 = -n3;
+    }
+
+    dmult(sp, n1, n2, 0);
+    ddivide(sp, PICK(sp, 0), PICK(sp, 1), n3);
+    if (s1 ^ s2) {
+	PICK(sp, 1) = -PICK(sp, 1);
+    }
+    if (s1 ^ s2 ^ s3) {
+	PICK(sp, 0) = -PICK(sp, 0);
+    }
+}
+
+
 /* ( x1 x2 -- x ) */
 vminstr_p
 x_star(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
@@ -157,6 +181,46 @@ x_star(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     CHECK_POP(vm, 2);
     PICK(sp, 1) = PICK(sp, 1) * PICK(sp, 0);
     SET_SP(vm, sp, 1);
+    return ip;
+}
+
+
+/* ( n1 n2 n3 -- n4 ) */
+vminstr_p
+x_star_slash(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    cell_ft *sp = SP(vm);
+    CHECK_POP(vm, 3);
+    cell_ft n1 = PICK(sp, 2);
+    cell_ft n2 = PICK(sp, 1);
+    cell_ft n3 = PICK(sp, 0);
+
+    if (n3 == 0) {
+	THROW(vm, -10);
+    }
+    SET_SP(vm, sp, 1);
+    dmult_divide(SP(vm), n1, n2, n3);
+    PICK(sp, 2) = PICK(sp, 1);
+    SET_SP(vm, sp, 2);
+    return ip;
+}
+
+
+/* ( n1 n2 n3 -- n4 n5 ) */
+vminstr_p
+x_star_slash_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    cell_ft *sp = SP(vm);
+    CHECK_POP(vm, 3);
+    cell_ft n1 = PICK(sp, 2);
+    cell_ft n2 = PICK(sp, 1);
+    cell_ft n3 = PICK(sp, 0);
+
+    if (n3 == 0) {
+	THROW(vm, -10);
+    }
+    SET_SP(vm, sp, 1);
+    dmult_divide(SP(vm), n1, n2, n3);
     return ip;
 }
 

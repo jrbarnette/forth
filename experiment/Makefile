@@ -1,11 +1,11 @@
 CFLAGS = -O
 
-TARGETS = tos ip
+TARGETS = tos ip cdivbench
 
 all: $(TARGETS)
 
 clean:
-	rm $(TARGETS)
+	rm -f $(TARGETS)
 
 tos: bench.h bench.c tos.c
 	$(CC) -o $@ $(CFLAGS) bench.c tos.c

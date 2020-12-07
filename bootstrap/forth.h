@@ -145,7 +145,7 @@ struct definition_data {
 
 #ifdef CHECKMODE
 #if CHECKMODE == 1
-#define CHECK(vm, t, x)	{ if (!(t)) return (THROW(vm, (x)), 0); }
+#define CHECK(vm, t, x)	{ if (!(t)) THROW(vm, (x)); }
 #elif CHECKMODE == 2
 #define CHECK(vm, t, x)	((t) || (THROW(vm, (x)), 0))
 #endif

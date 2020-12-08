@@ -26,12 +26,8 @@
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
 \ FORTH-83 - System Extension Word Set
-prim: BRANCH      do_skip
-prim: ?BRANCH     do_fskip
-: <MARK ( -- dest ) here ; compile-only
-: <RESOLVE ( dest -- ) here - [ 1 cells ] literal / , ; compile-only
-: >MARK ( -- orig ) here [ 1 cells ] literal allot ; compile-only
-: >RESOLVE ( orig -- ) here over - [ 1 cells ] literal / swap ! ; compile-only
+prim: BRANCH      do_skip         compile-only
+prim: ?BRANCH     do_fskip        compile-only
 
 \ Internal primitive building blocks for DO loops.
 prim: DO-DO       do_do           compile-only

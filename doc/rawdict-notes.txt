@@ -1,13 +1,13 @@
----- Raw dict generation
+---- rawdict generation
 TARGET compilation state:
     search order:
-	HOST-COMPILE
-    name in HOST-COMPILE vocabulary:
+	TARGET-COMPILE
+    name in TARGET-COMPILE vocabulary:
 	execute the definition
     number
-	execute LITERAL from HOST-COMPILE vocabulary
+	execute LITERAL from TARGET-COMPILE vocabulary
     unknown
-	lookup name in TARGET vocabulary
+	lookup name in target dictionary
 	if not found
 	    error
 	if immediate
@@ -16,14 +16,14 @@ TARGET compilation state:
 
 TARGET interpretation state:
     search order:
-	HOST-INTERPRET
+	HOST
 	FORTH
-    some entries in HOST-INTERPRET need to shadow FORTH vocabulary
+    some entries in HOST need to shadow FORTH vocabulary
     maybe need something special for TARGET?  e.g. to make this work:
 	variable LEAVERS 0 leavers !
     ... or could just handle this as direct code in initialize_forth.
 
-HOST-COMPILE contents (immediate and compile-special definitions)
+TARGET-COMPILE contents (immediate and compile-special definitions)
     ( .( \
 	use implementation from FORTH vocabulary
     [
@@ -32,7 +32,7 @@ HOST-COMPILE contents (immediate and compile-special definitions)
 	(re-compile using TARGET?)
     LITERAL
 	re-compile - common/core/compileprim.fth
-	uses HOST-INTERPRET COMPILE, - wraps LABEL,
+	uses HOST COMPILE, - wraps LABEL,
     +LOOP BEGIN DO ELSE IF LOOP REPEAT THEN UNTIL WHILE ?DO AGAIN
 	re-compile (goal) - common/core/control.fth
     ."
@@ -45,12 +45,12 @@ HOST-COMPILE contents (immediate and compile-special definitions)
 	extract, recompile - common/core/compile.fth
     [']
 	extract, recompile - common/core/compile.fth
-	must use COMPILE, from HOST-INTERPRET
-	must use HOST-INTERPRET version of ' to search TARGET only
+	must use COMPILE, from HOST
+	must use HOST version of ' to search TARGET only
     POSTPONE [COMPILE]
 	???
 
-HOST-INTERPRET contents
+HOST contents
     dictionary allocation:
 	, ALIGN ALLOT C, HERE UNUSED
 	COMPILE,
@@ -76,4 +76,5 @@ HOST-INTERPRET contents
     state-related
 	[ ]
     @ ! C@ C! (... maybe also MOVE FILL)
-	maybe need to customize?
+	maybe need special versions restricted to the confines of
+	the target dictionary?

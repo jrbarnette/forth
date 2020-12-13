@@ -68,11 +68,9 @@ meta-immediate WHILE
 : ] ]META ;
 : CHAR meta-state @ 2 = if s" CHAR" meta-compile else meta-char then ;
 
-hex
 : IMMEDIATE        nf-immediate setflags ;
 : COMPILE-ONLY     nf-compile-only setflags ;
 : COMPILE-SPECIAL  nf-compile-special setflags ;
-decimal
 
 : : s" do_colon" startname ]meta ;
 : ; s" EXIT" meta-compile linkname meta[ ;

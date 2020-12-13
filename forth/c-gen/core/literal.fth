@@ -26,13 +26,14 @@ prim: here-addr do_constant
 <C> CELL_SIZE; over @ + swap !
 
 \ ALLOT uses this, below.
-: +! ( x a-addr -- ) dup >r @ + r> ! ;
+: +! ( x a-addr -- ) swap over @ + swap ! ;
 
 : HERE ( -- addr ) here-addr @ ;
 : ALLOT ( n -- ) here-addr +! ;
 
 \ "," depends on compiled literals, which we have to bake in the
 \ hard way.
+\ : , ( x -- ) here [ 1 cells ] literal allot ! ;
 : , ( x -- ) here do-literal [
 	<C> CELL_SIZE; <C> &HERE; over over @ !
 	swap over @ + swap !

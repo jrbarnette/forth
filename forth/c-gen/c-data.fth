@@ -23,8 +23,8 @@
 
 : .c-char ( char -- ) [char] ' dup emit swap over escape-char emit ;
 : .c-string ( c-addr u -- ) '"' emit escape-string '"' emit ;
-: .c-decimal ( u -- ) base @ swap decimal 1 .r base ! ;
-: .c-hex ( u -- )
+: .c-decimal ( n -- ) base @ swap decimal 1 .r base ! ;
+: .c-hex ( n -- )
     base @ swap hex dup 0< if '-' emit negate then ." 0x" 1 u.r base ! ;
 : .c-cell ( c-addr u -- ) ." (cell_ft) (" type ." )" ;
 

@@ -47,8 +47,8 @@ create SOURCE-LINE 256 dup chars allot constant LINE-SIZE
     \ From here forward we can make colon definitions, minding
     \ internal dependencies.
 
-    \ Some constructs have implicit dependencies on LITERAL, so get
-    \ that done first.
+    \ Some constructs have implicit dependencies on LITERAL in the
+    \ target dictionary, so get that done first.
     compile-file: forth/c-gen/core/literal.fth
 
     \ The "dictops" depend on "memops", and these are lower-level, so

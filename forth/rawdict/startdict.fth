@@ -34,21 +34,20 @@ variable  strp	strings-buffer strp !
 : .{ ( -- ) ." { " ;
 : }, ( -- ) ."  }," ;
 
-: .counted ( a-addr -- )  @ count type ;
 : .cell-number ( a-addr -- )  @ .c-hex ;
-: .cell-expr ( a-addr -- )  ." (cell_ft) (" .counted ." )" ;
+: .cell-expr ( a-addr -- )  @ count .c-cell ;
 
-: .value ( xt -- )  .{ ." .cell = " execute }, ;
+: .value ( n*x xt -- )  ." .cell = " execute ;
 
 : .cell ( a-addr -- )  ['] .cell-number .value ;
-: .str ( a-addr -- )   .{ ." .str = " 1 cells .c-string }, ;
+: .str ( a-addr -- )   ." .str = " 1 cells .c-string ;
 : .label ( a-addr -- )
     @ target-dict -
-    .{ ." .label = &dictionary.dict_space[" .c-decimal ." ]" }, ;
-: .handler ( a-addr -- ) .{ ." .handler = " .counted }, ;
+    ." .label = &dictionary.dict_space[" .c-decimal ." ]" ;
+: .handler ( a-addr -- ) ." .handler = " @ count type ;
 : .expr ( a-addr -- )  ['] .cell-expr .value ;
 
-: .invalid ." invalid tag at offset " target-dict - 1 u.r cr ;
+: .invalid ." invalid tag" ;
 
 \ .entry is a defintion that will print the value of a target
 \ dictionary cell, given a pointer to the cell in the buffer and the
@@ -63,11 +62,10 @@ here
     ' .invalid ,	\ tag #5
     ' .invalid ,	\ tag #6
     ' .invalid ,	\ tag #7
-: .entry ( a-addr tag -- ) cells [ swap ] literal + @ execute ;
+: .entry ( a-addr tag -- ) .{ cells [ swap ] literal + @ execute }, ;
 
 
 vocabulary HOST
-vocabulary TARGET
 
 only FORTH also HOST definitions
 
@@ -134,7 +132,7 @@ only FORTH also HOST definitions
 : flush-target-dictionary
     decimal
     align here target-dict begin 2dup > while
-	dup target-dict - ." /* " 5 u.r ."  */  "
+	." /* " dup target-dict - 5 u.r ."  */  "
 	dup dup tag@ .entry cr
     cell+ repeat 2drop
 ;

@@ -1,9 +1,8 @@
 \ ANS Forth, well-factored
 
-' min @
-here swap dup , ] dup . ." bottles" exit [
-here swap dup , ] ." 1 bottle" exit [
-here swap ,     ] ." no more bottles" exit [
+:noname   dup . ." bottles" ;
+:noname       ." 1 bottle"  ;
+:noname ." no more bottles" ;
 create bottles , , ,
 
 : .bottles  dup 2 min cells bottles + @ execute ;

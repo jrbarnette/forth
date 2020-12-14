@@ -9,6 +9,7 @@
 \  DOES>                 6.1.1250 CORE
 \  IMMEDIATE             6.1.1710 CORE
 \  VARIABLE              6.1.2410 CORE
+\  :NONAME               6.2.0455 CORE EXT
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
 : current-name ( -- name ) get-current @ ;
@@ -25,7 +26,7 @@
 : add-name ( hdlr "name" -- ) create-name link-name ;
 
 : : handler: do_colon create-name [compile] ] ;
-: ; postpone EXIT link-name [compile] [ ; compile-special
+: ; postpone EXIT ?dup if link-name then [compile] [ ; compile-special
 
 : created? dup @ handler: do_create = invert if .error -31 throw then ;
 : >BODY ( xt -- a-addr ) created? [ 2 cells ] literal + ;
@@ -40,3 +41,5 @@
 : COMPILE-SPECIAL  nf-compile-special  current-name name-flags! ;
 
 : VARIABLE handler: do_variable add-name 0 , ;
+
+: :NONAME here 0 handler: do_colon , [compile] ] ;

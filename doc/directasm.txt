@@ -1,0 +1,153 @@
+special instructions:
+
+/* vmstate omitted */
+typedef struct definition_data *	xt_ft;
+typedef union instr_data *		vminstr_p;
+typedef union param_data *		vmarg_p;
+
+typedef vminstr_p (*vminstr_fn)(vminstr_p, vmstate_p, vmarg_p);
+
+union instr_data {
+    /* general purpose VM instructions */
+    xt_ft		xtok;
+    cell_ft		cell;
+    snumber_ft		offset;
+    char_ft		cdata[CELL_SIZE];
+
+    /* direct execution instructions only */
+    vminstr_fn		handler;
+    vminstr_p		ip;
+    char *		str; // or "id"?
+    addr_ft		addr; // or "ref"?
+};
+
+typedef union instr_data		vminstr_d;
+union param_data {
+    vminstr_p		ip;
+    xt_ft		xtok;
+    cell_ft		cell;
+    char_ft		cdata[CELL_SIZE];
+    addr_unit_ft	data[CELL_SIZE];
+    union instr_data	vminstrs[1];
+};
+
+struct definition_data {
+    vminstr_fn		handler;
+    union param_data	arg[1];
+};
+
+vminstr_p
+i_call(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    CHECK_RPUSH(vm, 1);
+    RPUSH(vm, ip + 1);
+    return ip->ip;
+}
+
+
+vminstr_p
+i_str(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    CHECK_PUSH(vm, 1);
+    PUSH(strlen(ip->str));
+    return ip + 1;
+}
+
+
+In C:
+    X(fn) -> { .handler = fn },
+    N(n) -> { .cell = (n) },
+    S(s) -> { .str = s },
+    O(o) -> { .offset = (o) },
+    CHARS(s) -> { .cdata = s },
+    IP(expr) -> { .ip = (expr) },
+
+    L(x) -> X(do_literal) N(x)
+    REF(expr) -> X(do_literal) IP(expr)
+    MCP(hdlr) -> X(do_literal) X(hdlr)
+    STR(s) -> X(i_str) S(s)		// maybe use do_s_quote instead?
+    STR(s) -> X(do_s_quote) N(sizeof (s)) CHARS(s)
+    CALL(expr) -> X(i_call) IP(expr)
+    B(o) -> X(do_skip) O(o)
+    BF(o) -> X(do_fskip) O(o)
+
+    ID(s) -> S(s)
+    PRIM(id, handler) -> X(i_addname) ID(id) X(handler)
+    COLON(id) -> X(i_startname) ID(id) X(do_colon)
+    LINKNAME() -> X(i_linkname)
+    SETFLAGS(n) -> X(i_setflags) N(n)
+    LOOKUP(id) -> X(i_lookup) ID(id)
+    METAINTERP() -> X(meta_interpret)
+    METACOMPILE() -> X(meta_compile)
+    METAEND() -> ID(NULL)
+
+In Forth:
+    Direct mode
+    X: <handler> -> X(handler)
+    #: <number> -> L(number)
+    C: <expr>; -> L(expr)	\ or "<C> <expr>;"
+
+    S" <string>" -> X(do_s_quote) N(u) CHARS(s) ...
+    CALL <number> -> CALL(initialize_forth[number])
+    B: <number> -> B(number)
+    ?B: <number> -> BF(number)
+
+    PRIM: <id> <handler> -> PRIM(id, handler)
+    : <id> -> COLON(id)
+    LINKNAME -> LINKNAME()
+    SETFLAGS: <number> -> SETFLAGS(number)
+    LOOKUP: <name> -> LOOKUP(name)
+
+    Meta modes
+    INTERPRET: <name> -> ID(name)
+    COMPILE: <name> -> ID(name)
+
+cell types:
+    0: { .cell = n },
+	name: cell
+	content: @ .c-hex
+    1: { .cell = (cell_ft) (<expr>) },
+	name: expr
+	content: @ count type
+	content: @ swap type
+    2: { .handler = <hdlrname> },
+	name: exec
+	content: @ count type
+	content: @ swap type
+    3: { .str = <str>|NULL },
+	name: str
+	content: @ ?dup if count .c-string else ." NULL" then
+	content: @ swap .c-string
+    4: { .offset = <offset> },
+	name: offset
+	content: @ .c-decimal
+    5: { .cdata = <str> },
+	name: cdata
+	content: 1 cells .c-string
+    6: { .ip = &direct_code[<offset>] },
+	name: cdata
+	content: @ .c-decimal
+    7: { .addr = &dictionary.data_space[<offset>] },
+	name: ref
+	content: TBD ( @ TBD - ) .c-decimal
+
+    formatting a cell
+	.start-instr { .field ."  = " .content }, .end-instr
+
+Forth definers
+    prim: <name> <handler>
+	name -> X(handler)
+	: prim: create parse-name counted, does> count X() ;
+    : <name>
+	name -> CALL(offset)
+	: : create origin @ , does> @ CALL() ;
+    ;
+	X: x_exit
+	: ; s" x_exit" X() ;
+    <name> CONSTANT
+	name -> L(TOS)
+	: CONSTANT create , does> do-literal @ N() ;
+    <name> VARIABLE
+	#: 0
+	name -> L(offset)
+	: VARIABLE create origin @ , 0 N() does> do-literal @ IP() ;

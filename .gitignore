@@ -6,3 +6,6 @@ bootstrap/forth
 bootstrap/direct_test
 bootstrap.meta/forth
 bootstrap/stdforth.c
+experiment/ip
+experiment/tos
+experiment/cdivbench

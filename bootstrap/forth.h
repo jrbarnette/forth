@@ -225,6 +225,7 @@ extern vminstr_p x_two_to_r(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_two_r_from(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_two_r_fetch(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_pick(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_roll(vminstr_p, vmstate_p, vmarg_p);
 
 /* arithmetic and logical primitives */
 extern vminstr_p x_plus(vminstr_p, vmstate_p, vmarg_p);

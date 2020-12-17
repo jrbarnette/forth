@@ -15,6 +15,5 @@
 : 2SWAP ( x1 x2 x3 x4 -- x3 x4 x1 x2 ) rot >r rot r> ;
 : 2OVER ( x1 x2 x3 x4 -- x1 x2 x3 x4 x1 x2 ) >r >r 2dup r> r> 2swap ;
 
-
 : NIP ( x1 x2 -- x2 ) swap drop ;
 : TUCK ( x1 x2 -- x2 x1 x2 ) swap over ;

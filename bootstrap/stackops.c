@@ -24,6 +24,7 @@
  * 2R>                   6.2.0410 CORE EXT               50
  * 2R@                   6.2.0415 CORE EXT               50
  * PICK                  6.2.2030 CORE EXT               55
+ * ROLL                  6.2.2150 CORE EXT               56
  *------  ------  ------  ------  ------  ------  ------  ------
  */
 
@@ -211,5 +212,24 @@ x_pick(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     t = PICK(sp, 0);
     CHECK_POP(vm, t+2);
     PICK(sp, 0) = PICK(sp, t+1);
+    return ip;
+}
+
+
+/* ( xu xu-1 ... x0 u -- xu-1 ... x0 xu ) */
+vminstr_p
+x_roll(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+{
+    CHECK_POP(vm, 1);
+    a_addr_ft sp = SP(vm);
+    cell_ft u = PICK(sp, 0);
+    CHECK_POP(vm, u+2);
+    cell_ft t = PICK(sp, u+1);
+    while (u > 0) {
+	PICK(sp, u+1) = PICK(sp, u);
+	u--;
+    }
+    PICK(sp, 1) = t;
+    SET_SP(vm, sp, 1);
     return ip;
 }

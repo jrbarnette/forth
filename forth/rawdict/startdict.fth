@@ -31,38 +31,24 @@ variable  strp	strings-buffer strp !
 : tag@ ( a-addr -- tag ) tag-addr @ swap rshift tag-mask and ;
 : tag! ( tag a-addr -- ) tag-addr >r lshift r@ @ or r> ! ;
 
-: .{ ( -- ) ." { " ;
-: }, ( -- ) ."  }," ;
+\ Execution tokens 
+:noname ( a-addr -- )  @ .cell ;		\ tag 0
+' .cdata					\ tag 1
+:noname ( a-addr -- )  @ target-dict - .dict ;	\ tag 2
+:noname ( a-addr -- )  @ count .exec ;		\ tag 3
+:noname ( a-addr -- )  @ count .expr ;		\ tag 4
+:noname ( a-addr -- ) drop ." invalid tag" ;	\ tag 5
+dup						\ tag 6
+dup						\ tag 7
 
-: .cell-number ( a-addr -- )  @ .c-hex ;
-: .cell-expr ( a-addr -- )  @ count .c-cell ;
-
-: .value ( n*x xt -- )  ." .cell = " execute ;
-
-: .cell ( a-addr -- )  ['] .cell-number .value ;
-: .str ( a-addr -- )   ." .str = " 1 cells .c-string ;
-: .label ( a-addr -- )
-    @ target-dict -
-    ." .label = &dictionary.dict_space[" .c-decimal ." ]" ;
-: .handler ( a-addr -- ) ." .handler = " @ count type ;
-: .expr ( a-addr -- )  ['] .cell-expr .value ;
-
-: .invalid ." invalid tag" ;
-
-\ .entry is a defintion that will print the value of a target
-\ dictionary cell, given a pointer to the cell in the buffer and the
-\ tag.
-
-here
-    ' .cell ,		\ tag #0
-    ' .str ,		\ tag #1
-    ' .label ,		\ tag #2
-    ' .handler ,	\ tag #3
-    ' .expr ,		\ tag #4
-    ' .invalid ,	\ tag #5
-    ' .invalid ,	\ tag #6
-    ' .invalid ,	\ tag #7
-: .entry ( a-addr tag -- ) .{ cells [ swap ] literal + @ execute }, ;
+\ Construct a defintion that will print the value of a target
+\ dictionary cell, given a pointer to the cell in the buffer.
+:noname does> ( a-addr table -- )
+    ."  { " [ 7 cells ] literal + over tag@ cells - @ execute ."  }," ;
+create .entry execute
+\ 0 1 2 3 4 5 6 7 indexes
+\ 7 6 5 4 3 2 1 0 tags
+  , , , , , , , ,
 
 
 vocabulary HOST
@@ -132,8 +118,7 @@ only FORTH also HOST definitions
 : flush-target-dictionary
     decimal
     align here target-dict begin 2dup > while
-	." /* " dup target-dict - 5 u.r ."  */  "
-	dup dup tag@ .entry cr
+	." /* " dup target-dict - 5 u.r ."  */  " dup .entry cr
     cell+ repeat 2drop
 ;
 

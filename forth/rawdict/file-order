@@ -1,6 +1,7 @@
 # Copyright 2015, by J. Richard Barnette, All Rights Reserved.
 
 forth/c-gen/c-data.fth
+forth/c-gen/entry.fth
 forth/rawdict/startdict.fth
     forth/c-gen/core/stackprim.fth
     forth/c-gen/core/arithprim.fth

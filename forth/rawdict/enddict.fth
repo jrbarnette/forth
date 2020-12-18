@@ -7,8 +7,8 @@
 >>>
 >>> union {
 >>>     cell_ft		cell;
->>>     char		str[sizeof (cell_ft)];
->>>     addr_ft		label;
+>>>     char		cdata[sizeof (cell_ft)];
+>>>     addr_ft		ref;
 >>>     vminstr_fn		handler;
 >>> } raw_dictionary[] = {
 

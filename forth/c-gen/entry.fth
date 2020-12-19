@@ -5,7 +5,8 @@
 : entry: create parse-name counted, align 0 ] does> dup .field= .content ;
 
 entry: .exec handler ( c-addr u -- ) type ;
-entry: .str id ( c-addr u | 0 -- ) ?dup if .c-string else ." NULL" then ;
+entry: .str id ( c-addr u | 0 -- ) .c-string ;
+entry: .str-expr id ( c-addr u -- ) type ;
 entry: .expr cell ( c-addr u -- ) .c-cell ;
 entry: .cell cell ( x -- ) .c-hex ;
 

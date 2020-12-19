@@ -16,7 +16,7 @@ variable emit-state  0 emit-state !
 : } } cr ;
 : start-instr ( new-state -- )
     dup emit-state @ <> if
-	emit-state @ ?dup if .offset { 0 .str } then
+	emit-state @ ?dup if .offset { s" NULL" .str-expr } then
 	dup if
 	    dup 1- if s" meta_compile" else s" meta_interpret" then
 	    0 .offset { .exec }
@@ -43,9 +43,9 @@ variable emit-state  0 emit-state !
 \ sequence breaks because { will plaster the output from c-hex:
 \     .c-hex { s" do_literal" .exec }{ .expr }
 : do-literal { s" do_literal" .exec }{ execute } ;
-: literal-expr ['] .expr do-literal ;
-: literal-cell ['] .cell do-literal ;
-: literal-handler ['] .exec do-literal ;
+: literal-expr ( c-addr u -- ) ['] .expr do-literal ;
+: literal-cell ( x -- ) ['] .cell do-literal ;
+: literal-handler ( c-addr u ) ['] .exec do-literal ;
 
 vocabulary DIRECT
 

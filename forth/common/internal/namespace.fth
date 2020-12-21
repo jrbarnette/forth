@@ -12,11 +12,14 @@ $e0 constant NF-FLAGS
 : >COUNT ( flags+len -- len ) nf-length and ;
 : >FLAGS ( flags+len -- flags ) nf-flags and ;
 
-: NAME>PREV ( name -- name ) @ ;
-: NAME>ID ( name -- c-addr u ) cell+ count >count ;
-: NAME>XT ( name -- xt ) name>id chars + aligned ;
-: NAME>XT+FLAGS ( name -- xt flags )
+: NAME>PREV ( nt -- nt ) @ ;
+: NAME>STRING ( nt -- c-addr u ) cell+ count >count ;
+: NAME>XT ( nt -- xt ) name>string chars + aligned ;
+: NAME>XT+FLAGS ( nt -- xt flags )
     cell+ count dup >r >count chars + aligned r> >flags ;
-: NAME>FIND ( name -- xt -1 | xt 1 | 0 )
+: NAME>INTERPRET ( nt -- xt | 0 ) name>xt+flags compile-only? if drop 0 then ;
+: NAME>COMPILE ( nt -- x xt )
+    name>xt+flags immediate? if ['] execute else ['] compile, then ;
+: NAME>FIND ( nt -- xt -1 | xt 1 | 0 )
     dup if name>xt+flags immediate? 0= 1 or then ;
-: NAME-FLAGS! ( flags name -- ) cell+ dup >r c@ or r> c! ;
+: NAME-FLAGS! ( flags nt -- ) cell+ dup >r c@ or r> c! ;

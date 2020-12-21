@@ -10,7 +10,7 @@ vocabulary TARGET
 : meta-literal
     meta-state @ 2 = if s" LITERAL" meta-interpret then ;
 : meta-char char literal-cell ;
-: meta-immediate align here create name>id , , does> 2@ meta-interpret ;
+: meta-immediate align here create name>string , , does> 2@ meta-interpret ;
 : meta-' ( c-addr u -- ) direct-lookup meta-literal ;
 
 also TARGET definitions previous
@@ -41,7 +41,7 @@ meta-immediate WHILE
 : [CHAR] meta-char meta-literal ;
 : POSTPONE
     parse-name 2dup lookup ?dup if
-        name>id meta-compile 2drop
+        name>string meta-compile 2drop
     else
         meta-' s" ," meta-compile
     then

@@ -12,7 +12,7 @@
 
 : WID-LOOKUP ( c-addr u wid -- name | 0 )
     @ begin dup while >r
-	2dup r@ name>id id= if 2drop r> exit then
+	2dup r@ name>string id= if 2drop r> exit then
     r> name>prev repeat drop 2drop 0
 ;
 

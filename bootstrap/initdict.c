@@ -929,7 +929,7 @@ DIRECT_FORTH(initialize_forth) // {
 /* 1271 */     { .id = NULL },
 /* 1272 */ { .handler = i_linkname },
 /* 1273 */ { .handler = i_addname }, { .id = "EMIT" }, { .handler = x_emit },
-/* 1276 */ { .handler = i_addname }, { .id = "PROMPT-ACCEPT" }, { .handler = x_refill_terminal },
+/* 1276 */ { .handler = i_addname }, { .id = "PROMPT-ACCEPT" }, { .handler = x_prompt_accept },
 /* 1279 */ { .handler = do_literal }, { .cell = 0x20 },
 /* 1281 */ { .handler = i_addname }, { .id = "BL" }, { .handler = do_constant },
 /* 1284 */ { .handler = meta_interpret },

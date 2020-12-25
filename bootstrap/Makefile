@@ -10,7 +10,6 @@ COMMON_SRC =			\
 	    fileops.c		\
 	    memops.c		\
 	    multops.c		\
-	    parse.c		\
 	    stackops.c		\
 	    terminal.c		\
 	    vm.c
@@ -29,7 +28,7 @@ DIRECT_OBJ =   $(COMMON_SRC:.c=.o) $(DIRECT_SRC:.c=.o)
 HEADER_SRC = cmdline.h dictionary.h direct.h forth.h names.h
 SOURCES = $(COMMON_SRC) $(FORTH_SRC) $(DIRECT_SRC) $(HEADER_SRC)
 
-CMDLINE_DEP = forth.o parse.o exception.o cmdline.o direct_test.o
+CMDLINE_DEP = forth.o exception.o cmdline.o direct_test.o terminal.o
 
 DICT_DEP =  dictionary.o	\
 	    exception.o		\
@@ -37,7 +36,7 @@ DICT_DEP =  dictionary.o	\
 	    initdict.o		\
 	    meta.o		\
 	    names.o		\
-	    parse.o
+	    terminal.o
 
 PRIM_DEP =  $(DICT_DEP)         \
             arithops.o		\
@@ -48,7 +47,6 @@ PRIM_DEP =  $(DICT_DEP)         \
 	    memops.o		\
 	    multops.o		\
 	    stackops.o		\
-	    terminal.o		\
 	    vm.o
 
 CHECKNONE = 0

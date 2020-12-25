@@ -7,4 +7,4 @@
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
 prim: EMIT              x_emit
-prim: PROMPT-ACCEPT     x_refill_terminal
+prim: PROMPT-ACCEPT     x_prompt_accept

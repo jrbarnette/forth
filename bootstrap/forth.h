@@ -267,6 +267,7 @@ extern vminstr_p x_u_m_slash_mod(vminstr_p, vmstate_p, vmarg_p);
 
 /* terminal I/O primitives */
 extern vminstr_p x_emit(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_prompt_accept(vminstr_p, vmstate_p, vmarg_p);
 
 /* control flow primitives */
 extern vminstr_p do_skip(vminstr_p, vmstate_p, vmarg_p);
@@ -276,9 +277,6 @@ extern vminstr_p do_do(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_i(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_j(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_unloop(vminstr_p, vmstate_p, vmarg_p);
-
-/* parse primitives */
-extern vminstr_p x_refill_terminal(vminstr_p, vmstate_p, vmarg_p);
 
 /* file I/O primitives */
 extern vminstr_p x_bin(vminstr_p, vmstate_p, vmarg_p);

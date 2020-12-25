@@ -26,9 +26,6 @@ variable >IN 6 cells allot
 : SOURCE-ID  [ >in cell+ ] literal @ ;
 : SOURCE  ( -- c-addr u )  source-addr 2@ ;
 
-here 80 chars allot constant PROMPT 0 prompt c!
-: PROMPT! ( c-addr u -- ) prompt swap chars 2dup + >r move 0 r> c! ;
-
 : SOURCE-BUFFER  ( -- c-addr u )
     [ >in 3 cells + ] literal dup @ swap cell+ @ ;
 
@@ -36,7 +33,7 @@ here 80 chars allot constant PROMPT 0 prompt c!
 : REFILL
     source-id 0< if false exit then
     source-buffer source-id 0= if
-        prompt refill-terminal
+        refill-terminal
     else
         source-id file-position drop source-pos 2! refill-file
     then source-addr ! dup if 0 >in ! then ;

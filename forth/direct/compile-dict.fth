@@ -69,14 +69,13 @@ create SOURCE-LINE 256 dup chars allot constant LINE-SIZE
     \ "stack", "arith", "mem", "mult", and "control" words.  We're
     \ ready to start making more complicated definitions.
     compile-file: forth/common/internal/chartype.fth
-    compile-file: forth/c-gen/core/parse.fth
+    compile-file: forth/c-gen/core/terminal.fth
+    compile-file: forth/common/core/terminal.fth
     compile-file: forth/c-gen/file/fileprim.fth
     compile-file: forth/common/core/source.fth
     compile-file: forth/common/core/parse.fth
 
     compile-file: forth/common/core/number.fth
-    compile-file: forth/c-gen/core/terminal.fth
-    compile-file: forth/common/core/terminal.fth
     compile-file: forth/common/internal/error.fth
 
     compile-file: forth/common/core/state.fth

@@ -1,14 +1,11 @@
 \ Copyright 2019, by J. Richard Barnette. All Rights Reserved.
 
 \ ------  ------  ------  ------  ------  ------  ------  ------
-\  BL                    6.1.0770 CORE
 \  WORD                  6.1.2450 CORE
 \
 \  PARSE                 6.2.2008 CORE EXT
 \  PARSE-NAME            6.2.2008 CORE EXT (ANS 2012)
 \ ------  ------  ------  ------  ------  ------  ------  ------
-
-32 constant BL
 
 variable >IN-START
 : PARSE ( char "ccc<char>" -- c-addr u )

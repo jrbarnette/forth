@@ -6,4 +6,5 @@
 \  EMIT                  6.1.1320 CORE                   38
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
-prim: EMIT      x_emit
+prim: EMIT              x_emit
+prim: PROMPT-ACCEPT     x_refill_terminal

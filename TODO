@@ -1,18 +1,3 @@
-==== Bugs
-REFILL handles user prompting; the standard says it shouldn't.
-Since PROMPT! is internal, anything that calls it can require that
-REFILL prompt, but that should only happen for the very next call.
-In other words, we should set the prompt to empty after each call
-to REFILL (that is, any caller that needs REFILL to prompt must
-set the prompt for every call).
-
-We need to implement ACCEPT, and really, REFILL should use ACCEPT.
-So, we could move the prompt handling to ACCEPT, and have it follow
-the rules as described above.
-
-REFILL-TERMINAL is filed under "parse"; it should be filed under
-"source" or maybe "terminal".
-
 ==== Where we are:
 All Forth code now lives under forth/, and gets built (one way or
 another) into initdict.c.  This includes the source code built into

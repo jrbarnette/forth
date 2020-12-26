@@ -2,42 +2,47 @@
 
 \  literal.fth - Colon-definitions needed to implement LITERAL.
 
+\ Content under the "mem" rubric:
 \ ------  ------  ------  ------  ------  ------  ------  ------
 \  +!                    6.1.0130 CORE
+\ ------  ------  ------  ------  ------  ------  ------  ------
+
+\ Content under the "dict" rubric:
+\ ------  ------  ------  ------  ------  ------  ------  ------
 \  ,                     6.1.0150 CORE
 \  ALLOT                 6.1.0710 CORE
 \  HERE                  6.1.1650 CORE
+\ ------  ------  ------  ------  ------  ------  ------  ------
+
+\ Content under the "compile" rubric:
+\ ------  ------  ------  ------  ------  ------  ------  ------
 \  LITERAL               6.1.1780 CORE
 \
 \  COMPILE,              6.2.0945 CORE EXT
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
-\ This file is a combination of definitions that would nominally be
-\ categorized as "dict", "mem" and "compile" in the index.  They're
-\ joined in one file because of the thicket of dependencies around
-\ "LITERAL":
-\   + "LITERAL" depends on ",".
-\   + Stuff like ": CHAR+ 1 + ;" depends on LITERAL implicitly.
+\ We need to implement "LITERAL" ASAP during building, because in
+\ meta-compile state, several key constructs use it implicitly.
+\ This includes "<C>", and even merely using a number literal.
+\
+\ However "LITERAL" itself has some dependencies that themselves
+\ need to compile literals.  Most especially, we need "," in order
+\ to compile in a literal.  The net result is that we have to do
+\ some fancy footwork below.
 
-
-\ CONSTANT depends on ",". So, we have to do it the hard way.
-prim: here-addr do_constant
-<C> &HERE; dup dup @ !
-<C> CELL_SIZE; over @ + swap !
-
-\ ALLOT uses this, below.
 : +! ( x a-addr -- ) swap over @ + swap ! ;
+
+\ CONSTANT depends on "," being in the target dictionary, so we have
+\ to do it the hard way.
+prim: here-addr do_constant
+    <C> CELL_SIZE; <C> &HERE; dup dup @ ! +!
 
 : HERE ( -- addr ) here-addr @ ;
 : ALLOT ( n -- ) here-addr +! ;
 
 \ "," depends on compiled literals, which we have to bake in the
 \ hard way.
-\ : , ( x -- ) here [ 1 cells ] literal allot ! ;
-: , ( x -- ) here do-literal [
-	<C> CELL_SIZE; <C> &HERE; over over @ !
-	swap over @ + swap !
-    ] allot ! ;
+: , ( x -- ) here do-literal [ <C> CELL_SIZE; here over allot ! ] allot ! ;
 
 : COMPILE, ( xt -- ) , ; compile-only
 : LITERAL do-literal do-literal compile, , ; compile-special

@@ -16,7 +16,6 @@
 \ FALSE                 6.2.1485 CORE EXT               54
 \ TRUE                  6.2.2298 CORE EXT               57
 \ U>                    6.2.2350 CORE EXT               57
-\ WITHIN                6.2.2440 CORE EXT               58
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
 : 0< ( n -- flag ) 0 < ;
@@ -40,4 +39,3 @@
 0 0 = constant TRUE
 
 : U> ( n1 n2 -- flag ) swap u< ;
-: WITHIN ( x1 x2 x3 -- flag ) over - >r - r> u< ;

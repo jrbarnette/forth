@@ -7,6 +7,11 @@
 \  +!                    6.1.0130 CORE
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
+\ Content under the "arith" rubric:
+\ ------  ------  ------  ------  ------  ------  ------  ------
+\ WITHIN                6.2.2440 CORE EXT
+\ ------  ------  ------  ------  ------  ------  ------  ------
+
 \ Content under the "dict" rubric:
 \ ------  ------  ------  ------  ------  ------  ------  ------
 \  ,                     6.1.0150 CORE
@@ -30,7 +35,13 @@
 \ to compile in a literal.  The net result is that we have to do
 \ some fancy footwork below.
 
+\ The standard sequence to perform ","
+\   1 cells here-addr <calculate cell> over @ ! +!
+\ The standard sequence to compile a literal
+\   do-literal [ 1 cells here-addr <calculate cell> over @ ! +! ]
+
 : +! ( x a-addr -- ) swap over @ + swap ! ;
+: WITHIN ( x1 x2 x3 -- flag ) over - >r - r> u< ;
 
 \ CONSTANT depends on "," being in the target dictionary, so we have
 \ to do it the hard way.
@@ -38,10 +49,20 @@ prim: here-addr do_constant
     <C> CELL_SIZE; <C> &HERE; dup dup @ ! +!
 
 : HERE ( -- addr ) here-addr @ ;
-: ALLOT ( n -- ) here-addr +! ;
 
-\ "," depends on compiled literals, which we have to bake in the
-\ hard way.
+\ <sigh> without LITERAL or , or even ALLOT, this is ... tiresome.
+\ : allot-bounds <C> DICTIONARY_END+1; here - dup <C> DICTIONARY_SIZE+1; - ;
+\ : ALLOT dup allot-bounds within -8 and throw here-addr +! ;
+
+: allot-bounds ( -- unused+1 -inuse )
+    do-literal [ <C> DICTIONARY_END; 1 + here !
+		 <C> CELL_SIZE; here-addr +! ] here -
+    dup do-literal [ <C> DICTIONARY_SIZE; 1 + here !
+		     <C> CELL_SIZE; here-addr +! ] - ;
+: ALLOT ( n -- ) dup allot-bounds within
+    do-literal [ -8 here ! <C> CELL_SIZE; here-addr +! ] and throw
+    here-addr +! ;
+
 : , ( x -- ) here do-literal [ <C> CELL_SIZE; here over allot ! ] allot ! ;
 
 : COMPILE, ( xt -- ) , ; compile-only

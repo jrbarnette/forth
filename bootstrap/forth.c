@@ -19,8 +19,8 @@
 struct options forth_options;
 
 char *dictionary_stats[] = {
-    "unused here forth-wordlist - cell+         ( free inuse )",
-    "2dup + rot rot                             ( total free inuse )",
+    "allot-bounds swap 1- 2dup -             ( -inuse free -total )",
+    "negate swap rot negate                  ( total free inuse )",
     ".( dictionary: ) . .( in use / ) . .( free / ) . .( total ) cr",
     NULL,
 };

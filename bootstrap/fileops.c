@@ -70,7 +70,6 @@ do_open_create(vmstate_p vm, bool is_open)
     cell_ft *sp = SP(vm);
 
     assert(sizeof (*str) == sizeof (*filename));
-    CHECK_POP(vm, 3);
     fam = PICK(sp, 0);
     len = PICK(sp, 1);
     str = (c_addr_ft) PICK(sp, 2);
@@ -146,6 +145,7 @@ x_close_file(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 vminstr_p
 x_create_file(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
+    CHECK_POP(vm, 3);
     do_open_create(vm, false);
     return ip;
 }
@@ -221,6 +221,7 @@ x_file_size(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 vminstr_p
 x_open_file(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
+    CHECK_POP(vm, 3);
     do_open_create(vm, true);
     return ip;
 }

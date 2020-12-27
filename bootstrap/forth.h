@@ -6,6 +6,7 @@
 #define FORTH_H
 
 #include <setjmp.h>
+#include <stddef.h>
 #include <stdint.h>
 
 
@@ -141,34 +142,60 @@ struct definition_data {
 #define SET_SP(vm, nsp, n)	((vm)->sp = (nsp) + (n))
 #define SET_RSP(vm, nsp, n)	((vm)->rsp = (nsp) + (n))
 
-#define CATCH(vm)		(setjmp((vm)->interp_loop))
-#define THROW(vm, n)		(longjmp((vm)->interp_loop, (n)))
-
-#ifdef CHECKMODE
-#if CHECKMODE == 1
-#define CHECK(vm, t, x)	{ if (!(t)) THROW(vm, (x)); }
-#elif CHECKMODE == 2
-#define CHECK(vm, t, x)	((t) || (THROW(vm, (x)), 0))
-#endif
-#endif
-
-#ifndef CHECK
-#define CHECK(vm, t, x)
-#endif
-
-#define CHECK_PUSH(vm, n)	\
-	    CHECK(vm, (vm)->sp >= (vm)->stack + (n), -3)
-#define CHECK_POP(vm, n)	\
-	    CHECK(vm, (vm)->sp <= (vm)->stack + STACK_SIZE - (n), -4)
-#define CHECK_RPUSH(vm, n)	\
-	    CHECK(vm, (vm)->rsp >= (vm)->rstack + (n), -5)
-#define CHECK_RPOP(vm, n)	\
-	    CHECK(vm, (vm)->rsp <= (vm)->rstack + RSTACK_SIZE - (n), -6)
-
 #define POP(vm)		(*(vm)->sp++)
 #define PUSH(vm, c)	(*--(vm)->sp = (cell_ft)(c))
 #define RPOP(vm)	(*(vm)->rsp++)
 #define RPUSH(vm, c)	(*--(vm)->rsp = (cell_ft)(c))
+
+#define CATCH(vm)		(setjmp((vm)->interp_loop))
+#define THROW(vm, n)		(longjmp((vm)->interp_loop, (n)))
+
+
+inline void
+vm_initialize(vmstate_p vm) {
+    CLEAR_STACK(vm);
+    CLEAR_RSTACK(vm);
+    vm->catch_handler = NULL;
+}
+
+
+inline vminstr_p
+throw_transfer(vmstate_p vm, cell_ft throw_code)
+{
+    if (vm->catch_handler == NULL) {
+        THROW(vm, throw_code);
+	return NULL;
+    }
+
+    vm->rsp = vm->catch_handler;
+    cell_ft *rsp = RSP(vm);
+
+    vminstr_p newip = (vminstr_p) PICK(rsp, 2);
+    vm->sp = (cell_ft *) PICK(rsp, 1);
+    vm->catch_handler = (cell_ft *) PICK(rsp, 0);
+    SET_RSP(vm, rsp, 3);
+
+    PICK(SP(vm), 0) = throw_code;
+
+    return newip;
+}
+
+
+#define CHECK(vm, t, x)	{ if (t) return throw_transfer(vm, (x)); }
+#define NOCHECK(vm, t, x)
+
+#ifndef STACKCHECK
+#define STACKCHECK	CHECK
+#endif
+
+#define CHECK_PUSH(vm, n)	\
+	    STACKCHECK(vm, (vm)->sp < (vm)->stack + (n), -3)
+#define CHECK_POP(vm, n)	\
+	    STACKCHECK(vm, (vm)->sp > (vm)->stack + STACK_SIZE - (n), -4)
+#define CHECK_RPUSH(vm, n)	\
+	    STACKCHECK(vm, (vm)->rsp < (vm)->rstack + (n), -5)
+#define CHECK_RPOP(vm, n)	\
+	    STACKCHECK(vm, (vm)->rsp > (vm)->rstack + RSTACK_SIZE - (n), -6)
 
 /*
  * C utility functions that are intrinsic to the inner VM (both
@@ -178,8 +205,6 @@ struct definition_data {
 extern void report_exception(int, vmstate_p, char *);
 extern void direct_execute(vmstate_p, vminstr_p);
 extern void execute(vmstate_p, xt_ft);
-extern vminstr_p throw_transfer(vmstate_p, cell_ft);
-extern void vm_initialize(vmstate_p);
 
 
 /*

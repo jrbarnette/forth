@@ -30,15 +30,6 @@
 
 
 void
-vm_initialize(vmstate_p vm)
-{
-    CLEAR_STACK(vm);
-    CLEAR_RSTACK(vm);
-    vm->catch_handler = NULL;
-}
-
-
-void
 execute(vmstate_p vm, xt_ft entry_xt)
 {
     vminstr_p ip = entry_xt->handler(NULL, vm, entry_xt->arg);
@@ -47,28 +38,6 @@ execute(vmstate_p vm, xt_ft entry_xt)
 	xt_ft xtok = ip->xtok;
 	ip = xtok->handler(ip + 1, vm, xtok->arg);
     }
-}
-
-
-vminstr_p
-throw_transfer(vmstate_p vm, cell_ft throw_code)
-{
-    if (vm->catch_handler == NULL) {
-        THROW(vm, throw_code);
-	return NULL;
-    }
-
-    vm->rsp = vm->catch_handler;
-    cell_ft *rsp = RSP(vm);
-
-    vminstr_p newip = (vminstr_p) PICK(rsp, 2);
-    vm->sp = (cell_ft *) PICK(rsp, 1);
-    vm->catch_handler = (cell_ft *) PICK(rsp, 0);
-    SET_RSP(vm, rsp, 3);
-
-    PICK(SP(vm), 0) = throw_code;
-
-    return newip;
 }
 
 

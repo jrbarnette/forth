@@ -73,11 +73,15 @@ exceptions, restore, then throwing further up the chain.
 
 So
     nest-source source<file ['] process-file catch unnest-source throw
-    : INTERPRET-FILE begin refill while interpret repeat ;
+    : INTERPRET-SOURCE ( i*x xt -- j*x )
+	nest-source catch unnest-source throw ;
+
+    : INTERPRET-FILE
+	source<file
+	    begin refill if ['] interpret catch ?dup else 0 -1 then until
+	source-id close-file drop throw ;
     : INCLUDE-FILE  ( i*x fileid -- j*x )
-	nest-source source<file
-	['] interpret-file catch
-	source-id close-file drop unnest-source throw ;
+	['] interpret-file interpret-source
 
 ==== One other idea...
 Instead of a catch_handler that points to the saved RSP, have a

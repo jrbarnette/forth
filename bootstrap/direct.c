@@ -15,16 +15,18 @@
 void
 direct_execute(vmstate_p vm, vminstr_p ip)
 {
-    CLEAR_STACK(vm);
-    CLEAR_RSTACK(vm);
+    vm_initialize(vm);
+    RPUSH(vm, NULL);
 
-    volatile int	throwcode;
-    if ((throwcode = CATCH(vm)) != 0) {
-	handle_exception(throwcode, vm, NULL);
-	abort();
+    int throwcode;
+    while ((throwcode = CATCH(vm)) != 0) {
+	if (vm->catch_handler == NULL) {
+	    report_exception(throwcode, vm, NULL);
+	    abort();
+	}
+	ip = throw_transfer(vm, throwcode);
     }
 
-    RPUSH(vm, NULL);
     while (ip != NULL) {
 	ip = ip->handler(ip + 1, vm, NULL);
     }

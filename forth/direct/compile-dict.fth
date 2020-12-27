@@ -43,6 +43,7 @@ create SOURCE-LINE 256 dup chars allot constant LINE-SIZE
     compile-file: forth/c-gen/core/memprim.fth
     compile-file: forth/c-gen/core/multprim.fth
     compile-file: forth/c-gen/core/vmprim.fth
+    compile-file: forth/c-gen/exception/throwprim.fth
 
     \ From here forward we can make colon definitions, minding
     \ internal dependencies.
@@ -77,6 +78,7 @@ create SOURCE-LINE 256 dup chars allot constant LINE-SIZE
 
     compile-file: forth/common/core/number.fth
     compile-file: forth/common/internal/error.fth
+    compile-file: forth/common/exception/catch.fth
 
     compile-file: forth/common/core/state.fth
     compile-file: forth/c-gen/search/base.fth

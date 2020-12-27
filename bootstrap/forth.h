@@ -97,6 +97,7 @@ typedef vminstr_p (*vminstr_fn)(vminstr_p, vmstate_p, vmarg_p);
 struct vmstate {
     a_addr_ft	sp;
     a_addr_ft	rsp;
+    a_addr_ft	catch_handler;
     cell_ft	stack[STACK_SIZE];
     cell_ft	rstack[RSTACK_SIZE];
     jmp_buf	interp_loop;
@@ -174,9 +175,11 @@ struct definition_data {
  * direct and indirect threaded).
  */
 
-extern void handle_exception(int, vmstate_p, char *);
+extern void report_exception(int, vmstate_p, char *);
 extern void direct_execute(vmstate_p, vminstr_p);
 extern void execute(vmstate_p, xt_ft);
+extern vminstr_p throw_transfer(vmstate_p, cell_ft);
+extern void vm_initialize(vmstate_p);
 
 
 /*
@@ -195,14 +198,16 @@ extern vminstr_p meta_compile(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p i_lookup(vminstr_p, vmstate_p, vmarg_p);
 
 /* vm execution primitives */
-extern vminstr_p x_exit(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p do_catch(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p undo_catch(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_execute(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p do_literal(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p do_s_quote(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p do_c_quote(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p x_exit(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_throw(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_clear(vminstr_p, vmstate_p, vmarg_p);
 extern vminstr_p x_rclear(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p do_literal(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p do_s_quote(vminstr_p, vmstate_p, vmarg_p);
+extern vminstr_p do_c_quote(vminstr_p, vmstate_p, vmarg_p);
 
 /* name definers interpretation primitives */
 extern vminstr_p do_colon(vminstr_p, vmstate_p, vmarg_p);

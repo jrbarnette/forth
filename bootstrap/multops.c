@@ -196,7 +196,7 @@ x_star_slash(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     cell_ft n3 = PICK(sp, 0);
 
     if (n3 == 0) {
-	THROW(vm, -10);
+	return throw_transfer(vm, -10);
     }
     SET_SP(vm, sp, 1);
     dmult_divide(SP(vm), n1, n2, n3);
@@ -217,7 +217,7 @@ x_star_slash_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     cell_ft n3 = PICK(sp, 0);
 
     if (n3 == 0) {
-	THROW(vm, -10);
+	return throw_transfer(vm, -10);
     }
     SET_SP(vm, sp, 1);
     dmult_divide(SP(vm), n1, n2, n3);
@@ -234,7 +234,7 @@ x_slash(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     snumber_ft n1 = PICK(sp, 1);
     snumber_ft n2 = PICK(sp, 0);
     if (n2 == 0) {
-	THROW(vm, -10);
+	return throw_transfer(vm, -10);
     }
     PICK(sp, 1) = (cell_ft) (n1 / n2);
     SET_SP(vm, sp, 1);
@@ -251,7 +251,7 @@ x_slash_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     snumber_ft n1 = PICK(sp, 1);
     snumber_ft n2 = PICK(sp, 0);
     if (n2 == 0) {
-	THROW(vm, -10);
+	return throw_transfer(vm, -10);
     }
     PICK(sp, 1) = (cell_ft) (n1 % n2);
     PICK(sp, 0) = (cell_ft) (n1 / n2);
@@ -267,7 +267,7 @@ x_f_m_slash_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     CHECK_POP(vm, 3);
     cell_ft v = PICK(sp, 0);
     if (v == 0) {
-	THROW(vm, -10);
+	return throw_transfer(vm, -10);
     }
     cell_ft d_hi = PICK(sp, 1);
     cell_ft d_lo = PICK(sp, 2);
@@ -333,7 +333,7 @@ x_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     snumber_ft n1 = PICK(sp, 1);
     snumber_ft n2 = PICK(sp, 0);
     if (n2 == 0) {
-	THROW(vm, -10);
+	return throw_transfer(vm, -10);
     }
     PICK(sp, 1) = (cell_ft) (n1 % n2);
     SET_SP(vm, sp, 1);
@@ -349,7 +349,7 @@ x_s_m_slash_rem(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     CHECK_POP(vm, 3);
     cell_ft v = PICK(sp, 0);
     if (v == 0) {
-	THROW(vm, -10);
+	return throw_transfer(vm, -10);
     }
     cell_ft d_hi = PICK(sp, 1);
     cell_ft d_lo = PICK(sp, 2);
@@ -405,7 +405,7 @@ x_u_m_slash_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
     CHECK_POP(vm, 3);
     cell_ft v = PICK(sp, 0);
     if (v == 0) {
-	THROW(vm, -10);
+	return throw_transfer(vm, -10);
     }
     cell_ft d_hi = PICK(sp, 1);
     cell_ft d_lo = PICK(sp, 2);

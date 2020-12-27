@@ -70,9 +70,9 @@ interpret_lines(vmstate_p vm, char **lines)
     assert(name != NULL);
     xt_ft xt = NAME_XT(name);
 
-    volatile int	throwcode;
+    int throwcode;
     if ((throwcode = CATCH(vm)) != 0) {
-	handle_exception(throwcode, vm, NULL);
+	report_exception(throwcode, vm, NULL);
         return;
     }
 
@@ -102,9 +102,9 @@ quit(vmstate_p vm, char *filename)
     assert(name != NULL);
     xt_ft xt = NAME_XT(name);
 
-    volatile int	throwcode;
+    int throwcode;
     while ((throwcode = CATCH(vm)) != 0) {
-        handle_exception(throwcode, vm, filename);
+        report_exception(throwcode, vm, filename);
         if (filename != NULL) {
             return EXIT_FAILURE;
         }

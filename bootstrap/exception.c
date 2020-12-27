@@ -78,7 +78,7 @@ char *forth_exceptions[] =
 
 
 void
-handle_exception(int throwcode, vmstate_p vm, char *filename)
+report_exception(int throwcode, vmstate_p vm, char *filename)
 {
     char *excdesc = forth_exceptions[~throwcode];
 

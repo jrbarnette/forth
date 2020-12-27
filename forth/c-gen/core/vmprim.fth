@@ -4,8 +4,6 @@
 \ ------  ------  ------  ------  ------  ------  ------  ------
 \  EXECUTE               6.1.1370 CORE
 \  EXIT                  6.1.1380 CORE
-\
-\  THROW               9.6.1.2275 EXCEPTION
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
 \  Contains runtime or other partial semantics for the following:
@@ -22,8 +20,6 @@ prim: EXIT          x_exit         compile-only
 prim: DO-LITERAL    do_literal     compile-only
 prim: DO-S"         do_s_quote     compile-only
 prim: DO-C"         do_c_quote     compile-only
-
-prim: THROW         x_throw
 
 prim: CLEAR         x_clear
 prim: RCLEAR        x_rclear

@@ -7,7 +7,7 @@
 : error-table:
     ( maxerr ptrn ... ptr0 n "spaces<name>" -- )
     create here >r 2 cells allot dup >r
-    0 ?do over - , dup , loop drop
+    0 ?do over - [ 1 chars ] literal / , dup , loop drop
     1+ dup r> - r> 2!
     does> ( throw-code body -- c-addr u | 0 )
     2dup 2@ within if 2drop 0 exit then
@@ -15,7 +15,7 @@
 
 -1 start-errors
 (  -1 ) no-error  \ ABORT
-(  -2 ) error: -2 THROW invoked outside of ABORT"
+(  -2 ) error: -2 THROW invoked without using ABORT"
 (  -3 ) error: stack overflow
 (  -4 ) error: stack underflow
 (  -5 ) error: return stack overflow
@@ -69,31 +69,80 @@
 ( -53 ) error: exception stack overflow
 ( -54 ) error: floating-point underflow
 ( -55 ) error: floating-point unidentified fault
-( -56 ) no-error  \ QUIT
+( -56 ) error: -56 THROW invoked without using QUIT
 ( -57 ) error: exception in sending or receiving a character
 ( -58 ) error: [IF], [ELSE], or [THEN] exception
 
 error-table: ans-error
-: .throw-code
-    dup -255 0 within if
-	dup ans-error ?dup if type cr drop exit then
-	." unassigned standard Forth error code: " 1 .r cr exit
+
+: .throw-code ( throw-code -- )
+    dup -58 0 within if ans-error ?dup if type then exit then
+    dup -255 -58 within if
+	." unhandled standard Forth error code: " 0
     then
     dup -4095 -255 within if
-	." unassigned system error: " 1 .r cr exit
+	." unhandled system error: " 0
     then
-    ." program-defined error: " 1 .r cr
-;
-
-: handle-exception ( throw-code -- )
-    dup 0= if drop exit then
-    dup -56 = if drop exit then
-    dup -1 = if clear exit then
-    dup -2 = if
-	ans-error ?dup if type cr then
-	[ -2 ans-error swap ] literal literal abort-message! exit
-    then
+    ?dup if
+	." unhandled program-defined error: "
+    then 1 .r cr
 ;
 
 : abort-message! ( c-addr u -- )
-    [ ' ans-error >body -1 over @ - 2* cells + ] literal 2! ;
+    [ ' ans-error >body -2 1+ over @ - 2* cells + ] literal 2! ;
+: quit-message! ( c-addr u -- )
+    [ ' ans-error >body -56 1+ over @ - 2* cells + ] literal 2! ;
+
+: report-exception ( throw-code -- )
+    \ ABORT
+    \   may print message
+    \   clear
+    \ ABORT"
+    \   print message
+    \   clear
+    \ QUIT
+    \   if have error message
+    \     print message
+    \     clear
+    \   else
+    \     may print message
+    \ others
+    \   if have error message
+    \     print message
+    \     clear
+    \   else
+    \     print generic message with error code
+    [ -2 ans-error swap ] literal literal abort-message! ;
+    [ -56 ans-error swap ] literal literal quit-message! ;
+;
+
+: QUIT s" " quit-message! -56 throw ;
+
+: ABORT -1 throw ;
+
+: do-abort" ( c-addr u -- ) abort-message! -2 throw ;
+: ABORT" postpone if postpone s" postpone do-abort" postpone then ;
+compile-special
+
+\ FIXME:  We unconditionally display the prompt at the start of the
+\ loop, but the standard says that invoking QUIT from the program
+\ isn't supposed to display a prompt until *after* interpreting a
+\ source line...
+
+: state-prompt state @ if s" " else s" ok " then prompt! ;
+: INTERPRET-LOOP
+    postpone [ begin state-prompt! refill while interpret repeat
+;
+
+: ENTER-FORTH
+    source<terminal
+    begin ['] INTERPRET-LOOP catch dup while report-exception repeat
+    drop
+;
+
+: QUIT
+    rclear source<terminal postpone [
+    begin state-prompt refill while
+	['] interpret catch ?dup if report-exception then
+    repeat 0 >r
+;

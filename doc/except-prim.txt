@@ -1,0 +1,123 @@
+==== This was the first idea:
+do-catch
+    push SP onto return stack (prior to pushing to data stack, below)
+    push RP onto data stack (after pushing to return stack, above)
+
+do-throw
+    pop RP and throw code from data stack
+    if throw code is 0,
+	skip the rest (shouldn't be needed, see below)
+    if RP is 0, fail
+	longjmp() out of VM interpreter loop
+    restore RP
+    pop SP from return stack
+    restore SP
+    replace TOS with throw code
+
+undo-catch
+    drop SP from return stack
+
+if do-catch doesn't push its IP, we get something like this
+    : set-catch ( * xt -- * 0 | * n )
+	do-catch ( * xt RP ) ( R: SP caller )
+	catch-handler ! execute 0 undo-catch
+    ;
+    : catch ( ... )
+	\ save input source, etc. on return stack
+	catch-handler @ >r set-catch r> catch-handler !
+	\ restore input source, etc. from return stack
+    ;
+
+    : throw ?dup if catch-handler @ do-throw then ;
+
+Trouble:
+    Various primitives need to throw, esp. for stack over/underflow.
+    The scheme above depends on the do-throw primitive being invoked
+    from a controlled location where the catch handler is recovered
+    by Forth code.  If any primitive can invoke THROW, the catch
+    handler has to be available to the VM.  So...
+
+==== This is the idea we're going with:
+Add a "catch_handler" to VM state structure.
+
+do-catch
+    push IP onto return stack
+    push SP onto return stack
+    push catch_handler onto return stack
+    push 0 onto data stack
+    put RSP into catch_handler
+
+do-throw
+    pop throw code from data stack
+    if throw code is 0, continue
+    if catch_handler is 0, fail
+	longjmp() out of VM interpreter loop
+    restore RSP from catch_handler
+    pop catch_handler from return stack
+    pop SP from return stack
+    pop IP from return stack
+    replace TOS with throw code
+
+undo-catch
+    discard 3 values from return stack
+
+So then
+    : CATCH ( ... )
+	do-catch ?dup 0= if execute undo-catch 0 then
+    ;
+
+    prim: THROW x_throw
+
+Restoring input sources is done by having any code that changes them catch
+exceptions, restore, then throwing further up the chain.
+
+So
+    nest-source source<file ['] process-file catch unnest-source throw
+    : INTERPRET-FILE begin refill while interpret repeat ;
+    : INCLUDE-FILE  ( i*x fileid -- j*x )
+	nest-source source<file
+	['] interpret-file catch
+	source-id close-file drop unnest-source throw ;
+
+==== One other idea...
+Instead of a catch_handler that points to the saved RSP, have a
+general purpose exception handler IP.
+
+That gives these primitives:
+
+save-stacks
+    push SP onto return stack
+    push catch_handler onto return stack
+    store IP in catch_handler
+    push RSP onto data stack
+
+restore-stacks
+    pop RSP from data stack
+    pop throw code from data stack
+    pop catch_handler from return stack
+    pop SP from return stack
+    push throw code to data stack
+    push RSP onto data stack
+
+drop-stacks
+    pop catch_handler from return stack
+    drop SP from return stack
+
+do-throw
+    push 0 onto data stack
+    transfer control to saved catch_handler
+
+Forth code could look like this:
+
+    : catch
+	save-stacks ?dup if
+	    catch-stacks @ >r catch-stacks ! execute drop-stacks 0
+	else
+	    catch-stacks @ restore-stacks
+	then
+    ;
+
+    : throw ?dup if do-throw then ;
+
+Advantage: ?
+Disadvantage:  Harder to understand, one extra primitive

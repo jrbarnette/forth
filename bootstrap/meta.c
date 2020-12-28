@@ -8,6 +8,7 @@
 #include <string.h>
 
 #include "forth.h"
+#include "direct.h"
 #include "dictionary.h"
 
 /*

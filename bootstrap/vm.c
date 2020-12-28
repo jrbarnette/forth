@@ -19,24 +19,33 @@
  *------  ------  ------  ------  ------  ------  ------  ------
  */
 
-/* Contains runtime semantics for the following:
+/* Contains runtime or partial semantics for the following:
  *------  ------  ------  ------  ------  ------  ------  ------
  * LITERAL               6.1.1780 CORE
  * S"                    6.1.2165 CORE
  *
  * C"                    6.2.0855 CORE EXT
+ *
+ * CATCH               9.6.1.0875 EXCEPTION
  *------  ------  ------  ------  ------  ------  ------  ------
  */
+
+
+inline vminstr_p
+xtcall(xt_ft xtok, vmstate_p vm, vminstr_p ip)
+{
+    return xtok->handler(ip, vm, xtok->arg);
+}
 
 
 void
 execute(vmstate_p vm, xt_ft entry_xt)
 {
-    vminstr_p ip = entry_xt->handler(NULL, vm, entry_xt->arg);
+    vminstr_p ip = xtcall(entry_xt, vm, NULL);
 
     while (ip != NULL) {
 	xt_ft xtok = ip->xtok;
-	ip = xtok->handler(ip + 1, vm, xtok->arg);
+	ip = xtcall(xtok, vm, ip + 1);
     }
 }
 
@@ -47,6 +56,7 @@ do_catch(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_PUSH(vm, 1);
     CHECK_RPUSH(vm, 3);
+
     cell_ft *rsp = RSP(vm);
     PICK(rsp, -1) = (cell_ft) ip;
     PICK(rsp, -2) = (cell_ft) vm->sp;
@@ -76,11 +86,8 @@ undo_catch(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 vminstr_p
 x_execute(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
-    xt_ft xtok;
-
     CHECK_POP(vm, 1);
-    xtok = (xt_ft)POP(vm);
-    return xtok->handler(ip, vm, xtok->arg);
+    return xtcall((xt_ft) POP(vm), vm, ip);
 }
 
 
@@ -89,7 +96,7 @@ vminstr_p
 x_exit(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_RPOP(vm, 1);
-    return (vminstr_p)RPOP(vm);
+    return (vminstr_p) RPOP(vm);
 }
 
 
@@ -98,10 +105,11 @@ x_throw(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
     CHECK_POP(vm, 1);
     cell_ft throw_code = POP(vm);
-    if (throw_code == 0) {
+    if (throw_code != 0) {
+	return throw_transfer(vm, throw_code);
+    } else {
 	return ip;
     }
-    return throw_transfer(vm, throw_code);
 }
 
 
@@ -137,12 +145,11 @@ do_literal(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 vminstr_p
 do_s_quote(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
-    cell_ft len = ip->cell;
-
     CHECK_PUSH(vm, 2);
+    cell_ft len = ip->cell;
     PUSH(vm, ip + 1);
     PUSH(vm, len);
-    return (vminstr_p) ((cell_ft) ip + XALIGNED(len + CELL_SIZE));
+    return (vminstr_p) (ip->data + XALIGNED(len + CELL_SIZE));
 }
 
 
@@ -150,9 +157,7 @@ do_s_quote(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 vminstr_p
 do_c_quote(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
-    cell_ft len = ip->cdata[0];
-
     CHECK_PUSH(vm, 1);
-    PUSH(vm, &ip->cdata[0]);
-    return (vminstr_p) ((cell_ft) ip + XALIGNED(len + 1));
+    PUSH(vm, ip);
+    return (vminstr_p) (ip->data + XALIGNED(ip->cdata[0] + 1));
 }

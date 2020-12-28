@@ -24,16 +24,11 @@ throw_transfer(vmstate_ft *vm, cell_ft throw_code)
     }
 
     vm->rsp = vm->catch_rsp;
-    cell_ft *rsp = RSP(vm);
+    vm->catch_rsp =         (sp_ft) RPOP(vm);
+    vm->sp =                (sp_ft) RPOP(vm);
+    PICK(SP(vm), 0) =       throw_code;
 
-    vmip_ft ip = (vmip_ft) PICK(rsp, 2);
-    vm->sp = (sp_ft) PICK(rsp, 1);
-    vm->catch_rsp = (sp_ft) PICK(rsp, 0);
-    SET_RSP(vm, rsp, 3);
-
-    PICK(SP(vm), 0) = throw_code;
-
-    return ip;
+    return (vmip_ft) RPOP(vm);
 }
 
 

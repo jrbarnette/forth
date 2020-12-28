@@ -2,6 +2,7 @@
  * Copyright 2019, by J. Richard Barnette. All Rights Reserved.
  */
 
+#include <assert.h>
 #include <stddef.h>
 
 #include "forth.h"
@@ -44,23 +45,27 @@ execute(vmstate_ft *vm, xt_ft entry_xt)
     vmip_ft ip = xtcall(entry_xt, vm, NULL);
 
     while (ip != NULL) {
-	xt_ft xtok = ip->xtok;
-	ip = xtcall(xtok, vm, ip + 1);
+	ip = xtcall(ip->xtok, vm, ip + 1);
     }
 }
 
 
-/* ( -- 0 ) ( R: -- ip sp catch-ptr ) */
+/* ( x -- x 0 ) ( R: -- ip sp catch-ptr ) */
 PRIM_HDLR(do_catch)
 {
+    /*
+     * In throw_transfer() we replace TOS with a new value.  Using
+     * CHECK_POP() here ensures TOS will exist when we throw,
+     * because having throw_transfer() handle over/underflow would
+     * be ... complicated.
+     */
+    CHECK_POP(vm, 1);
     CHECK_PUSH(vm, 1);
     CHECK_RPUSH(vm, 3);
 
-    cell_ft *rsp = RSP(vm);
-    PICK(rsp, -1) = (cell_ft) ip;
-    PICK(rsp, -2) = (cell_ft) vm->sp;
-    PICK(rsp, -3) = (cell_ft) vm->catch_rsp;
-    SET_RSP(vm, rsp, -3);
+    RPUSH(vm, (cell_ft) ip);
+    RPUSH(vm, (cell_ft) vm->sp);
+    RPUSH(vm, (cell_ft) vm->catch_rsp);
     vm->catch_rsp = vm->rsp;
     PUSH(vm, 0);
 
@@ -72,9 +77,10 @@ PRIM_HDLR(do_catch)
 PRIM_HDLR(undo_catch)
 {
     CHECK_RPOP(vm, 3);
-    cell_ft *rsp = RSP(vm);
-    vm->catch_rsp = (sp_ft) PICK(rsp, 0);
-    SET_RSP(vm, rsp, 3);
+    assert(vm->catch_rsp == vm->rsp);
+    vm->catch_rsp = (sp_ft) RPOP(vm);
+    RPOP(vm);
+    RPOP(vm);
 
     return ip;
 }

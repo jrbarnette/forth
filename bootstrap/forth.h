@@ -11,13 +11,6 @@
 #include "vmcheck.h"
 #include "prim.h"
 
-/*
- * C utility functions that are intrinsic to the inner VM (both
- * direct and indirect threaded).
- */
-
-extern void report_exception(int, vmstate_ft *, char *);
 extern void direct_execute(vmstate_ft *, vmip_ft);
-extern void execute(vmstate_ft *, xt_ft);
 
 #endif // FORTH_H

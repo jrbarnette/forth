@@ -40,6 +40,4 @@ struct name_header {
     char_ft		ident[NAME_MAX_LENGTH];
 };
 
-extern name_p lookup(vmstate_ft *, c_addr_ft, cell_ft);
-
 #endif // NAMES_H

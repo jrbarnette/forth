@@ -176,8 +176,8 @@ struct options forth_options;
 int
 main(int argc, char *argv[])
 {
-    struct vmstate	vmstate;
-    char_ft		ident[NAME_MAX_LENGTH + 1];
+    vmstate_ft	vmstate;
+    char_ft	ident[NAME_MAX_LENGTH + 1];
 
     process_args(argc, argv, &forth_options);
     direct_execute(&vmstate, direct_program);

@@ -8,8 +8,9 @@
 #include <string.h>
 
 #include "forth.h"
-#include "direct.h"
+#include "names.h"
 #include "dictionary.h"
+#include "direct.h"
 
 /*
  * meta.c - Forth primitives to enable meta-interpret and

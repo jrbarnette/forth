@@ -8,8 +8,8 @@
 #include "forth.h"
 
 /*
- * Support for dictionary initialization by interpreting direct-threaded
- * code stored in arrays.
+ * Internal support for writing direct-threaded code and for implementing
+ * the primitives called from the direct-thread interpreter loop.
  */
 
 /* direct threaded name definition primitives */
@@ -31,5 +31,15 @@ extern PRIM_HDLR(i_lookup);
 
 #define DIRECT_FORTH(nm)	vminstr_ft nm[] = {
 #define END_DIRECT		X(x_exit) };
+
+
+/*
+ * Miscellaneous C utility declarations.
+ */
+
+extern addr_ft allot(vmstate_ft *, cell_ft);
+
+#define COMMA(vm, x)	(*(a_addr_ft)allot((vm), CELL_SIZE) = (cell_ft) (x))
+#define COMPILE(vm, xt)	COMMA(vm, xt)
 
 #endif // DIRECT_H

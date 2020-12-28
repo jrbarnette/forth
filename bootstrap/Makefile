@@ -34,17 +34,16 @@ SOURCES = $(COMMON_SRC) $(FORTH_SRC) $(DIRECT_SRC) $(HEADER_SRC)
 
 CMDLINE_DEP = forth.o exception.o cmdline.o direct_test.o terminal.o
 
-DIRECT_DEP =	initdict.o	meta.o		names.o
-
-DICT_DEP =	$(DIRECT_DEP)	\
-		allot.o		exception.o	forth.o		\
-		terminal.o
-
-PRIM_DEP =	$(DICT_DEP)	\
-		control.o	definers.o	direct.o	\
+DIRECT_DEP =	allot.o		initdict.o	meta.o		names.o
+DICT_DEP =	exception.o	forth.o		terminal.o
+PRIM_DEP =	control.o	definers.o	direct.o	\
 		direct_test.o	fileops.o	memops.o	\
 		multops.o	stackops.o	arithops.o	\
 		vm.o
+
+PRIM_HDRS = forth.h ftypes.h vmstate.h xtoken.h vmcheck.h prim.h
+DICT_HDRS = names.h dictionary.h
+DIRECT_HDRS = direct.h
 
 CHECKENABLE = CHECK
 CHECKDISABLE = NOCHECK
@@ -57,10 +56,10 @@ LDFLAGS = -lreadline
 all: forth tags
 
 $(CMDLINE_DEP): cmdline.h
-$(PRIM_DEP): forth.h ftypes.h vmstate.h xtoken.h vmcheck.h prim.h
-$(DICT_DEP): names.h dictionary.h
-$(DIRECT_DEP): direct.h
-direct_test.o: direct.h names.h
+$(PRIM_DEP): $(PRIM_HDRS)
+$(DICT_DEP): $(PRIM_HDRS) $(DICT_HDRS)
+$(DIRECT_DEP): $(PRIM_HDRS) $(DICT_HDRS) $(DIRECT_HDRS)
+direct_test.o: $(PRIM_HDRS) names.h direct.h
 
 forth: $(FORTH_OBJ)
 	$(CC) $(LDFLAGS) -o $@ $(FORTH_OBJ)

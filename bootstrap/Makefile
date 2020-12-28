@@ -15,7 +15,7 @@ COMMON_SRC =			\
 	    vm.c
 
 FORTH_SRC =			\
-	    dictionary.c	\
+	    allot.c	\
 	    forth.c		\
 	    initdict.c		\
 	    meta.c		\
@@ -30,7 +30,7 @@ SOURCES = $(COMMON_SRC) $(FORTH_SRC) $(DIRECT_SRC) $(HEADER_SRC)
 
 CMDLINE_DEP = forth.o exception.o cmdline.o direct_test.o terminal.o
 
-DICT_DEP =  dictionary.o	\
+DICT_DEP =  allot.o		\
 	    exception.o		\
 	    forth.o		\
 	    initdict.o		\

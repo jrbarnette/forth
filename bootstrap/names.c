@@ -30,7 +30,7 @@
  * its name header.  Return NULL if not found.
  */
 name_p
-lookup(vmstate_p vm, c_addr_ft id, cell_ft len)
+lookup(vmstate_ft *vm, c_addr_ft id, cell_ft len)
 {
     if (len == 0)
 	THROW(vm, -16);
@@ -54,7 +54,7 @@ lookup(vmstate_p vm, c_addr_ft id, cell_ft len)
  * Routines for adding named definitions into the dictionary.
  */
 static name_p
-addname(vmstate_p vm, c_addr_ft id, cell_ft len, vminstr_fn handler)
+addname(vmstate_ft *vm, c_addr_ft id, cell_ft len, vmhdlr_fn handler)
 {
     if (len == 0)		THROW(vm, -16);
     if (len > NAME_MAX_LENGTH)	THROW(vm, -19);
@@ -82,13 +82,12 @@ linkname(name_p name)
 
 /* -------------------------------------------------------------- */
 
-vminstr_p
-i_startname(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(i_startname)
 {
     CHECK_PUSH(vm, 1);
     char *id = (ip++)->id;
     cell_ft len = strlen(id);
-    vminstr_fn handler = (ip++)->handler;
+    vmhdlr_fn handler = (ip++)->handler;
     name_p name = addname(vm, (c_addr_ft) id, len, handler);
     PUSH(vm, name);
 
@@ -96,8 +95,7 @@ i_startname(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-vminstr_p
-i_addname(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(i_addname)
 {
     char *id = (ip++)->id;
     cell_ft len = strlen(id);
@@ -107,16 +105,14 @@ i_addname(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-vminstr_p
-i_setflags(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(i_setflags)
 {
     NAME_SET_TYPE(FORTH_WORDLIST, ip->cell);
     return ip + 1;
 }
 
 
-vminstr_p
-i_linkname(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(i_linkname)
 {
     CHECK_POP(vm, 1);
     linkname((name_p) POP(vm));

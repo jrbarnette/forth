@@ -174,8 +174,7 @@ dmult_divide(cell_ft *sp, cell_ft n1, cell_ft n2, cell_ft n3)
 
 
 /* ( x1 x2 -- x ) */
-vminstr_p
-x_star(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_star)
 {
     CHECK_POP(vm, 2);
 
@@ -187,8 +186,7 @@ x_star(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( n1 n2 n3 -- n4 ) */
-vminstr_p
-x_star_slash(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_star_slash)
 {
     CHECK_POP(vm, 3);
 
@@ -207,8 +205,7 @@ x_star_slash(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( n1 n2 n3 -- n4 n5 ) */
-vminstr_p
-x_star_slash_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_star_slash_mod)
 {
     CHECK_POP(vm, 3);
 
@@ -225,8 +222,7 @@ x_star_slash_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( n1 n2 -- n ) */
-vminstr_p
-x_slash(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_slash)
 {
     CHECK_POP(vm, 2);
 
@@ -243,8 +239,7 @@ x_slash(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( n1 n2 -- n3 n4 ) */
-vminstr_p
-x_slash_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_slash_mod)
 {
     CHECK_POP(vm, 2);
 
@@ -261,8 +256,7 @@ x_slash_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( d n1 -- n2 n3 ) */
-vminstr_p
-x_f_m_slash_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_f_m_slash_mod)
 {
     CHECK_POP(vm, 3);
 
@@ -308,8 +302,7 @@ x_f_m_slash_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( n1 n2 -- d ) */
-vminstr_p
-x_m_star(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_m_star)
 {
     CHECK_POP(vm, 2);
 
@@ -326,8 +319,7 @@ x_m_star(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( n1 n2 -- n ) */
-vminstr_p
-x_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_mod)
 {
     CHECK_POP(vm, 2);
 
@@ -344,8 +336,7 @@ x_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( d n1 -- n2 n3 ) */
-vminstr_p
-x_s_m_slash_rem(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_s_m_slash_rem)
 {
     CHECK_POP(vm, 3);
 
@@ -385,8 +376,7 @@ x_s_m_slash_rem(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( u1 u2 -- ud ) */
-vminstr_p
-x_u_m_star(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_u_m_star)
 {
     CHECK_POP(vm, 2);
 
@@ -400,8 +390,7 @@ x_u_m_star(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( ud u1 -- u2 u3 ) */
-vminstr_p
-x_u_m_slash_mod(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_u_m_slash_mod)
 {
     CHECK_POP(vm, 3);
 

@@ -16,8 +16,8 @@
  * direct and indirect threaded).
  */
 
-extern void report_exception(int, vmstate_p, char *);
-extern void direct_execute(vmstate_p, vminstr_p);
-extern void execute(vmstate_p, xt_ft);
+extern void report_exception(int, vmstate_ft *, char *);
+extern void direct_execute(vmstate_ft *, vmip_ft);
+extern void execute(vmstate_ft *, xt_ft);
 
 #endif // FORTH_H

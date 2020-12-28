@@ -15,7 +15,7 @@
 
 /* C equivalent to Forth ALLOT */
 addr_ft
-allot(vmstate_p vm, size_t n)
+allot(vmstate_ft *vm, size_t n)
 {
     addr_ft	h = HERE;
     addr_ft	nh = h + n;

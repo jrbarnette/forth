@@ -33,7 +33,7 @@ static char *dictionary_stats[] = {
 
 
 static void
-interpret_lines(vmstate_p vm, char **lines)
+interpret_lines(vmstate_ft *vm, char **lines)
 {
     char id[] = "EVALUATE";
     name_p name = lookup(vm, (c_addr_ft) id, sizeof (id) - 1);
@@ -65,7 +65,7 @@ interpret_lines(vmstate_p vm, char **lines)
 
 
 static int
-quit(vmstate_p vm, char *filename)
+quit(vmstate_ft *vm, char *filename)
 {
     char id[] = "QUIT";
     name_p name = lookup(vm, (c_addr_ft) id, sizeof (id) - 1);
@@ -85,7 +85,7 @@ quit(vmstate_p vm, char *filename)
 
 
 static int
-interpret_file(vmstate_p vm, char *filename)
+interpret_file(vmstate_ft *vm, char *filename)
 {
     DICT.lineno = 0;
     if (filename != NULL) {
@@ -111,7 +111,7 @@ interpret_file(vmstate_p vm, char *filename)
 
 
 static int
-interpret_arguments(vmstate_p vm, int argc, char *argv[])
+interpret_arguments(vmstate_ft *vm, int argc, char *argv[])
 {
     int i;
     for (i = 0; i < argc; i++) {
@@ -127,7 +127,7 @@ interpret_arguments(vmstate_p vm, int argc, char *argv[])
 int
 main(int argc, char *argv[])
 {
-    struct vmstate	vmstate;
+    vmstate_ft vmstate;
 
     process_args(argc, argv, &forth_options);
     direct_execute(&vmstate, initialize_forth);

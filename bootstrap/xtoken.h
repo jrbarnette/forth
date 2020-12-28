@@ -35,12 +35,16 @@
 
 /* Our basic types need forward references to incomplete structures */
 typedef struct definition_data *	xt_ft;
-typedef union instruction_data		vminstr_d;
-typedef union instruction_data *	vminstr_p;
-typedef union parameter_data		vmarg_d;
-typedef union parameter_data *		vmarg_p;
+typedef union instruction_data		vminstr_ft;
+typedef union instruction_data *	vmip_ft;
+typedef union parameter_data		vmarg_ft;
 
-typedef vminstr_p (*vminstr_fn)(vminstr_p, vmstate_p, vmarg_p);
+#define DEFINER(hdlr, arg) 	\
+    vmip_ft hdlr(vmip_ft ip, vmstate_ft *vm, vmarg_ft *arg)
+
+#define PRIM_HDLR(hdlr)		DEFINER(hdlr, ignore)
+
+typedef PRIM_HDLR((*vmhdlr_fn));
 
 /* Now resolve the forward references in dependency order */
 union instruction_data {
@@ -52,24 +56,23 @@ union instruction_data {
     addr_unit_ft	data[CELL_SIZE];
 
     /* direct execution only */
-    vminstr_fn		handler;
-    vminstr_p		ip;
+    vmhdlr_fn		handler;
+    vmip_ft		ip;
     char *		id;
 };
 
 union parameter_data {
-    vminstr_p		ip;
+    vmip_ft		ip;
     xt_ft		xtok;
     cell_ft		cell;
     char_ft		cdata[CELL_SIZE / CHAR_SIZE];
     addr_unit_ft	data[CELL_SIZE];
-    vminstr_d		vminstrs[1];
+    vminstr_ft		vminstrs[1];
 };
 
 struct definition_data {
-    vminstr_fn		handler;
-    vmarg_d		arg[1];
+    vmhdlr_fn		handler;
+    vmarg_ft		arg[1];
 };
-
 
 #endif // XTOKEN_H

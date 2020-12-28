@@ -81,8 +81,7 @@
 cell_ft dictionary[DICTIONARY_CELLS];
 
 
-vminstr_p
-i_call(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(i_call)
 {
     CHECK_RPUSH(vm, 1);
     RPUSH(vm, ip + 1);

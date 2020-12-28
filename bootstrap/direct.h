@@ -13,15 +13,15 @@
  */
 
 /* direct threaded name definition primitives */
-extern vminstr_p i_startname(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p i_addname(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p i_setflags(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p i_linkname(vminstr_p, vmstate_p, vmarg_p);
+extern PRIM_HDLR(i_startname);
+extern PRIM_HDLR(i_addname);
+extern PRIM_HDLR(i_setflags);
+extern PRIM_HDLR(i_linkname);
 
 /* meta interpretation primitives */
-extern vminstr_p meta_interpret(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p meta_compile(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p i_lookup(vminstr_p, vmstate_p, vmarg_p);
+extern PRIM_HDLR(meta_interpret);
+extern PRIM_HDLR(meta_compile);
+extern PRIM_HDLR(i_lookup);
 
 
 #define X(x)		{ .handler = x },
@@ -29,7 +29,7 @@ extern vminstr_p i_lookup(vminstr_p, vmstate_p, vmarg_p);
 #define N(n)		{ .cell = (cell_ft) (n) },
 #define L(x)		X(do_literal) N(x)
 
-#define DIRECT_FORTH(nm)	vminstr_d nm[] = {
+#define DIRECT_FORTH(nm)	vminstr_ft nm[] = {
 #define END_DIRECT		X(x_exit) };
 
 #endif // DIRECT_H

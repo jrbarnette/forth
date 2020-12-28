@@ -23,8 +23,7 @@
 
 
 /* ( x a-addr -- ) */
-vminstr_p
-x_store(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_store)
 {
     cell_ft *sp = SP(vm);
     CHECK_POP(vm, 2);
@@ -35,8 +34,7 @@ x_store(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( a-addr -- x ) */
-vminstr_p
-x_fetch(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_fetch)
 {
     cell_ft *sp = SP(vm);
     CHECK_POP(vm, 1);
@@ -46,8 +44,7 @@ x_fetch(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( char c-addr -- ) */
-vminstr_p
-x_c_store(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_c_store)
 {
     cell_ft *sp = SP(vm);
     CHECK_POP(vm, 2);
@@ -58,8 +55,7 @@ x_c_store(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( c-addr -- char ) */
-vminstr_p
-x_c_fetch(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_c_fetch)
 {
     cell_ft *sp = SP(vm);
     CHECK_POP(vm, 1);
@@ -69,8 +65,7 @@ x_c_fetch(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( c-addr u char -- ) */
-vminstr_p
-x_fill(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_fill)
 {
     char *dst;
     size_t len;
@@ -87,8 +82,7 @@ x_fill(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( addr1 addr2 u -- ) */
-vminstr_p
-x_move(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_move)
 {
     char *src, *dst;
     size_t len;

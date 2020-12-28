@@ -13,14 +13,14 @@
 
 
 void
-direct_execute(vmstate_p vm, vminstr_p ip)
+direct_execute(vmstate_ft *vm, vmip_ft ip)
 {
     vm_initialize(vm);
     RPUSH(vm, NULL);
 
     int throwcode;
     while ((throwcode = CATCH(vm)) != 0) {
-	if (vm->catch_handler == NULL) {
+	if (vm->catch_rsp == NULL) {
 	    report_exception(throwcode, vm, NULL);
 	    abort();
 	}

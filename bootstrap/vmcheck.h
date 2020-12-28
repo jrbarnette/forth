@@ -15,8 +15,8 @@
  * this function's behavior is coupled to the primitives do_catch(),
  * undo_catch(), and x_throw() in vm.c.
  */
-inline vminstr_p
-throw_transfer(vmstate_p vm, cell_ft throw_code)
+inline vmip_ft
+throw_transfer(vmstate_ft *vm, cell_ft throw_code)
 {
     if (vm->catch_rsp == NULL) {
         THROW(vm, throw_code);
@@ -26,7 +26,7 @@ throw_transfer(vmstate_p vm, cell_ft throw_code)
     vm->rsp = vm->catch_rsp;
     cell_ft *rsp = RSP(vm);
 
-    vminstr_p ip = (vminstr_p) PICK(rsp, 2);
+    vmip_ft ip = (vmip_ft) PICK(rsp, 2);
     vm->sp = (sp_ft) PICK(rsp, 1);
     vm->catch_rsp = (sp_ft) PICK(rsp, 0);
     SET_RSP(vm, rsp, 3);

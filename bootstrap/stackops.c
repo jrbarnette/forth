@@ -30,8 +30,7 @@
 
 
 /* ( x -- ) ( R:  -- x ) execution semantics */
-vminstr_p
-x_to_r(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_to_r)
 {
     CHECK_POP(vm, 1);
     CHECK_RPUSH(vm, 1);
@@ -41,8 +40,7 @@ x_to_r(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( x -- 0 | x x ) */
-vminstr_p
-x_question_dup(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_question_dup)
 {
     cell_ft *sp = SP(vm);
     cell_ft x;
@@ -57,8 +55,7 @@ x_question_dup(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( -- +n ) */
-vminstr_p
-x_depth(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_depth)
 {
     cell_ft depth = DEPTH(vm);
     CHECK_PUSH(vm, 1);
@@ -68,8 +65,7 @@ x_depth(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( x -- ) */
-vminstr_p
-x_drop(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_drop)
 {
     CHECK_POP(vm, 1);
     (void) POP(vm);
@@ -78,8 +74,7 @@ x_drop(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( x -- x x ) */
-vminstr_p
-x_dup(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_dup)
 {
     cell_ft *sp = SP(vm);
     CHECK_POP(vm, 1);
@@ -90,8 +85,7 @@ x_dup(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( x1 x2 -- x1 x2 x1 ) */
-vminstr_p
-x_over(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_over)
 {
     cell_ft *sp = SP(vm);
     CHECK_POP(vm, 2);
@@ -102,8 +96,7 @@ x_over(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( -- x ) ( R: x -- ) execution semantics */
-vminstr_p
-x_r_from(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_r_from)
 {
     CHECK_RPOP(vm, 1);
     CHECK_PUSH(vm, 1);
@@ -113,8 +106,7 @@ x_r_from(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( -- x ) ( R: x -- x ) execution semantics */
-vminstr_p
-x_r_fetch(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_r_fetch)
 {
     CHECK_RPOP(vm, 1);
     CHECK_PUSH(vm, 1);
@@ -124,8 +116,7 @@ x_r_fetch(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( x1 x2 x3 -- x2 x3 x1 ) */
-vminstr_p
-x_rot(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_rot)
 {
     a_addr_ft sp = SP(vm);
     cell_ft t;
@@ -140,8 +131,7 @@ x_rot(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( x1 x2 -- x2 x1 ) */
-vminstr_p
-x_swap(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_swap)
 {
     a_addr_ft sp = SP(vm);
     cell_ft t;
@@ -155,8 +145,7 @@ x_swap(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( x1 x2 -- ) ( R:  -- x1 x2 ) execution semantics */
-vminstr_p
-x_two_to_r(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_two_to_r)
 {
     CHECK_POP(vm, 2);
     CHECK_RPUSH(vm, 2);
@@ -171,8 +160,7 @@ x_two_to_r(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( -- x1 x2 ) ( R: x1 x2 -- ) execution semantics */
-vminstr_p
-x_two_r_from(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_two_r_from)
 {
     CHECK_PUSH(vm, 2);
     CHECK_RPOP(vm, 2);
@@ -187,8 +175,7 @@ x_two_r_from(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( -- x1 x2 ) ( R: x1 x2 -- x1 x2 ) execution semantics */
-vminstr_p
-x_two_r_fetch(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_two_r_fetch)
 {
     CHECK_PUSH(vm, 2);
     CHECK_RPOP(vm, 2);
@@ -202,8 +189,7 @@ x_two_r_fetch(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( xu ... x0 u -- xu ... x0 xu ) */
-vminstr_p
-x_pick(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_pick)
 {
     a_addr_ft sp = SP(vm);
     cell_ft t;
@@ -217,8 +203,7 @@ x_pick(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( xu xu-1 ... x0 u -- xu-1 ... x0 xu ) */
-vminstr_p
-x_roll(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_roll)
 {
     CHECK_POP(vm, 1);
     a_addr_ft sp = SP(vm);

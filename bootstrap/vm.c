@@ -31,17 +31,17 @@
  */
 
 
-inline vminstr_p
-xtcall(xt_ft xtok, vmstate_p vm, vminstr_p ip)
+inline vmip_ft
+xtcall(xt_ft xtok, vmstate_ft *vm, vmip_ft ip)
 {
     return xtok->handler(ip, vm, xtok->arg);
 }
 
 
 void
-execute(vmstate_p vm, xt_ft entry_xt)
+execute(vmstate_ft *vm, xt_ft entry_xt)
 {
-    vminstr_p ip = xtcall(entry_xt, vm, NULL);
+    vmip_ft ip = xtcall(entry_xt, vm, NULL);
 
     while (ip != NULL) {
 	xt_ft xtok = ip->xtok;
@@ -51,8 +51,7 @@ execute(vmstate_p vm, xt_ft entry_xt)
 
 
 /* ( -- 0 ) ( R: -- ip sp catch-ptr ) */
-vminstr_p
-do_catch(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(do_catch)
 {
     CHECK_PUSH(vm, 1);
     CHECK_RPUSH(vm, 3);
@@ -70,8 +69,7 @@ do_catch(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( -- ) ( R: ip sp catch-ptr -- ) */
-vminstr_p
-undo_catch(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(undo_catch)
 {
     CHECK_RPOP(vm, 3);
     cell_ft *rsp = RSP(vm);
@@ -83,8 +81,7 @@ undo_catch(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( i*x xt -- i*j ) */
-vminstr_p
-x_execute(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_execute)
 {
     CHECK_POP(vm, 1);
     return xtcall((xt_ft) POP(vm), vm, ip);
@@ -92,16 +89,14 @@ x_execute(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( R: nest-sys -- ) execution semantics */
-vminstr_p
-x_exit(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_exit)
 {
     CHECK_RPOP(vm, 1);
-    return (vminstr_p) RPOP(vm);
+    return (vmip_ft) RPOP(vm);
 }
 
 
-vminstr_p
-x_throw(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_throw)
 {
     CHECK_POP(vm, 1);
     cell_ft throw_code = POP(vm);
@@ -114,8 +109,7 @@ x_throw(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( i*x -- ) */
-vminstr_p
-x_clear(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_clear)
 {
     CLEAR_STACK(vm);
     return ip;
@@ -123,8 +117,7 @@ x_clear(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( R: i*x -- ) */
-vminstr_p
-x_rclear(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_rclear)
 {
     CLEAR_RSTACK(vm);
     return ip;
@@ -132,8 +125,7 @@ x_rclear(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( -- x ) runtime semantics */
-vminstr_p
-do_literal(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(do_literal)
 {
     CHECK_PUSH(vm, 1);
     PUSH(vm, ip->cell);
@@ -142,22 +134,20 @@ do_literal(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( -- c-addr u ) runtime semantics */
-vminstr_p
-do_s_quote(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(do_s_quote)
 {
     CHECK_PUSH(vm, 2);
     cell_ft len = ip->cell;
     PUSH(vm, ip + 1);
     PUSH(vm, len);
-    return (vminstr_p) (ip->data + XALIGNED(len + CELL_SIZE));
+    return (vmip_ft) (ip->data + XALIGNED(len + CELL_SIZE));
 }
 
 
 /* ( -- c-addr ) runtime semantics */
-vminstr_p
-do_c_quote(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(do_c_quote)
 {
     CHECK_PUSH(vm, 1);
     PUSH(vm, ip);
-    return (vminstr_p) (ip->data + XALIGNED(ip->cdata[0] + 1));
+    return (vmip_ft) (ip->data + XALIGNED(ip->cdata[0] + 1));
 }

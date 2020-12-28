@@ -10,105 +10,105 @@
  */
 
 /* vm execution primitives */
-extern vminstr_p do_catch(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p undo_catch(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_execute(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_exit(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_throw(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_clear(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_rclear(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p do_literal(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p do_s_quote(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p do_c_quote(vminstr_p, vmstate_p, vmarg_p);
+extern PRIM_HDLR(do_catch);
+extern PRIM_HDLR(undo_catch);
+extern PRIM_HDLR(x_execute);
+extern PRIM_HDLR(x_exit);
+extern PRIM_HDLR(x_throw);
+extern PRIM_HDLR(x_clear);
+extern PRIM_HDLR(x_rclear);
+extern PRIM_HDLR(do_literal);
+extern PRIM_HDLR(do_s_quote);
+extern PRIM_HDLR(do_c_quote);
 
 /* name definers interpretation primitives */
-extern vminstr_p do_colon(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p do_constant(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p do_create(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p do_variable(vminstr_p, vmstate_p, vmarg_p);
+extern PRIM_HDLR(do_colon);
+extern PRIM_HDLR(do_constant);
+extern PRIM_HDLR(do_create);
+extern PRIM_HDLR(do_variable);
 
 /* stack primitives */
-extern vminstr_p x_to_r(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_question_dup(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_depth(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_drop(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_dup(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_over(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_r_from(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_r_fetch(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_rot(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_swap(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_two_to_r(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_two_r_from(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_two_r_fetch(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_pick(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_roll(vminstr_p, vmstate_p, vmarg_p);
+extern PRIM_HDLR(x_to_r);
+extern PRIM_HDLR(x_question_dup);
+extern PRIM_HDLR(x_depth);
+extern PRIM_HDLR(x_drop);
+extern PRIM_HDLR(x_dup);
+extern PRIM_HDLR(x_over);
+extern PRIM_HDLR(x_r_from);
+extern PRIM_HDLR(x_r_fetch);
+extern PRIM_HDLR(x_rot);
+extern PRIM_HDLR(x_swap);
+extern PRIM_HDLR(x_two_to_r);
+extern PRIM_HDLR(x_two_r_from);
+extern PRIM_HDLR(x_two_r_fetch);
+extern PRIM_HDLR(x_pick);
+extern PRIM_HDLR(x_roll);
 
 /* arithmetic and logical primitives */
-extern vminstr_p x_plus(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_minus(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_two_star(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_two_slash(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_less_than(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_equals(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_greater_than(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_and(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_invert(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_lshift(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_negate(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_or(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_rshift(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_u_less(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_xor(vminstr_p, vmstate_p, vmarg_p);
+extern PRIM_HDLR(x_plus);
+extern PRIM_HDLR(x_minus);
+extern PRIM_HDLR(x_two_star);
+extern PRIM_HDLR(x_two_slash);
+extern PRIM_HDLR(x_less_than);
+extern PRIM_HDLR(x_equals);
+extern PRIM_HDLR(x_greater_than);
+extern PRIM_HDLR(x_and);
+extern PRIM_HDLR(x_invert);
+extern PRIM_HDLR(x_lshift);
+extern PRIM_HDLR(x_negate);
+extern PRIM_HDLR(x_or);
+extern PRIM_HDLR(x_rshift);
+extern PRIM_HDLR(x_u_less);
+extern PRIM_HDLR(x_xor);
 
 /* memory primitives */
-extern vminstr_p x_store(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_fetch(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_c_store(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_c_fetch(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_fill(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_move(vminstr_p, vmstate_p, vmarg_p);
+extern PRIM_HDLR(x_store);
+extern PRIM_HDLR(x_fetch);
+extern PRIM_HDLR(x_c_store);
+extern PRIM_HDLR(x_c_fetch);
+extern PRIM_HDLR(x_fill);
+extern PRIM_HDLR(x_move);
 
 /* multiple cell multiply and divide primitives */
-extern vminstr_p x_star(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_star_slash(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_star_slash_mod(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_slash(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_slash_mod(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_f_m_slash_mod(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_m_star(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_mod(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_s_m_slash_rem(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_u_m_star(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_u_m_slash_mod(vminstr_p, vmstate_p, vmarg_p);
+extern PRIM_HDLR(x_star);
+extern PRIM_HDLR(x_star_slash);
+extern PRIM_HDLR(x_star_slash_mod);
+extern PRIM_HDLR(x_slash);
+extern PRIM_HDLR(x_slash_mod);
+extern PRIM_HDLR(x_f_m_slash_mod);
+extern PRIM_HDLR(x_m_star);
+extern PRIM_HDLR(x_mod);
+extern PRIM_HDLR(x_s_m_slash_rem);
+extern PRIM_HDLR(x_u_m_star);
+extern PRIM_HDLR(x_u_m_slash_mod);
 
 /* terminal I/O primitives */
-extern vminstr_p x_emit(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_prompt_accept(vminstr_p, vmstate_p, vmarg_p);
+extern PRIM_HDLR(x_emit);
+extern PRIM_HDLR(x_prompt_accept);
 
 /* control flow primitives */
-extern vminstr_p do_skip(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p do_fskip(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p do_plus_loop(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p do_do(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_i(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_j(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_unloop(vminstr_p, vmstate_p, vmarg_p);
+extern PRIM_HDLR(do_skip);
+extern PRIM_HDLR(do_fskip);
+extern PRIM_HDLR(do_plus_loop);
+extern PRIM_HDLR(do_do);
+extern PRIM_HDLR(x_i);
+extern PRIM_HDLR(x_j);
+extern PRIM_HDLR(x_unloop);
 
 /* file I/O primitives */
-extern vminstr_p x_bin(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_close_file(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_create_file(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_file_position(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_file_size(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_open_file(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_r_o(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_r_w(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_read_file(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_read_line(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_reposition_file(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_w_o(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_write_file(vminstr_p, vmstate_p, vmarg_p);
-extern vminstr_p x_write_line(vminstr_p, vmstate_p, vmarg_p);
+extern PRIM_HDLR(x_bin);
+extern PRIM_HDLR(x_close_file);
+extern PRIM_HDLR(x_create_file);
+extern PRIM_HDLR(x_file_position);
+extern PRIM_HDLR(x_file_size);
+extern PRIM_HDLR(x_open_file);
+extern PRIM_HDLR(x_r_o);
+extern PRIM_HDLR(x_r_w);
+extern PRIM_HDLR(x_read_file);
+extern PRIM_HDLR(x_read_line);
+extern PRIM_HDLR(x_reposition_file);
+extern PRIM_HDLR(x_w_o);
+extern PRIM_HDLR(x_write_file);
+extern PRIM_HDLR(x_write_line);
 
 #endif // PRIM_H

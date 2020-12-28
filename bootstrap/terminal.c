@@ -26,8 +26,7 @@
 
 
 /* ( x -- ) */
-vminstr_p
-x_emit(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_emit)
 {
     CHECK_POP(vm, 1);
     putc((char_ft) POP(vm), stdout);
@@ -36,8 +35,7 @@ x_emit(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( c-addr u prompt -- flag len ) */
-vminstr_p
-x_prompt_accept(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_prompt_accept)
 {
     CHECK_POP(vm, 3);
 

@@ -36,15 +36,13 @@
  */
 
 
-vminstr_p
-do_skip(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(do_skip)
 {
     return ip + ip->offset;
 }
 
 
-vminstr_p
-do_fskip(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(do_fskip)
 {
     CHECK_POP(vm, 1);
     if (POP(vm) == 0)
@@ -55,8 +53,7 @@ do_fskip(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( n -- ) ( R: loop-sys1 -- | loop-sys2 ) runtime semantics */
-vminstr_p
-do_plus_loop(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(do_plus_loop)
 {
     CHECK_POP(vm, 1);
     CHECK_RPOP(vm, 2);
@@ -71,8 +68,7 @@ do_plus_loop(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( x1 x2 -- ) ( R: -- loop-sys ) runtime semantics */
-vminstr_p
-do_do(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(do_do)
 {
     cell_ft *sp = SP(vm);
     cell_ft *rsp = RSP(vm);
@@ -90,8 +86,7 @@ do_do(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( -- x ) ( R: loop-sys -- loop-sys ) execution semantics */
-vminstr_p
-x_i(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_i)
 {
     CHECK_RPOP(vm, 2);
     CHECK_PUSH(vm, 1);
@@ -103,8 +98,7 @@ x_i(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 /* ( -- x ) ( R: loop-sys1 loop-sys2 -- loop-sys1 loop-sys2 ) */
 /*          execution semantics */
-vminstr_p
-x_j(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_j)
 {
     CHECK_RPOP(vm, 4);
     CHECK_PUSH(vm, 1);
@@ -115,8 +109,7 @@ x_j(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( -- ) ( R: loop-sys -- ) execution semantics */
-vminstr_p
-x_unloop(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_unloop)
 {
     CHECK_RPOP(vm, 2);
     SET_RSP(vm, RSP(vm), 2);

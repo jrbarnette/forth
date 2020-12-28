@@ -33,14 +33,14 @@
 
 typedef cell_ft *sp_ft;
 
-typedef struct vmstate {
+typedef struct {
     sp_ft	sp;
     sp_ft	rsp;
     sp_ft	catch_rsp;
     cell_ft	stack[STACK_SIZE];
     cell_ft	rstack[RSTACK_SIZE];
     jmp_buf	interp_loop;
-} *vmstate_p;
+} vmstate_ft;
 
 
 #define CLEAR_STACK(vm)		((vm)->sp = (vm)->stack + STACK_SIZE)
@@ -67,7 +67,7 @@ typedef struct vmstate {
 
 
 inline void
-vm_initialize(vmstate_p vm) {
+vm_initialize(vmstate_ft *vm) {
     CLEAR_STACK(vm);
     CLEAR_RSTACK(vm);
     vm->catch_rsp = NULL;

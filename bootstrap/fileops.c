@@ -62,7 +62,7 @@
  *     R/O CREATE-FILE opens the file for writing as well.
  */
 static void
-do_open_create(vmstate_p vm, bool is_open)
+do_open_create(vmstate_ft *vm, bool is_open)
 {
     char filename[256];
     cell_ft fam, len;
@@ -114,8 +114,7 @@ do_open_create(vmstate_p vm, bool is_open)
 
 
 /* ( fam1 -- fam2 ) */
-vminstr_p
-x_bin(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_bin)
 {
     cell_ft *sp = SP(vm);
     CHECK_POP(vm, 1);
@@ -125,8 +124,7 @@ x_bin(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( fileid -- ior ) */
-vminstr_p
-x_close_file(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_close_file)
 {
     cell_ft *sp = SP(vm);
     FILE *fp;
@@ -142,8 +140,7 @@ x_close_file(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( c-addr u fam -- fileid ior ) */
-vminstr_p
-x_create_file(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_create_file)
 {
     CHECK_POP(vm, 3);
     do_open_create(vm, false);
@@ -152,8 +149,7 @@ x_create_file(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( fileid -- ud ior ) */
-vminstr_p
-x_file_position(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_file_position)
 {
     cell_ft *sp = SP(vm);
     FILE *fp;
@@ -177,8 +173,7 @@ x_file_position(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( fileid -- ud ior ) */
-vminstr_p
-x_file_size(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_file_size)
 {
     CHECK_POP(vm, 1);
     CHECK_PUSH(vm, 1);
@@ -218,8 +213,7 @@ x_file_size(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( c-addr u fam -- fileid ior ) */
-vminstr_p
-x_open_file(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_open_file)
 {
     CHECK_POP(vm, 3);
     do_open_create(vm, true);
@@ -228,8 +222,7 @@ x_open_file(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( -- fam ) */
-vminstr_p
-x_r_o(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_r_o)
 {
     CHECK_PUSH(vm, 1);
     PUSH(vm, FILE_R_O);
@@ -238,8 +231,7 @@ x_r_o(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( -- fam ) */
-vminstr_p
-x_r_w(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_r_w)
 {
     CHECK_PUSH(vm, 1);
     PUSH(vm, FILE_R_W);
@@ -248,8 +240,7 @@ x_r_w(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( c-addr u1 fileid -- u2 ior ) */
-vminstr_p
-x_read_file(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_read_file)
 {
     cell_ft *sp = SP(vm);
     FILE *fp;
@@ -283,8 +274,7 @@ x_read_file(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( c-addr u1 fileid -- u2 flag ior ) */
-vminstr_p
-x_read_line(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_read_line)
 {
     cell_ft *sp = SP(vm);
     FILE *fp;
@@ -335,8 +325,7 @@ x_read_line(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( ud fileid -- ior ) */
-vminstr_p
-x_reposition_file(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_reposition_file)
 {
     cell_ft *sp = SP(vm);
     FILE *fp;
@@ -361,8 +350,7 @@ x_reposition_file(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( -- fam ) */
-vminstr_p
-x_w_o(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_w_o)
 {
     CHECK_PUSH(vm, 1);
     PUSH(vm, FILE_W_O);
@@ -371,8 +359,7 @@ x_w_o(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( c-addr u fileid -- ior ) */
-vminstr_p
-x_write_file(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_write_file)
 {
     cell_ft *sp = SP(vm);
     FILE *fp;
@@ -401,8 +388,7 @@ x_write_file(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( c-addr u fileid -- ior ) */
-vminstr_p
-x_write_line(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_write_line)
 {
     cell_ft *sp = SP(vm);
     FILE *fp;

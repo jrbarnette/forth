@@ -30,8 +30,7 @@
 
 
 /* ( x1 x2 -- x ) */
-vminstr_p
-x_plus(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_plus)
 {
     cell_ft *sp = SP(vm);
     CHECK_POP(vm, 2);
@@ -42,8 +41,7 @@ x_plus(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( x1 x2 -- x ) */
-vminstr_p
-x_minus(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_minus)
 {
     cell_ft *sp = SP(vm);
     CHECK_POP(vm, 2);
@@ -54,8 +52,7 @@ x_minus(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( n1 -- n2 ) */
-vminstr_p
-x_two_star(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_two_star)
 {
     cell_ft *sp = SP(vm);
     CHECK_POP(vm, 1);
@@ -65,8 +62,7 @@ x_two_star(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( n1 -- n2 ) */
-vminstr_p
-x_two_slash(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_two_slash)
 {
     cell_ft *sp = SP(vm);
     CHECK_POP(vm, 1);
@@ -76,8 +72,7 @@ x_two_slash(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( n1 n2 -- flag ) */
-vminstr_p
-x_less_than(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_less_than)
 {
     cell_ft *sp = SP(vm);
     CHECK_POP(vm, 2);
@@ -88,8 +83,7 @@ x_less_than(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( x1 x2 -- flag ) */
-vminstr_p
-x_equals(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_equals)
 {
     cell_ft *sp = SP(vm);
     CHECK_POP(vm, 2);
@@ -100,8 +94,7 @@ x_equals(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( n1 n2 -- flag ) */
-vminstr_p
-x_greater_than(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_greater_than)
 {
     cell_ft *sp = SP(vm);
     CHECK_POP(vm, 2);
@@ -112,8 +105,7 @@ x_greater_than(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( x1 x2 -- x ) */
-vminstr_p
-x_and(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_and)
 {
     cell_ft *sp = SP(vm);
     CHECK_POP(vm, 2);
@@ -124,8 +116,7 @@ x_and(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( x1 -- x2 ) */
-vminstr_p
-x_invert(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_invert)
 {
     cell_ft *sp = SP(vm);
     CHECK_POP(vm, 1);
@@ -135,8 +126,7 @@ x_invert(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( x1 u -- x ) */
-vminstr_p
-x_lshift(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_lshift)
 {
     cell_ft *sp = SP(vm);
     CHECK_POP(vm, 2);
@@ -147,8 +137,7 @@ x_lshift(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( x1 -- x2 ) */
-vminstr_p
-x_negate(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_negate)
 {
     cell_ft *sp = SP(vm);
     CHECK_POP(vm, 1);
@@ -158,8 +147,7 @@ x_negate(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( x1 x2 -- x ) */
-vminstr_p
-x_or(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_or)
 {
     cell_ft *sp = SP(vm);
     CHECK_POP(vm, 2);
@@ -170,8 +158,7 @@ x_or(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( x1 u -- x ) */
-vminstr_p
-x_rshift(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_rshift)
 {
     cell_ft *sp = SP(vm);
     CHECK_POP(vm, 2);
@@ -182,8 +169,7 @@ x_rshift(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( u1 u2 -- flag ) */
-vminstr_p
-x_u_less(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_u_less)
 {
     cell_ft *sp = SP(vm);
     CHECK_POP(vm, 2);
@@ -194,8 +180,7 @@ x_u_less(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 
 
 /* ( x1 x2 -- x ) */
-vminstr_p
-x_xor(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(x_xor)
 {
     cell_ft *sp = SP(vm);
     CHECK_POP(vm, 2);

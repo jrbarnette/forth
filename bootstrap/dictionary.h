@@ -45,13 +45,13 @@ extern union dict {
  * Miscellaneous C utility declarations.
  */
 
-extern addr_ft allot(vmstate_p, cell_ft);
+extern addr_ft allot(vmstate_ft *, cell_ft);
 
 #define COMMA(vm, x)	(*(a_addr_ft)allot((vm), CELL_SIZE) = (cell_ft) (x))
 #define COMPILE(vm, xt)	COMMA(vm, xt)
 #define XALIGN(vm)	(DICT.here = (addr_ft)XALIGNED((cell_ft) DICT.here))
 
-extern vminstr_d initialize_forth[];
+extern vminstr_ft initialize_forth[];
 extern char *init_forth_defs[];
 
 #endif // DICTIONARY_H

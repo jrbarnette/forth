@@ -19,8 +19,7 @@
 
 
 /* ( R: -- nest-sys ) initiation semantics */
-vminstr_p
-do_colon(vminstr_p ip, vmstate_p vm, vmarg_p newip)
+DEFINER(do_colon, newip)
 {
     CHECK_RPUSH(vm, 1);
     RPUSH(vm, (cell_ft)ip);
@@ -29,8 +28,7 @@ do_colon(vminstr_p ip, vmstate_p vm, vmarg_p newip)
 
 
 /* ( -- x ) name execution semantics */
-vminstr_p
-do_constant(vminstr_p ip, vmstate_p vm, vmarg_p data_ptr)
+DEFINER(do_constant, data_ptr)
 {
     CHECK_PUSH(vm, 1);
     PUSH(vm, data_ptr->cell);
@@ -39,10 +37,9 @@ do_constant(vminstr_p ip, vmstate_p vm, vmarg_p data_ptr)
 
 
 /* ( -- a-addr ) name execution semantics */
-vminstr_p
-do_create(vminstr_p ip, vmstate_p vm, vmarg_p data_ptr)
+DEFINER(do_create, data_ptr)
 {
-    vminstr_p does_ptr = data_ptr[0].ip;
+    vmip_ft does_ptr = data_ptr[0].ip;
     addr_ft body = data_ptr[1].data;
 
     CHECK_PUSH(vm, 1);
@@ -54,8 +51,7 @@ do_create(vminstr_p ip, vmstate_p vm, vmarg_p data_ptr)
 
 
 /* ( -- a-addr ) name execution semantics */
-vminstr_p
-do_variable(vminstr_p ip, vmstate_p vm, vmarg_p var_addr)
+DEFINER(do_variable, var_addr)
 {
     CHECK_PUSH(vm, 1);
     PUSH(vm, (cell_ft) var_addr);

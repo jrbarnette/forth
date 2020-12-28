@@ -5,9 +5,7 @@
 #ifndef NAMES_H
 #define NAMES_H
 
-#include <stdbool.h>
 #include <stddef.h>
-#include <stdio.h>
 
 #include "forth.h"
 
@@ -30,14 +28,14 @@
 #define NAME_SIZE(len)			\
 	    XALIGNED(offsetof(struct name_header, ident) + (len))
 #define NAME_XT(nm)			\
-	    ((xt_ft) ((addr_ft)(nm) + NAME_SIZE(NAME_LENGTH(nm))))
+	    ((xt_ft) ((addr_ft) (nm) + NAME_SIZE(NAME_LENGTH(nm))))
 
-typedef struct name_header *	name_p;
+typedef struct name_header *	name_ft;
 
 struct name_header {
-    name_p		prev;
-    char_ft		flags;
-    char_ft		ident[NAME_MAX_LENGTH];
+    name_ft	prev;
+    char_ft	flags;
+    char_ft	ident[NAME_MAX_LENGTH];
 };
 
 #endif // NAMES_H

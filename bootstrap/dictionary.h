@@ -5,7 +5,6 @@
 #ifndef DICTIONARY_H
 #define DICTIONARY_H
 
-#include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
 
@@ -29,7 +28,7 @@
 extern union dict {
     struct {
 	addr_ft		here;		    /* HERE */
-	name_p		forth_wordlist;	    /* FORTH-WORDLIST */
+	name_ft		forth_wordlist;	    /* FORTH-WORDLIST */
 
 	size_t		lineno;
 	FILE *		input;
@@ -38,18 +37,19 @@ extern union dict {
 } dictionary;
 
 #define DICT		(dictionary.dict_static_data)
-#define DICTIONARY_END	(&dictionary.dict_space[DICTIONARY_SIZE])
+#define DICT_START	(dictionary.dict_space)
+#define DICT_END	(dictionary.dict_space + DICTIONARY_SIZE)
+#define DICTIONARY_END	DICT_END /* alt. name used by Forth code */
 #define HERE		(DICT.here)
 #define FORTH_WORDLIST	(DICT.forth_wordlist)
-
-#define XALIGN(vm)	(DICT.here = (addr_ft)XALIGNED((cell_ft) DICT.here))
+#define XALIGN(vm)	(DICT.here = (addr_ft) XALIGNED((cell_ft) DICT.here))
 
 /*
  * C utility functions used by main() to invoke the inner VM (both
  * direct and indirect threaded).
  */
 
-extern name_p lookup(vmstate_ft *, c_addr_ft, cell_ft);
+extern name_ft lookup(vmstate_ft *, c_addr_ft, cell_ft);
 
 extern void report_exception(int, vmstate_ft *, char *);
 extern void execute(vmstate_ft *, xt_ft);

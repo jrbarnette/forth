@@ -30,13 +30,13 @@
  * Look up a definition in forth_wordlist, and return a pointer to
  * its name header.  Return NULL if not found.
  */
-name_p
+name_ft
 lookup(vmstate_ft *vm, c_addr_ft id, cell_ft len)
 {
     if (len == 0)
 	THROW(vm, -16);
 
-    for (name_p cur = FORTH_WORDLIST; cur != NULL; cur = cur->prev) {
+    for (name_ft cur = FORTH_WORDLIST; cur != NULL; cur = cur->prev) {
 	if (len != NAME_LENGTH(cur))
 	    continue;
 
@@ -54,14 +54,14 @@ lookup(vmstate_ft *vm, c_addr_ft id, cell_ft len)
 /*
  * Routines for adding named definitions into the dictionary.
  */
-static name_p
+static name_ft
 addname(vmstate_ft *vm, c_addr_ft id, cell_ft len, vmhdlr_fn handler)
 {
     if (len == 0)		THROW(vm, -16);
     if (len > NAME_MAX_LENGTH)	THROW(vm, -19);
 
     XALIGN(vm);
-    name_p name = (name_p) allot(vm, NAME_SIZE(len) + CELL_SIZE);
+    name_ft name = (name_ft) allot(vm, NAME_SIZE(len) + CELL_SIZE);
     name->prev = FORTH_WORDLIST;
     name->flags = len;
     (void) memcpy(name->ident, id, len);
@@ -75,7 +75,7 @@ addname(vmstate_ft *vm, c_addr_ft id, cell_ft len, vmhdlr_fn handler)
 
 
 static void
-linkname(name_p name)
+linkname(name_ft name)
 {
     FORTH_WORDLIST = name;
 }
@@ -89,7 +89,7 @@ PRIM_HDLR(i_startname)
     char *id = (ip++)->id;
     cell_ft len = strlen(id);
     vmhdlr_fn handler = (ip++)->handler;
-    name_p name = addname(vm, (c_addr_ft) id, len, handler);
+    name_ft name = addname(vm, (c_addr_ft) id, len, handler);
     PUSH(vm, name);
 
     return ip;
@@ -116,6 +116,6 @@ PRIM_HDLR(i_setflags)
 PRIM_HDLR(i_linkname)
 {
     CHECK_POP(vm, 1);
-    linkname((name_p) POP(vm));
+    linkname((name_ft) POP(vm));
     return ip;
 }

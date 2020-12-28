@@ -21,7 +21,7 @@
 static xt_ft
 meta_lookup(vmstate_ft *vm, vmip_ft ip)
 {
-    name_p name = lookup(vm, (c_addr_ft) ip->id, strlen(ip->id));
+    name_ft name = lookup(vm, (c_addr_ft) ip->id, strlen(ip->id));
     if (name == NULL) {
 	fprintf(stderr, "name '%s' not found at offset %td\n",
 		ip->id, ip - initialize_forth);

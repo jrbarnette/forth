@@ -36,7 +36,7 @@ static void
 interpret_lines(vmstate_ft *vm, char **lines)
 {
     char id[] = "EVALUATE";
-    name_p name = lookup(vm, (c_addr_ft) id, sizeof (id) - 1);
+    name_ft name = lookup(vm, (c_addr_ft) id, sizeof (id) - 1);
     assert(name != NULL);
     xt_ft xt = NAME_XT(name);
 
@@ -68,7 +68,7 @@ static int
 quit(vmstate_ft *vm, char *filename)
 {
     char id[] = "QUIT";
-    name_p name = lookup(vm, (c_addr_ft) id, sizeof (id) - 1);
+    name_ft name = lookup(vm, (c_addr_ft) id, sizeof (id) - 1);
     assert(name != NULL);
     xt_ft xt = NAME_XT(name);
 

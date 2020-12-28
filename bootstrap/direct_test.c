@@ -182,7 +182,7 @@ main(int argc, char *argv[])
     process_args(argc, argv, &forth_options);
     direct_execute(&vmstate, direct_program);
     POP(&vmstate);
-    name_p wordlist = (name_p) POP(&vmstate);
+    name_ft wordlist = (name_ft) POP(&vmstate);
     while (wordlist != NULL) {
 	size_t len = NAME_LENGTH(wordlist);
 	memcpy(ident, wordlist->ident, len);

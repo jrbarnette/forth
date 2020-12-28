@@ -18,22 +18,22 @@
 inline vminstr_p
 throw_transfer(vmstate_p vm, cell_ft throw_code)
 {
-    if (vm->catch_handler == NULL) {
+    if (vm->catch_rsp == NULL) {
         THROW(vm, throw_code);
 	return NULL;
     }
 
-    vm->rsp = vm->catch_handler;
+    vm->rsp = vm->catch_rsp;
     cell_ft *rsp = RSP(vm);
 
-    vminstr_p newip = (vminstr_p) PICK(rsp, 2);
-    vm->sp = (cell_ft *) PICK(rsp, 1);
-    vm->catch_handler = (cell_ft *) PICK(rsp, 0);
+    vminstr_p ip = (vminstr_p) PICK(rsp, 2);
+    vm->sp = (sp_ft) PICK(rsp, 1);
+    vm->catch_rsp = (sp_ft) PICK(rsp, 0);
     SET_RSP(vm, rsp, 3);
 
     PICK(SP(vm), 0) = throw_code;
 
-    return newip;
+    return ip;
 }
 
 

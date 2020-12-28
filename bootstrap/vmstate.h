@@ -31,10 +31,12 @@
 #define STACK_SIZE	256
 #define RSTACK_SIZE	512
 
+typedef cell_ft *sp_ft;
+
 typedef struct vmstate {
-    a_addr_ft	sp;
-    a_addr_ft	rsp;
-    a_addr_ft	catch_handler;
+    sp_ft	sp;
+    sp_ft	rsp;
+    sp_ft	catch_rsp;
     cell_ft	stack[STACK_SIZE];
     cell_ft	rstack[RSTACK_SIZE];
     jmp_buf	interp_loop;
@@ -68,7 +70,7 @@ inline void
 vm_initialize(vmstate_p vm) {
     CLEAR_STACK(vm);
     CLEAR_RSTACK(vm);
-    vm->catch_handler = NULL;
+    vm->catch_rsp = NULL;
 }
 
 #endif // VMSTATE_H

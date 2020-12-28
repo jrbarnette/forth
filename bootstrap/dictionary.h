@@ -56,9 +56,6 @@ extern addr_ft allot(vmstate_p, cell_ft);
 #define COMPILE(vm, xt)	COMMA(vm, xt)
 #define XALIGN(vm)	(DICT.here = (addr_ft)XALIGNED((cell_ft) DICT.here))
 
-extern void interpret_lines(vmstate_p, char **);
-extern int interpret_file(vmstate_p, char *);
-
 extern vminstr_d initialize_forth[];
 extern char *init_forth_defs[];
 

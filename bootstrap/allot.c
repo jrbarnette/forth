@@ -17,11 +17,11 @@
 addr_ft
 allot(vmstate_p vm, size_t n)
 {
-    addr_ft	h = DICT.here;
+    addr_ft	h = HERE;
     addr_ft	nh = h + n;
 
     if (nh >= DICTIONARY_END)	THROW(vm, -8);
-    DICT.here = nh;
+    HERE = nh;
 
     return h;
 }

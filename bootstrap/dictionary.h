@@ -38,12 +38,7 @@ extern union dict {
 #define DICT		(dictionary.dict_static_data)
 #define DICTIONARY_END	(&dictionary.dict_space[DICTIONARY_SIZE])
 #define HERE		(DICT.here)
-
-#define STATE_INTERP		F_FALSE
-#define STATE_COMPILE		F_TRUE
-
-#define SOURCE_ID_TERMINAL	((cell_ft) 0)
-#define SOURCE_ID_EVALUATE	((cell_ft) -1)
+#define FORTH_WORDLIST	(DICT.forth_wordlist)
 
 
 /*

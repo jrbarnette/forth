@@ -34,7 +34,7 @@ lookup(vmstate_p vm, c_addr_ft id, cell_ft len)
     if (len == 0)
 	THROW(vm, -16);
 
-    for (name_p cur = DICT.forth_wordlist; cur != NULL; cur = cur->prev) {
+    for (name_p cur = FORTH_WORDLIST; cur != NULL; cur = cur->prev) {
 	if (len != NAME_LENGTH(cur))
 	    continue;
 
@@ -60,7 +60,7 @@ addname(vmstate_p vm, c_addr_ft id, cell_ft len, vminstr_fn handler)
 
     XALIGN(vm);
     name_p name = (name_p) allot(vm, NAME_SIZE(len) + CELL_SIZE);
-    name->prev = DICT.forth_wordlist;
+    name->prev = FORTH_WORDLIST;
     name->flags = len;
     (void) memcpy(name->ident, id, len);
 
@@ -75,7 +75,7 @@ addname(vmstate_p vm, c_addr_ft id, cell_ft len, vminstr_fn handler)
 static void
 linkname(name_p name)
 {
-    DICT.forth_wordlist = name;
+    FORTH_WORDLIST = name;
 }
 
 
@@ -109,7 +109,7 @@ i_addname(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 vminstr_p
 i_setflags(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 {
-    NAME_SET_TYPE(DICT.forth_wordlist, ip->cell);
+    NAME_SET_TYPE(FORTH_WORDLIST, ip->cell);
     return ip + 1;
 }
 

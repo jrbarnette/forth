@@ -19,11 +19,11 @@
 /*
  * For ALIGN to produce an aligned data space pointer, the
  * dictionary space must be cell-aligned.  To prevent ALIGN from
- * overflowing the dictionary space, DICTIONARY_SIZE must also be a
+ * overflowing the dictionary space, DICTSPACE_SIZE must also be a
  * multiple of CELL_SIZE.
  */
 
-#define DICTIONARY_SIZE		(0x10000 XCELLS)
+#define DICTSPACE_SIZE		(0x10000 XCELLS)
 
 extern union dict {
     struct {
@@ -33,16 +33,15 @@ extern union dict {
 	size_t		lineno;
 	FILE *		input;
     } dict_static_data;
-    addr_unit_ft	dict_space[DICTIONARY_SIZE];
+    addr_unit_ft	dict_space[DICTSPACE_SIZE];
 } dictionary;
 
-#define DICT		(dictionary.dict_static_data)
-#define DICT_START	(dictionary.dict_space)
-#define DICT_END	(dictionary.dict_space + DICTIONARY_SIZE)
-#define DICTIONARY_END	DICT_END /* alt. name used by Forth code */
-#define HERE		(DICT.here)
-#define FORTH_WORDLIST	(DICT.forth_wordlist)
-#define XALIGN(vm)	(DICT.here = (addr_ft) XALIGNED((cell_ft) DICT.here))
+#define DICT			(dictionary.dict_static_data)
+#define DICTSPACE_START		(dictionary.dict_space)
+#define DICTSPACE_END		(dictionary.dict_space + DICTSPACE_SIZE)
+#define HERE			(DICT.here)
+#define FORTH_WORDLIST		(DICT.forth_wordlist)
+#define XALIGN(vm)		(HERE = (addr_ft) XALIGNED((cell_ft) HERE))
 
 /*
  * C utility functions used by main() to invoke the inner VM (both

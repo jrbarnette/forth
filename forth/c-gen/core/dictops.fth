@@ -17,4 +17,4 @@
 \ not yet defined - could be forth
 \ PAD ( -- c-addr )
 
-: UNUSED ( -- u ) <C> DICTIONARY_END; here - ;
+: UNUSED ( -- u ) <C> DICTSPACE_END; here - ;

@@ -51,13 +51,13 @@ prim: here-addr do_constant
 : HERE ( -- addr ) here-addr @ ;
 
 \ <sigh> without LITERAL or , or even ALLOT, this is ... tiresome.
-\ : allot-bounds <C> DICTIONARY_END+1; here - dup <C> DICTIONARY_SIZE+1; - ;
+\ : allot-bounds <C> DICTSPACE_END+1; here - dup <C> DICTSPACE_SIZE+1; - ;
 \ : ALLOT dup allot-bounds within -8 and throw here-addr +! ;
 
 : allot-bounds ( -- unused+1 -inuse )
-    do-literal [ <C> DICTIONARY_END; 1 + here !
+    do-literal [ <C> DICTSPACE_END; 1 + here !
 		 <C> CELL_SIZE; here-addr +! ] here -
-    dup do-literal [ <C> DICTIONARY_SIZE; 1 + here !
+    dup do-literal [ <C> DICTSPACE_SIZE; 1 + here !
 		     <C> CELL_SIZE; here-addr +! ] - ;
 : ALLOT ( n -- ) dup allot-bounds within
     do-literal [ -8 here ! <C> CELL_SIZE; here-addr +! ] and throw

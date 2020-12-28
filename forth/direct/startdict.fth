@@ -3,17 +3,17 @@
 \ extern union dict {
 \     struct {
 \ 	addr_ft		here;		    /* HERE */
-\ 	name_p		forth_wordlist;	    /* FORTH-WORDLIST */
+\ 	name_ft		forth_wordlist;	    /* FORTH-WORDLIST */
 \
 \ 	size_t		lineno;
 \ 	FILE *		input;
 \     } dict_static_data;
-\     addr_unit_ft	dict_space[DICTIONARY_SIZE];
+\     addr_unit_ft	dict_space[DICTSPACE_SIZE];
 \ } dictionary;
 
-<C> (&DICT) + 1;          <C> &DICT.here;             !
-\ forth_wordlist initialized to 0
+<C> DICTSPACE_START + sizeof (DICT);    <C> &HERE;    !
 
-\ remaining fields initialized to 0.
+\ forth_wordlist initialized to 0 by compiler
+\ remaining fields initialized prior to entry
 
 [

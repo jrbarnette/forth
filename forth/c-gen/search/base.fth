@@ -4,5 +4,5 @@
 \  FORTH-WORDLIST     16.6.1.1595 SEARCH
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
-<C> &DICT.forth_wordlist;
+<C> &FORTH_WORDLIST;
 constant FORTH-WORDLIST

@@ -21,7 +21,7 @@ allot(vmstate_ft *vm, size_t n)
     addr_ft	h = HERE;
     addr_ft	nh = h + n;
 
-    if (nh >= DICTIONARY_END)	THROW(vm, -8);
+    if (nh >= DICTSPACE_END)	THROW(vm, -8);
     HERE = nh;
 
     return h;

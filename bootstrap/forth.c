@@ -143,9 +143,9 @@ main(int argc, char *argv[])
     }
 
     if (forth_options.argc > 0) {
-        return interpret_arguments(&vmstate,
-                                   forth_options.argc,
-                                   forth_options.argv);
+	return interpret_arguments(&vmstate,
+				   forth_options.argc,
+				   forth_options.argv);
     } else {
         if (IS_INTERACTIVE(stdin)) {
             interpret_lines(&vmstate, dictionary_stats);

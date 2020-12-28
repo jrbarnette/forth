@@ -67,7 +67,7 @@ addname(vmstate_ft *vm, c_addr_ft id, cell_ft len, vmhdlr_fn handler)
 
     xt_ft xtok = NAME_XT(name);
     xtok->handler = handler;
-    assert(HERE == xtok->arg->cdata);
+    assert(HERE == xtok->arg->data);
 
     return name;
 }

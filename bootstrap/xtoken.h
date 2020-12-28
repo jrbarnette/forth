@@ -34,10 +34,10 @@
  */
 
 /* Our basic types need forward references to incomplete structures */
-typedef struct definition_data *	xt_ft;
-typedef union instruction_data		vminstr_ft;
-typedef union instruction_data *	vmip_ft;
-typedef union parameter_data		vmarg_ft;
+typedef struct definition *		xt_ft;
+typedef union instruction_cell		vminstr_ft;
+typedef union instruction_cell *	vmip_ft;
+typedef union parameter_cell		vmarg_ft;
 
 #define DEFINER(hdlr, arg) 	\
     vmip_ft hdlr(vmip_ft ip, vmstate_ft *vm, vmarg_ft *arg)
@@ -47,7 +47,7 @@ typedef union parameter_data		vmarg_ft;
 typedef PRIM_HDLR((*vmhdlr_fn));
 
 /* Now resolve the forward references in dependency order */
-union instruction_data {
+union instruction_cell {
     /* general purpose VM instructions */
     xt_ft		xtok;
     cell_ft		cell;
@@ -61,16 +61,14 @@ union instruction_data {
     char *		id;
 };
 
-union parameter_data {
+union parameter_cell {
     vmip_ft		ip;
-    xt_ft		xtok;
     cell_ft		cell;
-    char_ft		cdata[CELL_SIZE / CHAR_SIZE];
     addr_unit_ft	data[CELL_SIZE];
     vminstr_ft		vminstrs[1];
 };
 
-struct definition_data {
+struct definition {
     vmhdlr_fn		handler;
     vmarg_ft		arg[1];
 };

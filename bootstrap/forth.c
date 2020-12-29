@@ -124,16 +124,23 @@ interpret_arguments(vmstate_ft *vm, int argc, char *argv[])
 }
 
 
+static void
+initialize_dictionary(vmstate_ft *vm)
+{
+    direct_execute(vm, initialize_forth);
+    assert(EMPTY(vm));
+    assert(REMPTY(vm));
+    interpret_lines(vm, init_forth_defs);
+}
+
+
 int
 main(int argc, char *argv[])
 {
-    vmstate_ft vmstate;
-
     process_args(argc, argv, &forth_options);
-    direct_execute(&vmstate, initialize_forth);
-    assert(EMPTY(&vmstate));
-    assert(REMPTY(&vmstate));
-    interpret_lines(&vmstate, init_forth_defs);
+
+    vmstate_ft vmstate;
+    initialize_dictionary(&vmstate);
 
     if (forth_options.startup_file != NULL) {
 	bool saved_interactive = forth_options.is_interactive;

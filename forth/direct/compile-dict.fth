@@ -73,6 +73,7 @@ create SOURCE-LINE 256 dup chars allot constant LINE-SIZE
     compile-file: forth/c-gen/core/terminal.fth
     compile-file: forth/common/core/terminal.fth
     compile-file: forth/c-gen/file/fileprim.fth
+    compile-file: forth/c-gen/file/modes.fth
     compile-file: forth/common/core/source.fth
     compile-file: forth/common/core/parse.fth
 

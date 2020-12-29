@@ -96,18 +96,14 @@ extern PRIM_HDLR(x_j);
 extern PRIM_HDLR(x_unloop);
 
 /* file I/O primitives */
-extern PRIM_HDLR(x_bin);
 extern PRIM_HDLR(x_close_file);
 extern PRIM_HDLR(x_create_file);
 extern PRIM_HDLR(x_file_position);
 extern PRIM_HDLR(x_file_size);
 extern PRIM_HDLR(x_open_file);
-extern PRIM_HDLR(x_r_o);
-extern PRIM_HDLR(x_r_w);
 extern PRIM_HDLR(x_read_file);
 extern PRIM_HDLR(x_read_line);
 extern PRIM_HDLR(x_reposition_file);
-extern PRIM_HDLR(x_w_o);
 extern PRIM_HDLR(x_write_file);
 extern PRIM_HDLR(x_write_line);
 

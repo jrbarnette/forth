@@ -36,10 +36,6 @@
 
 
 #define UNKNOWN_ERROR   ((cell_ft) -1)
-#define FILE_R_O	((cell_ft) 01)
-#define FILE_R_W	((cell_ft) 02)
-#define FILE_W_O	((cell_ft) 03)
-#define FILE_BIN	((cell_ft) 04)
 
 /*
  * Mapping Forth "file access methods" to modes for C fopen():
@@ -84,16 +80,16 @@ do_open_create(vmstate_ft *vm, bool is_open)
 
 	if (is_open) {
 	    *cp++ = 'r';
-	    mode_flag = FILE_R_O;
+	    mode_flag = FILE_MODE_R_O;
 	} else {
 	    *cp++ = 'w';
-	    mode_flag = FILE_W_O;
+	    mode_flag = FILE_MODE_W_O;
 	}
-	if ((fam & ~FILE_BIN) != mode_flag) {
+	if ((fam & ~FILE_MODE_BIN) != mode_flag) {
 	    *cp++ = '+';
 	}
 
-	if ((fam & FILE_BIN) != 0) {
+	if ((fam & FILE_MODE_BIN) != 0) {
 	    *cp++ = 'b';
 	}
 	*cp++ = '\0';
@@ -110,16 +106,6 @@ do_open_create(vmstate_ft *vm, bool is_open)
     }
 
     SET_SP(vm, sp, 1);
-}
-
-
-/* ( fam1 -- fam2 ) */
-PRIM_HDLR(x_bin)
-{
-    cell_ft *sp = SP(vm);
-    CHECK_POP(vm, 1);
-    PICK(sp, 0) |= FILE_BIN;
-    return ip;
 }
 
 
@@ -217,24 +203,6 @@ PRIM_HDLR(x_open_file)
 {
     CHECK_POP(vm, 3);
     do_open_create(vm, true);
-    return ip;
-}
-
-
-/* ( -- fam ) */
-PRIM_HDLR(x_r_o)
-{
-    CHECK_PUSH(vm, 1);
-    PUSH(vm, FILE_R_O);
-    return ip;
-}
-
-
-/* ( -- fam ) */
-PRIM_HDLR(x_r_w)
-{
-    CHECK_PUSH(vm, 1);
-    PUSH(vm, FILE_R_W);
     return ip;
 }
 
@@ -345,15 +313,6 @@ PRIM_HDLR(x_reposition_file)
 	PICK(sp, 2) = (cell_ft) EOVERFLOW;
     }
     SET_SP(vm, sp, 2);
-    return ip;
-}
-
-
-/* ( -- fam ) */
-PRIM_HDLR(x_w_o)
-{
-    CHECK_PUSH(vm, 1);
-    PUSH(vm, FILE_W_O);
     return ip;
 }
 

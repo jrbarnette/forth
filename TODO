@@ -1,3 +1,31 @@
+==== Thoughts on proceeding
+Main goal is to remove/simplify the meta_interpret()/meta_compile()
+approach to things.  My first thought was to increase the capabilities
+of direct mode interpretation by using the rawdict approach to build up
+content in a buffer before flushing it out.  That might be the way to
+go:  For instance, it's not hard take the current rawdict output and
+comnbine it with direct code that performs the needed copy and then
+meta-interprets the rest of the dictionary into existence.
+
+However if we combine the meta-interpret stuff with rawdict stuff, we'll
+get even more vocabularies for building up the dictionary, and I'd kind
+of like to have fewer.  So...  Maybe just go straight to rawdict, with
+samll stubs of direct stuff sufficient to
+ 1) Copy the dictionary into place.
+ 2) Invoke a small amount of indirect code to finish initialization, and
+    then
+ 3) Invoke QUIT.
+
+Rawdict requires its own new interpreter loop, though.  So, it would be
+nice to refactor some pieces to allow more sharing between direct and
+rawdict.  For that matter, sharing with QUIT, INCLUDE-FILE, and EVALUATE
+would be nice.
+
+Also, all of the loops need CATCH handlers for cleanup (especially
+for restoring input sources).
+
+Thus, the latest activity is CATCH/THROW.
+
 ==== Where we are:
 All Forth code now lives under forth/, and gets built (one way or
 another) into initdict.c.  This includes the source code built into
@@ -23,8 +51,6 @@ Short term TODO list
 
     We are ready to get rid of file-order, by using INCLUDE-FILE and
     other code to load directly from source.
-
-    Implement ACCEPT.  And KEY, for good measure
 
 Long-term Goal:
     Eliminate special C primitives relating to name creation and

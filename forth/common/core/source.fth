@@ -29,7 +29,7 @@ variable >IN 6 cells allot
 : SOURCE-BUFFER  ( -- c-addr u )
     [ >in 3 cells + ] literal dup @ swap cell+ @ ;
 
-: REFILL-FILE  source-id read-line drop swap ;
+: REFILL-FILE ( c-addr u -- flag len )  source-id read-line drop swap ;
 : REFILL
     source-id 0< if false exit then
     source-buffer source-id 0= if
@@ -39,7 +39,7 @@ variable >IN 6 cells allot
     then source-addr ! dup if 0 >in ! then ;
 : RESTORE-SOURCE
     source-id 0> 0= if exit then
-    source-pos 2@ source-id reposition-file
+    source-pos 2@ source-id reposition-file drop
     source-buffer refill-file 2drop ;
 
 : NEST-SOURCE

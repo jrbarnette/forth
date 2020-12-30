@@ -6,11 +6,10 @@
 \  QUIT                  6.1.2050 CORE
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
-( C: TIB #TIB )
+: state-prompt state @ if s" " else s" ok " then prompt! ;
 : QUIT
     rclear source<terminal postpone [
-    begin state @ if s" " else s" ok " then prompt!
-	refill while interpret repeat 0 >r
+    begin state-prompt refill while interpret repeat
 ;
 
 : ABORT clear quit ;

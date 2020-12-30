@@ -127,6 +127,8 @@ PRIM_HDLR(x_clear)
 PRIM_HDLR(x_rclear)
 {
     CLEAR_RSTACK(vm);
+    RPUSH(vm, 0);
+    vm->catch_rsp = NULL;
     return ip;
 }
 

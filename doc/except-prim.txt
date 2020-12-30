@@ -83,6 +83,23 @@ So
     : INCLUDE-FILE  ( i*x fileid -- j*x )
 	['] interpret-file interpret-source
 
+==== What about QUIT?
+We'd like for code to be able to clean up if something calls QUIT.
+That means something like this:
+    : QUIT -56 THROW ;
+
+The standard doesn't exactly say you can't do this, although it
+makes it hard.  If ordinary code performs THROW with no pending
+CATCH, it's supposed to get handled as if it were ABORT, possibly
+after printing a message.  ABORT requires clearing the data stack,
+but QUIT doesn't do that.  Also, THROW adjusts the data stack, so
+using THROW for QUIT would implicitly alter the data stack.
+
+We could tweak the behavior of THROW, but all programs would have
+to know how CATCH, THROW, and QUIT interact.
+
+So, let's not use THROW to trigger QUIT.
+
 ==== One other idea...
 Instead of a catch_handler that points to the saved RSP, have a
 general purpose exception handler IP.

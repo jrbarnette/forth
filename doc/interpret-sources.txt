@@ -1,0 +1,45 @@
+Input sources
+    The user input device
+	QUIT
+
+    A block
+	LOAD THRU
+
+    A file
+	INCLUDED
+	INCLUDE-FILE
+
+    A string
+	EVALUATE
+
+Behaviors that depend on the input source:
+    REFILL SOURCE-ID SAVE-INPUT RESTORE-INPUT
+
+Interpreter loops
+
+    <save input>
+    <new input>
+    begin refill if ['] interpret catch ?dup else 0 -1 then until
+    <clean up input>
+    <restore input>
+    throw ;
+
+    : state-prompt state @ if s" " else s" ok " then prompt! ;
+    : QUIT
+	rclear source<terminal postpone [
+	begin state-prompt refill while
+	    ['] interpret catch report-exception
+	repeat 0 >r
+    ;
+
+    : EVALUATE
+	<save input> source<evaluate
+	['] interpret catch
+	<restore input>
+	throw ;
+
+    : INCLUDED
+	<save input> source<file
+	begin refill if ['] interpret catch ?dup else 0 -1 then until
+	source-id close-file drop <restore input>
+	throw ;

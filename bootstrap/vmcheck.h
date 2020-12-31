@@ -18,12 +18,12 @@
 inline vmip_ft
 throw_transfer(vmstate_ft *vm, cell_ft throw_code)
 {
-    vm->rsp = vm->catch_rsp;
-    if (REMPTY(vm)) {
+    if (!HAVE_CATCH(vm)) {
 	THROW(vm, throw_code);
 	return NULL;
     }
 
+    vm->rsp = vm->catch_rsp;
     vm->catch_rsp = (sp_ft) RPOP(vm);
     vm->sp = (sp_ft) RPOP(vm);
     PICK(SP(vm), 0) = throw_code;

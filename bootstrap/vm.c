@@ -78,7 +78,8 @@ PRIM_HDLR(do_catch)
 PRIM_HDLR(undo_catch)
 {
     STACKCHECK(vm, vm->rsp != vm->catch_rsp, -25);
-    STACKCHECK(vm, REMPTY(vm), -5);
+    // this should maybe be a system-specific throw code...
+    STACKCHECK(vm, !HAVE_CATCH(vm), -5);
     vm->catch_rsp = (sp_ft) RPOP(vm);
     RPOP(vm);
     RPOP(vm);

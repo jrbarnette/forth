@@ -65,6 +65,7 @@ typedef struct {
 #define RPOP(vm)		(*(vm)->rsp++)
 #define RPUSH(vm, c)		(*--(vm)->rsp = (cell_ft) (c))
 
+#define HAVE_CATCH(vm)		((vm)->catch_rsp < RSTACK_BASE(vm))
 #define CATCH(vm)		(setjmp((vm)->interp_loop))
 #define THROW(vm, n)		(longjmp((vm)->interp_loop, (int) (n)))
 

@@ -75,17 +75,22 @@
 
 error-table: ans-error
 
-: .throw-code ( throw-code -- )
-    dup -58 0 within if ans-error ?dup if type then exit then
-    dup -255 -58 within if
-	." unhandled standard Forth error code: " 0
-    then
-    dup -4095 -255 within if
-	." unhandled system error: " 0
-    then
-    ?dup if
-	." unhandled program-defined error: "
-    then 1 .r cr
+: .throw-code ( throw-code -- not-quit? )
+    dup -1 = if exit then
+    dup ans-error ?dup if
+	type drop
+    else
+	\ dup -56 = if drop 0 exit then
+	dup -255 0 within if
+	    ." unhandled standard Forth error code: " 0
+	then
+	dup -4095 -255 within if
+	    ." unhandled system error: " 0
+	then
+	?dup if
+	    ." unhandled program-defined error: "
+	then 1.r
+    then cr -1
 ;
 
 : abort-message! ( c-addr u -- )
@@ -94,29 +99,11 @@ error-table: ans-error
     [ ' ans-error >body -56 1+ over @ - 2* cells + ] literal 2! ;
 
 : report-exception ( throw-code -- )
-    \ ABORT
-    \   may print message
-    \   clear
-    \ ABORT"
-    \   print message
-    \   clear
-    \ QUIT
-    \   if have error message
-    \     print message
-    \     clear
-    \   else
-    \     may print message
-    \ others
-    \   if have error message
-    \     print message
-    \     clear
-    \   else
-    \     print generic message with error code
+    ?dup 0= if exit then
+    .throw-code if clear then
     [ -2 ans-error swap ] literal literal abort-message! ;
-    [ -56 ans-error swap ] literal literal quit-message! ;
+    \ [ -56 ans-error swap ] literal literal quit-message! ;
 ;
-
-: QUIT s" " quit-message! -56 throw ;
 
 : ABORT -1 throw ;
 
@@ -124,25 +111,18 @@ error-table: ans-error
 : ABORT" postpone if postpone s" postpone do-abort" postpone then ;
 compile-special
 
+\ : QUIT s" " quit-message! -56 throw ;
+
 \ FIXME:  We unconditionally display the prompt at the start of the
 \ loop, but the standard says that invoking QUIT from the program
 \ isn't supposed to display a prompt until *after* interpreting a
 \ source line...
 
-: state-prompt state @ if s" " else s" ok " then prompt! ;
-: INTERPRET-LOOP
-    postpone [ begin state-prompt! refill while interpret repeat
-;
 
-: ENTER-FORTH
-    source<terminal
-    begin ['] INTERPRET-LOOP catch dup while report-exception repeat
-    drop
-;
-
+: prompt-refill state @ if s" " else s" ok " then prompt! refill ;
+: INTERPRET-USER
+    begin prompt-refill while interpret repeat ;
 : QUIT
-    rclear source<terminal postpone [
-    begin state-prompt refill while
-	['] interpret catch ?dup if report-exception then
-    repeat 0 >r
+    rclear source<terminal
+    begin postpone [ ['] interpret-user catch dup report-exception 0= until ;
 ;

@@ -11,6 +11,8 @@
 \  REFILL             11.6.2.2125 FILE EXT
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
+\ Data for the "input source specification".  See 2.1 "Definition of
+\ terms".  The data is laid out contiguously following >IN:
 \ >IN CELL+         ->  SOURCE-ID
 \ >IN 2 CELLS +     ->  SOURCE len
 \ >IN 3 CELLS +     ->  SOURCE buffer address
@@ -21,7 +23,6 @@
 variable >IN 6 cells allot
 >in 2 cells + constant SOURCE-ADDR
 >in 5 cells + constant SOURCE-POS
->in 7 cells + constant SOURCE-END
 
 : SOURCE-ID  [ >in cell+ ] literal @ ;
 : SOURCE  ( -- c-addr u )  source-addr 2@ ;
@@ -43,11 +44,19 @@ variable >IN 6 cells allot
     source-buffer refill-file 2drop ;
 
 : NEST-SOURCE
-    r> >in source-end
+    r> [ >in dup 7 cells + swap ] literal literal
     begin 2dup < while 1 cells - dup @ >r repeat 2drop >r ;
 : UNNEST-SOURCE
-    r> source-end >in
+    r> [ >in dup 7 cells + ] literal literal
     begin 2dup > while r> over ! cell+ repeat 2drop >r restore-source ;
+
+: WITH-NESTED-SOURCE ( xt -- i*x )
+    [ >in dup 7 cells + 2dup swap ] literal literal ( >in index-ptr+1 )
+    begin 2dup < while 1 cells - dup @ >r repeat 2drop
+    catch
+    literal literal ( source-end index-ptr )
+    begin 2dup > while r> over ! cell+ repeat 2drop
+    restore-source throw ;
 
 : SOURCE-ID!  ( id -- ) 0 >in 2! ;
 : SOURCE<EVALUATE  ( c-addr u -- ) source-addr 2! -1 source-id! ;

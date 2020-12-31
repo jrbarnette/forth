@@ -65,6 +65,7 @@ create SOURCE-LINE 256 dup chars allot constant LINE-SIZE
     compile-file: forth/common/core/control.fth
     compile-file: forth/common/core/arithops.fth
     compile-file: forth/common/internal/dictionary.fth
+    compile-file: forth/common/exception/catch.fth
 
     \ At this point we have working definitions for "dictionary",
     \ "stack", "arith", "mem", "mult", and "control" words.  We're
@@ -79,7 +80,6 @@ create SOURCE-LINE 256 dup chars allot constant LINE-SIZE
 
     compile-file: forth/common/core/number.fth
     compile-file: forth/common/internal/error.fth
-    compile-file: forth/common/exception/catch.fth
 
     compile-file: forth/common/core/state.fth
     compile-file: forth/c-gen/search/base.fth

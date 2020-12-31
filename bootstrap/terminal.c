@@ -69,8 +69,8 @@ PRIM_HDLR(x_prompt_accept)
 	have_more = F_TRUE;
     }
     DICT.lineno -= have_more;
-    PICK(sp, 2) = have_more;
-    PICK(sp, 1) = len;
+    PICK(sp, 2) = len;
+    PICK(sp, 1) = have_more;
     SET_SP(vm, sp, 1);
     return ip;
 }

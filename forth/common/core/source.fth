@@ -17,7 +17,7 @@
 \ >IN 2 CELLS +     ->  SOURCE len
 \ >IN 3 CELLS +     ->  SOURCE buffer address
 \ >IN 4 CELLS +     ->  input buffer allotted size
-\ >IN 5 CELLS +     ->  input buffer file position
+\ >IN 5 CELLS +     ->  input buffer file position (2 cells)
 \ >IN 7 CELLS +     ->  end of input source specification
 
 variable >IN 6 cells allot
@@ -30,14 +30,13 @@ variable >IN 6 cells allot
 : SOURCE-BUFFER  ( -- c-addr u )
     [ >in 3 cells + ] literal dup @ swap cell+ @ ;
 
-: REFILL-FILE ( c-addr u -- flag len )  source-id read-line drop swap ;
+: REFILL-FILE ( buff-ptr len fileid -- flag len )
+    dup file-position drop source-pos 2! read-line drop ;
 : REFILL
     source-id 0< if false exit then
-    source-buffer source-id 0= if
-        refill-terminal
-    else
-        source-id file-position drop source-pos 2! refill-file
-    then source-addr ! dup if 0 >in ! then ;
+    source-buffer source-id
+    ?dup if refill-file else refill-terminal then swap
+    source-addr ! dup if 0 >in ! then ;
 : RESTORE-SOURCE
     source-id 0> 0= if exit then
     source-pos 2@ source-id reposition-file drop

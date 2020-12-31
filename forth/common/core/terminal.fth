@@ -12,11 +12,11 @@
 32 constant BL
 
 here 80 chars allot constant PROMPT 0 prompt c!
-: PROMPT! ( c-addr u -- ) 79 min prompt swap chars 2dup + >r move 0 r> c! ;
+: PROMPT! ( c-addr u -- ) prompt swap 79 min chars 2dup + >r move 0 r> c! ;
 
-: REFILL-TERMINAL ( c-addr u -- flag len )
+: REFILL-TERMINAL ( c-addr u -- len flag )
     prompt prompt-accept 0 prompt c! ;
-: ACCEPT ( c-addr +n1 -- +n2 ) refill-terminal nip ;
+: ACCEPT ( c-addr +n1 -- +n2 ) refill-terminal drop ;
 
 : TYPE ( c-addr u -- )
     chars over + swap begin 2dup > while dup c@ emit char+ repeat 2drop

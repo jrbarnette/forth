@@ -12,7 +12,6 @@
 #include "cmdline.h"
 
 #undef PICK
-#undef DEPTH
 
 /*
  * direct_test.c - Direct-threaded test program.

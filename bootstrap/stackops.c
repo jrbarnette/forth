@@ -57,8 +57,9 @@ PRIM_HDLR(x_question_dup)
 /* ( -- +n ) */
 PRIM_HDLR(x_depth)
 {
-    cell_ft depth = DEPTH(vm);
     CHECK_PUSH(vm, 1);
+    // beware - PUSH() has side effects on CANPOP()
+    cell_ft depth = CANPOP(vm);
     PUSH(vm, depth);
     return ip;
 }

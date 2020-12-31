@@ -48,9 +48,9 @@ typedef struct {
 
 #define CLEAR_STACK(vm)		((vm)->sp = STACK_BASE(vm))
 #define CLEAR_RSTACK(vm)	((vm)->catch_rsp = (vm)->rsp = RSTACK_BASE(vm))
-#define SFREE(vm)		((vm)->sp - (vm)->stack)
-#define RSFREE(vm)		((vm)->rsp - (vm)->rstack)
-#define DEPTH(vm)		(STACK_BASE(vm) - (vm)->sp)
+#define CANPUSH(vm)		((vm)->sp - (vm)->stack)
+#define RCANPUSH(vm)		((vm)->rsp - (vm)->rstack)
+#define CANPOP(vm)		(STACK_BASE(vm) - (vm)->sp)
 #define RCANPOP(vm)		((vm)->catch_rsp - (vm)->rsp)
 #define EMPTY(vm)		((vm)->sp == STACK_BASE(vm))
 #define REMPTY(vm)		((vm)->rsp == RSTACK_BASE(vm))

@@ -73,11 +73,10 @@ quit(vmstate_ft *vm, char *filename)
     xt_ft xt = NAME_XT(name);
 
     int throwcode;
-    while ((throwcode = CATCH(vm)) != 0) {
+    if ((throwcode = CATCH(vm)) != 0) {
         report_exception(throwcode, vm, filename);
-        if (filename != NULL) {
-            return EXIT_FAILURE;
-        }
+	fprintf(stderr, "QUIT failed to handle an exception\n");
+	return EXIT_FAILURE;
     }
     execute(vm, xt);
     return EXIT_SUCCESS;

@@ -42,13 +42,6 @@ variable >IN 6 cells allot
     source-pos 2@ source-id reposition-file drop
     source-buffer refill-file 2drop ;
 
-: NEST-SOURCE
-    r> [ >in dup 7 cells + swap ] literal literal
-    begin 2dup < while 1 cells - dup @ >r repeat 2drop >r ;
-: UNNEST-SOURCE
-    r> [ >in dup 7 cells + ] literal literal
-    begin 2dup > while r> over ! cell+ repeat 2drop >r restore-source ;
-
 : WITH-NESTED-SOURCE ( xt -- i*x )
     [ >in dup 7 cells + 2dup swap ] literal literal ( >in index-ptr+1 )
     begin 2dup < while 1 cells - dup @ >r repeat 2drop

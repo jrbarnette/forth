@@ -27,14 +27,14 @@ indicators
     BLK is 0 and source-id is 0
 	input buffer is terminal buffer
 	REFILL uses ACCEPT
-	    FALSE at EOF
 	    TRUE if not EOF
+	    FALSE at EOF
     BLK is 0 and source-id is fileid
 	input buffer is a file buffer
 	REFILL does something like SOURCE SOURCE-ID READ-LINE
 	    must remember FILE-POSITION associated with buffer
-	    FALSE at EOF
 	    TRUE if not EOF
+	    FALSE at EOF
 ====
 class input-source
     abstract source-id

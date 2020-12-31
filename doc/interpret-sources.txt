@@ -29,17 +29,17 @@ Interpreter loops
 	rclear source<terminal postpone [
 	begin state-prompt refill while
 	    ['] interpret catch report-exception
-	repeat 0 >r
+	repeat
     ;
 
-    : EVALUATE
-	<save input> source<evaluate
-	['] interpret catch
-	<restore input>
-	throw ;
+    : WITH-NESTED-SOURCE
+	<save input> catch <restore input> throw ;
 
-    : INCLUDED
-	<save input> source<file
+    : INTERPRET-STRING source<evaluate interpret ;
+    : EVALUATE ['] interpret-string with-nested-source ;
+
+    : INTERPRET-FILE
+	source<file
 	begin refill if ['] interpret catch ?dup else 0 -1 then until
-	source-id close-file drop <restore input>
-	throw ;
+	source-id close-file drop throw ;
+    : INCLUDED ['] interpret-file with-nested-source ;

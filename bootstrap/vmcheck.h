@@ -18,15 +18,15 @@
 inline vmip_ft
 throw_transfer(vmstate_ft *vm, cell_ft throw_code)
 {
-    if (vm->catch_rsp == NULL) {
-        THROW(vm, throw_code);
+    vm->rsp = vm->catch_rsp;
+    if (REMPTY(vm)) {
+	THROW(vm, throw_code);
 	return NULL;
     }
 
-    vm->rsp = vm->catch_rsp;
-    vm->catch_rsp =         (sp_ft) RPOP(vm);
-    vm->sp =                (sp_ft) RPOP(vm);
-    PICK(SP(vm), 0) =       throw_code;
+    vm->catch_rsp = (sp_ft) RPOP(vm);
+    vm->sp = (sp_ft) RPOP(vm);
+    PICK(SP(vm), 0) = throw_code;
 
     return (vmip_ft) RPOP(vm);
 }
@@ -42,6 +42,6 @@ throw_transfer(vmstate_ft *vm, cell_ft throw_code)
 #define CHECK_PUSH(vm, n)	STACKCHECK(vm, (n) > SFREE(vm), -3)
 #define CHECK_POP(vm, n)	STACKCHECK(vm, (n) > DEPTH(vm), -4)
 #define CHECK_RPUSH(vm, n)	STACKCHECK(vm, (n) > RSFREE(vm), -5)
-#define CHECK_RPOP(vm, n)	STACKCHECK(vm, (n) > RDEPTH(vm), -6)
+#define CHECK_RPOP(vm, n)	STACKCHECK(vm, (n) > RCANPOP(vm), -6)
 
 #endif // VMCHECK_H

@@ -77,8 +77,8 @@ PRIM_HDLR(do_catch)
 /* ( -- ) ( R: ip sp catch-ptr -- ) */
 PRIM_HDLR(undo_catch)
 {
-    CHECK_RPOP(vm, 3);
-    assert(vm->catch_rsp == vm->rsp);
+    STACKCHECK(vm, vm->rsp != vm->catch_rsp, -25);
+    STACKCHECK(vm, REMPTY(vm), -5);
     vm->catch_rsp = (sp_ft) RPOP(vm);
     RPOP(vm);
     RPOP(vm);
@@ -128,7 +128,6 @@ PRIM_HDLR(x_rclear)
 {
     CLEAR_RSTACK(vm);
     RPUSH(vm, 0);
-    vm->catch_rsp = NULL;
     return ip;
 }
 

@@ -21,7 +21,9 @@ direct_execute(vmstate_ft *vm, vmip_ft ip)
 
     int throwcode;
     while ((throwcode = CATCH(vm)) != 0) {
-	if (vm->catch_rsp == NULL) {
+	// this logic is partly replicated in throw_transfer()
+	vm->rsp = vm->catch_rsp;
+	if (REMPTY(vm)) {
 	    report_exception(throwcode, vm, NULL);
 	    abort();
 	}

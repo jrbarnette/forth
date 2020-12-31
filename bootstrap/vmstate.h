@@ -43,14 +43,17 @@ typedef struct {
 } vmstate_ft;
 
 
-#define CLEAR_STACK(vm)		((vm)->sp = (vm)->stack + STACK_SIZE)
-#define CLEAR_RSTACK(vm)	((vm)->rsp = (vm)->rstack + RSTACK_SIZE)
+#define STACK_BASE(vm)		((vm)->stack + STACK_SIZE)
+#define RSTACK_BASE(vm)		((vm)->rstack + RSTACK_SIZE)
+
+#define CLEAR_STACK(vm)		((vm)->sp = STACK_BASE(vm))
+#define CLEAR_RSTACK(vm)	((vm)->catch_rsp = (vm)->rsp = RSTACK_BASE(vm))
 #define SFREE(vm)		((vm)->sp - (vm)->stack)
 #define RSFREE(vm)		((vm)->rsp - (vm)->rstack)
-#define DEPTH(vm)		(STACK_SIZE - SFREE(vm))
-#define RDEPTH(vm)		(RSTACK_SIZE - RSFREE(vm))
-#define EMPTY(vm)		(SFREE(vm) == STACK_SIZE)
-#define REMPTY(vm)		(RSFREE(vm) == RSTACK_SIZE)
+#define DEPTH(vm)		(STACK_BASE(vm) - (vm)->sp)
+#define RCANPOP(vm)		((vm)->catch_rsp - (vm)->rsp)
+#define EMPTY(vm)		((vm)->sp == STACK_BASE(vm))
+#define REMPTY(vm)		((vm)->rsp == RSTACK_BASE(vm))
 #define SP(vm)			((vm)->sp)
 #define RSP(vm)			((vm)->rsp)
 #define PICK(sp, n)		((sp)[(n)])
@@ -70,7 +73,6 @@ inline void
 vm_initialize(vmstate_ft *vm) {
     CLEAR_STACK(vm);
     CLEAR_RSTACK(vm);
-    vm->catch_rsp = NULL;
 }
 
 #endif // VMSTATE_H

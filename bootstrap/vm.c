@@ -51,6 +51,22 @@ execute(vmstate_ft *vm, xt_ft entry_xt)
 }
 
 
+/* ( i*x xt -- i*j ) */
+PRIM_HDLR(x_execute)
+{
+    CHECK_POP(vm, 1);
+    return xtcall((xt_ft) POP(vm), vm, ip);
+}
+
+
+/* ( R: nest-sys -- ) execution semantics */
+PRIM_HDLR(x_exit)
+{
+    CHECK_RPOP(vm, 1);
+    return (vmip_ft) RPOP(vm);
+}
+
+
 /* ( x -- x 0 ) ( R: -- ip sp catch-ptr ) */
 PRIM_HDLR(do_catch)
 {
@@ -75,32 +91,15 @@ PRIM_HDLR(do_catch)
 
 
 /* ( -- ) ( R: ip sp catch-ptr -- ) */
-PRIM_HDLR(undo_catch)
+PRIM_HDLR(drop_catch)
 {
     STACKCHECK(vm, vm->rsp != vm->catch_rsp, -25);
     // this should maybe be a system-specific throw code...
-    STACKCHECK(vm, !HAVE_CATCH(vm), -5);
+    STACKCHECK(vm, !HAVE_CATCH(vm), -6);
     vm->catch_rsp = (sp_ft) RPOP(vm);
-    RPOP(vm);
-    RPOP(vm);
+    SET_RSP(vm, RSP(vm), 2);
 
     return ip;
-}
-
-
-/* ( i*x xt -- i*j ) */
-PRIM_HDLR(x_execute)
-{
-    CHECK_POP(vm, 1);
-    return xtcall((xt_ft) POP(vm), vm, ip);
-}
-
-
-/* ( R: nest-sys -- ) execution semantics */
-PRIM_HDLR(x_exit)
-{
-    CHECK_RPOP(vm, 1);
-    return (vmip_ft) RPOP(vm);
 }
 
 
@@ -108,11 +107,8 @@ PRIM_HDLR(x_throw)
 {
     CHECK_POP(vm, 1);
     cell_ft throw_code = POP(vm);
-    if (throw_code != 0) {
-	return throw_transfer(vm, throw_code);
-    } else {
-	return ip;
-    }
+    CHECK(vm, throw_code != 0, throw_code);
+    return ip;
 }
 
 

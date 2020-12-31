@@ -11,5 +11,5 @@
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
 prim: do-catch      do_catch
-prim: undo-catch    undo_catch
+prim: drop-catch    drop_catch
 prim: THROW         x_throw

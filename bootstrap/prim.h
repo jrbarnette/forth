@@ -11,7 +11,7 @@
 
 /* vm execution primitives */
 extern PRIM_HDLR(do_catch);
-extern PRIM_HDLR(undo_catch);
+extern PRIM_HDLR(drop_catch);
 extern PRIM_HDLR(x_execute);
 extern PRIM_HDLR(x_exit);
 extern PRIM_HDLR(x_throw);

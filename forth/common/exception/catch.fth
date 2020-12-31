@@ -4,4 +4,5 @@
 \  CATCH               9.6.1.0875 EXCEPTION
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
-: CATCH ( ... ) do-catch ?dup 0= if execute undo-catch 0 then ;
+: CATCH ( i*x xt -- j*x 0 | i*x n )
+    do-catch ?dup 0= if execute drop-catch 0 then ;

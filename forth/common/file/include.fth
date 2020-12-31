@@ -6,9 +6,9 @@
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
 : INTERPRET-FILE ( i*x fileid -- j*x )
-    source<file
     begin refill if ['] interpret catch ?dup else 0 -1 then until
     source-id close-file drop throw ;
-: INCLUDE-FILE ( i*x fileid -- j*x )  ['] interpret-file with-nested-source ;
+: INCLUDE-FILE ( i*x fileid -- j*x )
+    ['] interpret-file with-input-source ;
 : INCLUDED  ( i*x c-addr u -- j*x )
     r/o open-file abort" OPEN-FILE failed in INCLUDED" include-file ;

@@ -27,8 +27,7 @@ variable >IN 6 cells allot
 : SOURCE-ID  [ >in cell+ ] literal @ ;
 : SOURCE  ( -- c-addr u )  source-addr 2@ ;
 
-: SOURCE-BUFFER  ( -- c-addr u )
-    [ >in 3 cells + ] literal dup @ swap cell+ @ ;
+: SOURCE-BUFFER  ( -- c-addr u )  [ >in 3 cells + ] literal 2@ swap ;
 
 : REFILL-FILE ( buff-ptr len fileid -- flag len )
     dup file-position drop source-pos 2! read-line drop ;
@@ -36,30 +35,30 @@ variable >IN 6 cells allot
     source-id 0< if false exit then
     source-buffer source-id
     ?dup if refill-file else refill-terminal then swap
-    source-addr ! dup if 0 >in ! then ;
+    source-addr ! 0 >in ! ;
 : RESTORE-SOURCE
     source-id 0> 0= if exit then
     source-pos 2@ source-id reposition-file drop
     source-buffer refill-file 2drop ;
 
-: WITH-NESTED-SOURCE ( xt -- i*x )
+256 chars here over allot	( #TIB TIB )
+256 chars here over allot	( #TIB TIB #filebuf filebuf )
+, ,	( files )
+, ,	( terminal )
+here 4 cells - constant SOURCE-BUFFERS
+
+: SOURCE-ID! ( c-addr u -1 | 0 | fileid )
+    dup 0 >in 2! dup 0< if
+	drop source-addr
+    else
+	0= negate 2* cells source-buffers + 2@
+	[ >in 3 cells + ] literal
+    then ( x0 x1 addr ) 2! ;
+
+: WITH-INPUT-SOURCE ( c-addr u -1 xt | 0 xt | fileid xt -- i*x )
     [ >in dup 7 cells + 2dup swap ] literal literal ( >in index-ptr+1 )
     begin 2dup < while 1 cells - dup @ >r repeat 2drop
-    catch
+    >r source-id! r> catch
     literal literal ( source-end index-ptr )
     begin 2dup > while r> over ! cell+ repeat 2drop
     restore-source throw ;
-
-: SOURCE-ID!  ( id -- ) 0 >in 2! ;
-: SOURCE<EVALUATE  ( c-addr u -- ) source-addr 2! -1 source-id! ;
-
-: SOURCE-BUFFER!  ( id #buff buff -- )
-    [ >in 3 cells + ] literal 2! source-id! ;
-
-here 256 dup chars allot        ( TIB #TIB )
-: SOURCE<TERMINAL  ( -- )
-    0 [ swap ] literal [ swap ] literal source-buffer! ;
-
-here 256 dup chars allot        ( filebuf #filebuf )
-: SOURCE<FILE  ( fileid -- )
-    [ swap ] literal [ swap ] literal source-buffer! ;

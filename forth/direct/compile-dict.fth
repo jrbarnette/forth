@@ -5,14 +5,13 @@ only FORTH definitions
 : OPEN-SOURCE-FILE ( "filename" -- fileid )
     parse-name r/o open-file abort" failed to open file" ;
 : INTERPRET-META-FILE
-    source<file
     \ XXX TARGET overrides [ and ], so this construct fails:
     \   target [ also target ] <direct> [ previous ]
     only target meta-state @ 0= if also direct then
     begin refill if ['] interpret catch ?dup else 0 -1 then until
     only forth source-id close-file drop throw ;
 : COMPILE-FILE: ( "filename" -- )
-    open-source-file ['] interpret-meta-file with-nested-source ;
+    open-source-file ['] interpret-meta-file with-input-source ;
 
 create SOURCE-LINE 256 dup chars allot constant LINE-SIZE
 : INCLUDE-SOURCE-TEXT: ( "filename" -- )

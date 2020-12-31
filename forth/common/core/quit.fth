@@ -8,7 +8,7 @@
 
 : state-prompt state @ if s" " else s" ok " then prompt! ;
 : QUIT
-    rclear source<terminal postpone [
+    rclear 0 source-id! postpone [
     begin state-prompt refill while interpret repeat
 ;
 

@@ -101,5 +101,6 @@ create SOURCE-LINE 256 dup chars allot constant LINE-SIZE
     include-source-text: forth/common/file/include.fth
     include-source-text: forth/common/search/find.fth
     include-source-text: forth/common/search/vocab.fth
+    include-source-text: forth/common/tools/tools.fth
 >>>     NULL,
 >>> };

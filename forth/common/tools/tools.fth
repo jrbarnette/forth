@@ -8,23 +8,25 @@
 \ WORDS              15.6.1.2465 TOOLS
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
-: stack-max
+: stack-max ( -- field-width #/line )
+    \ first find largest value on stack, by absolute value
     0 depth begin dup 1 > while 
 	dup pick abs rot max swap 1-
     repeat drop
-    dup        $10 < if drop  20  2 exit then
-    dup       $100 < if drop  16  3 exit then
-    dup     $10000 < if drop  12  5 exit then
-        $100000000 < if        8  9
-		     else      4 17 then ;
+    \ count digits, include one more for sign
+    1 swap begin swap 1+ swap base @ / dup 0= until drop
+    \ entries per line based on 80-column lines
+    \ minimum 5 field width, minimum 1 entry per line
+    5 max 80 over 1+ / 1 max ;
 
-\ this is hard-coded for hex; we should do better...
-: .S stack-max base @ >r 2>r hex	( R: base #/line width )
-    0 depth begin dup 1 > while		( # depth )
+
+: .S stack-max 2>r				( R: field #/line )
+    0 depth begin dup 1 > while			( # depth )
 	over if space then
-	dup pick 2r@ rot swap .r
-	rot 1+ swap over = if cr drop 0 then	( depth #+1 )
+	dup pick 2r@ drop .r
+	swap 1+ dup r@ = if cr drop 0 then	( depth #+1 )
 	swap 1-					( #+1 depth-1 )
-    repeat drop if cr then 2r> 2drop r> base ! ;
+    repeat drop if cr then 2r> 2drop ;
+
 
 : ? ( a-addr -- ) @ . cr ;

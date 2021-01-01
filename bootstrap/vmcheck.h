@@ -18,7 +18,7 @@
 inline vmip_ft
 throw_transfer(vmstate_ft *vm, cell_ft throw_code)
 {
-    if (!HAVE_CATCH(vm)) {
+    if (EXEMPTY(vm)) {
 	THROW(vm, throw_code);
 	return NULL;
     }

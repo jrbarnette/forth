@@ -95,7 +95,7 @@ PRIM_HDLR(drop_catch)
 {
     STACKCHECK(vm, vm->rsp != vm->catch_rsp, -25);
     // this should maybe be a system-specific throw code...
-    STACKCHECK(vm, !HAVE_CATCH(vm), -6);
+    STACKCHECK(vm, EXEMPTY(vm), -6);
     vm->catch_rsp = (sp_ft) RPOP(vm);
     SET_RSP(vm, RSP(vm), 2);
 

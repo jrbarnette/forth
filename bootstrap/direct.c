@@ -22,7 +22,7 @@ direct_execute(vmstate_ft *vm, vmip_ft ip)
     int throwcode;
     while ((throwcode = CATCH(vm)) != 0) {
 	// this logic is partly replicated in throw_transfer()
-	if (!HAVE_CATCH(vm)) {
+	if (EXEMPTY(vm)) {
 	    report_exception(throwcode, vm, NULL);
 	    abort();
 	}

@@ -11,21 +11,43 @@
 /*
  * Virtual Machine State
  *
- * The virtual machine interpreter uses a more-or-less traditional
- * indirect threaded approach:  A Forth definition consists of a
- * pointer to a handler function that executes the defintion,
- * followed by definition data.  The definition is invoked by
- * calling the handler with the VM state and the address of the
- * definition data.
+ * The VM state structure contains these elements:
+ *   sp - pointer to the top of the data stack.
+ *   rsp - pointer to the top of the return stack.
+ *   catch_rsp - pointer to the top exception stack frame.
+ *   stack - space for the data stack.
+ *   rstack - space for the return stack.
+ *   interp_loop - a jmp_buf that is set to return to outside of the
+ *     main VM interpreter loop
  *
- * The "execution token" for a definition is simply its address.
- * The execution token also serves as the representation of a
- * virtual machine instruction.
+ * Stacks grow down in memory.
  *
- * The defintion data for a colon definition is an array of
- * virtual machine instructions (execution tokens) to be executed in
- * order.  The execution logic and the data structures come together
- * in these key functions: execute(), do_colon(), x_exit().
+ * The exception stack is stored on the return stack.  Return stack
+ * bounds checks consider the top frame of the exception stack to be
+ * the bottom of the return stack (see the RCANPOP macro, below).
+ * The exception stack is considered empty when it points to the
+ * base of the return stack.
+ *
+ * The macros in this header are meant to encapsulate certain
+ * implementation details from the rest of the system, specifically:
+ *   + Whether the stack grows up or down in memory.
+ *   + Whether the stack pointers are actual pointers, or
+ *     indexes into an array of cells.
+ *   + Whether stack pointers address the cell at top of stack or
+ *     the first empty cell.
+ *
+ * There are macros for addressing the stack directly as an array of
+ * cells:
+ *   SP(vm) - The pointer to the top of the data stack.
+ *   RSP(vm) - The pointer to the top of the return stack.
+ *   PICK(sp, n) - An lvalue addressing the nth cell on a stack as
+ *     returned by SP() or RSP().  PICK(sp, 0) is top-of-stack.
+ *     Positive values of n address values below top of stack;
+ *     negative values address empty slots above TOS.
+ *   SET_SP(vm, nsp, n) - Set the data stack pointer to point to
+ *     the cell addressed by PICK(nsp, n).
+ *   SET_RSP(vm, nsp, n) - Set the return stack pointer to point to
+ *     the cell addressed by PICK(nsp, n).
  */
 
 #define STACK_SIZE	256
@@ -48,24 +70,27 @@ typedef struct {
 
 #define CLEAR_STACK(vm)		((vm)->sp = STACK_BASE(vm))
 #define CLEAR_RSTACK(vm)	((vm)->catch_rsp = (vm)->rsp = RSTACK_BASE(vm))
-#define CANPUSH(vm)		((vm)->sp - (vm)->stack)
-#define RCANPUSH(vm)		((vm)->rsp - (vm)->rstack)
-#define CANPOP(vm)		(STACK_BASE(vm) - (vm)->sp)
-#define RCANPOP(vm)		((vm)->catch_rsp - (vm)->rsp)
+
 #define EMPTY(vm)		((vm)->sp == STACK_BASE(vm))
 #define REMPTY(vm)		((vm)->rsp == RSTACK_BASE(vm))
-#define SP(vm)			((vm)->sp)
-#define RSP(vm)			((vm)->rsp)
-#define PICK(sp, n)		((sp)[(n)])
-#define SET_SP(vm, nsp, n)	((vm)->sp = (nsp) + (n))
-#define SET_RSP(vm, nsp, n)	((vm)->rsp = (nsp) + (n))
+#define EXEMPTY(vm)		((vm)->catch_rsp == RSTACK_BASE(vm))
+
+#define CANPUSH(vm)		((vm)->sp - (vm)->stack)
+#define CANPOP(vm)		(STACK_SIZE - CANPUSH(vm))
+#define RCANPUSH(vm)		((vm)->rsp - (vm)->rstack)
+#define RCANPOP(vm)		((vm)->catch_rsp - (vm)->rsp)
 
 #define POP(vm)			(*(vm)->sp++)
 #define PUSH(vm, c)		(*--(vm)->sp = (cell_ft) (c))
 #define RPOP(vm)		(*(vm)->rsp++)
 #define RPUSH(vm, c)		(*--(vm)->rsp = (cell_ft) (c))
 
-#define HAVE_CATCH(vm)		((vm)->catch_rsp < RSTACK_BASE(vm))
+#define SP(vm)			((vm)->sp)
+#define RSP(vm)			((vm)->rsp)
+#define PICK(sp, n)		((sp)[(n)])
+#define SET_SP(vm, nsp, n)	((vm)->sp = (nsp) + (n))
+#define SET_RSP(vm, nsp, n)	((vm)->rsp = (nsp) + (n))
+
 #define CATCH(vm)		(setjmp((vm)->interp_loop))
 #define THROW(vm, n)		(longjmp((vm)->interp_loop, (int) (n)))
 

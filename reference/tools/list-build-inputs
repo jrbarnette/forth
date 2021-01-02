@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# On stdout, list all the files needed to (re-)build the interpreter:
+#   + All C sources under "bootstrap" used to build the "forth"
+#     executable.
+#   + All Forth files read when creating "bootstrap/initdict.c"
+#   + Any other file that might be read in rebuilding during either
+#     of the above processes.
+
+FILES=(  )
+F=$(mktemp)
+trap 'rm $F' EXIT
+sleep 0.1
+if ( cd bootstrap && make clean && make forth ) >/dev/null
+then
+    ./gen-dict -n direct
+    P=$(echo "$F" | sed 's/\//\\\//g')
+    ls -tu $(git ls-files) "$F" | sed "/$P/,\$ d" | sort
+else
+    echo "build failure" >&2
+    exit 1
+fi

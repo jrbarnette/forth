@@ -26,31 +26,32 @@
 
 
 #define HIGH_BIT	(~(~(cell_ft) 0 >> 1))
-#define HALF_SHIFT	(4 * CELL_SIZE)
+#define HALF_SHIFT	(4 XCELLS)
 #define HI(x)		((cell_ft) (x) >> HALF_SHIFT)
 #define HALF_MASK	HI(~(cell_ft) 0)
 #define LO(x)		((cell_ft) (x) & HALF_MASK)
+// N.B. for JOIN, it's OK if either hi or lo exceed a half cell
+#define JOIN(hi, lo)	(((hi) << HALF_SHIFT) + (lo))
 
 
 static void
 dmult(cell_ft *sp, cell_ft n1, cell_ft n2, cell_ft sign)
 {
-    cell_ft n1_lo = n1 & HALF_MASK;
-    cell_ft n1_hi = n1 >> HALF_SHIFT;
-    cell_ft n2_lo = n2 & HALF_MASK;
-    cell_ft n2_hi = n2 >> HALF_SHIFT;
+    cell_ft n1_lo = LO(n1);
+    cell_ft n1_hi = HI(n1);
+    cell_ft n2_lo = LO(n2);
+    cell_ft n2_hi = HI(n2);
 
     cell_ft mid1 = n1_hi * n2_lo;
     cell_ft mid2 = n1_lo * n2_hi;
-    cell_ft hi = n1_hi * n2_hi + (mid1 >> HALF_SHIFT) +
-		    (mid2 >> HALF_SHIFT);
+    cell_ft hi = n1_hi * n2_hi + HI(mid1) + HI(mid2);
     cell_ft tlo, lo;
 
     tlo = n1_lo * n2_lo;
-    lo = tlo + (mid1 << HALF_SHIFT);
+    lo = JOIN(mid1, tlo);
     hi += (lo < tlo);
     tlo = lo;
-    lo = tlo + (mid2 << HALF_SHIFT);
+    lo = JOIN(mid2, tlo);
     hi += (lo < tlo);
 
     PICK(sp, 1) = lo;
@@ -68,12 +69,12 @@ ddivide(cell_ft *sp, cell_ft d_hi, cell_ft d_lo, cell_ft v)
 	rem = d_lo % v;
 	quot = d_lo / v;
     } else if (v <= HALF_MASK) {
-	cell_ft u = ((d_hi % v) << HALF_SHIFT) + HI(d_lo);
+	cell_ft u = JOIN(d_hi % v, HI(d_lo));
 	rem = u % v;
 	quot = u / v;
-	u = (rem << HALF_SHIFT) + LO(d_lo);
+	u = JOIN(rem, LO(d_lo));
 	rem = u % v;
-	quot = (quot << HALF_SHIFT) + u / v;
+	quot = JOIN(quot, u / v);
     } else if (v > HIGH_BIT) {
 	// This is Algorithm D from Knuth Vol. 2, "Seminumerical
 	// Algorithms".  We're using "digits" of a half cell,
@@ -110,26 +111,25 @@ ddivide(cell_ft *sp, cell_ft d_hi, cell_ft d_lo, cell_ft v)
 	    // specially.
 	    if (HI(rem) >= v_hi) {
 		if (v_hi == HALF_MASK) {
-		    cell_ft rem_hi = HALF_MASK + LO(rem) - v_lo;
-		    rem = (rem_hi << HALF_SHIFT) + v_lo + u[i];
-		    quot = (quot << HALF_SHIFT) + HALF_MASK;
+		    rem = JOIN(v_hi + LO(rem) - v_lo, v_lo + u[i]);
+		    quot = JOIN(quot, v_hi);
 		    continue;
 		}
-		rhat = rem - (v_hi << HALF_SHIFT) + v_hi;
+		rhat = -JOIN(v_hi, -(rem + v_hi));
 		qhat = HALF_MASK;
 	    } else {
 		rhat = rem % v_hi;
 		qhat = rem / v_hi;
 	    }
 	    cell_ft qv_lo = qhat * v_lo;
-	    cell_ft qv_total = (rhat << HALF_SHIFT) + u[i];
+	    cell_ft qv_total = JOIN(rhat, u[i]);
 	    while (qv_lo > qv_total) {
 		qhat--;
 		qv_lo -= v_lo;
-		qv_total += v_hi << HALF_SHIFT;
+		qv_total = JOIN(v_hi, qv_total);
 	    }
 	    rem = qv_total - qv_lo;
-	    quot = (quot << HALF_SHIFT) + qhat;
+	    quot = JOIN(quot, qhat);
 	}
     } else {
 	// To use Knuth's Algorithm D in this case would require the

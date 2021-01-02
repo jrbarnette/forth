@@ -22,8 +22,8 @@ here 1 cells allot			( hold-addr )
 : #> ( xd -- c-addr u ) 2drop [ over ] literal dup @ dup >r chars - r> ;
 drop					( )
 
-: >digit ( n -- char ) dup 9 > [ 'A' '9' 1+ - ] literal and + '0' + ;
-: # ( ud1 -- ud2 ) 0 base @ um/mod >r base @ um/mod swap >digit hold r> ;
+: digit>char ( n -- char ) dup 9 > [ 'A' '9' 1+ - ] literal and + '0' + ;
+: # ( ud1 -- ud2 ) 0 base @ um/mod >r base @ um/mod swap digit>char hold r> ;
 : #S ( ud1 -- ud2 ) begin # 2dup or 0= until ;
 : SIGN ( n -- ) 0< if '-' hold then ;
 

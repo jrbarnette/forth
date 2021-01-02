@@ -17,7 +17,7 @@
 ;
 
 : LOOKUP ( c-addr u -- name | 0 )
-    dup 0= if .error -16 throw then
+    dup 0= if -16 .error then
     2>r get-order begin dup while 1- swap
 	2r@ rot wid-lookup ?dup if >r
 	    begin dup while 1- swap drop repeat drop

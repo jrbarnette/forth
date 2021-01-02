@@ -5,8 +5,8 @@
     name>xt+flags state @ if
 	immediate? if execute else compile, then
     else
-	compile-only? if .error -14 throw else execute then
+	compile-only? if -14 .error else execute then
     then
 ;
 : INTERPRET-NUMBER ( x -- | x ) state @ if postpone literal then ;
-: INTERPRET-UNKNOWN ( str len -- ) .error -13 throw ;
+: INTERPRET-UNKNOWN ( str len -- ) false ;

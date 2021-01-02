@@ -16,19 +16,19 @@
 : link-name ( name -- ) get-current ! ;
 
 : ID, ( c-addr u -- )
-    dup 0= if .error -16 throw then here >r counted, r>
+    dup 0= if -16 .error then here >r counted, r>
     count 0 do dup c@ toupper over c! char+ loop drop ;
 : NAME, ( hdlr c-addr u -- name )
     align here >r current-name , id, align , r> ;
 
 : create-name ( hdlr "name" -- name )
-    parse-name dup 0= if .error -16 throw then name, ;
+    parse-name dup 0= if -16 .error then name, ;
 : add-name ( hdlr "name" -- ) create-name link-name ;
 
 : : handler: do_colon create-name [compile] ] ;
 : ; postpone EXIT ?dup if link-name then [compile] [ ; compile-special
 
-: created? dup @ handler: do_create = invert if .error -31 throw then ;
+: created? dup @ handler: do_create = invert if -31 .error then ;
 : >BODY ( xt -- a-addr ) created? [ 2 cells ] literal + ;
 
 : CONSTANT handler: do_constant add-name , ;

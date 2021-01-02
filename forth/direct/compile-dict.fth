@@ -77,6 +77,7 @@ create SOURCE-LINE 256 dup chars allot constant LINE-SIZE
     compile-file: forth/c-gen/file/modes.fth
     compile-file: forth/common/core/source.fth
     compile-file: forth/common/core/parse.fth
+    compile-file: forth/common/core/comments.fth
 
     compile-file: forth/common/core/number.fth
     compile-file: forth/common/internal/error.fth
@@ -90,12 +91,12 @@ create SOURCE-LINE 256 dup chars allot constant LINE-SIZE
     compile-file: forth/common/internal/interpret.fth
 
     compile-file: forth/common/core/definers.fth
-    compile-file: forth/common/core/compile.fth
     compile-file: forth/common/core/evaluate.fth
 >>> END_DIRECT // }
 >>>
 >>>
 >>> char *init_forth_defs[] = {
+    include-source-text: forth/common/core/compile.fth
     include-source-text: forth/common/core/format.fth
     include-source-text: forth/common/core/quit.fth
     include-source-text: forth/common/file/include.fth

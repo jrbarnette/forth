@@ -8,4 +8,4 @@ only FORTH definitions
 : INTERPRET-NUMBER ( x -- ) literal-cell meta-literal ;
 
 : INTERPRET-UNKNOWN ( str len -- )
-    meta-state @ if meta-state @ meta-emit else .error -13 throw then ;
+    meta-state @ if meta-state @ meta-emit true else false then ;

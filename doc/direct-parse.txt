@@ -1,0 +1,20 @@
+meta-emit
+    internal - s"
+    direct INTERPRET-UNKNOWN - parse
+meta-interpret
+    never parse
+meta-compile
+    [COMPILE] - parse
+    others - not parse
+addname startname
+    passed in - never parse
+    internal - parse
+direct-lookup
+    always from parse
+literal-expr
+    <C> - parse
+    VARIABLE - s"
+literal-handler
+    handler: - parse
+prim:
+    not parse

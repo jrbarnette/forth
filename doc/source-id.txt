@@ -1,6 +1,6 @@
 Values for SOURCE-ID
 
-Reading from terminal:
+Reading from terminal - QUIT:
     SOURCE-ID is 0
     BLK is 0
     input buffer is TIB, the user terminal input buffer
@@ -9,14 +9,14 @@ Reading from terminal:
     ( parses until end of buffer
     control characters may match blank delimter
 
-Reading from string for EVALUATE
+Reading from string - EVALUATE:
     SOURCE-ID is -1
     input buffer is string
     \ comments until end of string
     ( parses until end of string
     control characters may match blank delimter
 
-Reading from block
+Reading from block - LOAD THRU:
     BLK is non-zero block number
     SOURCE-ID is 0
     input buffer is the block in BLK
@@ -25,7 +25,7 @@ Reading from block
     ( parses until end of block
     control characters may match blank delimter
 
-Reading from file
+Reading from file - INCLUDED INCLUDE-FILE:
     SOURCE-ID is fileid
     BLK is 0
     input buffer is one line of text
@@ -33,3 +33,34 @@ Reading from file
     \ comments until end of line
     ( parses until end of file
     control characters must match blank delimiters
+
+Behaviors that depend on the input source:
+    REFILL SOURCE-ID SAVE-INPUT RESTORE-INPUT
+
+Interpreter loops
+    <save input>
+    <new input>
+    begin refill if ['] interpret catch ?dup else 0 -1 then until
+    <clean up input>
+    <restore input>
+    throw ;
+
+    : state-prompt state @ if s" " else s" ok " then prompt! ;
+    : QUIT
+	rclear source<terminal postpone [
+	begin state-prompt refill while
+	    ['] interpret catch report-exception
+	repeat
+    ;
+
+    : WITH-NESTED-SOURCE
+	<save input> catch <restore input> throw ;
+
+    : INTERPRET-STRING source<evaluate interpret ;
+    : EVALUATE ['] interpret-string with-nested-source ;
+
+    : INTERPRET-FILE
+	source<file
+	begin refill if ['] interpret catch ?dup else 0 -1 then until
+	source-id close-file drop throw ;
+    : INCLUDED ['] interpret-file with-nested-source ;

@@ -1,0 +1,950 @@
+(0, 0)
+    x DROP
+(0, 1, 0, 1)
+    x x SWAP DROP DROP
+    x x >R DROP R> DROP
+    x >R x R> DROP DROP
+    x >R x R> SWAP >R DROP R> DROP
+(0, 1, 0, 2, 1, 2)
+    x x >R DROP x R> DROP DROP
+    x x SWAP DROP x SWAP DROP DROP
+    x x >R DROP R> x SWAP DROP DROP
+    x x SWAP DROP x >R DROP R> DROP
+    x x SWAP DROP >R x R> DROP DROP
+    x >R x R> DROP x SWAP DROP DROP
+    x x >R DROP R> x >R DROP R> DROP
+    x >R x R> DROP x >R DROP R> DROP
+    x >R x R> DROP >R x R> DROP DROP
+    x x >R DROP x R> SWAP >R DROP R> DROP
+    x >R x R> SWAP >R DROP x R> DROP DROP
+    x x SWAP DROP >R x R> SWAP >R DROP R> DROP
+    x >R x R> SWAP >R DROP R> x SWAP DROP DROP
+    x >R x R> DROP >R x R> SWAP >R DROP R> DROP
+    x >R x R> SWAP >R DROP R> x >R DROP R> DROP
+    x >R x R> SWAP >R DROP x R> SWAP >R DROP R> DROP
+(0, 1, 0, 2, 2, 1)
+    x x SWAP DROP x DROP DROP
+    x x >R DROP x DROP R> DROP
+    x x >R DROP R> x DROP DROP
+    x >R x R> DROP x DROP DROP
+    x x >R DROP x R> SWAP DROP DROP
+    x x SWAP DROP >R x DROP R> DROP
+    x x SWAP DROP x SWAP >R DROP R> DROP
+    x x SWAP DROP >R x R> SWAP DROP DROP
+    x >R x R> DROP >R x DROP R> DROP
+    x x >R DROP R> x SWAP >R DROP R> DROP
+    x >R x R> DROP x SWAP >R DROP R> DROP
+    x >R x R> DROP >R x R> SWAP DROP DROP
+    x >R x R> SWAP >R DROP x DROP R> DROP
+    x >R x R> SWAP >R DROP R> x DROP DROP
+    x >R x R> SWAP >R DROP x R> SWAP DROP DROP
+    x >R x R> SWAP >R DROP R> x SWAP >R DROP R> DROP
+(0, 1, 1, 0)
+    x x DROP DROP
+    x >R x DROP R> DROP
+    x x SWAP >R DROP R> DROP
+    x >R x R> SWAP DROP DROP
+(0, 1, 1, 2, 0, 2)
+    x x DROP x SWAP DROP DROP
+    x x DROP x >R DROP R> DROP
+    x x DROP >R x R> DROP DROP
+    x >R x DROP x R> DROP DROP
+    x x SWAP >R DROP x R> DROP DROP
+    x >R x DROP R> x SWAP DROP DROP
+    x x SWAP >R DROP R> x SWAP DROP DROP
+    x >R x R> SWAP DROP x SWAP DROP DROP
+    x >R x DROP R> x >R DROP R> DROP
+    x x DROP >R x R> SWAP >R DROP R> DROP
+    x x SWAP >R DROP R> x >R DROP R> DROP
+    x >R x R> SWAP DROP x >R DROP R> DROP
+    x >R x R> SWAP DROP >R x R> DROP DROP
+    x >R x DROP x R> SWAP >R DROP R> DROP
+    x x SWAP >R DROP x R> SWAP >R DROP R> DROP
+    x >R x R> SWAP DROP >R x R> SWAP >R DROP R> DROP
+(0, 1, 1, 2, 2, 0)
+    x x DROP x DROP DROP
+    x x DROP >R x DROP R> DROP
+    x >R x DROP x DROP R> DROP
+    x >R x DROP R> x DROP DROP
+    x x DROP x SWAP >R DROP R> DROP
+    x x DROP >R x R> SWAP DROP DROP
+    x x SWAP >R DROP x DROP R> DROP
+    x x SWAP >R DROP R> x DROP DROP
+    x >R x R> SWAP DROP x DROP DROP
+    x >R x DROP x R> SWAP DROP DROP
+    x x SWAP >R DROP x R> SWAP DROP DROP
+    x >R x R> SWAP DROP >R x DROP R> DROP
+    x >R x DROP R> x SWAP >R DROP R> DROP
+    x x SWAP >R DROP R> x SWAP >R DROP R> DROP
+    x >R x R> SWAP DROP x SWAP >R DROP R> DROP
+    x >R x R> SWAP DROP >R x R> SWAP DROP DROP
+(0, 1, 2, 0, 1, 2)
+    x x x SWAP ROT DROP DROP DROP
+    x x x ROT DROP SWAP DROP DROP
+    x x x >R SWAP DROP DROP R> DROP
+    x x x ROT DROP >R DROP R> DROP
+    x x >R x R> ROT DROP DROP DROP
+    x x >R x SWAP DROP R> DROP DROP
+    x x SWAP x >R DROP DROP R> DROP
+    x x SWAP x SWAP DROP SWAP DROP DROP
+    x x SWAP x ROT ROT DROP DROP DROP
+    x >R x x R> DROP SWAP DROP DROP
+    x >R x x SWAP R> DROP DROP DROP
+    x x x >R >R DROP R> DROP R> DROP
+    x x x >R SWAP DROP R> SWAP DROP DROP
+    x x x SWAP >R SWAP DROP R> DROP DROP
+    x x >R x >R DROP R> R> DROP DROP
+    x x >R >R x R> DROP R> DROP DROP
+    x x SWAP x >R DROP R> SWAP DROP DROP
+    x x SWAP x SWAP DROP >R DROP R> DROP
+    x x SWAP >R x R> DROP SWAP DROP DROP
+    x x SWAP >R x SWAP R> DROP DROP DROP
+    x >R x x R> DROP >R DROP R> DROP
+    x >R x R> x >R DROP DROP R> DROP
+    x >R x R> x SWAP DROP SWAP DROP DROP
+    x >R x R> x ROT ROT DROP DROP DROP
+    x >R x >R x R> R> DROP DROP DROP
+    x x x >R >R DROP R> R> SWAP DROP DROP
+    x x x SWAP >R >R DROP R> R> DROP DROP
+    x x x SWAP ROT DROP SWAP >R DROP R> DROP
+    x x >R x R> SWAP ROT DROP SWAP DROP DROP
+    x x >R >R x R> R> SWAP DROP DROP DROP
+    x x SWAP x SWAP ROT >R DROP R> DROP DROP
+    x x SWAP >R x R> DROP >R DROP R> DROP
+    x x SWAP >R >R x R> R> DROP DROP DROP
+    x >R x x R> SWAP >R DROP DROP R> DROP
+    x >R x x R> ROT >R DROP R> DROP DROP
+    x >R x R> x >R DROP R> SWAP DROP DROP
+    x >R x R> x SWAP DROP >R DROP R> DROP
+    x >R x R> SWAP x SWAP ROT DROP DROP DROP
+    x >R x R> SWAP x ROT DROP SWAP DROP DROP
+    x x >R x R> SWAP >R SWAP DROP DROP R> DROP
+    x x >R x R> SWAP ROT DROP >R DROP R> DROP
+    x x >R x R> ROT DROP SWAP >R DROP R> DROP
+    x x >R x SWAP DROP R> SWAP >R DROP R> DROP
+    x x SWAP x >R SWAP >R DROP R> DROP R> DROP
+    x x SWAP x ROT >R >R DROP R> R> DROP DROP
+    x x SWAP x ROT ROT DROP SWAP >R DROP R> DROP
+    x x SWAP >R x R> SWAP >R DROP DROP R> DROP
+    x x SWAP >R x R> ROT >R DROP R> DROP DROP
+    x >R x x R> SWAP >R DROP R> SWAP DROP DROP
+    x >R x x SWAP R> DROP SWAP >R DROP R> DROP
+    x >R x R> x SWAP ROT >R DROP R> DROP DROP
+    x >R x R> SWAP x >R SWAP DROP DROP R> DROP
+    x >R x R> SWAP x ROT DROP >R DROP R> DROP
+    x >R x R> SWAP >R x R> ROT DROP DROP DROP
+    x >R x R> SWAP >R x SWAP DROP R> DROP DROP
+    x >R x >R x R> SWAP R> DROP SWAP DROP DROP
+    x x x SWAP >R SWAP DROP R> SWAP >R DROP R> DROP
+    x x >R x R> SWAP >R >R DROP R> DROP R> DROP
+    x x >R x R> SWAP >R SWAP DROP R> SWAP DROP DROP
+    x x >R x >R DROP R> R> SWAP >R DROP R> DROP
+    x x >R >R x R> R> ROT ROT DROP SWAP DROP DROP
+    x x >R >R x R> DROP R> SWAP >R DROP R> DROP
+    x x >R >R x R> SWAP >R DROP R> R> DROP DROP
+    x x SWAP x >R SWAP >R DROP R> R> SWAP DROP DROP
+    x x SWAP >R x R> SWAP >R DROP R> SWAP DROP DROP
+    x x SWAP >R x SWAP R> DROP SWAP >R DROP R> DROP
+    x x SWAP >R >R x R> SWAP R> DROP SWAP DROP DROP
+    x >R x R> x >R SWAP >R DROP R> DROP R> DROP
+    x >R x R> x ROT >R >R DROP R> R> DROP DROP
+    x >R x R> x ROT ROT DROP SWAP >R DROP R> DROP
+    x >R x R> SWAP x >R >R DROP R> DROP R> DROP
+    x >R x R> SWAP x >R SWAP DROP R> SWAP DROP DROP
+    x >R x R> SWAP x SWAP >R SWAP DROP R> DROP DROP
+    x >R x R> SWAP >R x >R DROP R> R> DROP DROP
+    x >R x R> SWAP >R >R x R> DROP R> DROP DROP
+    x >R x >R x R> R> DROP SWAP >R DROP R> DROP
+    x >R x >R x R> R> SWAP >R DROP R> DROP DROP
+    x >R x >R x R> R> ROT >R DROP DROP R> DROP
+    x >R x >R x R> SWAP R> DROP >R DROP R> DROP
+    x x x SWAP >R >R DROP R> R> SWAP >R DROP R> DROP
+    x x >R x R> SWAP >R >R DROP R> R> SWAP DROP DROP
+    x x >R >R x R> R> SWAP DROP SWAP >R DROP R> DROP
+    x x >R >R x R> R> SWAP ROT >R DROP DROP R> DROP
+    x x >R >R x R> R> ROT ROT DROP >R DROP R> DROP
+    x x SWAP x SWAP ROT >R DROP R> SWAP >R DROP R> DROP
+    x x SWAP >R >R x R> R> DROP SWAP >R DROP R> DROP
+    x x SWAP >R >R x R> R> SWAP >R DROP R> DROP DROP
+    x x SWAP >R >R x R> R> ROT >R DROP DROP R> DROP
+    x x SWAP >R >R x R> SWAP R> DROP >R DROP R> DROP
+    x >R x x R> SWAP >R SWAP >R DROP R> DROP R> DROP
+    x >R x x R> SWAP ROT >R >R DROP R> R> DROP DROP
+    x >R x x R> ROT >R DROP R> SWAP >R DROP R> DROP
+    x >R x R> x >R SWAP >R DROP R> R> SWAP DROP DROP
+    x >R x R> SWAP x >R >R DROP R> R> SWAP DROP DROP
+    x >R x R> SWAP x SWAP >R >R DROP R> R> DROP DROP
+    x >R x R> SWAP x SWAP ROT DROP SWAP >R DROP R> DROP
+    x >R x R> SWAP >R x R> SWAP ROT DROP SWAP DROP DROP
+    x >R x R> SWAP >R >R x R> R> SWAP DROP DROP DROP
+    x >R x >R x R> R> ROT >R DROP R> SWAP DROP DROP
+    x x >R >R x R> R> SWAP ROT >R DROP R> SWAP DROP DROP
+    x x >R >R x R> R> ROT >R >R DROP R> DROP R> DROP
+    x x SWAP x ROT >R >R DROP R> R> SWAP >R DROP R> DROP
+    x x SWAP >R x R> SWAP >R SWAP >R DROP R> DROP R> DROP
+    x x SWAP >R x R> SWAP ROT >R >R DROP R> R> DROP DROP
+    x x SWAP >R x R> ROT >R DROP R> SWAP >R DROP R> DROP
+    x x SWAP >R >R x R> R> ROT >R DROP R> SWAP DROP DROP
+    x >R x x R> SWAP >R SWAP >R DROP R> R> SWAP DROP DROP
+    x >R x R> x SWAP ROT >R DROP R> SWAP >R DROP R> DROP
+    x >R x R> SWAP >R x R> SWAP >R SWAP DROP DROP R> DROP
+    x >R x R> SWAP >R x R> SWAP ROT DROP >R DROP R> DROP
+    x >R x R> SWAP >R x R> ROT DROP SWAP >R DROP R> DROP
+    x >R x R> SWAP >R x SWAP DROP R> SWAP >R DROP R> DROP
+    x x >R >R x R> R> ROT >R >R DROP R> R> SWAP DROP DROP
+    x x >R >R x R> SWAP >R DROP R> R> SWAP >R DROP R> DROP
+    x x SWAP >R x R> SWAP >R SWAP >R DROP R> R> SWAP DROP DROP
+    x >R x R> x ROT >R >R DROP R> R> SWAP >R DROP R> DROP
+    x >R x R> SWAP x SWAP >R SWAP DROP R> SWAP >R DROP R> DROP
+    x >R x R> SWAP >R x R> SWAP >R >R DROP R> DROP R> DROP
+    x >R x R> SWAP >R x R> SWAP >R SWAP DROP R> SWAP DROP DROP
+    x >R x R> SWAP >R x >R DROP R> R> SWAP >R DROP R> DROP
+    x >R x R> SWAP >R >R x R> R> ROT ROT DROP SWAP DROP DROP
+    x >R x R> SWAP >R >R x R> DROP R> SWAP >R DROP R> DROP
+    x >R x R> SWAP >R >R x R> SWAP >R DROP R> R> DROP DROP
+    x >R x >R x R> R> SWAP >R DROP R> SWAP >R DROP R> DROP
+    x >R x >R x R> R> SWAP >R SWAP >R DROP R> R> DROP DROP
+    x >R x >R x R> R> SWAP ROT >R >R DROP R> DROP R> DROP
+    x x SWAP >R >R x R> R> SWAP >R DROP R> SWAP >R DROP R> DROP
+    x x SWAP >R >R x R> R> SWAP >R SWAP >R DROP R> R> DROP DROP
+    x x SWAP >R >R x R> R> SWAP ROT >R >R DROP R> DROP R> DROP
+    x >R x x R> SWAP ROT >R >R DROP R> R> SWAP >R DROP R> DROP
+    x >R x R> SWAP x SWAP >R >R DROP R> R> SWAP >R DROP R> DROP
+    x >R x R> SWAP >R x R> SWAP >R >R DROP R> R> SWAP DROP DROP
+    x >R x R> SWAP >R >R x R> R> SWAP DROP SWAP >R DROP R> DROP
+    x >R x R> SWAP >R >R x R> R> SWAP ROT >R DROP DROP R> DROP
+    x >R x R> SWAP >R >R x R> R> ROT ROT DROP >R DROP R> DROP
+    x >R x >R x R> R> SWAP ROT >R >R DROP R> R> SWAP DROP DROP
+    x x SWAP >R x R> SWAP ROT >R >R DROP R> R> SWAP >R DROP R> DROP
+    x x SWAP >R >R x R> R> SWAP ROT >R >R DROP R> R> SWAP DROP DROP
+    x >R x R> SWAP >R >R x R> R> SWAP ROT >R DROP R> SWAP DROP DROP
+    x >R x R> SWAP >R >R x R> R> ROT >R >R DROP R> DROP R> DROP
+    x >R x R> SWAP >R >R x R> R> ROT >R >R DROP R> R> SWAP DROP DROP
+    x >R x R> SWAP >R >R x R> SWAP >R DROP R> R> SWAP >R DROP R> DROP
+    x >R x >R x R> R> SWAP >R SWAP >R DROP R> R> SWAP >R DROP R> DROP
+    x x SWAP >R >R x R> R> SWAP >R SWAP >R DROP R> R> SWAP >R DROP R> DROP
+(0, 1, 2, 0, 2, 1)
+    x x x ROT DROP DROP DROP
+    x x SWAP x SWAP DROP DROP DROP
+    x >R x x R> DROP DROP DROP
+    x x x >R SWAP DROP R> DROP DROP
+    x x x SWAP ROT DROP SWAP DROP DROP
+    x x >R x SWAP DROP DROP R> DROP
+    x x SWAP x >R DROP R> DROP DROP
+    x x SWAP >R x R> DROP DROP DROP
+    x >R x R> x SWAP DROP DROP DROP
+    x x x >R >R DROP R> R> DROP DROP
+    x x x SWAP >R SWAP DROP DROP R> DROP
+    x x x SWAP ROT DROP >R DROP R> DROP
+    x x x ROT DROP SWAP >R DROP R> DROP
+    x x >R x R> SWAP ROT DROP DROP DROP
+    x x >R x R> ROT DROP SWAP DROP DROP
+    x x >R x >R DROP R> DROP R> DROP
+    x x >R x SWAP DROP R> SWAP DROP DROP
+    x x >R >R x R> DROP DROP R> DROP
+    x x SWAP x ROT ROT DROP SWAP DROP DROP
+    x >R x x SWAP R> DROP SWAP DROP DROP
+    x >R x R> x >R DROP R> DROP DROP
+    x >R x R> SWAP x ROT DROP DROP DROP
+    x x x SWAP >R >R DROP R> DROP R> DROP
+    x x x SWAP >R SWAP DROP R> SWAP DROP DROP
+    x x >R x R> ROT DROP >R DROP R> DROP
+    x x >R x >R DROP R> R> SWAP DROP DROP
+    x x >R >R x R> DROP R> SWAP DROP DROP
+    x x SWAP x SWAP DROP SWAP >R DROP R> DROP
+    x x SWAP x SWAP ROT >R DROP DROP R> DROP
+    x x SWAP x ROT ROT DROP >R DROP R> DROP
+    x x SWAP >R x SWAP R> DROP SWAP DROP DROP
+    x >R x x R> DROP SWAP >R DROP R> DROP
+    x >R x x R> SWAP >R DROP R> DROP DROP
+    x >R x x R> ROT >R DROP DROP R> DROP
+    x >R x x SWAP R> DROP >R DROP R> DROP
+    x >R x R> x ROT ROT DROP SWAP DROP DROP
+    x >R x >R x R> R> DROP SWAP DROP DROP
+    x >R x >R x R> SWAP R> DROP DROP DROP
+    x x x >R SWAP DROP R> SWAP >R DROP R> DROP
+    x x x SWAP >R >R DROP R> R> SWAP DROP DROP
+    x x >R x R> SWAP >R SWAP DROP R> DROP DROP
+    x x >R >R x R> R> SWAP DROP SWAP DROP DROP
+    x x >R >R x R> R> ROT ROT DROP DROP DROP
+    x x SWAP x >R DROP R> SWAP >R DROP R> DROP
+    x x SWAP x >R SWAP >R DROP R> R> DROP DROP
+    x x SWAP x SWAP ROT >R DROP R> SWAP DROP DROP
+    x x SWAP x ROT >R >R DROP R> DROP R> DROP
+    x x SWAP >R x R> DROP SWAP >R DROP R> DROP
+    x x SWAP >R x R> SWAP >R DROP R> DROP DROP
+    x x SWAP >R x R> ROT >R DROP DROP R> DROP
+    x x SWAP >R x SWAP R> DROP >R DROP R> DROP
+    x x SWAP >R >R x R> R> DROP SWAP DROP DROP
+    x x SWAP >R >R x R> SWAP R> DROP DROP DROP
+    x >R x x R> ROT >R DROP R> SWAP DROP DROP
+    x >R x R> x SWAP DROP SWAP >R DROP R> DROP
+    x >R x R> x SWAP ROT >R DROP DROP R> DROP
+    x >R x R> x ROT ROT DROP >R DROP R> DROP
+    x >R x R> SWAP x >R SWAP DROP R> DROP DROP
+    x >R x R> SWAP x SWAP ROT DROP SWAP DROP DROP
+    x >R x R> SWAP >R x SWAP DROP DROP R> DROP
+    x >R x >R x R> R> DROP >R DROP R> DROP
+    x x x >R >R DROP R> R> SWAP >R DROP R> DROP
+    x x >R x R> SWAP >R >R DROP R> R> DROP DROP
+    x x >R x R> SWAP ROT DROP SWAP >R DROP R> DROP
+    x x >R >R x R> R> SWAP DROP >R DROP R> DROP
+    x x >R >R x R> SWAP >R DROP R> DROP R> DROP
+    x x SWAP x ROT >R >R DROP R> R> SWAP DROP DROP
+    x x SWAP >R x R> ROT >R DROP R> SWAP DROP DROP
+    x x SWAP >R >R x R> R> DROP >R DROP R> DROP
+    x >R x R> x >R DROP R> SWAP >R DROP R> DROP
+    x >R x R> x >R SWAP >R DROP R> R> DROP DROP
+    x >R x R> x SWAP ROT >R DROP R> SWAP DROP DROP
+    x >R x R> x ROT >R >R DROP R> DROP R> DROP
+    x >R x R> SWAP x >R >R DROP R> R> DROP DROP
+    x >R x R> SWAP x SWAP >R SWAP DROP DROP R> DROP
+    x >R x R> SWAP x SWAP ROT DROP >R DROP R> DROP
+    x >R x R> SWAP x ROT DROP SWAP >R DROP R> DROP
+    x >R x R> SWAP >R x R> SWAP ROT DROP DROP DROP
+    x >R x R> SWAP >R x R> ROT DROP SWAP DROP DROP
+    x >R x R> SWAP >R x >R DROP R> DROP R> DROP
+    x >R x R> SWAP >R x SWAP DROP R> SWAP DROP DROP
+    x >R x R> SWAP >R >R x R> DROP DROP R> DROP
+    x >R x >R x R> R> SWAP >R DROP DROP R> DROP
+    x >R x >R x R> R> ROT >R DROP R> DROP DROP
+    x x >R >R x R> R> SWAP ROT >R DROP R> DROP DROP
+    x x >R >R x R> SWAP >R DROP R> R> SWAP DROP DROP
+    x x SWAP >R >R x R> R> SWAP >R DROP DROP R> DROP
+    x x SWAP >R >R x R> R> ROT >R DROP R> DROP DROP
+    x >R x x R> SWAP >R DROP R> SWAP >R DROP R> DROP
+    x >R x x R> SWAP >R SWAP >R DROP R> R> DROP DROP
+    x >R x x R> SWAP ROT >R >R DROP R> DROP R> DROP
+    x >R x R> x ROT >R >R DROP R> R> SWAP DROP DROP
+    x >R x R> SWAP x SWAP >R >R DROP R> DROP R> DROP
+    x >R x R> SWAP x SWAP >R SWAP DROP R> SWAP DROP DROP
+    x >R x R> SWAP >R x R> ROT DROP >R DROP R> DROP
+    x >R x R> SWAP >R x >R DROP R> R> SWAP DROP DROP
+    x >R x R> SWAP >R >R x R> DROP R> SWAP DROP DROP
+    x >R x >R x R> R> SWAP >R DROP R> SWAP DROP DROP
+    x >R x >R x R> SWAP R> DROP SWAP >R DROP R> DROP
+    x x >R x R> SWAP >R SWAP DROP R> SWAP >R DROP R> DROP
+    x x >R >R x R> R> ROT >R >R DROP R> R> DROP DROP
+    x x >R >R x R> R> ROT ROT DROP SWAP >R DROP R> DROP
+    x x SWAP x >R SWAP >R DROP R> R> SWAP >R DROP R> DROP
+    x x SWAP >R x R> SWAP >R DROP R> SWAP >R DROP R> DROP
+    x x SWAP >R x R> SWAP >R SWAP >R DROP R> R> DROP DROP
+    x x SWAP >R x R> SWAP ROT >R >R DROP R> DROP R> DROP
+    x x SWAP >R >R x R> R> SWAP >R DROP R> SWAP DROP DROP
+    x x SWAP >R >R x R> SWAP R> DROP SWAP >R DROP R> DROP
+    x >R x x R> SWAP ROT >R >R DROP R> R> SWAP DROP DROP
+    x >R x R> SWAP x >R SWAP DROP R> SWAP >R DROP R> DROP
+    x >R x R> SWAP x SWAP >R >R DROP R> R> SWAP DROP DROP
+    x >R x R> SWAP >R x R> SWAP >R SWAP DROP R> DROP DROP
+    x >R x R> SWAP >R >R x R> R> SWAP DROP SWAP DROP DROP
+    x >R x R> SWAP >R >R x R> R> ROT ROT DROP DROP DROP
+    x x >R x R> SWAP >R >R DROP R> R> SWAP >R DROP R> DROP
+    x x SWAP >R x R> SWAP ROT >R >R DROP R> R> SWAP DROP DROP
+    x >R x R> x >R SWAP >R DROP R> R> SWAP >R DROP R> DROP
+    x >R x R> SWAP x >R >R DROP R> R> SWAP >R DROP R> DROP
+    x >R x R> SWAP >R x R> SWAP >R >R DROP R> R> DROP DROP
+    x >R x R> SWAP >R x R> SWAP ROT DROP SWAP >R DROP R> DROP
+    x >R x R> SWAP >R >R x R> R> SWAP DROP >R DROP R> DROP
+    x >R x R> SWAP >R >R x R> SWAP >R DROP R> DROP R> DROP
+    x >R x >R x R> R> SWAP >R SWAP >R DROP R> DROP R> DROP
+    x >R x >R x R> R> SWAP ROT >R >R DROP R> R> DROP DROP
+    x >R x >R x R> R> ROT >R DROP R> SWAP >R DROP R> DROP
+    x x >R >R x R> R> SWAP ROT >R DROP R> SWAP >R DROP R> DROP
+    x x SWAP >R >R x R> R> SWAP >R SWAP >R DROP R> DROP R> DROP
+    x x SWAP >R >R x R> R> SWAP ROT >R >R DROP R> R> DROP DROP
+    x x SWAP >R >R x R> R> ROT >R DROP R> SWAP >R DROP R> DROP
+    x >R x x R> SWAP >R SWAP >R DROP R> R> SWAP >R DROP R> DROP
+    x >R x R> SWAP >R >R x R> R> SWAP ROT >R DROP R> DROP DROP
+    x >R x R> SWAP >R >R x R> SWAP >R DROP R> R> SWAP DROP DROP
+    x >R x >R x R> R> SWAP >R SWAP >R DROP R> R> SWAP DROP DROP
+    x x >R >R x R> R> ROT >R >R DROP R> R> SWAP >R DROP R> DROP
+    x x SWAP >R x R> SWAP >R SWAP >R DROP R> R> SWAP >R DROP R> DROP
+    x x SWAP >R >R x R> R> SWAP >R SWAP >R DROP R> R> SWAP DROP DROP
+    x >R x R> SWAP >R x R> SWAP >R SWAP DROP R> SWAP >R DROP R> DROP
+    x >R x R> SWAP >R >R x R> R> ROT >R >R DROP R> R> DROP DROP
+    x >R x R> SWAP >R >R x R> R> ROT ROT DROP SWAP >R DROP R> DROP
+    x >R x R> SWAP >R x R> SWAP >R >R DROP R> R> SWAP >R DROP R> DROP
+    x >R x >R x R> R> SWAP ROT >R >R DROP R> R> SWAP >R DROP R> DROP
+    x x SWAP >R >R x R> R> SWAP ROT >R >R DROP R> R> SWAP >R DROP R> DROP
+    x >R x R> SWAP >R >R x R> R> SWAP ROT >R DROP R> SWAP >R DROP R> DROP
+    x >R x R> SWAP >R >R x R> R> ROT >R >R DROP R> R> SWAP >R DROP R> DROP
+(0, 1, 2, 1, 0, 2)
+    x x x >R DROP DROP R> DROP
+    x x x SWAP DROP SWAP DROP DROP
+    x x x ROT ROT DROP DROP DROP
+    x x x >R DROP R> SWAP DROP DROP
+    x x x SWAP DROP >R DROP R> DROP
+    x x >R x R> DROP SWAP DROP DROP
+    x x >R x SWAP R> DROP DROP DROP
+    x x SWAP x SWAP ROT DROP DROP DROP
+    x x SWAP x ROT DROP SWAP DROP DROP
+    x >R x x R> ROT DROP DROP DROP
+    x >R x x SWAP DROP R> DROP DROP
+    x x x SWAP ROT >R DROP R> DROP DROP
+    x x >R x R> DROP >R DROP R> DROP
+    x x >R >R x R> R> DROP DROP DROP
+    x x SWAP x >R SWAP DROP DROP R> DROP
+    x x SWAP x ROT DROP >R DROP R> DROP
+    x x SWAP >R x R> ROT DROP DROP DROP
+    x x SWAP >R x SWAP DROP R> DROP DROP
+    x >R x x >R DROP R> R> DROP DROP
+    x >R x R> x SWAP ROT DROP DROP DROP
+    x >R x R> x ROT DROP SWAP DROP DROP
+    x >R x >R x R> DROP R> DROP DROP
+    x x x >R SWAP >R DROP R> DROP R> DROP
+    x x x ROT >R >R DROP R> R> DROP DROP
+    x x x ROT ROT DROP SWAP >R DROP R> DROP
+    x x >R x R> SWAP >R DROP DROP R> DROP
+    x x >R x R> ROT >R DROP R> DROP DROP
+    x x SWAP x >R >R DROP R> DROP R> DROP
+    x x SWAP x >R SWAP DROP R> SWAP DROP DROP
+    x x SWAP x SWAP >R SWAP DROP R> DROP DROP
+    x x SWAP >R x >R DROP R> R> DROP DROP
+    x x SWAP >R >R x R> DROP R> DROP DROP
+    x >R x x R> SWAP ROT DROP SWAP DROP DROP
+    x >R x R> x >R SWAP DROP DROP R> DROP
+    x >R x R> x ROT DROP >R DROP R> DROP
+    x >R x R> SWAP x >R DROP DROP R> DROP
+    x >R x R> SWAP x SWAP DROP SWAP DROP DROP
+    x >R x R> SWAP x ROT ROT DROP DROP DROP
+    x >R x >R x R> R> SWAP DROP DROP DROP
+    x x x >R SWAP >R DROP R> R> SWAP DROP DROP
+    x x >R x R> SWAP >R DROP R> SWAP DROP DROP
+    x x >R x SWAP R> DROP SWAP >R DROP R> DROP
+    x x >R >R x R> SWAP R> DROP SWAP DROP DROP
+    x x SWAP x >R >R DROP R> R> SWAP DROP DROP
+    x x SWAP x SWAP >R >R DROP R> R> DROP DROP
+    x x SWAP x SWAP ROT DROP SWAP >R DROP R> DROP
+    x x SWAP >R x R> SWAP ROT DROP SWAP DROP DROP
+    x x SWAP >R >R x R> R> SWAP DROP DROP DROP
+    x >R x x R> SWAP >R SWAP DROP DROP R> DROP
+    x >R x x R> SWAP ROT DROP >R DROP R> DROP
+    x >R x x R> ROT DROP SWAP >R DROP R> DROP
+    x >R x x SWAP DROP R> SWAP >R DROP R> DROP
+    x >R x R> x >R >R DROP R> DROP R> DROP
+    x >R x R> x >R SWAP DROP R> SWAP DROP DROP
+    x >R x R> x SWAP >R SWAP DROP R> DROP DROP
+    x >R x R> SWAP x >R DROP R> SWAP DROP DROP
+    x >R x R> SWAP x SWAP DROP >R DROP R> DROP
+    x >R x R> SWAP >R x R> DROP SWAP DROP DROP
+    x >R x R> SWAP >R x SWAP R> DROP DROP DROP
+    x x x SWAP ROT >R DROP R> SWAP >R DROP R> DROP
+    x x >R >R x R> R> DROP SWAP >R DROP R> DROP
+    x x >R >R x R> R> SWAP >R DROP R> DROP DROP
+    x x >R >R x R> R> ROT >R DROP DROP R> DROP
+    x x >R >R x R> SWAP R> DROP >R DROP R> DROP
+    x x SWAP >R x R> SWAP >R SWAP DROP DROP R> DROP
+    x x SWAP >R x R> SWAP ROT DROP >R DROP R> DROP
+    x x SWAP >R x R> ROT DROP SWAP >R DROP R> DROP
+    x x SWAP >R x SWAP DROP R> SWAP >R DROP R> DROP
+    x >R x x R> SWAP >R >R DROP R> DROP R> DROP
+    x >R x x R> SWAP >R SWAP DROP R> SWAP DROP DROP
+    x >R x x >R DROP R> R> SWAP >R DROP R> DROP
+    x >R x R> x >R >R DROP R> R> SWAP DROP DROP
+    x >R x R> x SWAP >R >R DROP R> R> DROP DROP
+    x >R x R> x SWAP ROT DROP SWAP >R DROP R> DROP
+    x >R x R> SWAP x SWAP ROT >R DROP R> DROP DROP
+    x >R x R> SWAP >R x R> DROP >R DROP R> DROP
+    x >R x R> SWAP >R >R x R> R> DROP DROP DROP
+    x >R x >R x R> R> ROT ROT DROP SWAP DROP DROP
+    x >R x >R x R> DROP R> SWAP >R DROP R> DROP
+    x >R x >R x R> SWAP >R DROP R> R> DROP DROP
+    x x x ROT >R >R DROP R> R> SWAP >R DROP R> DROP
+    x x >R x R> SWAP >R SWAP >R DROP R> DROP R> DROP
+    x x >R x R> SWAP ROT >R >R DROP R> R> DROP DROP
+    x x >R x R> ROT >R DROP R> SWAP >R DROP R> DROP
+    x x >R >R x R> R> ROT >R DROP R> SWAP DROP DROP
+    x x SWAP x SWAP >R SWAP DROP R> SWAP >R DROP R> DROP
+    x x SWAP >R x R> SWAP >R >R DROP R> DROP R> DROP
+    x x SWAP >R x R> SWAP >R SWAP DROP R> SWAP DROP DROP
+    x x SWAP >R x >R DROP R> R> SWAP >R DROP R> DROP
+    x x SWAP >R >R x R> R> ROT ROT DROP SWAP DROP DROP
+    x x SWAP >R >R x R> DROP R> SWAP >R DROP R> DROP
+    x x SWAP >R >R x R> SWAP >R DROP R> R> DROP DROP
+    x >R x x R> SWAP >R >R DROP R> R> SWAP DROP DROP
+    x >R x R> SWAP x >R SWAP >R DROP R> DROP R> DROP
+    x >R x R> SWAP x ROT >R >R DROP R> R> DROP DROP
+    x >R x R> SWAP x ROT ROT DROP SWAP >R DROP R> DROP
+    x >R x R> SWAP >R x R> SWAP >R DROP DROP R> DROP
+    x >R x R> SWAP >R x R> ROT >R DROP R> DROP DROP
+    x >R x >R x R> R> SWAP DROP SWAP >R DROP R> DROP
+    x >R x >R x R> R> SWAP ROT >R DROP DROP R> DROP
+    x >R x >R x R> R> ROT ROT DROP >R DROP R> DROP
+    x x >R x R> SWAP >R SWAP >R DROP R> R> SWAP DROP DROP
+    x x SWAP x SWAP >R >R DROP R> R> SWAP >R DROP R> DROP
+    x x SWAP >R x R> SWAP >R >R DROP R> R> SWAP DROP DROP
+    x x SWAP >R >R x R> R> SWAP DROP SWAP >R DROP R> DROP
+    x x SWAP >R >R x R> R> SWAP ROT >R DROP DROP R> DROP
+    x x SWAP >R >R x R> R> ROT ROT DROP >R DROP R> DROP
+    x >R x R> x SWAP >R SWAP DROP R> SWAP >R DROP R> DROP
+    x >R x R> SWAP x >R SWAP >R DROP R> R> SWAP DROP DROP
+    x >R x R> SWAP >R x R> SWAP >R DROP R> SWAP DROP DROP
+    x >R x R> SWAP >R x SWAP R> DROP SWAP >R DROP R> DROP
+    x >R x R> SWAP >R >R x R> SWAP R> DROP SWAP DROP DROP
+    x >R x >R x R> R> SWAP ROT >R DROP R> SWAP DROP DROP
+    x >R x >R x R> R> ROT >R >R DROP R> DROP R> DROP
+    x x >R >R x R> R> SWAP >R DROP R> SWAP >R DROP R> DROP
+    x x >R >R x R> R> SWAP >R SWAP >R DROP R> R> DROP DROP
+    x x >R >R x R> R> SWAP ROT >R >R DROP R> DROP R> DROP
+    x x SWAP >R >R x R> R> SWAP ROT >R DROP R> SWAP DROP DROP
+    x x SWAP >R >R x R> R> ROT >R >R DROP R> DROP R> DROP
+    x >R x R> x SWAP >R >R DROP R> R> SWAP >R DROP R> DROP
+    x >R x R> SWAP x SWAP ROT >R DROP R> SWAP >R DROP R> DROP
+    x >R x R> SWAP >R >R x R> R> DROP SWAP >R DROP R> DROP
+    x >R x R> SWAP >R >R x R> R> SWAP >R DROP R> DROP DROP
+    x >R x R> SWAP >R >R x R> R> ROT >R DROP DROP R> DROP
+    x >R x R> SWAP >R >R x R> SWAP R> DROP >R DROP R> DROP
+    x >R x >R x R> R> ROT >R >R DROP R> R> SWAP DROP DROP
+    x >R x >R x R> SWAP >R DROP R> R> SWAP >R DROP R> DROP
+    x x >R x R> SWAP ROT >R >R DROP R> R> SWAP >R DROP R> DROP
+    x x >R >R x R> R> SWAP ROT >R >R DROP R> R> SWAP DROP DROP
+    x x SWAP >R >R x R> R> ROT >R >R DROP R> R> SWAP DROP DROP
+    x x SWAP >R >R x R> SWAP >R DROP R> R> SWAP >R DROP R> DROP
+    x >R x R> SWAP x ROT >R >R DROP R> R> SWAP >R DROP R> DROP
+    x >R x R> SWAP >R x R> SWAP >R SWAP >R DROP R> DROP R> DROP
+    x >R x R> SWAP >R x R> SWAP ROT >R >R DROP R> R> DROP DROP
+    x >R x R> SWAP >R x R> ROT >R DROP R> SWAP >R DROP R> DROP
+    x >R x R> SWAP >R >R x R> R> ROT >R DROP R> SWAP DROP DROP
+    x >R x R> SWAP >R x R> SWAP >R SWAP >R DROP R> R> SWAP DROP DROP
+    x x >R >R x R> R> SWAP >R SWAP >R DROP R> R> SWAP >R DROP R> DROP
+    x >R x R> SWAP >R >R x R> R> SWAP >R DROP R> SWAP >R DROP R> DROP
+    x >R x R> SWAP >R >R x R> R> SWAP >R SWAP >R DROP R> R> DROP DROP
+    x >R x R> SWAP >R >R x R> R> SWAP ROT >R >R DROP R> DROP R> DROP
+    x >R x R> SWAP >R x R> SWAP ROT >R >R DROP R> R> SWAP >R DROP R> DROP
+    x >R x R> SWAP >R >R x R> R> SWAP ROT >R >R DROP R> R> SWAP DROP DROP
+    x >R x R> SWAP >R >R x R> R> SWAP >R SWAP >R DROP R> R> SWAP >R DROP R> DROP
+(0, 1, 2, 1, 2, 0)
+    x x x SWAP DROP DROP DROP
+    x x x >R DROP R> DROP DROP
+    x x >R x R> DROP DROP DROP
+    x x SWAP x ROT DROP DROP DROP
+    x x x ROT ROT DROP SWAP DROP DROP
+    x >R x x SWAP DROP DROP R> DROP
+    x >R x R> x ROT DROP DROP DROP
+    x x x SWAP DROP SWAP >R DROP R> DROP
+    x x x SWAP ROT >R DROP DROP R> DROP
+    x x x ROT ROT DROP >R DROP R> DROP
+    x x >R x SWAP R> DROP SWAP DROP DROP
+    x x SWAP x >R SWAP DROP R> DROP DROP
+    x x SWAP x SWAP ROT DROP SWAP DROP DROP
+    x x SWAP >R x SWAP DROP DROP R> DROP
+    x >R x x R> SWAP ROT DROP DROP DROP
+    x >R x x R> ROT DROP SWAP DROP DROP
+    x >R x x >R DROP R> DROP R> DROP
+    x >R x x SWAP DROP R> SWAP DROP DROP
+    x >R x R> SWAP x SWAP DROP DROP DROP
+    x >R x >R x R> DROP DROP R> DROP
+    x x x >R DROP R> SWAP >R DROP R> DROP
+    x x x >R SWAP >R DROP R> R> DROP DROP
+    x x x SWAP ROT >R DROP R> SWAP DROP DROP
+    x x x ROT >R >R DROP R> DROP R> DROP
+    x x >R x R> DROP SWAP >R DROP R> DROP
+    x x >R x R> SWAP >R DROP R> DROP DROP
+    x x >R x R> ROT >R DROP DROP R> DROP
+    x x >R x SWAP R> DROP >R DROP R> DROP
+    x x >R >R x R> R> DROP SWAP DROP DROP
+    x x >R >R x R> SWAP R> DROP DROP DROP
+    x x SWAP x >R >R DROP R> R> DROP DROP
+    x x SWAP x SWAP >R SWAP DROP DROP R> DROP
+    x x SWAP x SWAP ROT DROP >R DROP R> DROP
+    x x SWAP x ROT DROP SWAP >R DROP R> DROP
+    x x SWAP >R x R> SWAP ROT DROP DROP DROP
+    x x SWAP >R x R> ROT DROP SWAP DROP DROP
+    x x SWAP >R x >R DROP R> DROP R> DROP
+    x x SWAP >R x SWAP DROP R> SWAP DROP DROP
+    x x SWAP >R >R x R> DROP DROP R> DROP
+    x >R x x R> ROT DROP >R DROP R> DROP
+    x >R x x >R DROP R> R> SWAP DROP DROP
+    x >R x R> x >R SWAP DROP R> DROP DROP
+    x >R x R> x SWAP ROT DROP SWAP DROP DROP
+    x >R x R> SWAP x >R DROP R> DROP DROP
+    x >R x R> SWAP >R x R> DROP DROP DROP
+    x >R x >R x R> DROP R> SWAP DROP DROP
+    x x x ROT >R >R DROP R> R> SWAP DROP DROP
+    x x >R x R> ROT >R DROP R> SWAP DROP DROP
+    x x >R >R x R> R> DROP >R DROP R> DROP
+    x x SWAP x SWAP >R >R DROP R> DROP R> DROP
+    x x SWAP x SWAP >R SWAP DROP R> SWAP DROP DROP
+    x x SWAP >R x R> ROT DROP >R DROP R> DROP
+    x x SWAP >R x >R DROP R> R> SWAP DROP DROP
+    x x SWAP >R >R x R> DROP R> SWAP DROP DROP
+    x >R x x R> SWAP >R SWAP DROP R> DROP DROP
+    x >R x R> x >R >R DROP R> R> DROP DROP
+    x >R x R> x SWAP >R SWAP DROP DROP R> DROP
+    x >R x R> x SWAP ROT DROP >R DROP R> DROP
+    x >R x R> x ROT DROP SWAP >R DROP R> DROP
+    x >R x R> SWAP x ROT ROT DROP SWAP DROP DROP
+    x >R x >R x R> R> SWAP DROP SWAP DROP DROP
+    x >R x >R x R> R> ROT ROT DROP DROP DROP
+    x x >R >R x R> R> SWAP >R DROP DROP R> DROP
+    x x >R >R x R> R> ROT >R DROP R> DROP DROP
+    x x SWAP x >R SWAP DROP R> SWAP >R DROP R> DROP
+    x x SWAP x SWAP >R >R DROP R> R> SWAP DROP DROP
+    x x SWAP >R x R> SWAP >R SWAP DROP R> DROP DROP
+    x x SWAP >R >R x R> R> SWAP DROP SWAP DROP DROP
+    x x SWAP >R >R x R> R> ROT ROT DROP DROP DROP
+    x >R x x R> SWAP >R >R DROP R> R> DROP DROP
+    x >R x x R> SWAP ROT DROP SWAP >R DROP R> DROP
+    x >R x R> x SWAP >R >R DROP R> DROP R> DROP
+    x >R x R> x SWAP >R SWAP DROP R> SWAP DROP DROP
+    x >R x R> SWAP x SWAP DROP SWAP >R DROP R> DROP
+    x >R x R> SWAP x SWAP ROT >R DROP DROP R> DROP
+    x >R x R> SWAP x ROT ROT DROP >R DROP R> DROP
+    x >R x R> SWAP >R x SWAP R> DROP SWAP DROP DROP
+    x >R x >R x R> R> SWAP DROP >R DROP R> DROP
+    x >R x >R x R> SWAP >R DROP R> DROP R> DROP
+    x x x >R SWAP >R DROP R> R> SWAP >R DROP R> DROP
+    x x >R x R> SWAP >R DROP R> SWAP >R DROP R> DROP
+    x x >R x R> SWAP >R SWAP >R DROP R> R> DROP DROP
+    x x >R x R> SWAP ROT >R >R DROP R> DROP R> DROP
+    x x >R >R x R> R> SWAP >R DROP R> SWAP DROP DROP
+    x x >R >R x R> SWAP R> DROP SWAP >R DROP R> DROP
+    x x SWAP x >R >R DROP R> R> SWAP >R DROP R> DROP
+    x x SWAP >R x R> SWAP >R >R DROP R> R> DROP DROP
+    x x SWAP >R x R> SWAP ROT DROP SWAP >R DROP R> DROP
+    x x SWAP >R >R x R> R> SWAP DROP >R DROP R> DROP
+    x x SWAP >R >R x R> SWAP >R DROP R> DROP R> DROP
+    x >R x R> x >R SWAP DROP R> SWAP >R DROP R> DROP
+    x >R x R> x SWAP >R >R DROP R> R> SWAP DROP DROP
+    x >R x R> SWAP x >R DROP R> SWAP >R DROP R> DROP
+    x >R x R> SWAP x >R SWAP >R DROP R> R> DROP DROP
+    x >R x R> SWAP x SWAP ROT >R DROP R> SWAP DROP DROP
+    x >R x R> SWAP x ROT >R >R DROP R> DROP R> DROP
+    x >R x R> SWAP >R x R> DROP SWAP >R DROP R> DROP
+    x >R x R> SWAP >R x R> SWAP >R DROP R> DROP DROP
+    x >R x R> SWAP >R x R> ROT >R DROP DROP R> DROP
+    x >R x R> SWAP >R x SWAP R> DROP >R DROP R> DROP
+    x >R x R> SWAP >R >R x R> R> DROP SWAP DROP DROP
+    x >R x R> SWAP >R >R x R> SWAP R> DROP DROP DROP
+    x >R x >R x R> R> SWAP ROT >R DROP R> DROP DROP
+    x >R x >R x R> SWAP >R DROP R> R> SWAP DROP DROP
+    x x >R x R> SWAP ROT >R >R DROP R> R> SWAP DROP DROP
+    x x SWAP >R >R x R> R> SWAP ROT >R DROP R> DROP DROP
+    x x SWAP >R >R x R> SWAP >R DROP R> R> SWAP DROP DROP
+    x >R x x R> SWAP >R SWAP DROP R> SWAP >R DROP R> DROP
+    x >R x R> x >R >R DROP R> R> SWAP >R DROP R> DROP
+    x >R x R> SWAP x ROT >R >R DROP R> R> SWAP DROP DROP
+    x >R x R> SWAP >R x R> ROT >R DROP R> SWAP DROP DROP
+    x >R x R> SWAP >R >R x R> R> DROP >R DROP R> DROP
+    x >R x >R x R> R> ROT >R >R DROP R> R> DROP DROP
+    x >R x >R x R> R> ROT ROT DROP SWAP >R DROP R> DROP
+    x x >R >R x R> R> SWAP >R SWAP >R DROP R> DROP R> DROP
+    x x >R >R x R> R> SWAP ROT >R >R DROP R> R> DROP DROP
+    x x >R >R x R> R> ROT >R DROP R> SWAP >R DROP R> DROP
+    x x SWAP >R x R> SWAP >R SWAP DROP R> SWAP >R DROP R> DROP
+    x x SWAP >R >R x R> R> ROT >R >R DROP R> R> DROP DROP
+    x x SWAP >R >R x R> R> ROT ROT DROP SWAP >R DROP R> DROP
+    x >R x x R> SWAP >R >R DROP R> R> SWAP >R DROP R> DROP
+    x >R x R> SWAP >R >R x R> R> SWAP >R DROP DROP R> DROP
+    x >R x R> SWAP >R >R x R> R> ROT >R DROP R> DROP DROP
+    x x >R x R> SWAP >R SWAP >R DROP R> R> SWAP >R DROP R> DROP
+    x x >R >R x R> R> SWAP >R SWAP >R DROP R> R> SWAP DROP DROP
+    x x SWAP >R x R> SWAP >R >R DROP R> R> SWAP >R DROP R> DROP
+    x >R x R> SWAP x >R SWAP >R DROP R> R> SWAP >R DROP R> DROP
+    x >R x R> SWAP >R x R> SWAP >R DROP R> SWAP >R DROP R> DROP
+    x >R x R> SWAP >R x R> SWAP >R SWAP >R DROP R> R> DROP DROP
+    x >R x R> SWAP >R x R> SWAP ROT >R >R DROP R> DROP R> DROP
+    x >R x R> SWAP >R >R x R> R> SWAP >R DROP R> SWAP DROP DROP
+    x >R x R> SWAP >R >R x R> SWAP R> DROP SWAP >R DROP R> DROP
+    x >R x >R x R> R> SWAP ROT >R DROP R> SWAP >R DROP R> DROP
+    x x SWAP >R >R x R> R> SWAP ROT >R DROP R> SWAP >R DROP R> DROP
+    x >R x R> SWAP >R x R> SWAP ROT >R >R DROP R> R> SWAP DROP DROP
+    x >R x >R x R> R> ROT >R >R DROP R> R> SWAP >R DROP R> DROP
+    x x >R >R x R> R> SWAP ROT >R >R DROP R> R> SWAP >R DROP R> DROP
+    x x SWAP >R >R x R> R> ROT >R >R DROP R> R> SWAP >R DROP R> DROP
+    x >R x R> SWAP >R >R x R> R> SWAP >R SWAP >R DROP R> DROP R> DROP
+    x >R x R> SWAP >R >R x R> R> SWAP ROT >R >R DROP R> R> DROP DROP
+    x >R x R> SWAP >R >R x R> R> ROT >R DROP R> SWAP >R DROP R> DROP
+    x >R x R> SWAP >R x R> SWAP >R SWAP >R DROP R> R> SWAP >R DROP R> DROP
+    x >R x R> SWAP >R >R x R> R> SWAP >R SWAP >R DROP R> R> SWAP DROP DROP
+    x >R x R> SWAP >R >R x R> R> SWAP ROT >R >R DROP R> R> SWAP >R DROP R> DROP
+(0, 1, 2, 2, 0, 1)
+    x x x DROP SWAP DROP DROP
+    x x SWAP x DROP DROP DROP
+    x x x DROP >R DROP R> DROP
+    x x x ROT SWAP DROP DROP DROP
+    x x >R x DROP DROP R> DROP
+    x >R x x DROP R> DROP DROP
+    x >R x R> x DROP DROP DROP
+    x x x SWAP >R DROP DROP R> DROP
+    x x x ROT >R DROP R> DROP DROP
+    x x >R x DROP R> SWAP DROP DROP
+    x x SWAP >R x DROP R> DROP DROP
+    x >R x x R> SWAP DROP DROP DROP
+    x x x SWAP >R DROP R> SWAP DROP DROP
+    x x >R x R> SWAP DROP SWAP DROP DROP
+    x x >R x R> ROT ROT DROP DROP DROP
+    x x >R >R x DROP R> DROP R> DROP
+    x x SWAP x DROP SWAP >R DROP R> DROP
+    x x SWAP x SWAP >R DROP R> DROP DROP
+    x x SWAP x ROT >R DROP DROP R> DROP
+    x x SWAP x ROT SWAP DROP SWAP DROP DROP
+    x x SWAP >R x R> SWAP DROP DROP DROP
+    x >R x R> SWAP x DROP SWAP DROP DROP
+    x >R x >R x DROP R> R> DROP DROP
+    x x x ROT SWAP DROP SWAP >R DROP R> DROP
+    x x >R x R> SWAP DROP >R DROP R> DROP
+    x x >R x SWAP >R DROP R> DROP R> DROP
+    x x >R >R x R> SWAP DROP DROP R> DROP
+    x x >R >R x DROP R> R> SWAP DROP DROP
+    x x SWAP x ROT >R DROP R> SWAP DROP DROP
+    x x SWAP x ROT SWAP DROP >R DROP R> DROP
+    x x SWAP >R >R x DROP R> R> DROP DROP
+    x >R x x R> ROT ROT DROP SWAP DROP DROP
+    x >R x x DROP R> SWAP >R DROP R> DROP
+    x >R x x SWAP >R DROP R> R> DROP DROP
+    x >R x R> x DROP SWAP >R DROP R> DROP
+    x >R x R> x SWAP >R DROP R> DROP DROP
+    x >R x R> x ROT >R DROP DROP R> DROP
+    x >R x R> x ROT SWAP DROP SWAP DROP DROP
+    x >R x R> SWAP x DROP >R DROP R> DROP
+    x >R x R> SWAP x ROT SWAP DROP DROP DROP
+    x >R x R> SWAP >R x DROP DROP R> DROP
+    x >R x >R x R> R> ROT DROP DROP DROP
+    x >R x >R x R> SWAP DROP R> DROP DROP
+    x x x SWAP >R SWAP >R DROP R> DROP R> DROP
+    x x x SWAP ROT >R >R DROP R> R> DROP DROP
+    x x x ROT >R DROP R> SWAP >R DROP R> DROP
+    x x >R x R> SWAP ROT >R DROP R> DROP DROP
+    x x >R x SWAP >R DROP R> R> SWAP DROP DROP
+    x x >R >R x R> R> SWAP ROT DROP DROP DROP
+    x x >R >R x R> R> ROT DROP SWAP DROP DROP
+    x x >R >R x R> SWAP DROP R> SWAP DROP DROP
+    x x SWAP >R x R> ROT ROT DROP SWAP DROP DROP
+    x x SWAP >R x DROP R> SWAP >R DROP R> DROP
+    x x SWAP >R x SWAP >R DROP R> R> DROP DROP
+    x x SWAP >R >R x R> R> ROT DROP DROP DROP
+    x x SWAP >R >R x R> SWAP DROP R> DROP DROP
+    x >R x x R> SWAP DROP SWAP >R DROP R> DROP
+    x >R x x R> SWAP ROT >R DROP DROP R> DROP
+    x >R x x R> ROT ROT DROP >R DROP R> DROP
+    x >R x R> x ROT >R DROP R> SWAP DROP DROP
+    x >R x R> x ROT SWAP DROP >R DROP R> DROP
+    x >R x R> SWAP x SWAP >R DROP DROP R> DROP
+    x >R x R> SWAP x ROT >R DROP R> DROP DROP
+    x >R x R> SWAP >R x DROP R> SWAP DROP DROP
+    x x x SWAP >R SWAP >R DROP R> R> SWAP DROP DROP
+    x x >R x R> ROT >R >R DROP R> R> DROP DROP
+    x x >R x R> ROT ROT DROP SWAP >R DROP R> DROP
+    x x >R >R x R> R> ROT DROP >R DROP R> DROP
+    x x SWAP x SWAP >R DROP R> SWAP >R DROP R> DROP
+    x x SWAP x SWAP >R SWAP >R DROP R> R> DROP DROP
+    x x SWAP x SWAP ROT >R >R DROP R> DROP R> DROP
+    x x SWAP >R x R> SWAP DROP SWAP >R DROP R> DROP
+    x x SWAP >R x R> SWAP ROT >R DROP DROP R> DROP
+    x x SWAP >R x R> ROT ROT DROP >R DROP R> DROP
+    x >R x x R> SWAP ROT >R DROP R> SWAP DROP DROP
+    x >R x x R> ROT >R >R DROP R> DROP R> DROP
+    x >R x R> SWAP x SWAP >R DROP R> SWAP DROP DROP
+    x >R x R> SWAP >R x R> SWAP DROP SWAP DROP DROP
+    x >R x R> SWAP >R x R> ROT ROT DROP DROP DROP
+    x >R x R> SWAP >R >R x DROP R> DROP R> DROP
+    x >R x >R x R> R> SWAP ROT DROP SWAP DROP DROP
+    x >R x >R x DROP R> R> SWAP >R DROP R> DROP
+    x x >R >R x R> R> SWAP >R SWAP DROP R> DROP DROP
+    x x SWAP x SWAP ROT >R >R DROP R> R> SWAP DROP DROP
+    x x SWAP >R x R> SWAP ROT >R DROP R> SWAP DROP DROP
+    x x SWAP >R x R> ROT >R >R DROP R> DROP R> DROP
+    x x SWAP >R >R x R> R> SWAP ROT DROP SWAP DROP DROP
+    x x SWAP >R >R x DROP R> R> SWAP >R DROP R> DROP
+    x >R x x R> ROT >R >R DROP R> R> SWAP DROP DROP
+    x >R x x SWAP >R DROP R> R> SWAP >R DROP R> DROP
+    x >R x R> x SWAP >R DROP R> SWAP >R DROP R> DROP
+    x >R x R> x SWAP >R SWAP >R DROP R> R> DROP DROP
+    x >R x R> x SWAP ROT >R >R DROP R> DROP R> DROP
+    x >R x R> SWAP x ROT SWAP DROP SWAP >R DROP R> DROP
+    x >R x R> SWAP >R x R> SWAP DROP >R DROP R> DROP
+    x >R x R> SWAP >R x SWAP >R DROP R> DROP R> DROP
+    x >R x R> SWAP >R >R x R> SWAP DROP DROP R> DROP
+    x >R x R> SWAP >R >R x DROP R> R> SWAP DROP DROP
+    x >R x >R x R> R> SWAP >R SWAP DROP DROP R> DROP
+    x >R x >R x R> R> SWAP ROT DROP >R DROP R> DROP
+    x >R x >R x R> R> ROT DROP SWAP >R DROP R> DROP
+    x >R x >R x R> SWAP DROP R> SWAP >R DROP R> DROP
+    x x x SWAP ROT >R >R DROP R> R> SWAP >R DROP R> DROP
+    x x >R x R> SWAP ROT >R DROP R> SWAP >R DROP R> DROP
+    x x >R >R x R> R> SWAP >R >R DROP R> R> DROP DROP
+    x x >R >R x R> R> SWAP ROT DROP SWAP >R DROP R> DROP
+    x x SWAP >R x R> ROT >R >R DROP R> R> SWAP DROP DROP
+    x x SWAP >R x SWAP >R DROP R> R> SWAP >R DROP R> DROP
+    x x SWAP >R >R x R> R> SWAP >R SWAP DROP DROP R> DROP
+    x x SWAP >R >R x R> R> SWAP ROT DROP >R DROP R> DROP
+    x x SWAP >R >R x R> R> ROT DROP SWAP >R DROP R> DROP
+    x x SWAP >R >R x R> SWAP DROP R> SWAP >R DROP R> DROP
+    x >R x R> x SWAP ROT >R >R DROP R> R> SWAP DROP DROP
+    x >R x R> SWAP x SWAP >R SWAP >R DROP R> DROP R> DROP
+    x >R x R> SWAP x SWAP ROT >R >R DROP R> R> DROP DROP
+    x >R x R> SWAP x ROT >R DROP R> SWAP >R DROP R> DROP
+    x >R x R> SWAP >R x R> SWAP ROT >R DROP R> DROP DROP
+    x >R x R> SWAP >R x SWAP >R DROP R> R> SWAP DROP DROP
+    x >R x R> SWAP >R >R x R> R> SWAP ROT DROP DROP DROP
+    x >R x R> SWAP >R >R x R> R> ROT DROP SWAP DROP DROP
+    x >R x R> SWAP >R >R x R> SWAP DROP R> SWAP DROP DROP
+    x >R x >R x R> R> SWAP >R >R DROP R> DROP R> DROP
+    x >R x >R x R> R> SWAP >R SWAP DROP R> SWAP DROP DROP
+    x x >R x R> ROT >R >R DROP R> R> SWAP >R DROP R> DROP
+    x x SWAP x SWAP >R SWAP >R DROP R> R> SWAP >R DROP R> DROP
+    x x SWAP >R >R x R> R> SWAP >R >R DROP R> DROP R> DROP
+    x x SWAP >R >R x R> R> SWAP >R SWAP DROP R> SWAP DROP DROP
+    x >R x R> SWAP x SWAP >R SWAP >R DROP R> R> SWAP DROP DROP
+    x >R x R> SWAP >R x R> ROT >R >R DROP R> R> DROP DROP
+    x >R x R> SWAP >R x R> ROT ROT DROP SWAP >R DROP R> DROP
+    x >R x R> SWAP >R >R x R> R> ROT DROP >R DROP R> DROP
+    x >R x >R x R> R> SWAP >R >R DROP R> R> SWAP DROP DROP
+    x x >R >R x R> R> SWAP >R SWAP DROP R> SWAP >R DROP R> DROP
+    x x SWAP >R >R x R> R> SWAP >R >R DROP R> R> SWAP DROP DROP
+    x >R x R> x SWAP >R SWAP >R DROP R> R> SWAP >R DROP R> DROP
+    x >R x R> SWAP >R >R x R> R> SWAP >R SWAP DROP R> DROP DROP
+    x x >R >R x R> R> SWAP >R >R DROP R> R> SWAP >R DROP R> DROP
+    x >R x R> SWAP x SWAP ROT >R >R DROP R> R> SWAP >R DROP R> DROP
+    x >R x R> SWAP >R x R> SWAP ROT >R DROP R> SWAP >R DROP R> DROP
+    x >R x R> SWAP >R >R x R> R> SWAP >R >R DROP R> R> DROP DROP
+    x >R x R> SWAP >R >R x R> R> SWAP ROT DROP SWAP >R DROP R> DROP
+    x >R x R> SWAP >R x R> ROT >R >R DROP R> R> SWAP >R DROP R> DROP
+    x >R x R> SWAP >R >R x R> R> SWAP >R SWAP DROP R> SWAP >R DROP R> DROP
+    x >R x R> SWAP >R >R x R> R> SWAP >R >R DROP R> R> SWAP >R DROP R> DROP
+(0, 1, 2, 2, 1, 0)
+    x x x DROP DROP DROP
+    x x >R x DROP R> DROP DROP
+    x x SWAP x DROP SWAP DROP DROP
+    x >R x x DROP DROP R> DROP
+    x x x DROP SWAP >R DROP R> DROP
+    x x x SWAP >R DROP R> DROP DROP
+    x x x ROT >R DROP DROP R> DROP
+    x x x ROT SWAP DROP SWAP DROP DROP
+    x x >R x R> SWAP DROP DROP DROP
+    x x SWAP x DROP >R DROP R> DROP
+    x x SWAP x ROT SWAP DROP DROP DROP
+    x x SWAP >R x DROP DROP R> DROP
+    x >R x x DROP R> SWAP DROP DROP
+    x >R x R> x DROP SWAP DROP DROP
+    x >R x R> SWAP x DROP DROP DROP
+    x x x ROT >R DROP R> SWAP DROP DROP
+    x x x ROT SWAP DROP >R DROP R> DROP
+    x x >R >R x DROP R> R> DROP DROP
+    x x SWAP x SWAP >R DROP DROP R> DROP
+    x x SWAP x ROT >R DROP R> DROP DROP
+    x x SWAP >R x DROP R> SWAP DROP DROP
+    x >R x x R> SWAP DROP SWAP DROP DROP
+    x >R x x R> ROT ROT DROP DROP DROP
+    x >R x R> x DROP >R DROP R> DROP
+    x >R x R> x ROT SWAP DROP DROP DROP
+    x >R x >R x DROP R> DROP R> DROP
+    x x >R x R> ROT ROT DROP SWAP DROP DROP
+    x x >R x DROP R> SWAP >R DROP R> DROP
+    x x >R x SWAP >R DROP R> R> DROP DROP
+    x x >R >R x R> R> ROT DROP DROP DROP
+    x x >R >R x R> SWAP DROP R> DROP DROP
+    x x SWAP x SWAP >R DROP R> SWAP DROP DROP
+    x x SWAP >R x R> SWAP DROP SWAP DROP DROP
+    x x SWAP >R x R> ROT ROT DROP DROP DROP
+    x x SWAP >R >R x DROP R> DROP R> DROP
+    x >R x x R> SWAP DROP >R DROP R> DROP
+    x >R x x SWAP >R DROP R> DROP R> DROP
+    x >R x R> x SWAP >R DROP DROP R> DROP
+    x >R x R> x ROT >R DROP R> DROP DROP
+    x >R x R> SWAP >R x DROP R> DROP DROP
+    x >R x >R x R> SWAP DROP DROP R> DROP
+    x >R x >R x DROP R> R> SWAP DROP DROP
+    x x x SWAP >R DROP R> SWAP >R DROP R> DROP
+    x x x SWAP >R SWAP >R DROP R> R> DROP DROP
+    x x x SWAP ROT >R >R DROP R> DROP R> DROP
+    x x >R x R> SWAP DROP SWAP >R DROP R> DROP
+    x x >R x R> SWAP ROT >R DROP DROP R> DROP
+    x x >R x R> ROT ROT DROP >R DROP R> DROP
+    x x SWAP x ROT SWAP DROP SWAP >R DROP R> DROP
+    x x SWAP >R x R> SWAP DROP >R DROP R> DROP
+    x x SWAP >R x SWAP >R DROP R> DROP R> DROP
+    x x SWAP >R >R x R> SWAP DROP DROP R> DROP
+    x x SWAP >R >R x DROP R> R> SWAP DROP DROP
+    x >R x x R> SWAP ROT >R DROP R> DROP DROP
+    x >R x x SWAP >R DROP R> R> SWAP DROP DROP
+    x >R x R> x SWAP >R DROP R> SWAP DROP DROP
+    x >R x R> SWAP x DROP SWAP >R DROP R> DROP
+    x >R x R> SWAP x SWAP >R DROP R> DROP DROP
+    x >R x R> SWAP x ROT >R DROP DROP R> DROP
+    x >R x R> SWAP x ROT SWAP DROP SWAP DROP DROP
+    x >R x R> SWAP >R x R> SWAP DROP DROP DROP
+    x >R x >R x R> R> SWAP ROT DROP DROP DROP
+    x >R x >R x R> R> ROT DROP SWAP DROP DROP
+    x >R x >R x R> SWAP DROP R> SWAP DROP DROP
+    x x x SWAP ROT >R >R DROP R> R> SWAP DROP DROP
+    x x >R x R> SWAP ROT >R DROP R> SWAP DROP DROP
+    x x >R x R> ROT >R >R DROP R> DROP R> DROP
+    x x >R >R x R> R> SWAP ROT DROP SWAP DROP DROP
+    x x >R >R x DROP R> R> SWAP >R DROP R> DROP
+    x x SWAP x SWAP >R SWAP >R DROP R> DROP R> DROP
+    x x SWAP x SWAP ROT >R >R DROP R> R> DROP DROP
+    x x SWAP x ROT >R DROP R> SWAP >R DROP R> DROP
+    x x SWAP >R x R> SWAP ROT >R DROP R> DROP DROP
+    x x SWAP >R x SWAP >R DROP R> R> SWAP DROP DROP
+    x x SWAP >R >R x R> R> SWAP ROT DROP DROP DROP
+    x x SWAP >R >R x R> R> ROT DROP SWAP DROP DROP
+    x x SWAP >R >R x R> SWAP DROP R> SWAP DROP DROP
+    x >R x x R> ROT >R >R DROP R> R> DROP DROP
+    x >R x x R> ROT ROT DROP SWAP >R DROP R> DROP
+    x >R x R> x ROT SWAP DROP SWAP >R DROP R> DROP
+    x >R x R> SWAP x ROT >R DROP R> SWAP DROP DROP
+    x >R x R> SWAP x ROT SWAP DROP >R DROP R> DROP
+    x >R x R> SWAP >R >R x DROP R> R> DROP DROP
+    x >R x >R x R> R> ROT DROP >R DROP R> DROP
+    x x >R x R> ROT >R >R DROP R> R> SWAP DROP DROP
+    x x >R x SWAP >R DROP R> R> SWAP >R DROP R> DROP
+    x x >R >R x R> R> SWAP >R SWAP DROP DROP R> DROP
+    x x >R >R x R> R> SWAP ROT DROP >R DROP R> DROP
+    x x >R >R x R> R> ROT DROP SWAP >R DROP R> DROP
+    x x >R >R x R> SWAP DROP R> SWAP >R DROP R> DROP
+    x x SWAP x SWAP >R SWAP >R DROP R> R> SWAP DROP DROP
+    x x SWAP >R x R> ROT >R >R DROP R> R> DROP DROP
+    x x SWAP >R x R> ROT ROT DROP SWAP >R DROP R> DROP
+    x x SWAP >R >R x R> R> ROT DROP >R DROP R> DROP
+    x >R x R> x SWAP >R SWAP >R DROP R> DROP R> DROP
+    x >R x R> x SWAP ROT >R >R DROP R> R> DROP DROP
+    x >R x R> x ROT >R DROP R> SWAP >R DROP R> DROP
+    x >R x R> SWAP >R x R> ROT ROT DROP SWAP DROP DROP
+    x >R x R> SWAP >R x DROP R> SWAP >R DROP R> DROP
+    x >R x R> SWAP >R x SWAP >R DROP R> R> DROP DROP
+    x >R x R> SWAP >R >R x R> R> ROT DROP DROP DROP
+    x >R x R> SWAP >R >R x R> SWAP DROP R> DROP DROP
+    x >R x >R x R> R> SWAP >R SWAP DROP R> DROP DROP
+    x x x SWAP >R SWAP >R DROP R> R> SWAP >R DROP R> DROP
+    x x >R >R x R> R> SWAP >R >R DROP R> DROP R> DROP
+    x x >R >R x R> R> SWAP >R SWAP DROP R> SWAP DROP DROP
+    x x SWAP >R >R x R> R> SWAP >R SWAP DROP R> DROP DROP
+    x >R x x R> SWAP ROT >R DROP R> SWAP >R DROP R> DROP
+    x >R x R> x SWAP >R SWAP >R DROP R> R> SWAP DROP DROP
+    x >R x R> SWAP x SWAP >R DROP R> SWAP >R DROP R> DROP
+    x >R x R> SWAP x SWAP >R SWAP >R DROP R> R> DROP DROP
+    x >R x R> SWAP x SWAP ROT >R >R DROP R> DROP R> DROP
+    x >R x R> SWAP >R x R> SWAP DROP SWAP >R DROP R> DROP
+    x >R x R> SWAP >R x R> SWAP ROT >R DROP DROP R> DROP
+    x >R x R> SWAP >R x R> ROT ROT DROP >R DROP R> DROP
+    x >R x >R x R> R> SWAP >R >R DROP R> R> DROP DROP
+    x >R x >R x R> R> SWAP ROT DROP SWAP >R DROP R> DROP
+    x x >R >R x R> R> SWAP >R >R DROP R> R> SWAP DROP DROP
+    x x SWAP x SWAP ROT >R >R DROP R> R> SWAP >R DROP R> DROP
+    x x SWAP >R x R> SWAP ROT >R DROP R> SWAP >R DROP R> DROP
+    x x SWAP >R >R x R> R> SWAP >R >R DROP R> R> DROP DROP
+    x x SWAP >R >R x R> R> SWAP ROT DROP SWAP >R DROP R> DROP
+    x >R x x R> ROT >R >R DROP R> R> SWAP >R DROP R> DROP
+    x >R x R> SWAP x SWAP ROT >R >R DROP R> R> SWAP DROP DROP
+    x >R x R> SWAP >R x R> SWAP ROT >R DROP R> SWAP DROP DROP
+    x >R x R> SWAP >R x R> ROT >R >R DROP R> DROP R> DROP
+    x >R x R> SWAP >R >R x R> R> SWAP ROT DROP SWAP DROP DROP
+    x >R x R> SWAP >R >R x DROP R> R> SWAP >R DROP R> DROP
+    x x SWAP >R x R> ROT >R >R DROP R> R> SWAP >R DROP R> DROP
+    x >R x R> x SWAP ROT >R >R DROP R> R> SWAP >R DROP R> DROP
+    x >R x R> SWAP >R x R> ROT >R >R DROP R> R> SWAP DROP DROP
+    x >R x R> SWAP >R x SWAP >R DROP R> R> SWAP >R DROP R> DROP
+    x >R x R> SWAP >R >R x R> R> SWAP >R SWAP DROP DROP R> DROP
+    x >R x R> SWAP >R >R x R> R> SWAP ROT DROP >R DROP R> DROP
+    x >R x R> SWAP >R >R x R> R> ROT DROP SWAP >R DROP R> DROP
+    x >R x R> SWAP >R >R x R> SWAP DROP R> SWAP >R DROP R> DROP
+    x >R x >R x R> R> SWAP >R SWAP DROP R> SWAP >R DROP R> DROP
+    x x SWAP >R >R x R> R> SWAP >R SWAP DROP R> SWAP >R DROP R> DROP
+    x >R x R> SWAP x SWAP >R SWAP >R DROP R> R> SWAP >R DROP R> DROP
+    x >R x R> SWAP >R >R x R> R> SWAP >R >R DROP R> DROP R> DROP
+    x >R x R> SWAP >R >R x R> R> SWAP >R SWAP DROP R> SWAP DROP DROP
+    x >R x >R x R> R> SWAP >R >R DROP R> R> SWAP >R DROP R> DROP
+    x x SWAP >R >R x R> R> SWAP >R >R DROP R> R> SWAP >R DROP R> DROP
+    x >R x R> SWAP >R >R x R> R> SWAP >R >R DROP R> R> SWAP DROP DROP

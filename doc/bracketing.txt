@@ -1,0 +1,24 @@
+Want a generic definer that creates definitions that promise to
+bracket their code, that is:
+
+bracket: <bracketing definer> <before> <after> ;
+
+Then this
+    <bracketing definer> <name> <body> ;
+behaves like this:
+    : <name> <before> <body> <after> ;
+
+Example is "entry:" from c-gen/entry.fth
+: .field= ." ." count type ."  = " ;
+: .content count chars + aligned >r ;
+: entry: create parse-name counted, align 0 ] does> dup .field= .content ;
+
+An alternative
+
+: >caller< r> r> 2>r ;
+
+:noname <before> >caller< <after> ;
+: <bracketing definer> : [ swap ] literal compile, ;
+
+:noname ... ;
+: bracketing: : [ swap ] literal compile, ;

@@ -7,12 +7,23 @@
 \ HERE                  6.1.1650 CORE                   39
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
-\ N.B. host compiler must define `here-addr` that compiles the
-\ address of the HERE pointer (preferably as a literal).
+\ N.B. we assume some primitives are available from elsewhere:
+\   dp:          address pointing to the current value of HERE
+\   dict-start:  address of the end of the dictionary
+\   dict-end:    address of the end of the dictionary
+\   dict-size:   size of the dictionary
 
-: HERE ( -- addr ) here-addr @ ;
-: ALLOT ( n -- ) here-addr +! ;
-: ALIGN ( -- ) here aligned here-addr ! ;
+: HERE ( -- addr ) dp @ ;
+
+\ : allot-bounds dict-end 1+ here - dup dict-size 1+ - ;
+\ : allot-check allot-bounds within if -8 throw then ;
+\ : ALLOT dup allot-check dp +! ;
+
+: allot-bounds dict-end 1+ dict-start ;
+: allot-check allot-bounds within -8 and throw ;
+: ALLOT here + dup allot-check dp ! ;
+
+: ALIGN ( -- ) here aligned dp ! ;
 : , ( x -- ) here [ 1 cells ] literal allot ! ;
 : C, ( char -- ) here [ 1 chars ] literal allot c! ;
 
@@ -24,4 +35,5 @@
 
 \ not yet defined - could be forth
 \ PAD ( -- c-addr )
-\ UNUSED ( -- u )
+\ : UNUSED allot-bounds drop 1- ;
+: UNUSED [ dict-end ] literal here - ;

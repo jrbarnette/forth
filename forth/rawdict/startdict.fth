@@ -124,7 +124,7 @@ only FORTH also HOST definitions
 
 \     struct {
 \ 	addr_ft		here;		    /* HERE */
-\ 	name_p		forth_wordlist;	    /* FORTH-WORDLIST */
+\ 	name_ft		forth_wordlist;	    /* FORTH-WORDLIST */
 \
 \ 	size_t		lineno;
 \ 	FILE *		input;

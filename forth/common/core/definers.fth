@@ -12,17 +12,17 @@
 \  :NONAME               6.2.0455 CORE EXT
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
+: not-empty dup 0= if -16 .error then ;
+
 : current-name ( -- name ) get-current @ ;
 : link-name ( name -- ) get-current ! ;
 
 : ID, ( c-addr u -- )
-    dup 0= if -16 .error then here >r counted, r>
-    count 0 do dup c@ toupper over c! char+ loop drop ;
+    here >r counted, r> count 0 do dup c@ toupper over c! char+ loop drop ;
 : NAME, ( hdlr c-addr u -- name )
     align here >r current-name , id, align , r> ;
 
-: create-name ( hdlr "name" -- name )
-    parse-name dup 0= if -16 .error then name, ;
+: create-name ( hdlr "name" -- name ) parse-name not-empty name, ;
 : add-name ( hdlr "name" -- ) create-name link-name ;
 
 : : handler: do_colon create-name [compile] ] ;

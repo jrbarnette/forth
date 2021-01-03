@@ -11,11 +11,10 @@
 \  C"                    6.2.0855 CORE EXT
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
-: lookup-valid
-    parse-name dup 0= if -16 .error then
-    lookup dup 0= if -13 .error then ;
-: ' lookup-valid name>xt ;
-: CHAR parse-name 0= if -16 .error then c@ ;
+: parse-valid-name ( -- nt )
+    parse-name not-empty lookup dup 0= if -13 .error then ;
+: ' parse-valid-name name>xt ;
+: CHAR parse-name not-empty c@ ;
 
 : [COMPILE] ' compile, ; compile-special
 
@@ -23,7 +22,7 @@
 : [CHAR] char [compile] literal ; compile-special
 
 : POSTPONE
-    lookup-valid name>xt+flags immediate? 0=
+    parse-valid-name name>xt+flags immediate? 0=
     if [compile] literal ['] compile, then compile, ; compile-special
 
 : S" [char] " parse postpone do-s" dup , chars, align ; compile-special

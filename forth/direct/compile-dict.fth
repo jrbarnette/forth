@@ -77,10 +77,10 @@ create SOURCE-LINE 256 dup chars allot constant LINE-SIZE
     compile-file: forth/c-gen/file/modes.fth
     compile-file: forth/common/core/source.fth
     compile-file: forth/common/core/parse.fth
+    compile-file: forth/common/internal/error.fth
     compile-file: forth/common/core/comments.fth
 
     compile-file: forth/common/core/number.fth
-    compile-file: forth/common/internal/error.fth
 
     compile-file: forth/common/core/state.fth
     compile-file: forth/c-gen/search/base.fth

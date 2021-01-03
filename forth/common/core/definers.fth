@@ -12,8 +12,6 @@
 \  :NONAME               6.2.0455 CORE EXT
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
-: not-empty dup 0= if -16 .error then ;
-
 : current-name ( -- name ) get-current @ ;
 : link-name ( name -- ) get-current ! ;
 
@@ -22,7 +20,8 @@
 : NAME, ( hdlr c-addr u -- name )
     align here >r current-name , id, align , r> ;
 
-: create-name ( hdlr "name" -- name ) parse-name not-empty name, ;
+: create-name ( hdlr "name" -- name )
+    parse-name dup 0= if -16 .error then name, ;
 : add-name ( hdlr "name" -- ) create-name link-name ;
 
 : : handler: do_colon create-name [compile] ] ;

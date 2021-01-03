@@ -12,11 +12,11 @@
 \  [COMPILE]             6.2.2530 CORE EXT
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
-: name-exists ( nt | 0 -- nt )  dup 0= if -13 .error then ;
-: parse-valid-name ( "name" -- nt )  parse-name not-empty lookup name-exists ;
+: parse-valid-name ( "name" -- nt )
+    parse-name lookup dup 0= if -13 .error then ;
 
 : ' ( "name" -- xt )  parse-valid-name name>xt ;
-: CHAR ( "name" -- char )  parse-name not-empty drop c@ ;
+: CHAR ( "name" -- char )  parse-name 0= if -16 .error then c@ ;
 
 : [COMPILE] ' compile, ; compile-special
 

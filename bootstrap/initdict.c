@@ -12,9 +12,11 @@
 
 
 DIRECT_FORTH(initialize_forth) // {
+            /* ==== forth/direct/startdict.fth ==== */
 /*    0 */ { .handler = do_literal }, { .cell = (cell_ft) (DICTSPACE_START + sizeof (DICT)) },
 /*    2 */ { .handler = do_literal }, { .cell = (cell_ft) (&HERE) },
 /*    4 */ { .handler = x_store },
+            /* ==== forth/c-gen/core/stackprim.fth ==== */
 /*    5 */ { .handler = i_addname }, { .id = ">R" }, { .handler = x_to_r },
 /*    8 */ { .handler = i_setflags }, { .cell = 0x40 },
 /*   10 */ { .handler = i_addname }, { .id = "?DUP" }, { .handler = x_question_dup },
@@ -36,6 +38,7 @@ DIRECT_FORTH(initialize_forth) // {
 /*   54 */ { .handler = i_setflags }, { .cell = 0x40 },
 /*   56 */ { .handler = i_addname }, { .id = "PICK" }, { .handler = x_pick },
 /*   59 */ { .handler = i_addname }, { .id = "ROLL" }, { .handler = x_roll },
+            /* ==== forth/c-gen/core/arithprim.fth ==== */
 /*   62 */ { .handler = i_addname }, { .id = "+" }, { .handler = x_plus },
 /*   65 */ { .handler = i_addname }, { .id = "-" }, { .handler = x_minus },
 /*   68 */ { .handler = i_addname }, { .id = "2*" }, { .handler = x_two_star },
@@ -51,12 +54,14 @@ DIRECT_FORTH(initialize_forth) // {
 /*   98 */ { .handler = i_addname }, { .id = "RSHIFT" }, { .handler = x_rshift },
 /*  101 */ { .handler = i_addname }, { .id = "U<" }, { .handler = x_u_less },
 /*  104 */ { .handler = i_addname }, { .id = "XOR" }, { .handler = x_xor },
+            /* ==== forth/c-gen/core/memprim.fth ==== */
 /*  107 */ { .handler = i_addname }, { .id = "!" }, { .handler = x_store },
 /*  110 */ { .handler = i_addname }, { .id = "@" }, { .handler = x_fetch },
 /*  113 */ { .handler = i_addname }, { .id = "C!" }, { .handler = x_c_store },
 /*  116 */ { .handler = i_addname }, { .id = "C@" }, { .handler = x_c_fetch },
 /*  119 */ { .handler = i_addname }, { .id = "FILL" }, { .handler = x_fill },
 /*  122 */ { .handler = i_addname }, { .id = "MOVE" }, { .handler = x_move },
+            /* ==== forth/c-gen/core/multprim.fth ==== */
 /*  125 */ { .handler = i_addname }, { .id = "*" }, { .handler = x_star },
 /*  128 */ { .handler = i_addname }, { .id = "*/" }, { .handler = x_star_slash },
 /*  131 */ { .handler = i_addname }, { .id = "*/MOD" }, { .handler = x_star_slash_mod },
@@ -68,6 +73,7 @@ DIRECT_FORTH(initialize_forth) // {
 /*  149 */ { .handler = i_addname }, { .id = "SM/REM" }, { .handler = x_s_m_slash_rem },
 /*  152 */ { .handler = i_addname }, { .id = "UM*" }, { .handler = x_u_m_star },
 /*  155 */ { .handler = i_addname }, { .id = "UM/MOD" }, { .handler = x_u_m_slash_mod },
+            /* ==== forth/c-gen/core/vmprim.fth ==== */
 /*  158 */ { .handler = i_addname }, { .id = "EXECUTE" }, { .handler = x_execute },
 /*  161 */ { .handler = i_addname }, { .id = "EXIT" }, { .handler = x_exit },
 /*  164 */ { .handler = i_setflags }, { .cell = 0x40 },
@@ -79,9 +85,11 @@ DIRECT_FORTH(initialize_forth) // {
 /*  179 */ { .handler = i_setflags }, { .cell = 0x40 },
 /*  181 */ { .handler = i_addname }, { .id = "CLEAR" }, { .handler = x_clear },
 /*  184 */ { .handler = i_addname }, { .id = "RCLEAR" }, { .handler = x_rclear },
+            /* ==== forth/c-gen/exception/throwprim.fth ==== */
 /*  187 */ { .handler = i_addname }, { .id = "do-catch" }, { .handler = do_catch },
 /*  190 */ { .handler = i_addname }, { .id = "drop-catch" }, { .handler = drop_catch },
 /*  193 */ { .handler = i_addname }, { .id = "THROW" }, { .handler = x_throw },
+            /* ==== forth/c-gen/core/literal.fth ==== */
 /*  196 */ { .handler = i_startname }, { .id = "+!" }, { .handler = do_colon },
 /*  199 */ { .handler = meta_compile },
 /*  200 */     { .id = "swap" },
@@ -220,6 +228,7 @@ DIRECT_FORTH(initialize_forth) // {
 /*  361 */     { .id = NULL },
 /*  362 */ { .handler = i_linkname },
 /*  363 */ { .handler = i_setflags }, { .cell = 0xC0 },
+            /* ==== forth/c-gen/core/memops.fth ==== */
 /*  365 */ { .handler = i_startname }, { .id = "CHARS" }, { .handler = do_colon },
 /*  368 */ { .handler = meta_compile },
 /*  369 */     { .id = "EXIT" },
@@ -255,6 +264,7 @@ DIRECT_FORTH(initialize_forth) // {
 /*  408 */     { .id = "EXIT" },
 /*  409 */     { .id = NULL },
 /*  410 */ { .handler = i_linkname },
+            /* ==== forth/common/core/memops.fth ==== */
 /*  411 */ { .handler = i_startname }, { .id = "2!" }, { .handler = do_colon },
 /*  414 */ { .handler = meta_compile },
 /*  415 */     { .id = "swap" },
@@ -320,6 +330,7 @@ DIRECT_FORTH(initialize_forth) // {
 /*  487 */     { .id = "EXIT" },
 /*  488 */     { .id = NULL },
 /*  489 */ { .handler = i_linkname },
+            /* ==== forth/c-gen/core/dictops.fth ==== */
 /*  490 */ { .handler = i_startname }, { .id = "ALIGN" }, { .handler = do_colon },
 /*  493 */ { .handler = meta_compile },
 /*  494 */     { .id = "here" },
@@ -355,6 +366,7 @@ DIRECT_FORTH(initialize_forth) // {
 /*  530 */     { .id = "EXIT" },
 /*  531 */     { .id = NULL },
 /*  532 */ { .handler = i_linkname },
+            /* ==== forth/common/core/stackops.fth ==== */
 /*  533 */ { .handler = i_startname }, { .id = "2DROP" }, { .handler = do_colon },
 /*  536 */ { .handler = meta_compile },
 /*  537 */     { .id = "drop" },
@@ -403,6 +415,7 @@ DIRECT_FORTH(initialize_forth) // {
 /*  590 */     { .id = "EXIT" },
 /*  591 */     { .id = NULL },
 /*  592 */ { .handler = i_linkname },
+            /* ==== forth/c-gen/core/control.fth ==== */
 /*  593 */ { .handler = i_addname }, { .id = "BRANCH" }, { .handler = do_skip },
 /*  596 */ { .handler = i_setflags }, { .cell = 0x40 },
 /*  598 */ { .handler = i_addname }, { .id = "?BRANCH" }, { .handler = do_fskip },
@@ -417,6 +430,7 @@ DIRECT_FORTH(initialize_forth) // {
 /*  621 */ { .handler = i_setflags }, { .cell = 0x40 },
 /*  623 */ { .handler = i_addname }, { .id = "J" }, { .handler = x_j },
 /*  626 */ { .handler = i_setflags }, { .cell = 0x40 },
+            /* ==== forth/common/core/control.fth ==== */
 /*  628 */ { .handler = i_startname }, { .id = "<MARK" }, { .handler = do_colon },
 /*  631 */ { .handler = meta_compile },
 /*  632 */     { .id = "here" },
@@ -720,6 +734,7 @@ DIRECT_FORTH(initialize_forth) // {
 /* 1013 */     { .id = NULL },
 /* 1014 */ { .handler = i_linkname },
 /* 1015 */ { .handler = i_setflags }, { .cell = 0xC0 },
+            /* ==== forth/common/core/arithops.fth ==== */
 /* 1017 */ { .handler = i_startname }, { .id = "0<" }, { .handler = do_colon },
 /* 1020 */ { .handler = do_literal }, { .cell = 0x0 },
 /* 1022 */ { .handler = meta_interpret },
@@ -875,6 +890,7 @@ DIRECT_FORTH(initialize_forth) // {
 /* 1207 */     { .id = "EXIT" },
 /* 1208 */     { .id = NULL },
 /* 1209 */ { .handler = i_linkname },
+            /* ==== forth/common/internal/dictionary.fth ==== */
 /* 1210 */ { .handler = i_startname }, { .id = "CHARS," }, { .handler = do_colon },
 /* 1213 */ { .handler = meta_compile },
 /* 1214 */     { .id = "here" },
@@ -894,6 +910,7 @@ DIRECT_FORTH(initialize_forth) // {
 /* 1230 */     { .id = "EXIT" },
 /* 1231 */     { .id = NULL },
 /* 1232 */ { .handler = i_linkname },
+            /* ==== forth/common/exception/catch.fth ==== */
 /* 1233 */ { .handler = i_startname }, { .id = "CATCH" }, { .handler = do_colon },
 /* 1236 */ { .handler = meta_compile },
 /* 1237 */     { .id = "do-catch" },
@@ -916,6 +933,7 @@ DIRECT_FORTH(initialize_forth) // {
 /* 1255 */     { .id = "EXIT" },
 /* 1256 */     { .id = NULL },
 /* 1257 */ { .handler = i_linkname },
+            /* ==== forth/common/internal/chartype.fth ==== */
 /* 1258 */ { .handler = i_startname }, { .id = "GRAPHIC?" }, { .handler = do_colon },
 /* 1261 */ { .handler = do_literal }, { .cell = 0x21 },
 /* 1263 */ { .handler = meta_interpret },
@@ -996,8 +1014,10 @@ DIRECT_FORTH(initialize_forth) // {
 /* 1354 */     { .id = "EXIT" },
 /* 1355 */     { .id = NULL },
 /* 1356 */ { .handler = i_linkname },
+            /* ==== forth/c-gen/core/terminal.fth ==== */
 /* 1357 */ { .handler = i_addname }, { .id = "EMIT" }, { .handler = x_emit },
 /* 1360 */ { .handler = i_addname }, { .id = "PROMPT-ACCEPT" }, { .handler = x_prompt_accept },
+            /* ==== forth/common/core/terminal.fth ==== */
 /* 1363 */ { .handler = do_literal }, { .cell = 0x20 },
 /* 1365 */ { .handler = i_addname }, { .id = "BL" }, { .handler = do_constant },
 /* 1368 */ { .handler = meta_interpret },
@@ -1138,6 +1158,7 @@ DIRECT_FORTH(initialize_forth) // {
 /* 1525 */     { .id = "EXIT" },
 /* 1526 */     { .id = NULL },
 /* 1527 */ { .handler = i_linkname },
+            /* ==== forth/c-gen/file/fileprim.fth ==== */
 /* 1528 */ { .handler = i_addname }, { .id = "CLOSE-FILE" }, { .handler = x_close_file },
 /* 1531 */ { .handler = i_addname }, { .id = "CREATE-FILE" }, { .handler = x_create_file },
 /* 1534 */ { .handler = i_addname }, { .id = "FILE-POSITION" }, { .handler = x_file_position },
@@ -1148,6 +1169,7 @@ DIRECT_FORTH(initialize_forth) // {
 /* 1549 */ { .handler = i_addname }, { .id = "REPOSITION-FILE" }, { .handler = x_reposition_file },
 /* 1552 */ { .handler = i_addname }, { .id = "WRITE-FILE" }, { .handler = x_write_file },
 /* 1555 */ { .handler = i_addname }, { .id = "WRITE-LINE" }, { .handler = x_write_line },
+            /* ==== forth/c-gen/file/modes.fth ==== */
 /* 1558 */ { .handler = do_literal }, { .cell = (cell_ft) (FILE_MODE_R_O) },
 /* 1560 */ { .handler = i_addname }, { .id = "R/O" }, { .handler = do_constant },
 /* 1563 */ { .handler = meta_interpret },
@@ -1173,6 +1195,7 @@ DIRECT_FORTH(initialize_forth) // {
 /* 1592 */     { .id = "EXIT" },
 /* 1593 */     { .id = NULL },
 /* 1594 */ { .handler = i_linkname },
+            /* ==== forth/common/core/source.fth ==== */
 /* 1595 */ { .handler = i_addname }, { .id = ">IN" }, { .handler = do_variable },
 /* 1598 */ { .handler = do_literal }, { .cell = (cell_ft) (CELL_SIZE) },
 /* 1600 */ { .handler = meta_interpret },
@@ -1473,6 +1496,7 @@ DIRECT_FORTH(initialize_forth) // {
 /* 1929 */     { .id = "EXIT" },
 /* 1930 */     { .id = NULL },
 /* 1931 */ { .handler = i_linkname },
+            /* ==== forth/common/core/parse.fth ==== */
 /* 1932 */ { .handler = i_addname }, { .id = ">IN-START" }, { .handler = do_variable },
 /* 1935 */ { .handler = do_literal }, { .cell = (cell_ft) (CELL_SIZE) },
 /* 1937 */ { .handler = meta_interpret },
@@ -1614,6 +1638,7 @@ DIRECT_FORTH(initialize_forth) // {
 /* 2080 */     { .id = "EXIT" },
 /* 2081 */     { .id = NULL },
 /* 2082 */ { .handler = i_linkname },
+            /* ==== forth/common/internal/error.fth ==== */
 /* 2083 */ { .handler = i_startname }, { .id = ".ERROR" }, { .handler = do_colon },
 /* 2086 */ { .handler = meta_compile },
 /* 2087 */     { .id = "source" },
@@ -1692,6 +1717,7 @@ DIRECT_FORTH(initialize_forth) // {
 /* 2164 */     { .id = "EXIT" },
 /* 2165 */     { .id = NULL },
 /* 2166 */ { .handler = i_linkname },
+            /* ==== forth/common/core/comments.fth ==== */
 /* 2167 */ { .handler = i_startname }, { .id = "\\" }, { .handler = do_colon },
 /* 2170 */ { .handler = meta_compile },
 /* 2171 */     { .id = "source" },
@@ -1726,6 +1752,7 @@ DIRECT_FORTH(initialize_forth) // {
 /* 2208 */     { .id = NULL },
 /* 2209 */ { .handler = i_linkname },
 /* 2210 */ { .handler = i_setflags }, { .cell = 0x80 },
+            /* ==== forth/common/core/number.fth ==== */
 /* 2212 */ { .handler = i_addname }, { .id = "BASE" }, { .handler = do_variable },
 /* 2215 */ { .handler = do_literal }, { .cell = (cell_ft) (CELL_SIZE) },
 /* 2217 */ { .handler = meta_interpret },
@@ -1907,6 +1934,7 @@ DIRECT_FORTH(initialize_forth) // {
 /* 2411 */     { .id = "EXIT" },
 /* 2412 */     { .id = NULL },
 /* 2413 */ { .handler = i_linkname },
+            /* ==== forth/common/core/state.fth ==== */
 /* 2414 */ { .handler = i_addname }, { .id = "STATE" }, { .handler = do_variable },
 /* 2417 */ { .handler = do_literal }, { .cell = (cell_ft) (CELL_SIZE) },
 /* 2419 */ { .handler = meta_interpret },
@@ -1940,10 +1968,12 @@ DIRECT_FORTH(initialize_forth) // {
 /* 2455 */     { .id = "EXIT" },
 /* 2456 */     { .id = NULL },
 /* 2457 */ { .handler = i_linkname },
+            /* ==== forth/c-gen/search/base.fth ==== */
 /* 2458 */ { .handler = do_literal }, { .cell = (cell_ft) (&FORTH_WORDLIST) },
 /* 2460 */ { .handler = i_addname }, { .id = "FORTH-WORDLIST" }, { .handler = do_constant },
 /* 2463 */ { .handler = meta_interpret },
 /* 2464 */     { .id = "," },
+            /* ==== forth/common/search/base.fth ==== */
 /* 2465 */     { .id = "here" },
 /* 2466 */     { .id = NULL },
 /* 2467 */ { .handler = do_literal }, { .cell = 0x1 },
@@ -2151,6 +2181,7 @@ DIRECT_FORTH(initialize_forth) // {
 /* 2690 */ { .handler = meta_interpret },
 /* 2691 */     { .id = "set-order" },
 /* 2692 */     { .id = "definitions" },
+            /* ==== forth/common/internal/namespace.fth ==== */
 /* 2693 */     { .id = NULL },
 /* 2694 */ { .handler = do_literal }, { .cell = 0x40 },
 /* 2696 */ { .handler = i_addname }, { .id = "NF-COMPILE-ONLY" }, { .handler = do_constant },
@@ -2323,6 +2354,7 @@ DIRECT_FORTH(initialize_forth) // {
 /* 2905 */     { .id = "EXIT" },
 /* 2906 */     { .id = NULL },
 /* 2907 */ { .handler = i_linkname },
+            /* ==== forth/common/internal/lookup.fth ==== */
 /* 2908 */ { .handler = i_startname }, { .id = "ID=" }, { .handler = do_colon },
 /* 2911 */ { .handler = meta_compile },
 /* 2912 */     { .id = "rot" },
@@ -2512,6 +2544,7 @@ DIRECT_FORTH(initialize_forth) // {
 /* 3104 */     { .id = "EXIT" },
 /* 3105 */     { .id = NULL },
 /* 3106 */ { .handler = i_linkname },
+            /* ==== forth/common/internal/tokens.fth ==== */
 /* 3107 */ { .handler = i_startname }, { .id = "INTERPRET-NAME" }, { .handler = do_colon },
 /* 3110 */ { .handler = meta_compile },
 /* 3111 */     { .id = "name>xt+flags" },
@@ -2591,6 +2624,7 @@ DIRECT_FORTH(initialize_forth) // {
 /* 3190 */     { .id = "EXIT" },
 /* 3191 */     { .id = NULL },
 /* 3192 */ { .handler = i_linkname },
+            /* ==== forth/common/internal/interpret.fth ==== */
 /* 3193 */ { .handler = i_startname }, { .id = "'CHAR'" }, { .handler = do_colon },
 /* 3196 */ { .handler = do_literal }, { .cell = 0x3 },
 /* 3198 */ { .handler = meta_interpret },
@@ -2940,6 +2974,7 @@ DIRECT_FORTH(initialize_forth) // {
 /* 3563 */     { .id = "EXIT" },
 /* 3564 */     { .id = NULL },
 /* 3565 */ { .handler = i_linkname },
+            /* ==== forth/common/core/definers.fth ==== */
 /* 3566 */ { .handler = i_startname }, { .id = "current-name" }, { .handler = do_colon },
 /* 3569 */ { .handler = meta_compile },
 /* 3570 */     { .id = "get-current" },
@@ -3207,6 +3242,7 @@ DIRECT_FORTH(initialize_forth) // {
 /* 3882 */     { .id = "EXIT" },
 /* 3883 */     { .id = NULL },
 /* 3884 */ { .handler = i_linkname },
+            /* ==== forth/common/core/evaluate.fth ==== */
 /* 3885 */ { .handler = i_startname }, { .id = "EVALUATE" }, { .handler = do_colon },
 /* 3888 */ { .handler = do_literal }, { .cell = -0x1 },
 /* 3890 */ { .handler = meta_interpret },
@@ -3225,6 +3261,7 @@ END_DIRECT // }
 
 
 char *init_forth_defs[] = {
+            /* ==== forth/common/core/compile.fth ==== */
     "\\  Copyright 2019, by J. Richard Barnette. All Rights Reserved.",
     "",
     "\\ ------  ------  ------  ------  ------  ------  ------  ------",
@@ -3256,6 +3293,7 @@ char *init_forth_defs[] = {
     "",
     ": S\" [char] \" parse postpone do-s\" dup , chars, align ; compile-special",
     ": C\" [char] \" parse postpone do-c\" counted, align ; compile-special",
+            /* ==== forth/common/core/format.fth ==== */
     "\\ Copyright 2013, by J. Richard Barnette, All Rights Reserved.",
     "",
     "\\ ------  ------  ------  ------  ------  ------  ------  ------",
@@ -3291,6 +3329,7 @@ char *init_forth_defs[] = {
     "",
     ": .R ( n1 n2 -- ) >r <# dup abs 0 #s rot sign #> r> over - spaces type ;",
     ": U.R ( u n -- ) >r <# 0 #s #> r> over - spaces type ;",
+            /* ==== forth/common/core/quit.fth ==== */
     "\\ Copyright 2019, by J. Richard Barnette, All Rights Reserved.",
     "",
     "\\ ------  ------  ------  ------  ------  ------  ------  ------",
@@ -3416,6 +3455,7 @@ char *init_forth_defs[] = {
     "    begin prompt-refill while",
     "\t['] interpret catch handle-exception",
     "    repeat ;",
+            /* ==== forth/common/file/include.fth ==== */
     "\\ Copyright 2019, by J. Richard Barnette. All Rights Reserved.",
     "",
     "\\ ------  ------  ------  ------  ------  ------  ------  ------",
@@ -3430,6 +3470,7 @@ char *init_forth_defs[] = {
     "    ['] interpret-file with-input-source ;",
     ": INCLUDED  ( i*x c-addr u -- j*x )",
     "    r/o open-file abort\" OPEN-FILE failed in INCLUDED\" include-file ;",
+            /* ==== forth/common/search/find.fth ==== */
     "\\ Copyright 2017, by J. Richard Barnette. All Rights Reserved.",
     "",
     "\\ ------  ------  ------  ------  ------  ------  ------  ------",
@@ -3441,6 +3482,7 @@ char *init_forth_defs[] = {
     "",
     ": FIND dup count lookup name>find dup if rot drop then ;",
     ": SEARCH-WORDLIST wid-lookup name>find ;",
+            /* ==== forth/common/search/vocab.fth ==== */
     "\\ Copyright 2019, by J. Richard Barnette, All Rights Reserved.",
     "",
     "\\ Standard words:",
@@ -3465,6 +3507,7 @@ char *init_forth_defs[] = {
     ": ALSO ( -- ) get-order ?dup if over swap 1+ set-order else -50 throw then ;",
     ": ONLY ( -- ) -1 set-order ;",
     ": PREVIOUS ( -- ) get-order ?dup if nip 1- set-order else -50 throw then ;",
+            /* ==== forth/common/tools/tools.fth ==== */
     "\\ Copyright 2020, by J. Richard Barnette, All Rights Reserved.",
     "",
     "\\ ------  ------  ------  ------  ------  ------  ------  ------",

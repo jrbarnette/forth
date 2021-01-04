@@ -1,6 +1,6 @@
 \  Copyright 2019, by J. Richard Barnette. All Rights Reserved.
 
-only FORTH definitions
+DIRECT-MODE definitions
 
 variable meta-state  0 meta-state !
 vocabulary TARGET
@@ -14,8 +14,6 @@ vocabulary TARGET
 : meta-' ( c-addr u -- ) direct-lookup meta-literal ;
 
 also TARGET definitions previous
-: <HOST> only forth ;
-: <DIRECT> 0 <META> also direct ;
 : \ postpone \ ;
 : ( postpone ( ;
 : .( postpone .( cr ;

@@ -1,6 +1,6 @@
 \  Copyright 2019, by J. Richard Barnette. All Rights Reserved.
 
-only FORTH definitions
+DIRECT-MODE definitions
 
 variable offset      0 offset !
 
@@ -47,14 +47,13 @@ variable emit-state  0 emit-state !
 : literal-cell ( x -- ) ['] .cell do-literal ;
 : literal-handler ( c-addr u ) ['] .exec do-literal ;
 
-vocabulary DIRECT
-
 \ We only need these while building up the DIRECT vocabulary.
-vocabulary BUILD-DIRECT
-also BUILD-DIRECT definitions
+vocabulary DIRECT-COMPILE
+
 : prim: create parse-name counted, does> { count .exec } ;
+
 : IMMEDIATE    ;
 : COMPILE-ONLY ;
 : COMPILE-SPECIAL ;
 
-only FORTH also BUILD-DIRECT also DIRECT definitions
+DIRECT-MODE also DIRECT-COMPILE definitions previous

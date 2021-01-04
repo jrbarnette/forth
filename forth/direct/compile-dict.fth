@@ -1,16 +1,14 @@
 \  Copyright 2019, by J. Richard Barnette. All Rights Reserved.
 
-only FORTH definitions
+DIRECT-MODE definitions
 
 : OPEN-SOURCE-FILE ( "filename" -- fileid )
     parse-name 12 spaces ." /* ==== " 2dup type ."  ==== */" cr
     r/o open-file abort" failed to open file" ;
 : INTERPRET-META-FILE
-    \ XXX TARGET overrides [ and ], so this construct fails:
-    \   target [ also target ] <direct> [ previous ]
-    only target meta-state @ 0= if also direct then
+    only target meta-state @ 0= if also direct-compile then
     begin refill if ['] interpret catch ?dup else 0 -1 then until
-    only forth source-id close-file drop throw ;
+    direct-mode source-id close-file drop throw ;
 : COMPILE-FILE: ( "filename" -- )
     open-source-file ['] interpret-meta-file with-input-source ;
 

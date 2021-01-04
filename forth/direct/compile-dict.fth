@@ -3,7 +3,8 @@
 only FORTH definitions
 
 : OPEN-SOURCE-FILE ( "filename" -- fileid )
-    parse-name r/o open-file abort" failed to open file" ;
+    parse-name 12 spaces ." /* ==== " 2dup type ."  ==== */" cr
+    r/o open-file abort" failed to open file" ;
 : INTERPRET-META-FILE
     \ XXX TARGET overrides [ and ], so this construct fails:
     \   target [ also target ] <direct> [ previous ]

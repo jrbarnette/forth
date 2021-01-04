@@ -11,6 +11,7 @@ cat <<END >&2
 usage: $(basename $0) [ options ] target-type
 available options:
 -l	list the file-order on stdout
+-s	list the input source files on stdout
 -g	(default) write generated output to stdout
 -b	generate new $FILE and rebuild bootstrap/forth
 -t	test changes; diff generated output against current file

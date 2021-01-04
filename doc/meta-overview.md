@@ -1,16 +1,16 @@
 # Inventory of notes files:
-  * directasm.txt - Ideas relating to an assembler based on direct
-	executed programs.
-  * meta-notes.txt - Implementation notes for meta-interpretation
-	under forth/direct; possibly superseded by the
-	implementation.
-  * meta-special.txt - Categorization of words needing special treatment
-	in meta-compilation, generally.
-  * rawdict.txt - Implementation and design notes relating to
-	dictionary generation via buffer.
-  * target-dict.txt - An initial attempt to scope out implementation
-	details and strategy options for a meta-compiler based on
-	direct execution.
+  + [directasm.txt](directasm.txt) - Ideas relating to an assembler
+	based on direct executed programs.
+  + [meta-notes.txt](meta-notes.txt) - Implementation notes for
+	meta-interpretation under forth/direct; possibly superseded
+	by the implementation.
+  + [meta-special.txt](meta-special.txt) - Categorization of words
+	needing special treatment in meta-compilation, generally.
+  + [rawdict.txt](rawdict.txt) - Implementation and design notes
+	relating to dictionary generation via buffer.
+  + [target-dict.txt](target-dict.txt) - An initial attempt to scope
+	out implementation details and strategy options for a
+	meta-compiler based on direct execution.
 
 # This file
 Outline of implementation choices, strategies, and trade-offs for the

@@ -2,9 +2,17 @@ immediate word:  a Forth word whose compilation semantics are to
     perform its execution semantics.
 default interpretation semantics are execution semantics
 default compilation semantics are to append execution semantics
+some words have no interpretation semantics
+    it is only valid to append the execution semantics
 some words have no execution semantics
     special compilation words have only compilation semantics
     certain words have both interpretation and special compilation semantics
+
+I = action by INTERPRET when STATE is 0
+C = action by INTERPRET when STATE is -1
+P = action performed by POSTPONE
+[] = action performed by [COMPILE]
+'X = semantics found by '
 
 Various kinds of definition semantics:
 		| I  | C  | P  | [] | 'X |
@@ -26,6 +34,7 @@ AX - append execution semantics; COMPILE,
 AC - append semantics that append execution semantics
 AS - append the special compilation semantics
 ?? - no specified behavior; no matching ambiguous condition
+    possibly should be SI
 
 (*) [ is immediate, but has undefined interpretation semantics
 (*) TO has no execution semantics:
@@ -37,17 +46,54 @@ name flags
     NOINTERP	Error when interpreting
     IMMEDIATE	Execute when compiling
 
-interpretation action based on flags:
- S | I | N | action
- I | F | F | EXECUTE
- I | F | T | -14 THROW
- I | T | F | EXECUTE
- I | T | T | -14 THROW
- C | F | F | COMPILE,
- C | F | T | COMPILE,
- C | T | F | EXECUTE
- C | T | T | EXECUTE
+name format 1:
+    hdlr, data ...
 
+format 1 interpretation action based on flags:
+ S | I | N | action
+ I | * | F | EXECUTE
+ I | * | T | -14 THROW
+ C | F | * | COMPILE,
+ C | T | * | EXECUTE
+ P | F | * | [COMPILE] LITERAL COMPILE,
+ P | T | * | COMPILE,
+[] | * | * | COMPILE,
+ ' | * | F | \ no action
+ ' | * | T | -14 THROW
+
+name format 2:
+    compile-xt, hdlr, data ...
+
+ S | I | N | action
+ I | * | F | CELL+ EXECUTE
+ I | * | T | -14 THROW
+ C | * | * | DUP CELL+ SWAP @ EXECUTE
+ P | F | F |
+ P | F | T |
+ P | T | F |
+ P | T | T |
+[] | F | F |
+[] | F | T |
+[] | T | F |
+[] | T | T |
+ ' | F | F | 
+ ' | F | T |
+ ' | T | F |
+ ' | T | T |
+
+echo " S | I | N | action"
+for state in ' I' ' C' ' P' '[]' " '"
+do
+    for interp in F T
+    do
+	for compile in F T
+	do
+	    echo "$state | $interp | $compile |"
+	done
+    done
+done
+
+====
 \ interpret as for QUIT
 : do-interpret ( xt flags -- )
     STATE @ IF
@@ -67,6 +113,7 @@ interpretation action based on flags:
 
 : do-[compile] ( xt flags -- ) DROP COMPILE, ;
 
+====
 Immediate words:
 (                     6.1.0080 CORE                   26
 [                     6.1.2500 CORE                   49

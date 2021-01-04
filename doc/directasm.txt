@@ -1,43 +1,6 @@
-special instructions:
+In C:
 
-/* vmstate omitted */
-typedef struct definition_data *	xt_ft;
-typedef union instr_data *		vminstr_p;
-typedef union param_data *		vmarg_p;
-
-typedef vminstr_p (*vminstr_fn)(vminstr_p, vmstate_p, vmarg_p);
-
-union instr_data {
-    /* general purpose VM instructions */
-    xt_ft		xtok;
-    cell_ft		cell;
-    snumber_ft		offset;
-    char_ft		cdata[CELL_SIZE];
-
-    /* direct execution instructions only */
-    vminstr_fn		handler;
-    vminstr_p		ip;
-    char *		str; // or "id"?
-    addr_ft		addr; // or "ref"?
-};
-
-typedef union instr_data		vminstr_d;
-union param_data {
-    vminstr_p		ip;
-    xt_ft		xtok;
-    cell_ft		cell;
-    char_ft		cdata[CELL_SIZE];
-    addr_unit_ft	data[CELL_SIZE];
-    union instr_data	vminstrs[1];
-};
-
-struct definition_data {
-    vminstr_fn		handler;
-    union param_data	arg[1];
-};
-
-vminstr_p
-i_call(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+PRIM_HDLR(i_call)
 {
     CHECK_RPUSH(vm, 1);
     RPUSH(vm, ip + 1);
@@ -45,109 +8,157 @@ i_call(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
 }
 
 
-vminstr_p
-i_str(vminstr_p ip, vmstate_p vm, vmarg_p ignore)
+// S" for a null-terminated C string
+// Runtime: ( -- c-addr u )
+PRIM_HDLR(i_str)
 {
-    CHECK_PUSH(vm, 1);
-    PUSH(strlen(ip->str));
+    CHECK_PUSH(vm, 2);
+    PUSH(ip->id);
+    PUSH(strlen(ip->id));
     return ip + 1;
 }
 
 
-In C:
-    X(fn) -> { .handler = fn },
-    N(n) -> { .cell = (n) },
-    S(s) -> { .str = s },
-    O(o) -> { .offset = (o) },
-    CHARS(s) -> { .cdata = s },
-    IP(expr) -> { .ip = (expr) },
+// COUNT for a null-terminated C string
+// ( c-addr -- c-addr u )
+PRIM_HDLR(i_strlen)
+{
+    CHECK_POP(vm, 1);
+    CHECK_PUSH(vm, 1);
+    size_t len = strlen(PICK(SP(vm), 0));
+    PUSH(len);
+    return ip;
+}
 
-    L(x) -> X(do_literal) N(x)
-    REF(expr) -> X(do_literal) IP(expr)
-    MCP(hdlr) -> X(do_literal) X(hdlr)
-    STR(s) -> X(i_str) S(s)		// maybe use do_s_quote instead?
-    STR(s) -> X(do_s_quote) N(sizeof (s)) CHARS(s)
-    CALL(expr) -> X(i_call) IP(expr)
-    B(o) -> X(do_skip) O(o)
-    BF(o) -> X(do_fskip) O(o)
 
-    ID(s) -> S(s)
-    PRIM(id, handler) -> X(i_addname) ID(id) X(handler)
-    COLON(id) -> X(i_startname) ID(id) X(do_colon)
-    LINKNAME() -> X(i_linkname)
-    SETFLAGS(n) -> X(i_setflags) N(n)
-    LOOKUP(id) -> X(i_lookup) ID(id)
-    METAINTERP() -> X(meta_interpret)
-    METACOMPILE() -> X(meta_compile)
-    METAEND() -> ID(NULL)
+#define X(fn)			{ .handler = fn },
+#define N(n)			{ .cell = (n) },
+#define S(s)			{ .id = s },
+#define A(p)			{ .addr = (p) },
+#define O(o)			{ .offset = (o) },
+#define CHARS(s)		{ .cdata = s },
+#define IP(expr)		{ .ip = (expr) },
 
-In Forth:
-    Direct mode
-    X: <handler> -> X(handler)
-    #: <number> -> L(number)
-    C: <expr>; -> L(expr)	\ or "<C> <expr>;"
+#define L(x)			X(do_literal) N(x)
+#define ADDR(expr)		X(do_literal) A(expr)
+#define REF(expr)		X(do_literal) IP(expr)
+#define MCP(hdlr)		X(do_literal) X(hdlr)
+#define STR(s)			X(i_str) S(s)
+// #define STR(s)		X(do_s_quote) N(sizeof (s)) CHARS(s)
+#define CALL(expr)		X(i_call) IP(expr)
+#define B(o)			X(do_skip) O(o)
+#define B0(o)			X(do_fskip) O(o)
 
-    S" <string>" -> X(do_s_quote) N(u) CHARS(s) ...
-    CALL <number> -> CALL(initialize_forth[number])
-    B: <number> -> B(number)
-    ?B: <number> -> BF(number)
+// meta-interpretation - we want to eliminate these
+#define ID(s)			S(s)
+#define PRIM(id, handler)	X(i_addname) ID(id) X(handler)
+#define COLON(id)		X(i_startname) ID(id) X(do_colon)
+#define LINKNAME()		X(i_linkname)
+#define SETFLAGS(n)		X(i_setflags) N(n)
+#define LOOKUP(id)		X(i_lookup) ID(id)
+#define METAINTERP()		X(meta_interpret)
+#define METACOMPILE()		X(meta_compile)
+#define METAEND()		ID(NULL)
 
-    PRIM: <id> <handler> -> PRIM(id, handler)
-    : <id> -> COLON(id)
-    LINKNAME -> LINKNAME()
-    SETFLAGS: <number> -> SETFLAGS(number)
-    LOOKUP: <name> -> LOOKUP(name)
-
-    Meta modes
-    INTERPRET: <name> -> ID(name)
-    COMPILE: <name> -> ID(name)
-
-cell types:
-    0: { .cell = n },
-	name: cell
-	content: @ .c-hex
-    1: { .cell = (cell_ft) (<expr>) },
-	name: expr
-	content: @ count type
-	content: @ swap type
-    2: { .handler = <hdlrname> },
-	name: exec
-	content: @ count type
-	content: @ swap type
-    3: { .str = <str>|NULL },
-	name: str
-	content: @ ?dup if count .c-string else ." NULL" then
-	content: @ swap .c-string
-    4: { .offset = <offset> },
-	name: offset
-	content: @ .c-decimal
-    5: { .cdata = <str> },
-	name: cdata
-	content: 1 cells .c-string
-    6: { .ip = &direct_code[<offset>] },
-	name: cdata
-	content: @ .c-decimal
-    7: { .addr = &dictionary.data_space[<offset>] },
-	name: ref
-	content: TBD ( @ TBD - ) .c-decimal
+Cell types in Forth:
+    { .cell = <n> },
+	<n>: @ .c-hex
+    { .cell = (cell_ft) (<expr>) },
+	<expr>: @ count type
+	<expr>: @ swap type
+    { .handler = <hdlrname> },
+	<hdlrname>: @ count type
+	<hdlrname>: @ swap type
+    { .str = <str>|NULL },
+	<str>|NULL: @ ?dup if count .c-string else ." NULL" then
+	<str>: @ swap .c-string
+    { .offset = <offset> },
+	<offset>: @ .c-decimal
+    { .cdata = <str> },
+	<str>: 1 cells .c-string
+    { .ip = &direct_dictionary[<offset>] },
+	<offset>: @ .c-decimal
+    { .addr = &dictionary.data_space[<offset>] },
+	<offset>: target-buff - .c-decimal
+	<offset>: @ .c-decimal
 
     formatting a cell
 	.start-instr { .field ."  = " .content }, .end-instr
 
-Forth definers
-    prim: <name> <handler>
-	name -> X(handler)
-	: prim: create parse-name counted, does> count X() ;
+Building the target dictionary is implemented with two languages
+(or, modes of operation):
+  * Interpretation - Words are interpreted by the standard Forth
+    interpreter extended with a vocabulary that supports adding
+    cells to the direct dictionary buffer.
+  * Compilation - Words are compiled into the direct dictionary
+    buffer.
+
+Implementation
+    \ The only vocabulary visible in direct compilation mode.
+    vocabulary DIRECT-COMPILE
+
+    \ Visible in interpretation, and when defining content in
+    \ DIRECT-COMPILE.
+    vocabulary DIRECT 
+
+    \ Invoke this to enter direct interpretation mode
+    : DIRECT-MODE only FORTH also DIRECT-INTERPRET ;
+
+    \ Say this to add definitions to direct interpretation mode
+    DIRECT-MODE definitions
+
+    \ Invoke this to enter direct compilation mode
+    : ] only DIRECT-COMPILE ;
+
+    \ To add content to DIRECT-COMPILE:
+    DIRECT-MODE also DIRECT-COMPILE definitions previous
+
+    \ To return to direct interpretation from direct compilation
+    : [ DIRECT-MODE ;
+
+Direct interpretation vocabulary content
+    HERE ALLOT ALIGN , C, UNUSED
+	Shadow the standard Forth names.  Operate on the direct
+	dictionary buffer.
+
+    (miscellaneous utilities)
+	Code to tag cells in the direct dictionary buffer.
+
+    prim: <name> <hdlr>
+	Add <name> to DIRECT-COMPILE with the semantics
+	    X(<hdlr>)
+
     : <name>
-	name -> CALL(offset)
-	: : create origin @ , does> @ CALL() ;
-    ;
-	X: x_exit
-	: ; s" x_exit" X() ;
-    <name> CONSTANT
-	name -> L(TOS)
-	: CONSTANT create , does> do-literal @ N() ;
-    <name> VARIABLE
-	#: 0
-	name -> L(offset)
-	: VARIABLE create origin @ , 0 N() does> do-literal @ IP() ;
+	Shadows the standard Forth name.  Add <name> to
+	DIRECT-COMPILE with the semantics
+	    CALL(<offset>)
+	Where <offset> is the current value of HERE for the direct
+	dictionary buffer.  Change to direct compilation mode.
+
+    VARIABLE <name>
+	Allocate a cell in the direct dictionary buffer.  Add <name>
+	to DIRECT-COMPILE with the semantics
+	    ADDR(&direct_dictionary[<offset>])
+	Where <offset> is the offset of the assigned cell in the
+	direct dictionary buffer.
+
+	Add <name> to DIRECT with the semantics
+	    <addr> CONSTANT <name>
+	Where <addr> is the address of the assigned cell in the
+	dictionary buffer, and CONSTANT is taken from the FORTH
+	vocabulary.
+
+    ( <n> ) CONSTANT <name>
+	Add <name> to DIRECT-COMPILE with the semantics
+	    L(<n>)
+
+	Add <name> to DIRECT with the semantics
+	    ( <n> ) CONSTANT <name>
+	(CONSTANT taken from FORTH).
+
+Direct compilation vocabulary content
+    IF ELSE THEN BEGIN WHILE UNTIL REPEAT
+	as for standard forth, but compiling branches needs to change
+    DO ?DO LEAVE I J +LOOP LOOP UNLOOP
+	as for standard forth, but look at uses of POSTPONE
+	possibly omit?

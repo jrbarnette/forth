@@ -78,12 +78,12 @@ regen() {
 while getopts gbtlnsrf: opt
 do
     case $opt in
+        l) MODE=list ;;
+        s) MODE=cat ;;
         g) MODE=gen ;;
         b) MODE=build ;;
         t) MODE=changes ;;
-        l) MODE=list ;;
         n) MODE=dry_run ;;
-        s) MODE=cat ;;
         r) MODE=regen ;;
         f) FILE=$OPTARG ;;
         \?) usage ;;

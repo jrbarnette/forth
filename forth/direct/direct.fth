@@ -40,20 +40,19 @@ variable emit-state  0 emit-state !
 
 \ N.B. do-literal isn't _unnecessary_ complexity.  Both .offset and
 \ .c-hex use pictured string formatting.  Thus, the following
-\ sequence breaks because { will plaster the output from c-hex:
+\ sequence breaks because { will plaster the output from .c-hex:
 \     .c-hex { s" do_literal" .exec }{ .expr }
 : do-literal { s" do_literal" .exec }{ execute } ;
 : literal-expr ( c-addr u -- ) ['] .expr do-literal ;
 : literal-cell ( x -- ) ['] .cell do-literal ;
 : literal-handler ( c-addr u ) ['] .exec do-literal ;
 
-\ We only need these while building up the DIRECT vocabulary.
-vocabulary DIRECT-COMPILE
-
 : prim: create parse-name counted, does> { count .exec } ;
 
-: IMMEDIATE    ;
-: COMPILE-ONLY ;
+\ Ignore these when adding primitves to DIRECT-COMPILE
+: IMMEDIATE       ;
+: COMPILE-ONLY    ;
 : COMPILE-SPECIAL ;
 
+vocabulary DIRECT-COMPILE
 DIRECT-MODE also DIRECT-COMPILE definitions previous

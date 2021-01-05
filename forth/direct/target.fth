@@ -44,7 +44,7 @@ meta-immediate WHILE
         meta-' s" ," meta-compile
     then
 ;
-: [COMPILE] parse-name meta-compile ;
+: [COMPILE] parse-name 2 meta-emit ;
 : ['] parse-name meta-' ;
 
 \ S"

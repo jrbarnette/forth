@@ -2,10 +2,10 @@
 \ Forth text interpreter token handling
 
 : INTERPRET-NAME ( i*x name -- j*x )
-    name>xt+flags state @ if
-	immediate? if execute else compile, then
+    state @ if
+	name>compile execute
     else
-	compile-only? if -14 .error else execute then
+	name>interpret ?dup if execute else -14 .error then
     then
 ;
 : INTERPRET-NUMBER ( x -- | x ) state @ if postpone literal then ;

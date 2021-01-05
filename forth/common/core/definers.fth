@@ -15,30 +15,35 @@
 : current-name ( -- name ) get-current @ ;
 : link-name ( name -- ) get-current ! ;
 
-: ID, ( c-addr u -- )
+: id, ( c-addr u -- name )
     here >r counted, r> count 0 do dup c@ toupper over c! char+ loop drop ;
-: NAME, ( hdlr c-addr u -- name )
-    align here >r current-name , id, align , r> ;
 
-: create-name ( hdlr "name" -- name )
-    parse-name dup 0= if -16 .error then name, ;
-: add-name ( hdlr "name" -- ) create-name link-name ;
+: name, ( c-addr u -- name )
+    align here >r current-name , id, align , r>
+    dup name>string 0 do dup c@ toupper over c! char+ loop drop ;
 
-: : handler: do_colon create-name [compile] ] ;
+: check-name-length ( u -- u )
+    dup 0= if -16 .error then
+    dup nf-length u> if -19 .error then ;
+: start-name ( hdlr "name" -- name )
+    parse-name check-name-length name, ;
+: create-name ( hdlr "name" -- )  start-name link-name ;
+
+: : handler: do_colon start-name [compile] ] ;
 : ; postpone EXIT ?dup if link-name then [compile] [ ; compile-special
 
 : created? dup @ handler: do_create = invert if -31 .error then ;
 : >BODY ( xt -- a-addr ) created? [ 2 cells ] literal + ;
 
-: CONSTANT handler: do_constant add-name , ;
+: CONSTANT handler: do_constant create-name , ;
 
 : DOES> r> current-name name>xt created? cell+ ! ; compile-only
-: CREATE handler: do_create add-name 0 , DOES> ;
+: CREATE handler: do_create create-name 0 , DOES> ;
 
 : IMMEDIATE        nf-immediate        current-name name-flags! ;
 : COMPILE-ONLY     nf-compile-only     current-name name-flags! ;
 : COMPILE-SPECIAL  nf-compile-special  current-name name-flags! ;
 
-: VARIABLE handler: do_variable add-name 0 , ;
+: VARIABLE handler: do_variable create-name 0 , ;
 
 : :NONAME here 0 handler: do_colon , [compile] ] ;

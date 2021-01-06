@@ -1,18 +1,23 @@
 \  Copyright 2020, by J. Richard Barnette. All Rights Reserved.
 
-: .field= ." ." count type ."  = " ;
-: .content count chars + aligned >r ;
-: entry: create parse-name counted, align 0 ] does> dup .field= .content ;
+: entry: create , parse-name counted, does>
+    ." ." dup cell+ count type ."  = " @ execute ;
 
-entry: .exec handler ( c-addr u -- ) type ;
-entry: .str id ( c-addr u -- ) .c-string ;
-entry: .str-expr id ( c-addr u -- ) type ;
-entry: .expr cell ( c-addr u -- ) .c-cell ;
-entry: .cell cell ( x -- ) .c-hex ;
+' type          entry: .exec handler ( c-addr u -- )
+' .c-string     entry: .str id ( c-addr u -- )
+' type          entry: .str-expr id ( c-addr u -- )
+' .c-cell       entry: .expr cell ( c-addr u -- )
+' .c-hex        entry: .cell cell ( x -- )
 
-entry: .offset offset ( +n -- ) .c-decimal ;
-entry: .cdata cdata ( a-addr -- ) [ 1 cells ] literal .c-string ;
-entry: .label ip ( +n -- ) ." &initialize_forth[" .c-decimal ." ]" ;
-entry: .dict ref ( +n -- ) ." &dictionary.dict_space[" .c-decimal ." ]" ;
+' .c-decimal    entry: .offset offset ( +n -- )
+
+:noname [ 1 cells ] literal .c-string ;
+entry: .cdata cdata ( a-addr -- )
+
+:noname ." &initialize_forth[" .c-decimal ." ]" ;
+entry: .label ip ( +n -- )
+
+:noname ." &dictionary.dict_space[" .c-decimal ." ]" ;
+entry: .dict ref ( +n -- )
 
 : .id ( c-addr -- ) ?dup if count .str else s" NULL" .str-expr then ;

@@ -3,8 +3,7 @@
 DIRECT-MODE definitions
 
 : OPEN-SOURCE-FILE ( "filename" -- fileid )
-    parse-name 12 spaces ." /* ==== " 2dup type ."  ==== */" cr
-    r/o open-file abort" failed to open file" ;
+    parse-name r/o open-file abort" failed to open file" ;
 : INTERPRET-META-FILE
     only target meta-state @ 0= if also direct-compile then
     begin refill if ['] interpret catch ?dup else 0 -1 then until
@@ -92,6 +91,8 @@ create SOURCE-LINE 256 dup chars allot 2 - constant LINE-SIZE
 
     compile-file: forth/common/core/definers.fth
     compile-file: forth/common/core/evaluate.fth
+
+    flush-direct-buffer
 >>> END_DIRECT // }
 >>>
 >>>

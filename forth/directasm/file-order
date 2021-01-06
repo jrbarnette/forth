@@ -1,0 +1,19 @@
+# Copyright 2020, by J. Richard Barnette, All Rights Reserved.
+
+# First, build up the DIRECT-COMPILE vocabulary that's responsible for
+# primitives to emit syntactically correct direct execution code.
+forth/direct/vocab.fth
+forth/c-gen/c-data.fth
+forth/c-gen/entry.fth
+forth/directasm/direct.fth
+    # These files are repeated in compile-dict.  They can contain
+    # only prim: definitions.
+    forth/c-gen/core/stackprim.fth
+    forth/c-gen/core/arithprim.fth
+    forth/c-gen/core/memprim.fth
+
+# Now start building up the TARGET vocabulary and meta-compiler.
+forth/direct/target.fth
+forth/direct/tokens.fth
+forth/common/internal/interpret.fth
+forth/directasm/compile-dict.fth

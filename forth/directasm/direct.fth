@@ -19,6 +19,8 @@ here swap chars aligned allot	constant tag-buffer
 here 32 1024 * chars allot	constant strings-buffer
 
 variable  origin	direct-buffer origin !
+variable  origin-index	0 origin-index !
+variable  origin-indent	1 origin-indent !
 variable  strp		strings-buffer strp !
 
 \ : >buffer ( index -- a-addr ) cells direct-buffer + ;
@@ -78,7 +80,7 @@ create fmt>handler execute
 
 : .indent ( indent -- )  1- if 4 spaces then ;
 : .index ( a-addr indent -- a-addr )
-    ?dup if ." /* " over >index 4 u.r ."  */" .indent then ;
+    ?dup if ." /* " over >index origin-index @ + 4 u.r ."  */" .indent then ;
 : start-entry ( a-addr indent -- indent' a-addr fmt )
     .index dup tag@ rot swap ;
 : end-entry ( indent -- indent ) dup if cr then ;
@@ -87,9 +89,12 @@ create fmt>handler execute
     start-entry ."  { " fmt>handler execute ."  }," end-entry ;
 
 : flush-direct-buffer
-    decimal 1 origin @ direct-buffer do
+    decimal origin-indent @ origin @ direct-buffer do
 	i swap .entry
-    [ 1 cells ] literal +loop drop
+    [ 1 cells ] literal +loop
+    origin-indent !
+    origin @ >index origin-index +!
+    direct-buffer origin !
 ;
 
 

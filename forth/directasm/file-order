@@ -16,4 +16,6 @@ forth/directasm/direct.fth
 forth/direct/target.fth
 forth/direct/tokens.fth
 forth/common/internal/interpret.fth
-forth/directasm/compile-dict.fth
+forth/direct/compile-file.fth
+forth/directasm/compile-file.fth
+forth/direct/output-dict.fth

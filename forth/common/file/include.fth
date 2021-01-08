@@ -5,7 +5,7 @@
 \  INCLUDED           11.6.1.1718 FILE
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
-: INTERPRET-FILE ( i*x fileid -- j*x )
+: INTERPRET-FILE ( i*x -- j*x )
     begin refill if ['] interpret catch ?dup else 0 -1 then until
     source-id close-file drop throw ;
 : INCLUDE-FILE ( i*x fileid -- j*x )

@@ -56,7 +56,7 @@ here 4 cells - constant SOURCE-BUFFERS
     then ( x0 x1 addr ) 2! ;
 
 : WITH-INPUT-SOURCE ( c-addr u -1 xt | 0 xt | fileid xt -- i*x )
-    [ >in 7 cells + dup ] literal >in ( source-end index-ptr )
+    [ >in 7 cells + ] literal >in ( source-end index-ptr )
     begin 2dup > while dup @ >r cell+ repeat drop >r
     >r source-id! r> catch
     >in r> ( >in index-ptr+1 )

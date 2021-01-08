@@ -18,15 +18,17 @@ here over cells allot		constant direct-buffer
 here swap chars aligned allot	constant tag-buffer
 here 32 1024 * chars allot	constant strings-buffer
 
-variable  origin	direct-buffer origin !
-variable  origin-index	0 origin-index !
-variable  origin-indent	1 origin-indent !
 variable  strp		strings-buffer strp !
 
-\ : >buffer ( index -- a-addr ) cells direct-buffer + ;
-\ : buffer@ ( index -- ) >buffer @ ;
-\ : buffer! ( x index -- ) >buffer ! ;
-: >index ( a-addr -- index ) direct-buffer - [ 1 cells ] literal / ;
+variable  origin
+variable  origin-index
+variable  origin-indent
+
+: initialize-origin ( -- )
+    1 origin-indent ! 0 origin-index ! 0 origin ! ;
+: advance-origin ( indent -- )
+    origin-indent ! origin @ origin-index +! 0 origin ! ;
+initialize-origin
 
 \ Tag interpretation
 \ Every cell has an associated tag byte that determines how the cell
@@ -47,14 +49,15 @@ variable  strp		strings-buffer strp !
 6			constant #fmt-bits
 1 #fmt-bits lshift 1-	constant fmt-mask
 
-: tag-ptr ( a-addr -- c-addr ) >index chars tag-buffer + ;
-: tag@ ( a-addr -- indent fmt )
+: direct-ptr ( index -- a-addr ) cells direct-buffer + ;
+: tag-ptr ( index -- c-addr ) chars tag-buffer + ;
+: tag@ ( index -- indent fmt )
     tag-ptr c@ dup #fmt-bits rshift swap fmt-mask and ;
 : >tag ( fmt indent -- tag ) #fmt-bits lshift + ;
-: tag! ( tag a-addr -- ) tag-ptr c! ;
+: tag! ( tag index -- ) tag-ptr c! ;
 
 : assemble-cell ( x fmt indent -- )
-    >tag origin @ dup cell+ origin ! tuck tag! ! ;
+    >tag origin @ dup 1+ origin ! tuck tag! direct-ptr ! ;
 
 
 0 constant >.cell
@@ -79,23 +82,19 @@ create fmt>handler execute
 
 
 : .indent ( indent -- )  1- if 4 spaces then ;
-: .index ( a-addr indent -- a-addr )
-    ?dup if ." /* " over >index origin-index @ + 4 u.r ."  */" .indent then ;
-: start-entry ( a-addr indent -- indent' a-addr fmt )
-    .index dup tag@ rot swap ;
+: .index ( index indent -- index )
+    ?dup if ." /* " over origin-index @ + 4 u.r ."  */" .indent then ;
+: start-entry ( index indent -- indent' a-addr fmt )
+    .index dup tag@ rot direct-ptr swap ;
 : end-entry ( indent -- indent ) dup if cr then ;
 
-: .entry ( a-addr indent -- indent' )
+: .entry ( index indent -- indent' )
     start-entry ."  { " fmt>handler execute ."  }," end-entry ;
 
 : flush-direct-buffer
-    decimal origin-indent @ origin @ direct-buffer do
+    decimal origin-indent @ origin @ 0 do
 	i swap .entry
-    [ 1 cells ] literal +loop
-    origin-indent !
-    origin @ >index origin-index +!
-    direct-buffer origin !
-;
+    loop advance-origin ;
 
 
 variable emit-state  0 emit-state !

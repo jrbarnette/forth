@@ -95,7 +95,7 @@ typedef struct {
 #define THROW(vm, n)		(longjmp((vm)->interp_loop, (int) (n)))
 
 
-inline void
+static inline void
 vm_initialize(vmstate_ft *vm) {
     CLEAR_STACK(vm);
     CLEAR_RSTACK(vm);

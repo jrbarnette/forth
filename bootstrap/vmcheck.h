@@ -15,7 +15,7 @@
  * this function's behavior is coupled to the primitives do_catch(),
  * undo_catch(), and x_throw() in vm.c.
  */
-inline vmip_ft
+static inline vmip_ft
 throw_transfer(vmstate_ft *vm, cell_ft throw_code)
 {
     if (EXEMPTY(vm)) {

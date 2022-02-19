@@ -33,7 +33,7 @@
  */
 
 
-inline vmip_ft
+static inline vmip_ft
 xtcall(xt_ft xtok, vmstate_ft *vm, vmip_ft ip)
 {
     return xtok->handler(ip, vm, xtok->arg);

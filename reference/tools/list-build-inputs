@@ -6,8 +6,19 @@
 #   + All Forth files read when creating "bootstrap/initdict.c"
 #   + Any other file that might be read in rebuilding during either
 #     of the above processes.
+#
+# To work properly, the script must be invoked from the root of the
+# git tree.
 
-FILES=(  )
+# FIXME - This script won't work on Macos because the AFS semantics
+# for "atime" are ... weird.  I'm not sure I know how to work around
+# it. :-(
+
+# The 'touch -m' below makes things work on Liunx filesystems using
+# "relatime".
+
+FILES=( $(git ls-files) )
+touch -m "${FILES[@]}"
 F=$(mktemp)
 trap 'rm $F' EXIT
 sleep 0.1
@@ -15,7 +26,8 @@ if ( cd bootstrap && make clean && make forth ) >/dev/null
 then
     ./gen-dict -n direct
     P=$(echo "$F" | sed 's/\//\\\//g')
-    ls -tu $(git ls-files) "$F" | sed "/$P/,\$ d" | sort
+    ls -tu "${FILES[@]}" "$F" | sed "/$P/,\$ d" |
+	grep -v "$0" | sort
 else
     echo "build failure" >&2
     exit 1

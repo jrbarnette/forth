@@ -1,7 +1,5 @@
-Design/Implementation Refinements
-=================================
-
-## Where we are
+## Design/Implementation Refinements
+### Where we are
 All Forth code now lives under `forth/`, and gets built (one way or
 another) into `initdict.c`.  This includes the source code built
 into the interpreter for interpretation at startup.
@@ -18,7 +16,7 @@ There's a sample of how replace things like `i_startname()` in
 support in DIRECT.  That means we need to resurrect/appropriate the
 rawdict code for DIRECT.
 
-## Plan to move forward
+### Plan to move forward
 The long-term goal is to get rid of C code that isn't a Forth
 primitive or the interpreter loop.  Preserving both the indirect-
 and direct-threaded loops is OK, and likely useful/necessary.
@@ -65,8 +63,7 @@ So, the plan is to go with the 'rawdict' approach: build up a
 dictionary image at compile time, then at startup just `MOVE` the
 data to the dictionary storage.
 
-New Features/Bugs
-=================
+## New Features/Bugs
 
 - Error handling is dodgy.  Errors get flagged by printing the last
   source line, with a **^^^** indicator for the token at the failure.

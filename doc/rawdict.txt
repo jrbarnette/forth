@@ -75,6 +75,7 @@ HOST contents
 	' FIND lookup
     state-related
 	[ ]
+	STATE (?)
     @ ! C@ C! (... maybe also MOVE FILL)
 	maybe need special versions restricted to the confines of
 	the target dictionary?

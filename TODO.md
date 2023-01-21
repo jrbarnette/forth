@@ -41,10 +41,11 @@ All told, that means eliminating/replacing the content in these files:
   * `meta.c`
   * `forth.c`
 
-It's not much content: ~368 lines, including comments and some
-content in `forth.c` that won't be converted.  But... It'd all have to
-be implemented as direct-mode code, so we'd need to add `i_call()`.
-That's nominally not a big deal...
+#### The `direct` option
+The content to be replaced isn't much: ~368 lines, including comments
+and some content in `forth.c` that won't be converted.  But... It'd all
+have to be implemented as direct-mode code, so we'd need to add
+`i_call()`.  That's nominally not a big deal...
 ```
     PRIM_HDLR(i_call)
     {
@@ -54,14 +55,28 @@ That's nominally not a big deal...
     }
 ```
 
-But... we'd also have to implement a lot of infrastructure around
-`i_call()` and the extra code would be taking up space in `initdict.c`.
-Also, the extra stuff would still represent code duplication, at
-least in code space (and possibly as source code?).
+But... we'd also have to implement several new things:
+  * New direct code invoked via `i_call()` in `initdict.c` to replace
+    the existing C functions.
+  * New support infrastructure to generate the new direct code.
 
-So, the plan is to go with the 'rawdict' approach: build up a
-dictionary image at compile time, then at startup just `MOVE` the
-data to the dictionary storage.
+That could turn out to be large and complicated, and could create its
+own code duplication...
+
+#### The `rawdict` option
+The complexity of staying `direct`  argues for the `rawdict` approach:
+build up a dictionary image at compile time, then at startup just `MOVE`
+the data to the dictionary storage.  The problem is that this means
+`initdict.c` is tied to a particular cell size.  I don't like that...
+
+#### Obvious next steps
+Fix known bugs, and implement missing standard features.  Basically,
+bring the `bootstrap` interpreter up to full compliance with CORE,
+CORE EXT, and a few selected other word sets (especially EXCEPTION,
+FILE, TOOLS and SEARCH).
+
+Also, think about possible hybrid solutions combining `direct` with
+`rawdict`.
 
 ## New Features/Bugs
 

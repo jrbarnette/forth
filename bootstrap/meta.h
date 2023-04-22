@@ -2,8 +2,8 @@
  * Copyright 2017, by J. Richard Barnette. All Rights Reserved.
  */
 
-#ifndef DIRECT_H
-#define DIRECT_H
+#ifndef META_H
+#define META_H
 
 #include "forth.h"
 
@@ -42,4 +42,4 @@ extern addr_ft allot(vmstate_ft *, cell_ft);
 #define COMMA(vm, x)	(*(a_addr_ft)allot((vm), CELL_SIZE) = (cell_ft) (x))
 #define COMPILE(vm, xt)	COMMA(vm, xt)
 
-#endif // DIRECT_H
+#endif // META_H

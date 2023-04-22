@@ -6,7 +6,7 @@
 
 #include "forth.h"
 #include "dictionary.h"
-#include "direct.h"
+#include "meta.h"
 
 /*
  * allot.c - C internal functions for allocating dictionary data

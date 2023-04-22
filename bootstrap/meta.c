@@ -10,7 +10,7 @@
 #include "forth.h"
 #include "names.h"
 #include "dictionary.h"
-#include "direct.h"
+#include "meta.h"
 
 /*
  * meta.c - Forth primitives to enable meta-interpret and

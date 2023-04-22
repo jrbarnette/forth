@@ -23,10 +23,10 @@ FORTH_SRC =			\
 
 DIRECT_SRC = direct_test.c
 
-FORTH_OBJ =   $(COMMON_SRC:.c=.o) $(FORTH_SRC:.c=.o)
-DIRECT_OBJ =  $(COMMON_SRC:.c=.o) $(DIRECT_SRC:.c=.o)
-HEADER_SRC =	cmdline.h	dictionary.h	direct.h	\
-		forth.h		ftypes.h	names.h		\
+FORTH_OBJ =  $(COMMON_SRC:.c=.o) $(FORTH_SRC:.c=.o)
+DIRECT_OBJ = $(COMMON_SRC:.c=.o) $(DIRECT_SRC:.c=.o)
+HEADER_SRC =	cmdline.h	dictionary.h	forth.h		\
+		ftypes.h	meta.h		names.h		\
 		prim.h		vmcheck.h	vmstate.h	\
 	    	xtoken.h
 
@@ -43,7 +43,7 @@ PRIM_DEP =	control.o	definers.o	direct.o	\
 
 PRIM_HDRS = forth.h ftypes.h vmstate.h xtoken.h vmcheck.h prim.h
 DICT_HDRS = names.h dictionary.h
-DIRECT_HDRS = direct.h
+META_HDRS = meta.h
 
 CHECKENABLE = CHECK
 CHECKDISABLE = NOCHECK
@@ -58,8 +58,8 @@ all: forth tags
 $(CMDLINE_DEP): cmdline.h
 $(PRIM_DEP): $(PRIM_HDRS)
 $(DICT_DEP): $(PRIM_HDRS) $(DICT_HDRS)
-$(DIRECT_DEP): $(PRIM_HDRS) $(DICT_HDRS) $(DIRECT_HDRS)
-direct_test.o: $(PRIM_HDRS) names.h direct.h
+$(DIRECT_DEP): $(PRIM_HDRS) $(DICT_HDRS) $(META_HDRS)
+direct_test.o: $(PRIM_HDRS) names.h meta.h
 
 forth: $(FORTH_OBJ)
 	$(CC) $(LDFLAGS) -o $@ $(FORTH_OBJ)

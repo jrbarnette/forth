@@ -4,7 +4,7 @@
 >>>
 >>> #include "forth.h"
 >>> #include "dictionary.h"
->>> #include "direct.h"
+>>> #include "meta.h"
 >>>
 >>>
 >>> DIRECT_FORTH(initialize_forth) // {

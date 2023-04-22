@@ -7,7 +7,7 @@
 #include <string.h>
 
 #include "forth.h"
-#include "direct.h"
+#include "meta.h"
 #include "names.h"
 #include "cmdline.h"
 

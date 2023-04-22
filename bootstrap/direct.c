@@ -33,3 +33,21 @@ direct_execute(vmstate_ft *vm, vmip_ft ip)
 	ip = ip->handler(ip + 1, vm, NULL);
     }
 }
+
+
+/* ( R: -- ip ) */
+PRIM_HDLR(i_call)
+{
+    CHECK_RPUSH(vm, 1);
+    RPUSH(vm, ip + 1);
+    return ip->ip;
+}
+
+
+/* ( x*i xt -- x*j ) */
+PRIM_HDLR(i_indirect)
+{
+    CHECK_POP(vm, 1);
+    execute(vm, (xt_ft) POP(vm));
+    return ip;
+}

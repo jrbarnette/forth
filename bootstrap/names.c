@@ -10,7 +10,7 @@
 #include "forth.h"
 #include "names.h"
 #include "dictionary.h"
-#include "direct.h"
+#include "meta.h"
 
 /*
  * names.c - C internal functions and Forth standard words for

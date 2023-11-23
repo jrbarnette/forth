@@ -83,7 +83,7 @@ be an arrary of entries like this:
 ```
 
 Rather than populating the dictionary with a raw `memcpy()`, each entry
-in `raw_dictionary` would be processed along this lines:
+in `raw_dictionary` would be processed along these lines:
   * A `cell` or `handler` entry is appended directly to the next cell in
     the dictionary.
   * The bytes pointed to by a `str` entry are appended to the
@@ -95,6 +95,9 @@ in `raw_dictionary` would be processed along this lines:
 This implies we'd need a secondary array of relocation addresses for
 `ref` entries. In theory we could reuse the slot in `raw_dictionary`,
 but that makes me itchy, so maybe not...
+
+Additionally, `rawdict` would have to include a tag for each entry in
+`raw_dictionary` so the copy code would know how to process the entry.
 
 This hybrid approach would also need some special processing for cells
 with forward references, namely `HERE` and `FORTH-WORDLIST`.

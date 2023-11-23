@@ -1,8 +1,8 @@
 ## Design/Implementation Refinements
 ### Where we are
 All Forth code now lives under `forth/`, and gets built (one way or
-another) into `initdict.c`.  This includes the source code built
-into the interpreter for interpretation at startup.
+another) into `initdict.c`.  This includes source code built into the
+interpreter for interpretation at startup.
 
 `QUIT` has an implementation in the source text that we interpret at
 startup, and the static dictionary is gone, except for `HERE` and
@@ -64,10 +64,40 @@ That could turn out to be large and complicated, and could create its
 own code duplication...
 
 #### The `rawdict` option
-The complexity of staying `direct`  argues for the `rawdict` approach:
+The complexity of staying `direct` argues for the `rawdict` approach:
 build up a dictionary image at compile time, then at startup just `MOVE`
 the data to the dictionary storage.  The problem is that this means
 `initdict.c` is tied to a particular cell size.  I don't like that...
+
+So, I'm looking at a hybrid approach to `rawdict`.  The dictionary would
+be an arrary of entries like this:
+```
+    union {
+	cell_ft         cell;
+	c_addr_ft       str;
+	cell_ft         ref;
+	vminstr_fn      handler;
+    } raw_dictionary[] = {
+	...
+    };
+```
+
+Rather than populating the dictionary with a raw `memcpy()`, each entry
+in `raw_dictionary` would be processed along this lines:
+  * A `cell` or `handler` entry is appended directly to the next cell in
+    the dictionary.
+  * The bytes pointed to by a `str` entry are appended to the
+    dictionary.
+  * A `ref` entry holds the index of an earlier entry in the
+    `raw_dictionary` array: append to the dictionary the address where
+    that entry was copied to in the dictionary.
+
+This implies we'd need a secondary array of relocation addresses for
+`ref` entries. In theory we could reuse the slot in `raw_dictionary`,
+but that makes me itchy, so maybe not...
+
+This hybrid approach would also need some special processing for cells
+with forward references, namely `HERE` and `FORTH-WORDLIST`.
 
 #### Obvious next steps
 Fix known bugs, and implement missing standard features.  Basically,

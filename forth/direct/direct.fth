@@ -16,7 +16,7 @@ variable emit-state  0 emit-state !
 : } } cr ;
 : start-instr ( new-state -- )
     dup emit-state @ <> if
-	emit-state @ ?dup if .offset { s" NULL" .str-expr } then
+	emit-state @ ?dup if .offset { .NULL } then
 	dup if
 	    dup 1- if s" meta_compile" else s" meta_interpret" then
 	    0 .offset { .exec }

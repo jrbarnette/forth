@@ -5,11 +5,12 @@
 
 ' type          entry: .exec handler ( c-addr u -- )
 ' .c-string     entry: .str id ( c-addr u -- )
-' type          entry: .str-expr id ( c-addr u -- )
 ' .c-cell       entry: .expr cell ( c-addr u -- )
 ' .c-hex        entry: .cell cell ( x -- )
-
 ' .c-decimal    entry: .offset offset ( +n -- )
+
+:noname ." NULL" ;
+entry: .NULL id ( -- )
 
 :noname [ 1 cells ] literal .c-string ;
 entry: .cdata cdata ( a-addr -- )
@@ -20,4 +21,4 @@ entry: .label ip ( +n -- )
 :noname ." &dictionary.dict_space[" .c-decimal ." ]" ;
 entry: .dict ref ( +n -- )
 
-: .id ( c-addr -- ) ?dup if count .str else s" NULL" .str-expr then ;
+: .id ( c-addr -- ) ?dup if count .str else .NULL then ;

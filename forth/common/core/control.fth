@@ -40,8 +40,9 @@
 : WHILE ( C: dest -- orig dest ) postpone if swap ; compile-special
 
 \ Flow of control using DO, ?DO, +LOOP, and LEAVE
-variable LEAVERS 0 leavers !
-: LEAVERS-SWAP ( new-leavers -- old-leavers ) leavers @ swap leavers ! ;
+here 0 ,
+: LEAVERS-SWAP ( new-leavers -- old-leavers )
+    [ over ] literal @ swap [ swap ] literal ! ;
 
 \ ( do-sys ) implemented as ( saved-leavers dest )
 : BEGIN-DO ( init-leavers -- saved-leavers dest ) leavers-swap postpone begin ;

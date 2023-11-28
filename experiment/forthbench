@@ -1,0 +1,52 @@
+#!/bin/bash
+
+cd $(dirname $0)/..
+NITER=${1:-100000}
+
+# trap 'exit 0' SIGINT
+trap 'exit 0' 2
+
+measure() {
+    local body
+    local sample=100
+    echo "${1}"
+    for count in $(seq 1 $sample)
+    do
+	for body in "" "${1}"
+	do
+	    time bootstrap/forth <<END
+: bench begin dup while $body 1- repeat drop ;
+$NITER bench
+END
+	done
+    done 2>&1 | awk '
+	BEGIN { withbody = 0 }
+	/^user/ {
+	    split($2, minsec, "[ms]")
+	    sample = 60 * minsec[1] + minsec[2]
+	    sum[withbody] += sample
+	    squares[withbody] += sample^2
+	    nsamples[withbody] += 1
+	    withbody = 1 - withbody
+	}
+	END {
+	    factor = 1e9 / '$NITER'
+	    for (i = 0; i < 2; i++) {
+		n = nsamples[i]
+		mean[i] = factor * sum[i] / n
+		variance[i] = (squares[i] - sum[i]^2 / n) / (n - 1)
+	    }
+	    stdev = factor * sqrt(variance[1] + variance[0])
+	    printf "%9.1f nsec +/- %.1f\n", mean[1] - mean[0], stdev
+	}
+    '
+}
+
+measure ""
+measure "dup drop"
+measure "1 drop"
+measure "1 chars drop"
+measure "1 2 swap drop drop"
+measure "base drop"
+measure "base @ drop"
+measure "base @ base !"

@@ -113,6 +113,8 @@ Also, think about possible hybrid solutions combining `direct` with
 
 ## New Features/Bugs
 
+- WORD is supposed to skip leading delimiters.  It doesn't.
+
 - Error handling is dodgy.  Errors get flagged by printing the last
   source line, with a **^^^** indicator for the token at the failure.
   But, that goes to `stdout`.  Then, the exception is raised, and the

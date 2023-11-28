@@ -1,6 +1,6 @@
 \  Copyright 2020, by J. Richard Barnette. All Rights Reserved.
 
-vocabulary DIRECT
+vocabulary HOST
 
-: DIRECT-MODE only FORTH also DIRECT ;
-DIRECT-MODE definitions
+: HOST-MODE only FORTH also HOST ;
+HOST-MODE definitions

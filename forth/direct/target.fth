@@ -1,14 +1,16 @@
 \  Copyright 2019, by J. Richard Barnette. All Rights Reserved.
 
-DIRECT-MODE definitions
+HOST-MODE definitions
 
 variable meta-state  0 meta-state !
+
 vocabulary TARGET
-: <META> meta-state ! only target ;
-: meta[ 1 <META> ;
-: ]meta 2 <META> ;
+: TARGET-MODE only target definitions ;
+: <META> meta-state ! target-mode ;
+: meta[ 0 <META> ;
+: ]meta -1 <META> ;
 : meta-literal
-    meta-state @ 2 = if s" LITERAL" meta-interpret then ;
+    meta-state @ if s" LITERAL" meta-interpret then ;
 : meta-char char literal-cell ;
 : meta-immediate align here create name>string , , does> 2@ meta-interpret ;
 : meta-' ( c-addr u -- ) direct-lookup meta-literal ;
@@ -44,7 +46,7 @@ meta-immediate WHILE
         meta-' s" ," meta-compile
     then
 ;
-: [COMPILE] parse-name 2 meta-emit ;
+: [COMPILE] parse-name meta-compile ;
 : ['] parse-name meta-' ;
 
 \ S"
@@ -64,7 +66,7 @@ meta-immediate WHILE
 
 : [ META[ ;
 : ] ]META ;
-: CHAR meta-state @ 2 = if s" CHAR" meta-compile else meta-char then ;
+: CHAR meta-state @ if s" CHAR" meta-compile else meta-char then ;
 
 : IMMEDIATE        nf-immediate setflags ;
 : COMPILE-ONLY     nf-compile-only setflags ;

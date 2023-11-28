@@ -8,15 +8,10 @@
 >>>
 >>>
 >>> DIRECT_FORTH(initialize_forth) // {
-0 meta-state !
-    compile-file: forth/direct/startdict.fth
-    \ Repeat our early primitive definitions, this time to generate
-    \ initial target dictionary content.
-    \
     \ These initial files can contain only "prim:" definitions.
     \ Colon definitions can't work until we load vmprim because ";"
     \ depends on "EXIT".  Also, colon definitions are only as useful
-    \ as the set of primitives we have available.
+    \ as the set of primitives already defined in the target.
     compile-file: forth/c-gen/core/stackprim.fth
     compile-file: forth/c-gen/core/arithprim.fth
     compile-file: forth/c-gen/core/memprim.fth
@@ -38,7 +33,7 @@
     compile-file: forth/c-gen/core/dictops.fth
 
     \ We want "arithops" early, but that depends on "control", which
-    \ then depends on "stackops".
+    \ in turn depends on "stackops".
     compile-file: forth/common/core/stackops.fth
     compile-file: forth/c-gen/core/control.fth
     compile-file: forth/common/core/control.fth

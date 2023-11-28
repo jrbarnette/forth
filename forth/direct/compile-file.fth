@@ -1,14 +1,14 @@
 \  Copyright 2020, by J. Richard Barnette. All Rights Reserved.
 
-DIRECT-MODE definitions
+HOST-MODE definitions
 
 : OPEN-SOURCE-FILE ( "filename" -- fileid )
     parse-name 12 spaces ." /* ==== " 2dup type ."  ==== */" cr
     r/o open-file abort" failed to open file" ;
 : INTERPRET-META-FILE
-    only target meta-state @ 0= if also direct-compile then
+    target-mode
     begin refill if ['] interpret catch ?dup else 0 -1 then until
-    direct-mode source-id close-file drop throw ;
+    host-mode source-id close-file drop throw ;
 : COMPILE-FILE: ( "filename" -- )
     open-source-file ['] interpret-meta-file with-input-source ;
 

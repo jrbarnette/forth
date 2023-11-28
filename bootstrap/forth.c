@@ -126,6 +126,7 @@ interpret_arguments(vmstate_ft *vm, int argc, char *argv[])
 static void
 initialize_dictionary(vmstate_ft *vm)
 {
+    DICT.here = DICTSPACE_START + sizeof (DICT);
     direct_execute(vm, initialize_forth);
     assert(EMPTY(vm));
     assert(REMPTY(vm));

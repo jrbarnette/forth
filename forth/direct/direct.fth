@@ -1,6 +1,6 @@
 \  Copyright 2019, by J. Richard Barnette. All Rights Reserved.
 
-DIRECT-MODE definitions
+HOST-MODE definitions
 
 variable offset      0 offset !
 
@@ -46,13 +46,3 @@ variable emit-state  0 emit-state !
 : literal-expr ( c-addr u -- ) ['] .expr do-literal ;
 : literal-cell ( x -- ) ['] .cell do-literal ;
 : literal-handler ( c-addr u ) ['] .exec do-literal ;
-
-: prim: create parse-name counted, does> { count .exec } ;
-
-\ Ignore these when adding primitves to DIRECT-COMPILE
-: IMMEDIATE       ;
-: COMPILE-ONLY    ;
-: COMPILE-SPECIAL ;
-
-vocabulary DIRECT-COMPILE
-DIRECT-MODE also DIRECT-COMPILE definitions previous

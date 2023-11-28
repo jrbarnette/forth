@@ -6,11 +6,6 @@ forth/direct/vocab.fth
 forth/c-gen/c-data.fth
 forth/c-gen/entry.fth
 forth/direct/direct.fth
-    # These files are repeated in compile-dict.  They can contain
-    # only prim: definitions.
-    forth/c-gen/core/stackprim.fth
-    forth/c-gen/core/arithprim.fth
-    forth/c-gen/core/memprim.fth
 
 # Now start building up the TARGET vocabulary and meta-compiler.
 forth/direct/target.fth

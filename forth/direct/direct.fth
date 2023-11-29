@@ -35,7 +35,7 @@ variable nreloc  1 nreloc !
 
 
 : .ref ( name len -- )
-    2dup ."  /* " type ."  */ " 8 over - spaces
+    2dup ." /* " type ."  */ " 8 over - spaces
     target-names wid-lookup name>xt execute .cell
 ;
 

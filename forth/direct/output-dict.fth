@@ -72,6 +72,8 @@
     compile-file: forth/common/core/comments.fth
 
     compile-file: forth/common/core/evaluate.fth
+
+    parse-name EVALUATE direct-lookup
 >>> END_DIRECT // }
 >>>
 >>>

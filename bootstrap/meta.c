@@ -8,7 +8,6 @@
 #include <string.h>
 
 #include "forth.h"
-#include "names.h"
 #include "dictionary.h"
 #include "meta.h"
 

@@ -3278,6 +3278,7 @@ DIRECT_FORTH(initialize_forth) // {
 /* 3919 */     { /* EXIT */     .cell = 0x31 },
 /* 3920 */     { .cell = 0x0 },
 /* 3921 */ { .handler = i_linkname },
+/* 3922 */ { .handler = i_reference }, { /* EVALUATE */ .cell = 0xF5 },
 END_DIRECT // }
 
 

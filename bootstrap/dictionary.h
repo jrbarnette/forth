@@ -9,7 +9,6 @@
 #include <stdio.h>
 
 #include "forth.h"
-#include "names.h"
 
 /*
  * C definitions and declarations relating to the Forth dictionary,
@@ -24,6 +23,8 @@
  */
 
 #define DICTSPACE_SIZE		(0x10000 XCELLS)
+
+typedef struct name_header *	name_ft;
 
 extern union dict {
     struct {
@@ -47,8 +48,6 @@ extern union dict {
  * C utility functions used by main() to invoke the inner VM (both
  * direct and indirect threaded).
  */
-
-extern name_ft lookup(vmstate_ft *, c_addr_ft, cell_ft);
 
 extern void report_exception(int, vmstate_ft *, char *);
 extern void execute(vmstate_ft *, xt_ft);

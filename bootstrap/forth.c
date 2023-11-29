@@ -10,7 +10,6 @@
 #include <string.h>
 
 #include "forth.h"
-#include "names.h"
 #include "dictionary.h"
 #include "cmdline.h"
 
@@ -33,13 +32,8 @@ static char *dictionary_stats[] = {
 
 
 static void
-interpret_lines(vmstate_ft *vm, char **lines)
+interpret_lines(xt_ft eval, vmstate_ft *vm, char **lines)
 {
-    char id[] = "EVALUATE";
-    name_ft name = lookup(vm, (c_addr_ft) id, sizeof (id) - 1);
-    assert(name != NULL);
-    xt_ft xt = NAME_XT(name);
-
     int throwcode;
     if ((throwcode = CATCH(vm)) != 0) {
 	report_exception(throwcode, vm, NULL);
@@ -50,13 +44,13 @@ interpret_lines(vmstate_ft *vm, char **lines)
         char *s = *lines++;
 	PUSH(vm, (cell_ft) s);
 	PUSH(vm, (cell_ft) strlen(s));
-	execute(vm, xt);
+	execute(vm, eval);
     }
 
     char getstate[] = "STATE @";
     PUSH(vm, getstate);
     PUSH(vm, sizeof (getstate) - 1);
-    execute(vm, xt);
+    execute(vm, eval);
     cell_ft state = POP(vm);
     assert(state == 0);
     assert(EMPTY(vm));
@@ -65,26 +59,25 @@ interpret_lines(vmstate_ft *vm, char **lines)
 
 
 static int
-quit(vmstate_ft *vm, char *filename)
+quit(xt_ft eval, vmstate_ft *vm, char *filename)
 {
-    char id[] = "QUIT";
-    name_ft name = lookup(vm, (c_addr_ft) id, sizeof (id) - 1);
-    assert(name != NULL);
-    xt_ft xt = NAME_XT(name);
-
     int throwcode;
     if ((throwcode = CATCH(vm)) != 0) {
         report_exception(throwcode, vm, filename);
 	fprintf(stderr, "QUIT failed to handle an exception\n");
 	return EXIT_FAILURE;
     }
-    execute(vm, xt);
+
+    char quit_cmd[] = "QUIT";
+    PUSH(vm, quit_cmd);
+    PUSH(vm, sizeof (quit_cmd) - 1);
+    execute(vm, eval);
     return EXIT_SUCCESS;
 }
 
 
 static int
-interpret_file(vmstate_ft *vm, char *filename)
+interpret_file(xt_ft eval, vmstate_ft *vm, char *filename)
 {
     DICT.lineno = 0;
     if (filename != NULL) {
@@ -100,7 +93,7 @@ interpret_file(vmstate_ft *vm, char *filename)
         DICT.input = stdin;
     }
 
-    int exit_status = quit(vm, filename);
+    int exit_status = quit(eval, vm, filename);
 
     if (filename != NULL) {
         fclose(DICT.input);
@@ -110,11 +103,11 @@ interpret_file(vmstate_ft *vm, char *filename)
 
 
 static int
-interpret_arguments(vmstate_ft *vm, int argc, char *argv[])
+interpret_arguments(xt_ft eval, vmstate_ft *vm, int argc, char *argv[])
 {
     int i;
     for (i = 0; i < argc; i++) {
-        int status = interpret_file(vm, argv[i]);
+        int status = interpret_file(eval, vm, argv[i]);
         if (status != EXIT_SUCCESS) {
             return status;
         }
@@ -123,14 +116,17 @@ interpret_arguments(vmstate_ft *vm, int argc, char *argv[])
 }
 
 
-static void
+static xt_ft
 initialize_dictionary(vmstate_ft *vm)
 {
-    DICT.here = DICTSPACE_START + sizeof (DICT);
+    HERE = DICTSPACE_START + sizeof (DICT);
     direct_execute(vm, initialize_forth);
+    xt_ft eval = (xt_ft) POP(vm);
     assert(EMPTY(vm));
     assert(REMPTY(vm));
-    interpret_lines(vm, init_forth_defs);
+    interpret_lines(eval, vm, init_forth_defs);
+
+    return eval;
 }
 
 
@@ -140,23 +136,23 @@ main(int argc, char *argv[])
     process_args(argc, argv, &forth_options);
 
     vmstate_ft vmstate;
-    initialize_dictionary(&vmstate);
+    xt_ft eval = initialize_dictionary(&vmstate);
 
     if (forth_options.startup_file != NULL) {
 	bool saved_interactive = forth_options.is_interactive;
 	forth_options.is_interactive = false;
-        interpret_file(&vmstate, forth_options.startup_file);
+        interpret_file(eval, &vmstate, forth_options.startup_file);
 	forth_options.is_interactive = saved_interactive;
     }
 
     if (forth_options.argc > 0) {
-	return interpret_arguments(&vmstate,
+	return interpret_arguments(eval, &vmstate,
 				   forth_options.argc,
 				   forth_options.argv);
     } else {
         if (IS_INTERACTIVE(stdin)) {
-            interpret_lines(&vmstate, dictionary_stats);
+            interpret_lines(eval, &vmstate, dictionary_stats);
         }
-        return interpret_file(&vmstate, NULL);
+        return interpret_file(eval, &vmstate, NULL);
     }
 }

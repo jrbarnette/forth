@@ -8,48 +8,35 @@
 #include <assert.h>
 
 #include "forth.h"
-#include "names.h"
 #include "dictionary.h"
 #include "meta.h"
 
 /*
- * names.c - C internal functions and Forth standard words for
- *   dictionary name space.
+ * C definitions and declarations relating to "name space" in the
+ * dictionary.  See section 3.3.1, "Name space".
  */
 
-/*------  ------  ------  ------  ------  ------  ------  ------
- * '                     6.1.0070 CORE                   25
- * FIND                  6.1.1550 CORE                   39
- *
- * SEARCH-WORDLIST    16.6.1.2192 SEARCH                120
- *------  ------  ------  ------  ------  ------  ------  ------
- */
+#define NAME_TYPE_DEFAULT		0x00
+#define NAME_TYPE_NO_INTERPRET		0x40
+#define NAME_TYPE_IMMEDIATE		0x80
+#define NAME_TYPE_COMPILE		0xc0
+#define NAME_IS_IMMEDIATE(nm)		(((nm)->flags & 0x80) != 0)
+#define NAME_IS_INTERPRETABLE(nm)	(((nm)->flags & 0x40) == 0)
+#define NAME_CLEAR_TYPE(nm)		((nm)->flags &= 0x1f)
+#define NAME_SET_TYPE(nm, type)		((nm)->flags |= (type))
+#define NAME_MAKE_IMMEDIATE(nm)		NAME_SET_TYPE(NAME_TYPE_IMMEDIATE)
+#define NAME_MAX_LENGTH			31
+#define NAME_LENGTH(nm)			((nm)->flags & 0x1f)
+#define NAME_SIZE(len)			\
+	    XALIGNED(offsetof(struct name_header, ident) + (len))
+#define NAME_XT(nm)			\
+	    ((xt_ft) ((addr_ft) (nm) + NAME_SIZE(NAME_LENGTH(nm))))
 
-
-/*
- * Look up a definition in forth_wordlist, and return a pointer to
- * its name header.  Return NULL if not found.
- */
-name_ft
-lookup(vmstate_ft *vm, c_addr_ft id, cell_ft len)
-{
-    if (len == 0)
-	THROW(vm, -16);
-
-    for (name_ft cur = FORTH_WORDLIST; cur != NULL; cur = cur->prev) {
-	if (len != NAME_LENGTH(cur))
-	    continue;
-
-	cell_ft i = 0;
-	while (toupper(id[i]) == toupper(cur->ident[i])) {
-	    i++;
-	    if (i == len)
-		return cur;
-	}
-    }
-    return NULL;
-}
-
+struct name_header {
+    name_ft	prev;
+    char_ft	flags;
+    char_ft	ident[NAME_MAX_LENGTH];
+};
 
 /*
  * Routines for adding named definitions into the dictionary.

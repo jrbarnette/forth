@@ -55,5 +55,7 @@ extern void execute(vmstate_ft *, xt_ft);
 
 extern vminstr_ft initialize_forth[];
 extern char *init_forth_defs[];
+extern xt_ft reloc_entries[];
+extern xt_ft *reloc_ptr;
 
 #endif // DICTIONARY_H

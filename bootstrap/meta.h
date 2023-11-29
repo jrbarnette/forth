@@ -21,7 +21,7 @@ extern PRIM_HDLR(i_linkname);
 /* meta interpretation primitives */
 extern PRIM_HDLR(meta_interpret);
 extern PRIM_HDLR(meta_compile);
-extern PRIM_HDLR(i_lookup);
+extern PRIM_HDLR(i_reference);
 
 
 #define X(x)		{ .handler = x },

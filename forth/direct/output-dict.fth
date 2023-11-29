@@ -85,3 +85,12 @@
     include-source-text: forth/common/tools/tools.fth
 >>>     NULL,
 >>> };
+
+host-mode definitions
+: #define ." #define " parse-name type space ;
+
+>>>
+    #define NRELOC nreloc @ .c-decimal cr
+>>> xt_ft reloc_entries[NRELOC] = { NULL };
+>>> xt_ft *reloc_ptr = &reloc_entries[1];
+>>>

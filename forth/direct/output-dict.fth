@@ -1,13 +1,16 @@
 \  Copyright 2020, by J. Richard Barnette. All Rights Reserved.
 
->>> #include <stddef.h>
->>>
->>> #include "forth.h"
->>> #include "dictionary.h"
->>> #include "meta.h"
->>>
->>>
->>> DIRECT_FORTH(initialize_forth) // {
+C-CODE>
+#include <stddef.h>
+
+#include "forth.h"
+#include "dictionary.h"
+#include "meta.h"
+
+
+DIRECT_FORTH(initialize_forth) // {
+END-CODE
+
     \ These initial files can contain only "prim:" definitions.
     \ Colon definitions can't work until we load vmprim because ";"
     \ depends on "EXIT".  Also, colon definitions are only as useful
@@ -74,10 +77,13 @@
     compile-file: forth/common/core/evaluate.fth
 
     parse-name EVALUATE direct-lookup
->>> END_DIRECT // }
->>>
->>>
->>> char *init_forth_defs[] = {
+
+C-CODE>
+END_DIRECT // }
+
+
+char *init_forth_defs[] = {
+END-CODE
     include-source-text: forth/common/core/compile.fth
     include-source-text: forth/common/core/format.fth
     include-source-text: forth/common/core/quit.fth
@@ -85,14 +91,11 @@
     include-source-text: forth/common/search/find.fth
     include-source-text: forth/common/search/vocab.fth
     include-source-text: forth/common/tools/tools.fth
->>>     NULL,
->>> };
+C-CODE>
+    NULL,
+};
 
-host-mode definitions
-: #define ." #define " parse-name type space ;
-
->>>
-    #define NRELOC nreloc @ .c-decimal cr
->>> xt_ft reloc_entries[NRELOC] = { NULL };
->>> xt_ft *reloc_ptr = &reloc_entries[1];
->>>
+#define NRELOC `nreloc @ .c-decimal`
+xt_ft reloc_entries[NRELOC] = { NULL };
+xt_ft *reloc_ptr = &reloc_entries[1];
+END-CODE

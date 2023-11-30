@@ -4,6 +4,7 @@
 # primitives to emit syntactically correct direct execution code.
 forth/direct/vocab.fth
 forth/c-gen/c-data.fth
+forth/c-gen/transcribe.fth
 forth/c-gen/entry.fth
 forth/direct/direct.fth
 

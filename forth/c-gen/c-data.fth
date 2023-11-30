@@ -27,5 +27,3 @@
 : .c-hex ( n -- )
     base @ swap hex dup 0< if '-' emit negate then ." 0x" 1 u.r base ! ;
 : .c-cell ( c-addr u -- ) ." (cell_ft) (" type ." )" ;
-
-: >>> source >in @ over >in ! swap over - >r chars + r> type cr ;

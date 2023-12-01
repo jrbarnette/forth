@@ -36,7 +36,9 @@ variable nreloc  1 nreloc !
 
 : .ref ( name len -- )
     2dup ." /* " type ."  */ " 8 over - spaces
-    target-names wid-lookup name>xt execute .cell
+    target-names wid-lookup
+    dup 0= if cr -13 .error then
+    name>xt execute .cell
 ;
 
 : meta-emit ( name len state -- ) start-instr { .ref } ;

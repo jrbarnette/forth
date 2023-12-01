@@ -40,7 +40,7 @@
 \ The standard sequence to compile a literal
 \   do-literal [ 1 cells here-addr <calculate cell> over @ ! +! ]
 
-: +! ( x a-addr -- ) swap over @ + swap ! ;
+: +! ( x a-addr -- ) dup >r @ + r> ! ;
 : WITHIN ( x1 x2 x3 -- flag ) over - >r - r> u< ;
 
 \ CONSTANT depends on "," being in the target dictionary, so we have

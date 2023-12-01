@@ -1,6 +1,7 @@
 \  Copyright 2020, by J. Richard Barnette. All Rights Reserved.
 
-C-CODE>
+
+TRANSCRIBE>
 #include <stddef.h>
 
 #include "forth.h"
@@ -9,8 +10,7 @@ C-CODE>
 
 
 DIRECT_FORTH(initialize_forth) // {
-END-CODE
-
+    FORTH>
     \ These initial files can contain only "prim:" definitions.
     \ Colon definitions can't work until we load vmprim because ";"
     \ depends on "EXIT".  Also, colon definitions are only as useful
@@ -77,13 +77,12 @@ END-CODE
     compile-file: forth/common/core/evaluate.fth
 
     parse-name EVALUATE direct-lookup
-
-C-CODE>
+    TRANSCRIBE>
 END_DIRECT // }
 
 
 char *init_forth_defs[] = {
-END-CODE
+    FORTH>
     include-source-text: forth/common/core/compile.fth
     include-source-text: forth/common/core/format.fth
     include-source-text: forth/common/core/quit.fth
@@ -91,11 +90,11 @@ END-CODE
     include-source-text: forth/common/search/find.fth
     include-source-text: forth/common/search/vocab.fth
     include-source-text: forth/common/tools/tools.fth
-C-CODE>
+    TRANSCRIBE>
     NULL,
 };
 
 #define NRELOC `nreloc @ .c-decimal`
 xt_ft reloc_entries[NRELOC] = { NULL };
 xt_ft *reloc_ptr = &reloc_entries[1];
-END-CODE
+FORTH>

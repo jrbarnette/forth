@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# On stdout, list all the files needed to (re-)build the interpreter:
+#   + All C sources under "bootstrap" used to build the "forth"
+#     executable.
+#   + All Forth files read when creating "bootstrap/initdict.c"
+#   + Any other file that might be read in rebuilding during either
+#     of the above processes.
+#
+# This script works based on hard-coded knowledge of the build process.
+# If that process changes, this script might become invalid until changed
+# to match.
+
+if ( cd bootstrap ; make clean all ) >/dev/null
+then
+    ( echo forth/direct/file-order
+      ( git ls-files bootstrap | sed '/\.c$/ !p'
+        ls bootstrap/*.o | sed 's=\.o$=\.c=' ) |
+	      sort | uniq -d
+      ./gen-dict -l direct
+      ./gen-dict direct | awk '/ ==== / { print $3 }' ) | sort -u
+else
+    echo "build failure" >&2
+    exit 1
+fi

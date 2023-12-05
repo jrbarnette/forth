@@ -39,14 +39,18 @@
 : REPEAT postpone again postpone then ; compile-special
 : WHILE ( C: dest -- orig dest ) postpone if swap ; compile-special
 
-\ Flow of control using DO, ?DO, +LOOP, and LEAVE
+\ Flow of control for constructs with internal branches to a common
+\ exit point, including DO, ?DO, and CASE.
 here 0 ,
-: LEAVERS-SWAP ( new-leavers -- old-leavers )
+: chain-swap ( new-chain -- old-chain )
     [ over ] literal @ swap [ swap ] literal ! ;
+: start-chain ( -- saved-chain ) 0 chain-swap ;
+: mark>chain ( orig -- ) dup chain-swap swap ! ;
+: branch>chain ( -- ) >branch mark>chain ;
+: resolve-chain ( saved-chain -- ) 
+    chain-swap begin dup while dup @ swap postpone then repeat drop ;
 
-\ ( do-sys ) implemented as ( saved-leavers dest )
-: BEGIN-DO ( init-leavers -- saved-leavers dest ) leavers-swap postpone begin ;
-
+\ Flow of control using DO, ?DO, +LOOP, and LEAVE
 \ Compilation of DO-loops
 \     DO a +LOOP ->   DO-DO BEGIN a DO-+LOOP UNTIL UNLOOP
 \ Compilation of ?DO-loops
@@ -54,15 +58,15 @@ here 0 ,
 \
 \ LEAVE compiles as a forward branch to the UNLOOP at the very end.
 
-: DO ( C: -- saved-leavers dest ) postpone do-do 0 begin-do ; compile-special
-: ?DO ( C: -- saved-leavers dest )
-    postpone do-do postpone r@ postpone if 0 over ! begin-do ; compile-special
+: DO ( C: -- saved-chain dest )
+    postpone do-do start-chain postpone begin ; compile-special
+: ?DO ( C: -- saved-chain dest )
+    postpone do-do postpone r@
+    start-chain postpone if mark>chain postpone begin ; compile-special
 
-: LEAVE >branch dup leavers-swap swap ! ; compile-special
+: LEAVE branch>chain ; compile-special
 
-: +LOOP ( C: saved-leavers dest -- )
-    postpone do-+loop postpone until
-    leavers-swap begin dup while dup @ swap postpone then repeat drop
-    postpone unloop
+: +LOOP ( C: saved-chain dest -- )
+    postpone do-+loop postpone until resolve-chain postpone unloop
 ; compile-special
 : LOOP 1 postpone literal postpone +loop ; compile-special

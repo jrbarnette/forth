@@ -70,3 +70,21 @@ here 0 ,
     postpone do-+loop postpone until resolve-chain postpone unloop
 ; compile-special
 : LOOP 1 postpone literal postpone +loop ; compile-special
+
+\ CASE structure/syntax:
+\     a CASE b OF c ENDOF ENDCASE
+\       -> a b OVER = IF DROP c ELSE DROP THEN
+\     a CASE b OF c ENDOF d OF e ENDOF ENDCASE
+\       -> a b OVER = IF DROP c ELSE d OVER = IF DROP e ELSE DROP THEN THEN
+\ etc.
+
+: CASE ( C: -- saved-chain ) start-chain ; compile-special
+: OF ( C: saved-chain -- saved-chain orig )
+    postpone over postpone = postpone if postpone drop
+; compile-special
+: ENDOF ( C: saved-chain orig -- saved-chain )
+    branch>chain postpone then
+; compile-special
+: ENDCASE ( C: saved-chain -- )
+    postpone drop resolve-chain
+; compile-special

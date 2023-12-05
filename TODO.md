@@ -134,8 +134,6 @@ Also, think about possible hybrid solutions combining `direct` with
 
 - Should implement `PAD`
 
-- Should implement `CASE` `OF` `ENDOF` `ENDCASE`
-
 - Should implement `VALUE` `TO`
 
 - Should implement `MARKER`

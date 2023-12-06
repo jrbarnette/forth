@@ -1,31 +1,34 @@
-\ Copyright 2011, by J. Richard Barnette
+\ Copyright 2023, by J. Richard Barnette
 \
-\ 32-bit memory operands
+\ memory operand syntax
 \ Intel		AT&T		Forth
-\ addr		addr		addr #[]
-\ [r1]		(r1)		r1 []
-\ d[r1]		d(r1)		d #[] r1 +[]
-\ [r1+r2]	(r1,r2)		r1 [] r2 +[]
-\ d[r1+r2]	d(r1,r2)	d #[] r1 +[] r2 +[]
-\ [r1*s]	(r1,r2,s)	r1 [*s]
-\ d[r1*s]	d(r1,r2,s)	r1 [] r2 +[*s]
-\ [r1+r2*s]	(r1,r2,s)	r1 [] r2 +[*s]
-\ d[r1+r2*s]	d(r1,r2,s)	d #[] r1 +[] r2 +[*s]
+\ addr		addr		addr #[]		all modes
+\ [r1]		(r1)		r1 []			all modes
+\ d[r1]		d(r1)		d #[] r1 +[]		all modes
+\ [r1+r2]	(r1,r2)		r1 [] r2 +[]		all modes
+\ d[r1+r2]	d(r1,r2)	d #[] r1 +[] r2 +[]	all modes
+\ [r1*s]	(,r1,s)		r1 [*s]			32- and 64-bit only
+\ d[r1*s]	d(,r1,s)	d #[] r1 +[*s]		32- and 64-bit only
+\ [r1+r2*s]	(r1,r2,s)	r1 [] r2 +[*s]		32- and 64-bit only
+\ d[r1+r2*s]	d(r1,r2,s)	d #[] r1 +[] r2 +[*s]	32- and 64-bit only
+\
+\ [*s] is one of [*2], [*4] or [*8]
 
-base @ hex
+base @ hex asm-defs
 
-\ operand layout
-\   XMIB-zzz ssxxxrrr
+\ operand cell layout
+\   ---Dx--r XMIBtttt ssxxxrrr
+\       D = destination?
 \       X = have index?
 \       M = memory?
 \       I = have immediate?
 \       B = have base?
-\     zzz = size ( none, 8, 16, 32, reserved )
+\    tttt = reg-type ( none, 8, 16, 32, 64, reserved )
 \      ss = scale
-\     xxx = index register
-\     rrr = base register
+\    xxxx = index register
+\    rrrr = base register
 \
-\  mask  XMIB  interpretation
+\  cell  XMIB  interpretation
 \  1000  0001  reg
 \  2000  0010  imm
 \  5000  0101  [reg]
@@ -36,186 +39,164 @@ base @ hex
 \  e000  1110  disp[reg*scale]
 \  f000  1111  disp[reg+reg*scale]
 
-1007 constant [b]-mask
-3000 constant .[.]-mask
-3007 constant .[b]-mask
-80c0 constant [.*s]-mask
-80f8 constant [x*s]-mask
-9007 constant [b+.*.]-mask
-9038 constant [.+x*.]-mask
-b0c7 constant .[b+.*s]-mask
+2000 constant #
+: [] ( immed|reg -- memopd ) 4000 or ;		\ addr or [reg]
 
-1000 constant reg-opd
-2000 constant imm-opd
-4000 constant mem-opd
-8000 constant idx-opd
+internal-defs
+100000 constant dir-bit
+: [*s] ( reg scale -- memopnd )
+    or dup 0700 and >r 1f8ff and 3 lshift r> or [] ;
+: [*1] ( reg -- memopnd ) 00 [*s] ;
+: have-base? ( opnd -- flag ) 1000 and 1000 = ;
+: have-disp? ( opnd -- flag ) 6000 and 6000 = ;
+: have-index? ( opnd -- flag ) 8000 and 8000 = ;
 
-1004 constant [esp]-opd
-1005 constant [ebp]-opd
-2000 constant addr-opd
-3000 constant .[.]-opd
-8000 constant [.*1]-opd
-8020 constant [esp*1]-opd
-8040 constant [.*2]-opd
-8080 constant [.*4]-opd
-80c0 constant [.*8]-opd
-9005 constant [ebp+.*1]-opd
-9020 constant [.+esp*.]-opd
+: is-mem? ( opnd -- flag ) 4000 and 4000 = ;
+: is-reg? ( opnd -- flag ) d000 and 1000 = ;
+: is-immed? ( opnd -- flag ) # = ;
+: is-disp32? ( opnd -- flag ) f000 and 6000 = ;
 
-5000 constant mem-indirect
-6000 constant mem-direct
-a000 constant mem-indexed
-a040 constant mem-indexed*2
-a080 constant mem-indexed*4
-a0c0 constant mem-indexed*8
+: is-[r+r*s]?  ( memopnd -- flag )  9000 and 9000 = ;
+: is-[r+r*1]?  ( memopnd -- flag )  90c0 and 9000 = ;
+: is-sp-index? ( memopnd -- flag ) 88038 and 8020 = ;
+: is-bp-base?  ( memopnd -- flag ) 01007 and 1005 = ;
+: need-disp?   ( memopnd -- flag )  5007 and 1005 = ;
+: base<->index ( memopnd -- memopnd )
+    dup dup 3 rshift xor dup 3 lshift or 9003f and xor ;
 
-f000 constant format-mask
-
-0100 constant size-byte
-0200 constant size-word
-0300 constant size-dword
-0f00 constant size-mask
-
-0004 constant reg-esp
-0005 constant reg-ebp
-0020 constant idx-esp
-0007 constant reg-mask
-0038 constant idx-mask
-00ff constant sib-mask
-
-\ : def-regs: ( size "names*8" -- )
-\     reg-opd or 8 0 do dup i or constant loop drop ;
-: def-regs: ( size "names*8" -- ) reg-opd or
-    0 begin ( size idx ) dup 8 < while over over or constant 1+ repeat
-    drop drop
+: start-regs 1100 ;
+: def-regs: ( size "names*8" -- size' )
+    8 0 do dup i or constant loop
+    dup 10000 and 8 rshift + 10000 xor
 ;
+: end-regs drop ;
 
-size-byte  def-regs: %al  %cl  %dl  %bl  %ah  %ch  %dh  %bh 
-size-word  def-regs: %ax  %cx  %dx  %bx  %sp  %bp  %si  %di
-size-dword def-regs: %eax %ecx %edx %ebx %esp %ebp %esi %edi
-
-: is-imm? ( operand -- flag ) format-mask and imm-opd = ;
-: is-reg? ( operand -- flag ) format-mask and reg-opd = ;
-: is-mem? ( operand -- flag ) mem-opd and 0<> ;
-: is-byte? ( operand -- flag ) size-mask and size-byte = ;
-: is-word? ( operand -- flag ) size-mask and size-word = ;
-: is-dword? ( operand -- flag ) size-mask and size-dword = ;
-: have-imm? ( operand -- flag ) imm-opd and 0<> ;
-: have-base? ( operand -- flag ) reg-opd and 0<> ;
-: have-idx? ( operand -- flag ) idx-opd and 0<> ;
-: base>idx ( operand -- operand ) 3 lshift ;
-: idx>base ( operand -- operand ) 3 rshift ;
-
-\ swap base and index fields
-: base<->index ( operand -- operand )
-    dup dup idx>base xor [b]-mask and dup base>idx or xor ;
-
-: #
-    dup -80 80 within if size-byte imm-opd or exit then
-    dup -8000 8000 within if size-word imm-opd or exit then
-    size-dword imm-opd or
+: join-index ( opnd opnd -- opnd )
+    2dup and have-base? abort" can't have two base regs"
+    2dup and have-index? abort" can't have two index regs"
+    2dup or is-[r+r*s]? if
+	over 0f00 and over 0f00 and <>
+	abort" base and index registers are of different sizes"
+    then
+    dup 0f00 and 0400 <> abort" only 64-bit addressing is implemented"
+    or
 ;
+asm-defs
 
-mem-direct constant #[]
 
-: check-addr ( operand -- operand )
-    dup is-reg? 0= abort" [] operand must be a register"
-    dup is-dword? 0= abort" only 32-bit addressing is supported"
-    reg-mask and ;
-: >scaled ( regop ss -- memop ) swap check-addr base>idx or ;
+: [*2] ( reg -- memopnd ) 08 [*s] ;			\ [reg*s]
+: [*4] ( reg -- memopnd ) 10 [*s] ;			\ [reg*s]
+: [*8] ( reg -- memopnd ) 18 [*s] ;			\ [reg*s]
+: +[] ( memopnd reg -- memopnd ) over have-base? if [*1] then join-index ;
+: +[*2] ( memopnd reg -- memopnd ) [*2] join-index ;
+: +[*4] ( memopnd reg -- memopnd ) [*4] join-index ;
+: +[*8] ( memopnd reg -- memopnd ) [*8] join-index ;
 
-: [] ( regop -- memop ) check-addr mem-indirect or ; 
-: [*2] ( regop -- memop ) mem-indexed*2 >scaled ;
-: [*4] ( regop -- memop ) mem-indexed*4 >scaled ;
-: [*8] ( regop -- memop ) mem-indexed*8 >scaled ;
+: #[] ( x -- memopnd ) # [] ;				\ addr
+: #[.] ( x reg -- memopnd ) #[] or ;			\ d[reg]
+: #[*2] ( x reg -- memopnd ) [*2] # or ;		\ d[reg*s]
+: #[*4] ( x reg -- memopnd ) [*4] # or ;		\ d[reg*s]
+: #[*8] ( x reg -- memopnd ) [*8] # or ;		\ d[reg*s]
+: [+] ( reg reg -- memopnd ) [*1] join-index ;		\ [reg+reg]
+: [+*2] ( reg reg -- memopnd ) +[*2] ;			\ [reg+reg*s]
+: [+*4] ( reg reg -- memopnd ) +[*4] ;			\ [reg+reg*s]
+: [+*8] ( reg reg -- memopnd ) +[*8] ;			\ [reg+reg*s]
+: #[+] ( x reg reg -- memopnd ) [+] # or ;		\ d[reg+reg]
+: #[+*2] ( x reg reg -- memopnd ) #[*2] join-index ;	\ d[reg+reg*s]
+: #[+*4] ( x reg reg -- memopnd ) #[*4] join-index ;	\ d[reg+reg*s]
+: #[+*8] ( x reg reg -- memopnd ) #[*8] join-index ;	\ d[reg+reg*s]
 
-: check-scaled ( memop regop ss )
-    >scaled over have-idx? abort" can only scale one register"
-    or ;
 
-: +[] ( memop regop -- memop )
-    over have-base?
-    if   [.*1]-opd check-scaled
-    else check-addr reg-opd or or
-    then ;
-: +#[] ( memop disp -- disp memop )
-    over have-imm? abort" can't apply +#[] to immediate or address"
-    swap #[] or ;
-: +[*2] ( memop regop -- memop ) [.*2]-opd check-scaled ;
-: +[*4] ( memop regop -- memop ) [.*4]-opd check-scaled ;
-: +[*8] ( memop regop -- memop ) [.*8]-opd check-scaled ;
+start-regs
+def-regs:   %al    %cl    %dl    %bl    %ah    %ch    %dh    %bh
+def-regs:   %r8b   %r9b   %r10b  %r11b  %r12b  %r13b  %r14b  %r15b
+def-regs:   %ax    %cx    %dx    %bx    %sp    %bp    %si    %di
+def-regs:   %r8w   %r9w   %r10w  %r11w  %r12w  %r13w  %r14w  %r15w
+def-regs:   %eax   %ecx   %edx   %ebx   %esp   %ebp   %esi   %edi
+def-regs:   %r8d   %r9d   %r10d  %r11d  %r12d  %r13d  %r14d  %r15d
+def-regs:   %rax   %rcx   %rdx   %rbx   %rsp   %rbp   %rsi   %rdi
+def-regs:   %r8    %r9    %r10   %r11   %r12   %r13   %r14   %r15
+end-regs
 
-\ standard forms:
+internal-defs
+: is-accum? ( opnd -- flag )
+    [ # dir-bit or invert ] literal and
+    case %rax of true endof %eax of true endof
+	 %ax  of true endof %al  of true endof
+	 false swap endcase ;
+asm-defs
+
+\ special encoded forms:
 \   d?[b]		<- mod r/m (no s-i-b)
-\   d?[b+x*s]		<- d?[%esp] + s-i-b
-\   d?[b+.*.]		<- d?[b+%esp*.]
-\   d32			<- [%ebp]
-\   d32[x*s]		<- [%ebp+x*s]
+\   d32[%rip]		<- [%rbp] + d32
+\   d32[%rip]		<- [%r13] + d32
+\   d?[b+x*s]		<- d?[%rsp] + s-i-b
+\   d?[b+x*s]		<- d?[%r12] + s-i-b
+\   d?[b]		<- d?[b+%rsp*.]
+\   d32[x*s]		<- [%rbp+x*s] + d32
+\   d32[x*s]		<- [%r13+x*s] + d32
+\   d32			<- [%rbp+%rsp*.] + d32
+\   d32			<- [%r13+%rsp*.] + d32
 \
 \ alternatives to unavailable forms:
-\   [%ebp]		-> 0[%ebp]
-\   [%ebp+x*1]		-> [x+%ebp*1]
-\   [%ebp+x*s]		-> 0[%ebp+x*s]
-\   d?[%esp]		-> d?[%esp+-*-]
-\   d?[b+%esp*1]	-> d?[%esp+b*1]
-\   d?[b+%esp*.]	-> error
+\   [%rbp]		-> 0[%rbp]
+\   [%r13]		-> 0[%r13]
+\   [%rbp+x*1]		-> [x+%rbp*1]
+\   [%r13+x*1]		-> [x+%r13*1]
+\   [%rbp+x*s]		-> 0[%rbp+x*s]
+\   [%r13+x*s]		-> 0[%r13+x*s]
+\   d?[%rsp]		-> d?[%rsp+.*.]
+\   d?[%r12]		-> d?[%r12+.*.]
+\   d?[b+%rsp*1]	-> d?[%rsp+b*1]
+\   d?[b+%rsp*.]	-> error
 
-: check-memory-operand ( memopd -- memopd )
-    \ if indexed with scale *1, we may want to swap the base
-    \ and index register fields
-    dup [.*s]-mask and [.*1]-opd = if
-	dup idx-mask and idx-esp =		\ [b+ESP*1] -> [ESP+b]
-	over have-base? 0= or			\ [EBP+x*1] -> [x+EBP*1]
-	over reg-mask and ebp-reg = or		\ [x*1] -> [x]
-	if base<->index then
+\ canonical forms on stack for two operands
+\   ( imm reg )
+\   ( imm mem )
+\   ( mem reg )
+\   ( reg reg )
+\
+\   * When TOS is a reg and the reg is destination, D bit is set
+\   * When TOS is a reg other than the accumulator, second operand is also
+\     not the accumulator
+\   * When the second operand is immediate, omit the # indicator cell.
+\     If TOS is a reg, also set the I bit.
+\
+\ In ( reg reg ), if either reg is accumulator, it should be TOS
+
+
+internal-defs
+: check-memopnd ( memopnd -- memopnd )
+    dup is-[r+r*1]? if
+	\ if index = %rsp or base = %rbp or base = %r13
+	dup is-sp-index? over is-bp-base? or if base<->index then
     then
+    \ if SP is still index reg, error
+    dup is-sp-index? abort" cannot use %rsp as index register"
 
-    \ ESP*n - ESP not allowed as index
-    dup [.+x*.]-mask and [.+esp*.]-opd = 
-	abort" can't use %esp as a scaled index"
-
-    \ EBP as base reg requires displacement
-    dup .[b]-mask and [ebp]-opd = if 0 +#[] then
-
-    \ ESP as base reg without index requires sib
-    dup [b+.*.]-mask and [esp]-opd = if [esp*1]-opd or then
-
-    \ displacement without base register encodes as EBP
-    dup .[.]-mask and imm-opd = if reg-ebp or then
+    dup need-disp? if 0 swap # or then
 ;
 
-: >mod-r/m ( reg-byte operand -- )
-    \ reg
-    dup is-mem? 0= if reg-mask and 00c0 or or db, exit then
-
-    check-memory-operand
-
-    \ join mod and reg bits of mod-r/m
-    dup have-imm? if ( reg disp opd )
-	dup have-base? if
-	    over -80 80 within if 40 else 80 then rot or
-	else
-	    rot
-	then
-    else ( reg opd )
-	swap
-    then
-
-    ( disp? opd mod+reg )
-    over have-idx? if
-	reg-esp or db, dup
+: 2operand ( opnd opnd -- imm reg | imm mem | mem reg | reg reg )
+    dup is-reg? if
+	over is-accum? if dup is-accum? 0= if swap exit then then
+	over is-immed? 0= if dir-bit then or
     else
-	over reg-mask and or
-    then db,
-
-    ( disp? opd )
-    dup have-imm? if
-	have-base? if
-	    dup -80 80 within if db, else dd, then
-	else 
-	    dd,
-	then
+	have-disp? if rot else swap then
+	dup is-immed? if drop then
     then
 ;
+
+: s-i-b ( opnd mod-r/m -- ) 04 or db, ff and db, ;
+
+: mod-r/m ( opnd /r -- )
+    over is-reg? if 00c0 or or 00ff and db, exit then
+    over is-disp32? if s-i-b drop dd, exit then
+    over have-disp? if over -80 80 within if 40 else 80 then else 00 then
+    dup >r or
+    over have-index? if s-i-b else swap 07 and or db, then
+    r> case 80 of dd, endof 40 of db, endof endcase
+;
+asm-defs
 
 base !

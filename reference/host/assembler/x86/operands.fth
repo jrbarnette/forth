@@ -47,21 +47,38 @@ internal-defs
 : [*s] ( reg scale -- memopnd )
     or dup 0700 and >r 1f8ff and 3 lshift r> or [] ;
 : [*1] ( reg -- memopnd ) 00 [*s] ;
-: have-base? ( opnd -- flag ) 1000 and 1000 = ;
-: have-disp? ( opnd -- flag ) 6000 and 6000 = ;
-: have-index? ( opnd -- flag ) 8000 and 8000 = ;
+: have-base?   ( opnd -- flag )  1000 and 1000 = ;
+: have-disp?   ( opnd -- flag )  6000 and 6000 = ;
+: have-index?  ( opnd -- flag )  8000 and 8000 = ;
 
-: is-mem? ( opnd -- flag ) 4000 and 4000 = ;
-: is-reg? ( opnd -- flag ) d000 and 1000 = ;
-: is-immed? ( opnd -- flag ) # = ;
-: is-disp32? ( opnd -- flag ) f000 and 6000 = ;
+: is-mem?      ( opnd -- flag )  4000 and 4000 = ;
+: is-reg?      ( opnd -- flag )  d000 and 1000 = ;
+: is-immed?    ( opnd -- flag )  # = ;
+: is-[r+r*s]?  ( opnd -- flag )  9000 and 9000 = ;
+: is-sp-index? ( opnd -- flag ) 88038 and 8020 = ;
+: is-disp32?   ( opnd -- flag )  7000 and 6000 = ;
 
-: is-[r+r*s]?  ( memopnd -- flag )  9000 and 9000 = ;
-: is-[r+r*1]?  ( memopnd -- flag )  90c0 and 9000 = ;
-: is-sp-index? ( memopnd -- flag ) 88038 and 8020 = ;
-: is-bp-base?  ( memopnd -- flag ) 01007 and 1005 = ;
-: need-disp?   ( memopnd -- flag )  5007 and 1005 = ;
-: base<->index ( memopnd -- memopnd )
+\   [%rbp+x*1]		-> [x+%rbp*1]
+\   [%r13+x*1]		-> [x+%r13*1]
+\   d?[b+%rsp*1]	-> d?[%rsp+b*1]
+: need-swap?   ( opnd -- flag )
+    dup d0f8 and d020 = swap 8d0c7 and d005 = or ;
+
+\   [%rbp]		-> 0[%rbp]
+\   [%r13]		-> 0[%r13]
+\   [%rbp+x*s]		-> 0[%rbp+x*s]
+\   [%r13+x*s]		-> 0[%r13+x*s]
+\   [x*s]		-> 0[x*s]
+: need-disp?   ( opnd -- flag )
+    dup 7007 and 5005 = swap f000 and c000 = or ;
+
+\   d?[%rsp]		-> d?[%rsp+0]
+\   d?[%r12]		-> d?[%r12+0]
+\   addr		-> addr[+0]
+: need-index0? ( opnd -- flag )
+    dup d007 and 5004 = swap f000 and 6000 = or ;
+
+: base<->index ( opnd -- opnd )
     dup dup 3 rshift xor dup 3 lshift or 9003f and xor ;
 
 : start-regs 1100 ;
@@ -108,6 +125,7 @@ asm-defs
 
 
 start-regs
+        \   0      1      2      3      4      5      6      7
 def-regs:   %al    %cl    %dl    %bl    %ah    %ch    %dh    %bh
 def-regs:   %r8b   %r9b   %r10b  %r11b  %r12b  %r13b  %r14b  %r15b
 def-regs:   %ax    %cx    %dx    %bx    %sp    %bp    %si    %di
@@ -119,6 +137,8 @@ def-regs:   %r8    %r9    %r10   %r11   %r12   %r13   %r14   %r15
 end-regs
 
 internal-defs
+: [+0] ( memopnd -- memopnd ) [ %rsp [*1] ] literal or ;
+
 : is-accum? ( opnd -- flag )
     [ # dir-bit or invert ] literal and
     case %rax of true endof %eax of true endof
@@ -126,30 +146,8 @@ internal-defs
 	 false swap endcase ;
 asm-defs
 
-\ special encoded forms:
-\   d?[b]		<- mod r/m (no s-i-b)
-\   d32[%rip]		<- [%rbp] + d32
-\   d32[%rip]		<- [%r13] + d32
-\   d?[b+x*s]		<- d?[%rsp] + s-i-b
-\   d?[b+x*s]		<- d?[%r12] + s-i-b
-\   d?[b]		<- d?[b+%rsp*.]
-\   d32[x*s]		<- [%rbp+x*s] + d32
-\   d32[x*s]		<- [%r13+x*s] + d32
-\   d32			<- [%rbp+%rsp*.] + d32
-\   d32			<- [%r13+%rsp*.] + d32
-\
-\ alternatives to unavailable forms:
-\   [%rbp]		-> 0[%rbp]
-\   [%r13]		-> 0[%r13]
-\   [%rbp+x*1]		-> [x+%rbp*1]
-\   [%r13+x*1]		-> [x+%r13*1]
-\   [%rbp+x*s]		-> 0[%rbp+x*s]
-\   [%r13+x*s]		-> 0[%r13+x*s]
-\   d?[%rsp]		-> d?[%rsp+.*.]
-\   d?[%r12]		-> d?[%r12+.*.]
-\   d?[b+%rsp*1]	-> d?[%rsp+b*1]
-\   d?[b+%rsp*.]	-> error
 
+internal-defs
 \ canonical forms on stack for two operands
 \   ( imm reg )
 \   ( imm mem )
@@ -164,19 +162,6 @@ asm-defs
 \
 \ In ( reg reg ), if either reg is accumulator, it should be TOS
 
-
-internal-defs
-: check-memopnd ( memopnd -- memopnd )
-    dup is-[r+r*1]? if
-	\ if index = %rsp or base = %rbp or base = %r13
-	dup is-sp-index? over is-bp-base? or if base<->index then
-    then
-    \ if SP is still index reg, error
-    dup is-sp-index? abort" cannot use %rsp as index register"
-
-    dup need-disp? if 0 swap # or then
-;
-
 : 2operand ( opnd opnd -- imm reg | imm mem | mem reg | reg reg )
     dup is-reg? if
 	over is-accum? if dup is-accum? 0= if swap exit then then
@@ -187,15 +172,57 @@ internal-defs
     then
 ;
 
-: s-i-b ( opnd mod-r/m -- ) 04 or db, ff and db, ;
+\ special encoded forms:
+\   d?[b]		<- mod r/m (no s-i-b)
+\   d32[%rip]		<- [%rbp] + d32
+\   d32[%rip]		<- [%r13] + d32
+\   d?[b+x*s]		<- d?[%rsp] + s-i-b
+\   d?[b+x*s]		<- d?[%r12] + s-i-b
+\   d?[b+0]		<- d?[b+%rsp*.]
+\   d32[x*s]		<- [%rbp+x*s] + d32
+\   d32[x*s]		<- [%r13+x*s] + d32
+\   d32			<- [%rbp+%rsp*.] + d32
+\   d32			<- [%r13+%rsp*.] + d32
+\
+\ alternatives to unavailable forms:
+\   [%rbp+x*1]		-> [x+%rbp*1]
+\   [%r13+x*1]		-> [x+%r13*1]
+\   d?[b+%rsp*1]	-> d?[%rsp+b*1]
+\   [%rbp]		-> 0[%rbp]
+\   [%r13]		-> 0[%r13]
+\   [%rbp+x*s]		-> 0[%rbp+x*s]
+\   [%r13+x*s]		-> 0[%r13+x*s]
+\   [x*s]		-> 0[x*s]
+\   d?[%rsp]		-> d?[%rsp+0]
+\   d?[%r12]		-> d?[%r12+0]
+\   addr		-> addr[+0]
+\   d?[b+%rsp*.]	-> error
+
+: check-memopnd ( memopnd -- memopnd )
+    dup is-reg? if exit then
+    dup need-swap? if base<->index then
+    dup is-sp-index? abort" cannot use %rsp as index register"
+    dup need-disp? if 0 swap # or then
+    dup need-index0? if [+0] then
+;
+
+: >reg ( /r reg ) 3 lshift ;
+: >mod ( /r mod ) 6 lshift or ;
+: sib ( memopnd reg mod -- ) >mod 4 or db, db, ;
+: no-sib ( memopnd reg mod -- ) >mod swap 07 and or db, ;
 
 : mod-r/m ( opnd /r -- )
-    over is-reg? if 00c0 or or 00ff and db, exit then
-    over is-disp32? if s-i-b drop dd, exit then
-    over have-disp? if over -80 80 within if 40 else 80 then else 00 then
-    dup >r or
-    over have-index? if s-i-b else swap 07 and or db, then
-    r> case 80 of dd, endof 40 of db, endof endcase
+    >reg >r
+    dup is-reg? if r> %11 no-sib exit then
+    dup is-disp32? if
+	%rbp or r> %00 sib dd, exit
+    then
+    dup have-disp?
+	if over -80 80 within if %01 else %10 then
+	else %00
+	then r> swap >r
+    over have-index? if r@ sib else r@ no-sib then
+    r> case %01 of db, endof %10 of dd, endof endcase
 ;
 asm-defs
 

@@ -10,9 +10,9 @@ also asm-internal definitions
 variable db-col 0 db-col !
 
 : db, ( x -- )
-    db-col @ if bl emit then
-    base @ >r hex 0 <# # # #> type r> base !
-    db-col @ 1 + dup 10 = if cr drop 0 then db-col !
+    db-col @ if ." , " else 9 emit ." .byte " then
+    base @ >r $8 base ! 0 <# # # # #> type r> base !
+    1 db-col +!
 ;
 : dw, dup db, $08 rshift db, ;
 : dd, dup dw, $10 rshift dw, ;

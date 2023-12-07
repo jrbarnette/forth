@@ -11,9 +11,9 @@ variable db-col 0 db-col !
 
 : db, ( x -- )
     db-col @ if ." , " else 9 emit ." .byte " then
-    ." 0x" base @ >r $16 base ! 0 <# # # #> type r> base !
+    base @ >r $8 base ! 0 <# # # # #> type r> base !
     1 db-col +!
 ;
-: dw, dup db,  $8 rshift db, ;
+: dw, dup db, $08 rshift db, ;
 : dd, dup dw, $10 rshift dw, ;
 : newline cr 0 db-col ! ;

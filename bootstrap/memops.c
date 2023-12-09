@@ -2,6 +2,7 @@
  * Copyright 2013, by J. Richard Barnette. All Rights Reserved.
  */
 
+#include <stddef.h>
 #include <string.h>
 
 #include "forth.h"

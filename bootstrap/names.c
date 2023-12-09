@@ -2,9 +2,8 @@
  * Copyright 2013, by J. Richard Barnette. All Rights Reserved.
  */
 
-#include <stdlib.h>
+#include <stddef.h>
 #include <string.h>
-#include <ctype.h>
 #include <assert.h>
 
 #include "forth.h"

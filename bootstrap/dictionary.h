@@ -44,17 +44,4 @@ extern union dict {
 #define FORTH_WORDLIST		(DICT.forth_wordlist)
 #define XALIGN(vm)		(HERE = (addr_ft) XALIGNED((cell_ft) HERE))
 
-/*
- * C utility functions used by main() to invoke the inner VM (both
- * direct and indirect threaded).
- */
-
-extern void report_exception(int, vmstate_ft *, char *);
-extern int execute(vmstate_ft *, xt_ft);
-
-extern vminstr_ft initialize_forth[];
-extern char *init_forth_defs[];
-extern xt_ft reloc_entries[];
-extern xt_ft *reloc_ptr;
-
 #endif // DICTIONARY_H

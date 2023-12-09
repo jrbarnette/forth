@@ -28,7 +28,15 @@
 #define FILE_MODE_W_O	((cell_ft) 03)
 #define FILE_MODE_BIN	((cell_ft) 04)
 
-
+extern int execute(vmstate_ft *, xt_ft);
 extern void direct_execute(vmstate_ft *, vmip_ft);
+
+extern void report_exception(int, vmstate_ft *, char *);
+
+extern vminstr_ft initialize_forth[];
+extern char *init_forth_defs[];
+extern xt_ft reloc_entries[];
+extern xt_ft *reloc_ptr;
+
 
 #endif // FORTH_H

@@ -4,8 +4,8 @@ also forth definitions previous
 : get-bits ( ud1 nbits -- ud2 bits )
     1 swap lshift >r 0 r@ um/mod r> swap >r um/mod swap r> swap ;
 : show-operand
-    dup >r check-memopnd 7 mod-r/m
-    #30 db-col @ 5 * - spaces ."   # "
+    dup >r check-memopnd 7 mod-r/m,
+    #36 db-col @ 6 * - spaces ."   # "
     [ only forth ]
     r> 0 <#
 	8 base ! 2 0 do # bl hold loop

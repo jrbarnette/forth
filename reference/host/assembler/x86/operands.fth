@@ -1,7 +1,7 @@
 \ Copyright 2023, by J. Richard Barnette
 \
 \ memory operand syntax
-\ Intel		AT&T		Forth
+\ Intel		Unix		Forth
 \ addr		addr		addr #[]		all modes
 \ [r1]		(r1)		r1 []			all modes
 \ d[r1]		d(r1)		d #[] r1 +[]		all modes
@@ -48,11 +48,11 @@ internal-defs
 \ These are simple, general purpose queries that could conceivably
 \ be exported as part of the assembler syntax for macros.
 : is-mem?         ( opnd -- flag )  4000 and  4000 = ;
-: is-reg?         ( opnd -- flag )  a000 and  1000 = ;
+: is-reg?         ( opnd -- flag )  5000 and  1000 = ;
 : is-immed?       ( opnd -- flag )  # = ;
 : have-base?      ( opnd -- flag )  1000 and  1000 = ;
 : have-index?     ( opnd -- flag )  8000 and  8000 = ;
-: have-immed?     ( opnd -- flag ) # and is-immed? ;
+: have-immed?     ( opnd -- flag )  # and is-immed? ;
 : have-disp?      ( opnd -- flag )  6000 and  6000 = ;
 
 \ The following queries correspond to various special encodings
@@ -74,6 +74,10 @@ internal-defs
 : is-reg-immed?   ( opnd -- flag )  3000 and  3000 = ;
 : is-mem-immed?   ( opnd -- flag )  7000 and  4000 > ;
 : is-src-immed?   ( opnd -- flag )  7000 and  3000 > ;
+
+: >REX.R ( regopnd -- REX.-R-- ) #14 rshift 4 and ;
+: >REX.B ( opnd -- REX.---B )    #16 rshift 1 and ;
+: >REX.XB ( memopnd -- REX.--XB ) dup >REX.B swap #18 rshift 2 and or ;
 
 : start-regs 1100 ;
 : def-regs: ( size "names*8" -- size' )
@@ -138,6 +142,7 @@ end-regs
 internal-defs
 : [+0] ( memopnd -- memopnd ) [ %rsp [*1] 0f00 invert and ] literal or ;
 : >reg# ( memopnd -- reg# ) 07 and ;
+: >/r ( regopnd -- /r ) >reg# 3 lshift ;
 
 : is-accum? ( opnd -- flag )
     false swap 95f07 and case
@@ -198,13 +203,12 @@ internal-defs
     dup need-index0? if [+0] then
 ;
 
-: >reg ( reg -- /r ) 3 lshift ;
 : >mod ( /r mod -- mod-r/m ) 6 lshift or ;
 : sib ( memopnd /r mod -- ) >mod [ %rsp >reg# ] literal or db, db, ;
 : no-sib ( memopnd /r mod -- ) >mod swap >reg# or db, ;
 
-: mod-r/m ( opnd /r -- )
-    >reg >r dup is-reg? if r> %11 no-sib exit then
+: mod-r/m, ( opnd /r -- )
+    >r dup is-reg? if r> %11 no-sib exit then
     dup is-disp32? if [ %rbp >reg# ] literal or r> %00 sib dd, exit then
     dup have-disp?
 	if over -80 80 within if %01 else %10 then
@@ -214,28 +218,6 @@ internal-defs
     r> case %01 of db, endof %10 of dd, endof endcase
 ;
 
-
-\ canonical forms on stack for two operands
-\   ( imm reg ) - D=x: ( src dst ), I=1
-\   ( imm mem ) - D=x: ( src dst )
-\   ( mem reg ) - D=0: ( dst src ), D=1: ( src dst )
-\   ( reg reg ) - D=0: ( dst src ), D=1: ( src dst )
-\
-\   * When TOS is a reg other than the accumulator, second operand is also
-\     not the accumulator
-\   * Immediate operands omit the # indicator cell.
-
-: 2operand ( opnd opnd -- imm reg | imm mem | mem reg | reg reg )
-    dup have-immed? if rot swap then
-    dup is-immed? abort" immediate operand used as destination"
-    dup is-reg? if
-	over is-accum? if dup is-accum? 0= if swap exit then then
-	over is-immed? 0= if dir-bit then or
-    else
-	swap dup is-mem? abort" two memory operands"
-	dup is-immed? if drop then
-    then
-;
 asm-defs
 
 base !

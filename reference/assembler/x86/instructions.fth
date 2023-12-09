@@ -25,12 +25,12 @@ internal-defs
     then
 ;
 
-: 8-bit-signed? ( immed -- flag ) -80 80 within ;
-: 8-bit? ( immed -- flag ) -100 and 0= ;
-: 16-bit-signed? ( immed -- flag ) -8000 8000 within ;
-: 16-bit? ( immed -- flag ) -10000 and 0= ;
-: 32-bit-signed? ( immed -- flag ) -80000000 80000000 within ;
-: 32-bit? ( immed -- flag ) -100000000 and 0= ;
+: s8?  ( immed -- flag )        -80       80 within ;
+: s16? ( immed -- flag )      -8000     8000 within ;
+: s32? ( immed -- flag )  -80000000 80000000 within ;
+: u8?  ( immed -- flag )        100 u< ;
+: u16? ( immed -- flag )      10000 u< ;
+: u32? ( immed -- flag )  100000000 u< ;
 
 
 \ instruction format:
@@ -94,14 +94,14 @@ internal-defs
 	else
 	    swap dup have-disp? if rot >r then >r
 	    80 r@ 1 and if
-		over 8-bit-signed? dup 38 or r> and >r 2 and 1+ +
+		over s8? dup 38 or r> and >r 2 and 1+ +
 	    then db,
 	    r> r> dup have-disp? if r> swap rot else swap then
 	    dup >r 38 and mod-r/m, r>
 	then immed,
     else
 	prefixes2
-	over dir-bit or dir-bit = 2 and swap 39 and or db, >/r mod-r/m,
+	over dir-bit or dir-bit = 2 and swap 39 and or db, /r mod-r/m,
     then
 ;
 
@@ -134,10 +134,10 @@ internal-defs
     prefixes1 38 and
     over is-immed? if
 	dup abort" can't POP an immediate operand"
-	2drop dup 8-bit-signed? if
+	2drop dup s8? if
 	    6a db, db,
 	else
-	    dup 32-bit-signed? 0= abort" PUSH immediate exceeds 32 bits"
+	    dup s32? 0= abort" PUSH immediate exceeds 32 bits, signed"
 	    68 db, dd,
 	then exit
     then
@@ -165,8 +165,10 @@ internal-defs
 \	w-mem immw	( w=1 )		-> [ size ] C6 mod+0+r/m immw
 \	w-mem immw	( w=1 )		-> [ size ] C6 mod+0+r/m immw
 
-: get-mnemonic-size
-    >in @ >r parse-name r> >in ! 1- chars + c@ case
+: def-mnemonic: create swap , , does> 2@ execute newline ;
+
+: get-suffix-size
+    1- chars + c@ case
 	'b' of 0 endof
 	'w' of 3 endof
 	'l' of 1 endof
@@ -174,69 +176,37 @@ internal-defs
 	." invalid end character on mnemonic" cr abort
     endcase
 ;
+: scan-suffix-size >in @ parse-name get-suffix-size swap >in ! ;
+
+: def-instructions:  ( op xt "names" -- )
+    swap /r
+    begin >in @ parse-name dup while
+	( xt /r >in c-addr u )
+	get-suffix-size swap >in !
+	over or >r over r> def-mnemonic:
+    repeat 2drop drop 2drop ;
 
 : def-alu-binary:
-    3 lshift get-mnemonic-size or create c,
-    does> c@ alu-binary-op ;
+    ['] alu-binary-op def-instructions: ;
 
 : def-inc-dec:
-    3 lshift get-mnemonic-size or create c,
-    does> c@ inc-dec-op ;
+    ['] inc-dec-op def-instructions: ;
 
 : def-stack:
-    3 lshift get-mnemonic-size or create c,
-    does> c@ stack-op ;
+    ['] stack-op def-instructions: ;
 
 asm-defs
-0 def-alu-binary: addb
-0 def-alu-binary: addw
-0 def-alu-binary: addl
-0 def-alu-binary: addq
+0 def-alu-binary: addb addw addl addq
+1 def-alu-binary: orb  orw  orl  orq
+2 def-alu-binary: adcb adcw adcl adcq
+3 def-alu-binary: sbbb sbbw sbbl sbbq
+4 def-alu-binary: andb andw andl andq
+5 def-alu-binary: andb andw andl andq
+6 def-alu-binary: xorb xorw xorl xorq
+7 def-alu-binary: cmpb cmpw cmpl cmpq
 
-1 def-alu-binary: orb
-1 def-alu-binary: orw
-1 def-alu-binary: orl
-1 def-alu-binary: orq
-
-2 def-alu-binary: adcb
-2 def-alu-binary: adcw
-2 def-alu-binary: adcl
-2 def-alu-binary: adcq
-
-3 def-alu-binary: sbbb
-3 def-alu-binary: sbbw
-3 def-alu-binary: sbbl
-3 def-alu-binary: sbbq
-
-4 def-alu-binary: andb
-4 def-alu-binary: andw
-4 def-alu-binary: andl
-4 def-alu-binary: andq
-
-5 def-alu-binary: andb
-5 def-alu-binary: andw
-5 def-alu-binary: andl
-5 def-alu-binary: andq
-
-6 def-alu-binary: xorb
-6 def-alu-binary: xorw
-6 def-alu-binary: xorl
-6 def-alu-binary: xorq
-
-7 def-alu-binary: cmpb
-7 def-alu-binary: cmpw
-7 def-alu-binary: cmpl
-7 def-alu-binary: cmpq
-
-0 def-inc-dec: incb
-0 def-inc-dec: incw
-0 def-inc-dec: incl
-0 def-inc-dec: incq
-
-1 def-inc-dec: decb
-1 def-inc-dec: decw
-1 def-inc-dec: decl
-1 def-inc-dec: decq
+0 def-inc-dec: incb incw incl incq
+1 def-inc-dec: decb decw decl decq
 
 0 def-stack: pushq
 1 def-stack: popq

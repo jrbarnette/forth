@@ -141,8 +141,8 @@ end-regs
 
 internal-defs
 : [+0] ( memopnd -- memopnd ) [ %rsp [*1] 0f00 invert and ] literal or ;
-: >reg# ( memopnd -- reg# ) 07 and ;
-: >/r ( regopnd -- /r ) >reg# 3 lshift ;
+: >reg# ( regopnd -- reg# ) 07 and ;
+: /r ( regopnd -- /r ) >reg# 3 lshift ;
 
 : is-accum? ( opnd -- flag )
     false swap 95f07 and case

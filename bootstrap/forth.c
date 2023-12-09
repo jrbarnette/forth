@@ -34,23 +34,21 @@ static char *dictionary_stats[] = {
 static void
 interpret_lines(xt_ft eval, vmstate_ft *vm, char **lines)
 {
-    int throwcode;
-    if ((throwcode = CATCH(vm)) != 0) {
-	report_exception(throwcode, vm, NULL);
-        return;
-    }
-
     while (*lines != NULL) {
-        char *s = *lines++;
+	char *s = *lines++;
 	PUSH(vm, (cell_ft) s);
 	PUSH(vm, (cell_ft) strlen(s));
-	execute(vm, eval);
+	if (execute(vm, eval) != 0) {
+	    return;
+	}
     }
 
     char getstate[] = "STATE @";
     PUSH(vm, getstate);
     PUSH(vm, sizeof (getstate) - 1);
-    execute(vm, eval);
+    if (execute(vm, eval) != 0) {
+	return;
+    }
     cell_ft state = POP(vm);
     assert(state == 0);
     assert(EMPTY(vm));
@@ -61,17 +59,13 @@ interpret_lines(xt_ft eval, vmstate_ft *vm, char **lines)
 static int
 quit(xt_ft eval, vmstate_ft *vm, char *filename)
 {
-    int throwcode;
-    if ((throwcode = CATCH(vm)) != 0) {
-        report_exception(throwcode, vm, filename);
-	fprintf(stderr, "QUIT failed to handle an exception\n");
-	return EXIT_FAILURE;
-    }
-
     char quit_cmd[] = "QUIT";
     PUSH(vm, quit_cmd);
     PUSH(vm, sizeof (quit_cmd) - 1);
-    execute(vm, eval);
+    if (execute(vm, eval) != 0) {
+	fprintf(stderr, "QUIT failed to handle an exception\n");
+	return EXIT_FAILURE;
+    }
     return EXIT_SUCCESS;
 }
 
@@ -81,22 +75,22 @@ interpret_file(xt_ft eval, vmstate_ft *vm, char *filename)
 {
     DICT.lineno = 0;
     if (filename != NULL) {
-        FILE *input = fopen(filename, "r");
-        if (input == NULL) {
-            fprintf(stderr,
-                    "Can't open %s for reading: %s\n",
-                    (char *) filename, strerror(errno));
-            return EXIT_FAILURE;
-        }
-        DICT.input = input;
+	FILE *input = fopen(filename, "r");
+	if (input == NULL) {
+	    fprintf(stderr,
+		    "Can't open %s for reading: %s\n",
+		    (char *) filename, strerror(errno));
+	    return EXIT_FAILURE;
+	}
+	DICT.input = input;
     } else {
-        DICT.input = stdin;
+	DICT.input = stdin;
     }
 
     int exit_status = quit(eval, vm, filename);
 
     if (filename != NULL) {
-        fclose(DICT.input);
+	fclose(DICT.input);
     }
     return exit_status;
 }
@@ -107,10 +101,10 @@ interpret_arguments(xt_ft eval, vmstate_ft *vm, int argc, char *argv[])
 {
     int i;
     for (i = 0; i < argc; i++) {
-        int status = interpret_file(eval, vm, argv[i]);
-        if (status != EXIT_SUCCESS) {
-            return status;
-        }
+	int status = interpret_file(eval, vm, argv[i]);
+	if (status != EXIT_SUCCESS) {
+	    return status;
+	}
     }
     return EXIT_SUCCESS;
 }
@@ -141,7 +135,7 @@ main(int argc, char *argv[])
     if (forth_options.startup_file != NULL) {
 	bool saved_interactive = forth_options.is_interactive;
 	forth_options.is_interactive = false;
-        interpret_file(eval, &vmstate, forth_options.startup_file);
+	interpret_file(eval, &vmstate, forth_options.startup_file);
 	forth_options.is_interactive = saved_interactive;
     }
 
@@ -150,9 +144,9 @@ main(int argc, char *argv[])
 				   forth_options.argc,
 				   forth_options.argv);
     } else {
-        if (IS_INTERACTIVE(stdin)) {
-            interpret_lines(eval, &vmstate, dictionary_stats);
-        }
-        return interpret_file(eval, &vmstate, NULL);
+	if (IS_INTERACTIVE(stdin)) {
+	    interpret_lines(eval, &vmstate, dictionary_stats);
+	}
+	return interpret_file(eval, &vmstate, NULL);
     }
 }

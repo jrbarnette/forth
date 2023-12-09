@@ -40,14 +40,21 @@ xtcall(xt_ft xtok, vmstate_ft *vm, vmip_ft ip)
 }
 
 
-void
+int
 execute(vmstate_ft *vm, xt_ft entry_xt)
 {
+    int throwcode;
+    if ((throwcode = CATCH(vm)) != 0) {
+	report_exception(throwcode, vm, NULL);
+	return throwcode;
+    }
+
     vmip_ft ip = xtcall(entry_xt, vm, NULL);
 
     while (ip != NULL) {
 	ip = xtcall(ip->xtok, vm, ip + 1);
     }
+    return 0;
 }
 
 

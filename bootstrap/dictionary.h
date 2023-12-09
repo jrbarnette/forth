@@ -50,7 +50,7 @@ extern union dict {
  */
 
 extern void report_exception(int, vmstate_ft *, char *);
-extern void execute(vmstate_ft *, xt_ft);
+extern int execute(vmstate_ft *, xt_ft);
 
 extern vminstr_ft initialize_forth[];
 extern char *init_forth_defs[];

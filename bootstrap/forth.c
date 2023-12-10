@@ -34,21 +34,23 @@ static char *dictionary_stats[] = {
 static void
 interpret_lines(xt_ft eval, vmstate_ft *vm, char **lines)
 {
+    int throwcode;
+    if ((throwcode = CATCH(vm)) != 0) {
+	report_exception(throwcode, vm, NULL);
+	return;
+    }
+
     while (*lines != NULL) {
 	char *s = *lines++;
 	PUSH(vm, (cell_ft) s);
 	PUSH(vm, (cell_ft) strlen(s));
-	if (execute(vm, eval) != 0) {
-	    return;
-	}
+	execute(vm, eval);
     }
 
     char getstate[] = "STATE @";
     PUSH(vm, getstate);
     PUSH(vm, sizeof (getstate) - 1);
-    if (execute(vm, eval) != 0) {
-	return;
-    }
+    execute(vm, eval);
     cell_ft state = POP(vm);
     assert(state == 0);
     assert(EMPTY(vm));
@@ -59,13 +61,17 @@ interpret_lines(xt_ft eval, vmstate_ft *vm, char **lines)
 static int
 quit(xt_ft eval, vmstate_ft *vm, char *filename)
 {
-    char quit_cmd[] = "QUIT";
-    PUSH(vm, quit_cmd);
-    PUSH(vm, sizeof (quit_cmd) - 1);
-    if (execute(vm, eval) != 0) {
+    int throwcode;
+    if ((throwcode = CATCH(vm)) != 0) {
+	report_exception(throwcode, vm, filename);
 	fprintf(stderr, "QUIT failed to handle an exception\n");
 	return EXIT_FAILURE;
     }
+
+    char quit_cmd[] = "QUIT";
+    PUSH(vm, quit_cmd);
+    PUSH(vm, sizeof (quit_cmd) - 1);
+    execute(vm, eval);
     return EXIT_SUCCESS;
 }
 

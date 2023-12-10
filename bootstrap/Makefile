@@ -29,13 +29,23 @@ HEADER_SRC =	cmdline.h	dictionary.h	forth.h		\
 
 SOURCES = $(COMMON_SRC) $(FORTH_SRC) $(DIRECT_SRC) $(HEADER_SRC)
 
-CMDLINE_DEP = forth.o exception.o cmdline.o terminal.o
+# everything depending on cmdline.h
+CMDLINE_DEP = cmdline.o exception.o forth.o terminal.o
 
-DIRECT_DEP =	allot.o		initdict.o	meta.o		names.o
+# everything depending only on forth.h and its constituents
+PRIM_DEP =      arithops.o	control.o	definers.o	\
+		direct.o	fileops.o	memops.o	\
+		multops.o	stackops.o	vm.o
+
+# everything depending on dictionary.h but not meta.h
 DICT_DEP =	exception.o	forth.o		terminal.o
-PRIM_DEP =	control.o	definers.o	direct.o	\
-		fileops.o	memops.o	multops.o	\
-		stackops.o	arithops.o	vm.o
+
+# everything depending on meta.h but not dictionary.h
+META_DEP =	meta.o
+
+# everything depending on dictionary.h *and* meta.h
+DIRECT_DEP =	allot.o		initdict.o	names.o
+
 
 PRIM_HDRS = forth.h ftypes.h vmstate.h xtoken.h vmcheck.h prim.h
 DICT_HDRS = dictionary.h
@@ -54,6 +64,7 @@ all: forth tags
 $(CMDLINE_DEP): cmdline.h
 $(PRIM_DEP): $(PRIM_HDRS)
 $(DICT_DEP): $(PRIM_HDRS) $(DICT_HDRS)
+$(META_DEP): $(PRIM_HDRS) $(META_HDRS)
 $(DIRECT_DEP): $(PRIM_HDRS) $(DICT_HDRS) $(META_HDRS)
 
 forth: $(FORTH_OBJ)

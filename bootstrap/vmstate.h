@@ -24,7 +24,7 @@
  *
  * The exception stack is stored on the return stack.  Return stack
  * bounds checks consider the top frame of the exception stack to be
- * the bottom of the return stack (see the RCANPOP macro, below).
+ * the bottom of the return stack (see the MAXRPOP macro, below).
  * The exception stack is considered empty when it points to the
  * base of the return stack.
  *
@@ -75,10 +75,10 @@ typedef struct {
 #define REMPTY(vm)		((vm)->rsp == RSTACK_BASE(vm))
 #define EXEMPTY(vm)		((vm)->catch_rsp == RSTACK_BASE(vm))
 
-#define CANPUSH(vm)		((vm)->sp - (vm)->stack)
-#define CANPOP(vm)		(STACK_SIZE - CANPUSH(vm))
-#define RCANPUSH(vm)		((vm)->rsp - (vm)->rstack)
-#define RCANPOP(vm)		((vm)->catch_rsp - (vm)->rsp)
+#define MAXPUSH(vm)		((vm)->sp - (vm)->stack)
+#define MAXPOP(vm)		(STACK_SIZE - MAXPUSH(vm))
+#define MAXRPUSH(vm)		((vm)->rsp - (vm)->rstack)
+#define MAXRPOP(vm)		((vm)->catch_rsp - (vm)->rsp)
 
 #define POP(vm)			(*(vm)->sp++)
 #define PUSH(vm, c)		(*--(vm)->sp = (cell_ft) (c))

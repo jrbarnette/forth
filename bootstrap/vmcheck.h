@@ -39,9 +39,9 @@ throw_transfer(vmstate_ft *vm, cell_ft throw_code)
 #define STACKCHECK	CHECK
 #endif
 
-#define CHECK_PUSH(vm, n)	STACKCHECK(vm, (n) > CANPUSH(vm), -3)
-#define CHECK_POP(vm, n)	STACKCHECK(vm, (n) > CANPOP(vm), -4)
-#define CHECK_RPUSH(vm, n)	STACKCHECK(vm, (n) > RCANPUSH(vm), -5)
-#define CHECK_RPOP(vm, n)	STACKCHECK(vm, (n) > RCANPOP(vm), -25)
+#define CHECK_PUSH(vm, n)	STACKCHECK(vm, (n) > MAXPUSH(vm), -3)
+#define CHECK_POP(vm, n)	STACKCHECK(vm, (n) > MAXPOP(vm), -4)
+#define CHECK_RPUSH(vm, n)	STACKCHECK(vm, (n) > MAXRPUSH(vm), -5)
+#define CHECK_RPOP(vm, n)	STACKCHECK(vm, (n) > MAXRPOP(vm), -25)
 
 #endif // VMCHECK_H

@@ -11,24 +11,19 @@ plausibly be in Forth in the target dictionary is now in Forth.  The
 only C code left to eliminate is the stuff used for direct mode and
 meta-interpretation during dictionary construction at startup.
 
-There's a sample of how replace things like `i_startname()` in
-`bootstrap/direct_test.c`.  For that to work, we need control flow
-support in DIRECT.  That means we need to resurrect/appropriate the
-rawdict code for DIRECT.
-
 ### Plan to move forward
 The long-term goal is to get rid of C code that isn't a Forth
 primitive or the interpreter loop.  Preserving both the indirect-
-and direct-threaded loops is OK, and likely useful/necessary.
+and direct-threaded loops is OK, and maybe useful/necessary.
 Simplifying the generation of direct interpreted code in `initdict.c`
 would be nice, but not required.
 
 In practice, we want to eliminate these C primitives:
   * `i_addname`
   * `i_linkname`
-  * `i_lookup`
   * `i_setflags`
   * `i_startname`
+  * `i_reference`
   * `meta_compile`
   * `meta_interpret`
 

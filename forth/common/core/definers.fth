@@ -19,8 +19,7 @@
     here >r counted, r> count 0 do dup c@ toupper over c! char+ loop drop ;
 
 : name, ( c-addr u -- name )
-    align here >r current-name , id, align , r>
-    dup name>string 0 do dup c@ toupper over c! char+ loop drop ;
+    align here >r current-name , id, align , r> ;
 
 : check-name-length ( u -- u )
     dup 0= if -16 .error then

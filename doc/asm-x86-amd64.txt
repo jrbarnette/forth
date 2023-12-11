@@ -1,0 +1,157 @@
+%rax
+%rbx
+%rcx
+%rdx
+%rsp
+%rbp
+%rsi
+%rdi
+%r8
+%r9
+%r10
+%r11
+%r12
+%r13
+%r14
+%r15
+
+arguments
+    %rdi %rsi %rdx %rcx %r8 %r9
+callee saved
+    %rbx %rbp %r12 %r13 %r14 %r15
+    ... %rsp ...
+return values
+    %rax %rdx
+other
+    %r10 %r11
+----
+registers:
+	TOS	%rcx	- arbitrary; convenient for shifts
+	DP	%r8	- because this value is temporary
+	SCR0	%rax	- because return value 0
+	SCR1	%rdx	- because return value 1
+
+	VIP	%rsi	- for LODSQ
+	VRSP	%rbx	- saved across calls to C
+	SP0	%r12	- line between stacks
+	CATCH	%r14	- register for catch frame
+
+	VSP	%rsp	- for PUSH and POP
+	LIMIT	%rbp	- return stack top limit
+
+NEXT
+	!LD	t0, [VIP]
+	!ADD	VIP, VIP, 1 CELLS
+	!ADD	DP, t0, 1 CELLS
+	!LD	t1, [t0]
+	!JMP	[t1]
+
+	lodsq	! rsi == VIP, t0 == rax
+	leaq	8(SCR0), DP
+	jmpl	(SCR0)
+
+DOLIT
+	lodsq
+	pushq	TOS
+	movq	SCR0, TOS
+	NEXT
+
+DOCOLON
+	movq	VIP, (VRSP)
+	addq	VRSP, 8
+	movq	DP, VIP
+	NEXT
+
+DOCREATE
+	movq	VIP, (VRSP)
+	addq	VRSP, 8
+	pushq	TOS
+	leaq	8(DP), TOS
+	movq	(DP), VIP
+	NEXT
+
+DOVARIABLE
+	pushq	TOS
+	movq	DP, TOS
+	NEXT
+
+DOCONSTANT
+	pushq	TOS
+	movq	(DP), TOS
+	NEXT
+
+BRANCH
+	addq	(VIP), %rsi
+	NEXT
+
+?BRANCH
+	testq	TOS, TOS
+	cmovnzq	SCR0, 8
+	cmovzq	(VIP), SCR0
+	addq	SCR0, VIP
+	popq	TOS
+	NEXT
+
+EXECUTE
+	movq	TOS, SCR0
+	popq	TOS
+	leaq	8(SCR0), DP
+	jmpl	(SCR0)
+
+EXIT
+	movq	-8(VRSP), VIP
+	subq	VRSP, 8
+	NEXT
+
+DUP
+	pushq	TOS
+	NEXT
+
+OVER
+	pushq	TOS
+	movq	8(VSP), TOS
+	NEXT
+
+DROP
+	popq	TOS
+	NEXT
+
+SWAP
+	popq	SCR0
+	pushq	TOS
+	movq	SCR0, TOS
+	NEXT
+
+ROT
+	popq	SCR1
+	popq	SCR0
+	pushq	SCR1
+	pushq	TOS
+	movq	SCR0, TOS
+	NEXT
+
+>R
+	# cmpq	VRSP, %rbp
+	# jge	rstack_overflow
+	movq	TOS, (VRSP)
+	addq	VRSP, 8
+	popq	TOS
+	NEXT
+
+R>
+	# cmpq	VRSP, %rbp
+	# jge	rstack_overflow
+	pushq	TOS
+	subq	VRSP, 8
+	movq	(VRSP), TOS
+	NEXT
+
++
+	popq	SCR1
+	addq	SCR1, TOS
+	NEXT
+
+-
+	subq	TOS, (VSP)
+	popq	TOS
+	NEXT

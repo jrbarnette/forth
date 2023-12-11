@@ -1,0 +1,141 @@
+MUL, MULS
+MLA, MLAS
+UMAAL
+MLS
+UMULL, UMULLS
+
+UMLAL, UMLALS
+SMULL, SMULLS
+SMLAL, SMLALS
+
+SMLA..
+SMUL..
+
+ST*
+LD*
+
+AND*
+EOR*
+SUB*
+RSB*
+ADD*
+ADC*
+SBC*
+RSC*
+
+TST
+TEQ
+CMP
+CMN
+
+ORR*
+MOV*
+BIC*
+MVN*
+
+B
+BL
+----
+arguments
+    r0 - r3
+callee saved
+    r4 - r8 r10
+    ... sp ...
+return values
+    r0 - r1
+other
+    r9 r12 fp sp lr pc
+----
+
+registers:
+	TOS	r0	- because it's the return value 0
+	DP	r3	- not saved when calling C
+	SCR0	r1	- return value 1
+	SCR1	r2	- because not saved across C calls
+
+	VIP	r4	- preserved when calling out to C
+	VRSP	r5	- preserved when calling out to C
+	SP0	r6	- line between stacks
+	CATCH	r7	- register for catch frame
+
+	VSP	sp	- shared with C calling conventions
+	LIMIT	fp	- return stack top limit
+
+NEXT
+	ldr	DP, [VIP], #4
+	ldr	pc, [DP], #4
+
+DOLIT
+	str	TOS, [SP, #-4]!		@ PUSH(TOS)
+	ldr	TOS, [VIP], #4
+	NEXT
+
+DOCOL
+	str	VIP, [VRSP, #-4]!	@ RPUSH(VIP)
+	mov	VIP, DP
+	NEXT
+
+DOCREATE
+	str	VIP, [RSP, #-4]!	@ RPUSH(VIP)
+	str	TOS, [SP, #-4]!		@ PUSH(TOS)
+	add	TOS, DP, #4
+	ldr	VIP, [DP]
+	NEXT
+
+DOVAR
+	str	TOS, [SP, #-4]!		@ PUSH(TOS)
+	mov	TOS, DP
+	NEXT
+
+DOCONS
+	str	TOS, [SP, #-4]!		@ PUSH(TOS)
+	ldr	TOS, [DP]
+	NEXT
+
+BRANCH
+	ldr	DP, [VIP]
+	add	VIP, DP
+	NEXT
+
+?BRANCH
+	ldr	DP, [VIP], #4
+	cmp	TOS, 0
+	addeq	VIP, DP, #-4
+	ldr	TOS, [SP], #4
+	NEXT
+
+EXECUTE
+	mov	DP, TOS
+	ldr	TOS, [SP], #4		@ POP(TOS)
+	ldr	pc, [DP], #4
+
+EXIT
+	ldr	VIP, [RSP], #4		@ RPOP(VIP)
+	NEXT
+
+DUP
+	str	TOS, [SP, #-4]!		@ PUSH(TOS)
+	NEXT
+
+OVER
+	str	TOS, [SP, #-4]!		@ PUSH(TOS)
+	ldr	TOS, [SP, #4]
+	NEXT
+
+DROP
+	ldr	TOS, [SP], #4		@ POP(TOS)
+	NEXT
+
+SWAP
+	ldr	DP, [SP]
+	str	TOS, [SP]
+	mov	TOS, DP
+	NEXT
+
+ROT
+	ldr	r2, [SP]
+	ldr	DP, [SP, #4]
+	str	TOS, [SP]
+	str	r2, [SP, #4]
+	mov	TOS, DP
+	NEXT

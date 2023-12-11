@@ -1,0 +1,93 @@
+Eliminating `lookup()` from bootstrap sources.
+
+Used in the following cases:
+    interpret_lines() - forth.c
+    quit() - forth.c
+    meta_interpret() - meta.c (indirect)
+    meta_compile() - meta.c (indirect)
+    i_lookup() - meta.c (indirect)
+
+For `interpret_lines()`, the solution is for init_dict.c to save
+the xt for EVALUATE.  Easiest would be to return the xt as TOS
+as the last code sequence in initialize_forth.
+
+For `quit()`, the solution is to call EVALUATE on the string "QUIT".
+
+For meta-interpretation, we need the following:
+
+in initdict.c:
+    #define NRELOC	// calculated at generation time
+    a_addr_ft reloc_buffer[NRELOC];
+    a_addr_ft *reloc_ptr = &reloc_buffer[1];
+
+We reserve reloc_buffer[0] so that relocation index 0 becomes a
+NULL pointer.
+
+In the operands to meta_interpret(), meta_compile() and i_lookup(),
+instead of this:
+    { .id = "..." },
+
+Use this:
+    { .cell = /* index into reloc_buffer */ },
+
+We have to change addname() so that the address of the xt of the
+created name is appended to reloc_buffer as so:
+    *reloc_ptr++ = (a_addr_ft) &xtok->handler;
+
+The code for meta.c:
+    PRIM_HDLR(meta_interpret)
+    {
+	while (ip->cell != 0) {
+	    execute(vm, reloc_buffer[ip->cell]);
+	    ip++;
+	}
+	return ip + 1;
+    }
+
+
+    PRIM_HDLR(meta_compile)
+    {
+	while (ip->cell != 0) {
+	    COMPILE(vm, reloc_buffer[ip->cell]);
+	    ip++;
+	}
+	return ip + 1;
+    }
+
+
+    PRIM_HDLR(i_lookup)
+    {
+	PUSH(vm, reloc_buffer[ip->cell]);
+	return ip + 1;
+    }
+
+We should rename i_lookup(). Maybe i_reference().
+
+====
+On the Forth build side, need the following:
+
+Each time a definition is added to the target definition, it should
+be assigned a new (sequential) relocation index.
+
+Default TARGET interpretation semantics is to emit the definition's
+relocation index as a meta_interpret operand.
+
+Default TARGET compilation semantics is to emit the definition's
+relocation index as a meta_compile operand.
+
+That suggests redefining meta-emit as so:
+    : meta-emit ( reloc state -- ) start-instr { .cell } ;
+
+In start-instr, { .NULL } would become { 0 .cell }
+
+In tokens.fth, we'd see something like this:
+
+    : INTERPRET-NAME ( i*x name -- j*x )
+	name>xt+flags >r execute r> immediate? if
+	    meta-interpret
+	else
+	    meta-state @ negate 1+ meta-emit
+	then
+    ;
+
+... this ignores error checking.

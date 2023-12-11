@@ -11,8 +11,10 @@
 
 32 constant BL
 
-here 80 chars allot constant PROMPT 0 prompt c!
-: PROMPT! ( c-addr u -- ) prompt swap 79 min chars 2dup + >r move 0 r> c! ;
+80 ( sz-prompt )
+here over 1+ chars allot constant PROMPT 0 prompt c!
+: PROMPT! ( c-addr u -- )
+    prompt swap [ swap ] literal min chars 2dup + >r move 0 r> c! ;
 
 : REFILL-TERMINAL ( c-addr u -- len flag )
     prompt prompt-accept 0 prompt c! ;

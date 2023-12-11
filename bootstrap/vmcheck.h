@@ -33,15 +33,23 @@ throw_transfer(vmstate_ft *vm, cell_ft throw_code)
 
 
 #define CHECK(vm, t, x)	    { if (t) return throw_transfer((vm), (x)); }
-#define NOCHECK(vm, t, x)
+#define NOCHECK(vm, t, x)   ((void) (t))
 
 #ifndef STACKCHECK
 #define STACKCHECK	CHECK
 #endif
 
-#define CHECK_PUSH(vm, n)	STACKCHECK(vm, (n) > MAXPUSH(vm), -3)
+#ifdef STACKPROFILE
+#define SPROBE(vm, n)	(probe_push((vm), (n)))
+#define RPROBE(vm, n)	(probe_rpush((vm), (n)))
+#else
+#define SPROBE(vm, n)	((n) > MAXPUSH(vm))
+#define RPROBE(vm, n)	((n) > MAXRPUSH(vm))
+#endif
+
+#define CHECK_PUSH(vm, n)	STACKCHECK(vm, SPROBE(vm, n), -3)
 #define CHECK_POP(vm, n)	STACKCHECK(vm, (n) > MAXPOP(vm), -4)
-#define CHECK_RPUSH(vm, n)	STACKCHECK(vm, (n) > MAXRPUSH(vm), -5)
+#define CHECK_RPUSH(vm, n)	STACKCHECK(vm, RPROBE(vm, n), -5)
 #define CHECK_RPOP(vm, n)	STACKCHECK(vm, (n) > MAXRPOP(vm), -25)
 
 #endif // VMCHECK_H

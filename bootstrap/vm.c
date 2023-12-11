@@ -32,6 +32,37 @@
  */
 
 
+#ifdef STACKPROFILE
+#include <stdio.h>
+
+cell_ft
+probe_push(vmstate_ft *vm, cell_ft n)
+{
+    cell_ft depth = MAXPOP(vm) + n;
+    if (depth > vm->stack_maximum) {
+	vm->stack_maximum = depth;
+    }
+    return n > MAXPUSH(vm);
+}
+
+cell_ft
+probe_rpush(vmstate_ft *vm, cell_ft n)
+{
+    cell_ft depth = RSTACK_SIZE - MAXRPUSH(vm) + n;
+    if (depth > vm->rstack_maximum) {
+	vm->rstack_maximum = depth;
+    }
+    return n > MAXRPUSH(vm);
+}
+
+void
+stacks_report(vmstate_ft *vm)
+{
+    fprintf(stderr, "stack  max %4lu\n", vm->stack_maximum);
+    fprintf(stderr, "rstack max %4lu\n", vm->rstack_maximum);
+}
+#endif
+
 static inline vmip_ft
 xtcall(xt_ft xtok, vmstate_ft *vm, vmip_ft ip)
 {

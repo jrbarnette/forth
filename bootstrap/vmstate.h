@@ -62,6 +62,10 @@ typedef struct {
     cell_ft	stack[STACK_SIZE];
     cell_ft	rstack[RSTACK_SIZE];
     jmp_buf	interp_loop;
+#ifdef STACKPROFILE
+    cell_ft	stack_maximum;
+    cell_ft	rstack_maximum;
+#endif
 } vmstate_ft;
 
 
@@ -99,6 +103,16 @@ static inline void
 vm_initialize(vmstate_ft *vm) {
     CLEAR_STACK(vm);
     CLEAR_RSTACK(vm);
+#ifdef STACKPROFILE
+    vm->stack_maximum = 0;
+    vm->rstack_maximum = 0;
+#endif
 }
+
+#ifdef STACKPROFILE
+extern cell_ft probe_push(vmstate_ft *vm, cell_ft n);
+extern cell_ft probe_rpush(vmstate_ft *vm, cell_ft n);
+extern void stacks_report(vmstate_ft *vm);
+#endif
 
 #endif // VMSTATE_H

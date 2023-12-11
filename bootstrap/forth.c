@@ -124,7 +124,10 @@ initialize_dictionary(vmstate_ft *vm)
     xt_ft eval = (xt_ft) POP(vm);
     assert(EMPTY(vm));
     assert(REMPTY(vm));
+
     interpret_lines(eval, vm, init_forth_defs);
+    assert(EMPTY(vm));
+    assert(REMPTY(vm));
 
     return eval;
 }
@@ -145,14 +148,20 @@ main(int argc, char *argv[])
 	forth_options.is_interactive = saved_interactive;
     }
 
+    int status;
     if (forth_options.argc > 0) {
-	return interpret_arguments(eval, &vmstate,
-				   forth_options.argc,
-				   forth_options.argv);
+	status = interpret_arguments(eval, &vmstate,
+				     forth_options.argc,
+				     forth_options.argv);
     } else {
 	if (IS_INTERACTIVE(stdin)) {
 	    interpret_lines(eval, &vmstate, dictionary_stats);
 	}
-	return interpret_file(eval, &vmstate, NULL);
+	status = interpret_file(eval, &vmstate, NULL);
     }
+
+#ifdef STACKPROFILE
+    stacks_report(&vmstate);
+#endif
+    return status;
 }

@@ -1,5 +1,7 @@
-\ Copyright 2021, by J. Richard Barnette, All Rights Reserved.
-\ Internal definitions relating to namespace lookup.
+\ Copyright 2023, by J. Richard Barnette. All Rights Reserved.
+\ Internal definitions relating to namespace lookup and definition.
+
+: ID, ( c-addr u -- ) here >r counted, r> count str-toupper ;
 
 : ID= ( c-addr1 u1 c-addr2 u2 -- flag )
     rot over <> if drop 2drop false exit then
@@ -15,3 +17,9 @@
 	2dup r@ name>string id= if 2drop r> exit then
     r> name>prev repeat drop 2drop 0
 ;
+
+: CURRENT-NAME ( -- name ) get-current @ ;
+: LINK-NAME ( name -- ) get-current ! ;
+
+: NAME, ( handler c-addr u -- name )
+    align here >r current-name , id, align , r> ;

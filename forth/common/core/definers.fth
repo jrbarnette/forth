@@ -12,14 +12,6 @@
 \  :NONAME               6.2.0455 CORE EXT
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
-: current-name ( -- name ) get-current @ ;
-: link-name ( name -- ) get-current ! ;
-
-: id, ( c-addr u -- name ) here >r counted, r> count str-toupper ;
-
-: name, ( c-addr u -- name )
-    align here >r current-name , id, align , r> ;
-
 : check-name-length ( u -- u )
     dup 0= if -16 .error then
     dup nf-length u> if -19 .error then ;

@@ -2,19 +2,9 @@
 
 \ ------  ------  ------  ------  ------  ------  ------  ------
 \  DEFINITIONS        16.6.1.1180 SEARCH
-\  GET-CURRENT        16.6.1.1643 SEARCH
 \  GET-ORDER          16.6.1.1647 SEARCH
-\  SET-CURRENT        16.6.1.2195 SEARCH
 \  SET-ORDER          16.6.1.2197 SEARCH
 \ ------  ------  ------  ------  ------  ------  ------  ------
-
-\ Storage for the compilation wordlist
-
-\ VARIABLE CURRENT
-here 1 cells allot			( current )
-
-: GET-CURRENT [ over ] literal @ ;	( current )
-: SET-CURRENT [ swap ] literal ! ;	( )
 
 \ Search order:  1 cell for length of search order; 8 cells for
 \ the wordlists to be searched.

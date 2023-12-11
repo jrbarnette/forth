@@ -44,9 +44,10 @@ DIRECT_FORTH(initialize_forth) // {
 
     compile-file: forth/common/internal/chartype.fth
     compile-file: forth/common/internal/namespace.fth
-    compile-file: forth/common/internal/wid-lookup.fth
-
+    compile-file: forth/common/search/current.fth
     compile-file: forth/common/internal/dictionary.fth
+    compile-file: forth/common/internal/wordlists.fth
+
     compile-file: forth/common/exception/catch.fth
 
     \ At this point we have working definitions for "dictionary",

@@ -1,9 +1,0 @@
-# Copyright 2015, by J. Richard Barnette, All Rights Reserved.
-
-host/host.fth
-host/forth-dict/start-dict.fth
-host/forth-dict/arithprim.fth
-host/forth-dict/stackprim.fth
-host/forth-dict/memprim.fth
-host/forth-dict/multprim.fth
-host/forth-dict/end-dict.fth

@@ -15,8 +15,7 @@
 : current-name ( -- name ) get-current @ ;
 : link-name ( name -- ) get-current ! ;
 
-: id, ( c-addr u -- name )
-    here >r counted, r> count 0 do dup c@ toupper over c! char+ loop drop ;
+: id, ( c-addr u -- name ) here >r counted, r> count str-toupper ;
 
 : name, ( c-addr u -- name )
     align here >r current-name , id, align , r> ;

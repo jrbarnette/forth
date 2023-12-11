@@ -58,11 +58,11 @@ here 0 ,
 \
 \ LEAVE compiles as a forward branch to the UNLOOP at the very end.
 
-: DO ( C: -- saved-chain dest )
-    postpone do-do start-chain postpone begin ; compile-special
+: do-prolog postpone do-do start-chain ;
+: do-epilog postpone begin ;
+: DO ( C: -- saved-chain dest ) do-prolog do-epilog ; compile-special
 : ?DO ( C: -- saved-chain dest )
-    postpone do-do postpone r@
-    start-chain postpone if mark>chain postpone begin ; compile-special
+    do-prolog postpone r@ postpone if mark>chain do-epilog ; compile-special
 
 : LEAVE branch>chain ; compile-special
 

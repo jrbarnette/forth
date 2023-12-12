@@ -42,7 +42,7 @@ DIRECT_FORTH(initialize_forth) // {
     compile-file: forth/common/core/control.fth
     compile-file: forth/common/core/arithops.fth
 
-    compile-file: forth/common/internal/chartype.fth
+    compile-file: forth/common/internal/ascii.fth
     compile-file: forth/common/internal/namespace.fth
     compile-file: forth/common/search/current.fth
     compile-file: forth/common/internal/dictionary.fth

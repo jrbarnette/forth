@@ -961,7 +961,7 @@ DIRECT_FORTH(initialize_forth) // {
 /* 1298 */     { /* EXIT */     .cell = 0x31 },
 /* 1299 */     { .cell = 0x0 },
 /* 1300 */ { .handler = i_linkname },
-            /* ==== forth/common/internal/chartype.fth ==== */
+            /* ==== forth/common/internal/ascii.fth ==== */
 /* 1301 */ { .handler = i_startname }, { .id = "GRAPHIC?" }, { .handler = do_colon },
 /* 1304 */ { .handler = do_literal }, { .cell = 0x21 },
 /* 1306 */ { .handler = meta_interpret },

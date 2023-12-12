@@ -18,14 +18,14 @@ code and trademarks).  It looks like this:
 	movl	5, %rax
 	movl	(%rbp,%rdx,8), %rax
 ```
-The operand ordering is "src, dst".  Register names start with '%',
-Memory operands are denoted with "disp(base,index,scale)".  Operand
-sizes are encoded in a suffix on the mnemonic, and must agree with
-operand sizes, when present.
+The operand ordering is `_src_, _dst_`.  Register names start with '%',
+Memory operands are denoted with `_disp_(_base_,_index_,_scale_)`.
+Operand sizes are encoded in a suffix on the mnemonic, and must agree
+with operand sizes, when present.
 
-Linux and macOS use the AT&T conventions.  Anything derived from
-Unix (e.g. Solaris) also should use them.  Microsoft's assembler
-uses the Intel/AMD conventions.
+Linux and macOS use the AT&T conventions.  Anything derived from Unix
+(e.g. Solaris) also should use them.  Microsoft's assembler uses the
+Intel/AMD conventions.
 
 The assembler here leans more towards the Unix/AT&T conventions.
 Here's some of the work needed to support either/both.
@@ -39,27 +39,28 @@ operands should be denoted with round or square brackets.  The
 Intel convention would also need things like `WORD-PTR`, `DWORD-PTR`,
 etc.
 
-Handling operand order involves factoring 2operand into these parts:
+Finally, handling operand order involves factoring 2operand into these
+parts:
 ```
-    : 2operand ( opnd opnd -- imm reg | imm mem | mem reg | reg reg )
-	dup is-immed? abort" immediate operand used as destination"
-	dup is-reg? if
-	    over is-accum? if dup is-accum? 0= if swap exit then then
-	    over is-immed? 0= if dir-bit then or
-	else
-	    swap dup is-mem? abort" two memory operands"
-	    dup is-immed? if drop then
-	then
-    ;
+: 2operand ( opnd opnd -- imm reg | imm mem | mem reg | reg reg )
+    dup is-immed? abort" immediate operand used as destination"
+    dup is-reg? if
+	over is-accum? if dup is-accum? 0= if swap exit then then
+	over is-immed? 0= if dir-bit then or
+    else
+	swap dup is-mem? abort" two memory operands"
+	dup is-immed? if drop then
+    then
+;
 
-    \ dst, src
-    : 2operand-Intel ( opnd opnd -- imm reg | imm mem | mem reg | reg reg )
-	dup have-immed? if rot else swap then 2operand
-	dup have-disp? if >r swap r> then
-    ;
+\ dst, src
+: 2operand-Intel ( opnd opnd -- imm reg | imm mem | mem reg | reg reg )
+    dup have-immed? if rot else swap then 2operand
+    dup have-disp? if >r swap r> then
+;
 
-    \ src, dst
-    : 2operand-Unix ( opnd opnd -- imm reg | imm mem | mem reg | reg reg )
-	dup have-immed? if rot swap then 2operand
-    ;
+\ src, dst
+: 2operand-Unix ( opnd opnd -- imm reg | imm mem | mem reg | reg reg )
+    dup have-immed? if rot swap then 2operand
+;
 ```

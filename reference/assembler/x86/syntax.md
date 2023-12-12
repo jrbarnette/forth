@@ -9,11 +9,11 @@ this:
 The ordering of operands is `_dst_, _src_`.  Operand sizes are usually
 determined implicitly from the operand registers.  In some cases,
 keywords like `WORD PTR` may be needed for memory operands to indicate
-size when no register is included.  Some instructions with no operands
-encode size with a suffix, e.g. LODSQ.
+size when no register is present to indicate.  Some instructions with no
+operands encode size with a suffix, e.g. `LODSQ`.
 
-The other syntax comes from Unix (back when AT&T owned the source
-code and trademarks).  It looks like this:
+The other syntax comes from Unix (back when AT&T owned the source code
+and trademarks).  It looks like this:
 ```
 	movl	5, %rax
 	movl	(%rbp,%rdx,8), %rax
@@ -21,7 +21,7 @@ code and trademarks).  It looks like this:
 The operand ordering is `_src_, _dst_`.  Register names start with '%',
 Memory operands are denoted with `_disp_(_base_,_index_,_scale_)`.
 Operand sizes are encoded in a suffix on the mnemonic, and must agree
-with operand sizes, when present.
+with any actual operands.
 
 Linux and macOS use the AT&T conventions.  Anything derived from Unix
 (e.g. Solaris) also should use them.  Microsoft's assembler uses the

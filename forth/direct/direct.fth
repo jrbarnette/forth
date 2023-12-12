@@ -26,10 +26,10 @@ variable emit-state  0 emit-state !
 
 
 wordlist constant TARGET-NAMES
-variable nreloc  1 nreloc !
+variable nreference  1 nreference !
 : create-reference
     align here get-current target-names set-current
-    nreloc @ 1 nreloc +! constant
+    nreference @ 1 nreference +! constant
     set-current name>string
 ;
 

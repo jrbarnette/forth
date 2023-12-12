@@ -19,7 +19,7 @@
 PRIM_HDLR(meta_interpret)
 {
     while (ip->cell != 0) {
-	execute(vm, reloc_entries[ip->cell]);
+	execute(vm, reference_table[ip->cell]);
 	ip++;
     }
     return ip + 1;
@@ -29,7 +29,7 @@ PRIM_HDLR(meta_interpret)
 PRIM_HDLR(meta_compile)
 {
     while (ip->cell != 0) {
-	COMPILE(vm, reloc_entries[ip->cell]);
+	COMPILE(vm, reference_table[ip->cell]);
 	ip++;
     }
     return ip + 1;
@@ -38,6 +38,6 @@ PRIM_HDLR(meta_compile)
 
 PRIM_HDLR(i_reference)
 {
-    PUSH(vm, reloc_entries[ip->cell]);
+    PUSH(vm, reference_table[ip->cell]);
     return ip + 1;
 }

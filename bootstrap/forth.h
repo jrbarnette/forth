@@ -35,8 +35,8 @@ extern void report_exception(int, vmstate_ft *, char *);
 
 extern vminstr_ft initialize_forth[];
 extern char *init_forth_defs[];
-extern xt_ft reloc_entries[];
-extern xt_ft *reloc_ptr;
+extern xt_ft reference_table[];
+extern xt_ft *reference_ptr;
 
 
 #endif // FORTH_H

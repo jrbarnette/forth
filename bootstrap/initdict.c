@@ -3633,6 +3633,6 @@ char *init_forth_defs[] = {
     NULL,
 };
 
-#define NRELOC 258
-xt_ft reloc_entries[NRELOC] = { NULL };
-xt_ft *reloc_ptr = &reloc_entries[1];
+#define NREFERENCE 258
+xt_ft reference_table[NREFERENCE] = { NULL };
+xt_ft *reference_ptr = &reference_table[1];

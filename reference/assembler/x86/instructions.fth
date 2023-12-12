@@ -25,27 +25,27 @@ internal-defs
     then
 ;
 
-: s8?  ( immed -- flag )        -80       80 within ;
-: s16? ( immed -- flag )      -8000     8000 within ;
-: s32? ( immed -- flag )  -80000000 80000000 within ;
-: u8?  ( immed -- flag )        100 u< ;
-: u16? ( immed -- flag )      10000 u< ;
-: u32? ( immed -- flag )  100000000 u< ;
+: u8?  ( immed -- flag )        100     u< ;
+: s8?  ( immed -- flag )        -80 +  u8? ;
+: u16? ( immed -- flag )      10000     u< ;
+: s16? ( immed -- flag )      -8000 + u16? ;
+: u32? ( immed -- flag )  100000000     u< ;
+: s32? ( immed -- flag )  -80000000 + u32? ;
 
 
 \ instruction format:
 \   prefixes opcode mod-r/m sib disp imm
 
-\ The three bits in opcode data encode size as follows:
+\ The low three bits in opcode data encode size as follows:
 \  RVW     size
 \ %000 -  8-bit
 \ %011 - 16-bit
 \ %001 - 32-bit
 \ %101 - 64-bit
 \
-\ They affect instruction encodeding as follows:
+\ They affect instruction encoding as follows:
 \   W - encodes the w bit in the opcode
-\   V - 1 means use data size (66h) override
+\   V - 1 means data size (66h) override is required
 \   R - encodes the W bit in the REX prefix
 
 : >REX.W ( size -- REX.W ) 4 and 1 lshift ;

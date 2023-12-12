@@ -140,6 +140,6 @@ Also, think about possible hybrid solutions combining `direct` with
 
 - Should implement `PAD`
 
-- Should implement `VALUE` `TO`
+- Should implement `VALUE` and `TO`
 
 - Should implement `MARKER`

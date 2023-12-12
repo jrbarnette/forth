@@ -106,7 +106,18 @@ FILE, TOOLS and SEARCH).
 Also, think about possible hybrid solutions combining `direct` with
 `rawdict`.
 
-## New Features/Bugs
+## New Features/Bugs/Flaws
+
+- In direct meta code, we should look up target names in INTERPRET-NAME,
+  rather than leaving it to INTERPRET-UNKNOWN.
+
+- In output-dict.fth, you find this:
+```
+	parse-name EVALUATE direct-lookup
+```
+  We should find a way to do this that doesn't involve calling
+  `parse-name` from interpretation state.  Calling `direct-lookup` is
+  dodgy, too.
 
 - WORD is supposed to skip leading delimiters.  It doesn't.
 

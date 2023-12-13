@@ -261,8 +261,8 @@ PRIM_HDLR(x_f_m_slash_mod)
     CHECK_POP(vm, 3);
 
     cell_ft *sp = SP(vm);
-    cell_ft d_hi = PICK(sp, 1);
     cell_ft d_lo = PICK(sp, 2);
+    cell_ft d_hi = PICK(sp, 1);
     cell_ft v = PICK(sp, 0);
 
     CHECK(vm, (v == 0), -10);

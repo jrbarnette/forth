@@ -20,10 +20,8 @@ here over 1+ chars allot constant PROMPT 0 prompt c!
     prompt prompt-accept 0 prompt c! ;
 : ACCEPT ( c-addr +n1 -- +n2 ) refill-terminal drop ;
 
-: TYPE ( c-addr u -- )
-    chars over + swap begin 2dup > while dup c@ emit char+ repeat 2drop
-;
+: TYPE ( c-addr u -- ) 0 ?do dup i chars + c@ emit loop drop ;
 
 : CR ( -- ) 10 emit ;
 : SPACE ( -- ) bl emit ;
-: SPACES ( n -- ) begin dup 0> while space 1- repeat drop ;
+: SPACES ( n -- ) dup 0> if 0 do space loop else drop then ;

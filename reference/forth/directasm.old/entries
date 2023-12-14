@@ -1,0 +1,31 @@
+variable offset 0 offset !
+: .offset base @ decimal offset @ dup 5 .r 1+ offset ! base ! ;
+: .{ ." /* " .offset ."  */    { " ;
+: }, ."  }," cr ;
+: .cell     .{ ." .cell = " c-hex }, ;
+: .expr     .{ ." .cell = (cell_ft) (" type ." )" }, ;
+: .str      .{ ." .id = " .c-string }, ;
+: .label    .{ ." .ip = &" .table ." [" .c-decimal ." ]" }, ;
+: .handler  .{ ." .handler = " type }, ;
+
+here
+\ ======
+: .c-char [char] ' dup emit dup >r escape r> emit ;
+: .{ ." { " ;
+: .field= '.' emit type "  = " ;
+: }, ."  }," ;
+: .c-entry { .field= execute }, ;
+
+
+: .cell= s" cell" .field= ;
+: .number= { .cell= c-hex } ;
+: .expr .{ .cell= ." (cell_ft) (" type ." )"  }, ;
+
+: .cell s" cell" .c-entry ;
+: .number ['] .c-hex .cell ;
+: (cell) ." (cell_ft) (" type ." )" ;
+: .expr -tag -bias count ['] (cell) .cell ;
+: .str -tag -bias count ['] .c-string s" id" .c-entry ;
+: (label) ." &" .direct-forth ." [" -tag .c-decimal ." ]" ;
+: .label    ['] (label) s" ip" .c-entry ;
+: .handler  ." .handler = " -tag -bias count type ;

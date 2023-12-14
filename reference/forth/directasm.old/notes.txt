@@ -1,0 +1,8 @@
+Three kinds of definition:
+  * Regular def'n - draws from FORTH vocabulary
+  * Assembler macro, including def'ns created by CODE ... END-CODE
+    - draws from ASSEMBLER vocabulary
+    - expands into direct code sequence on target
+  * Meta def'n - created with meta-compile/meta-interpret.
+    - draws on the existing TARGET vocabulary
+      ... or something similar

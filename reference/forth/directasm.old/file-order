@@ -1,0 +1,15 @@
+# Copyright 2019, by J. Richard Barnette, All Rights Reserved.
+
+# First, build up the ASSEMBLER vocabulary that's responsible for
+# the primitives to emit syntactically correct direct execution
+# code.
+forth/directasm/c-gen.fth
+forth/directasm/directasm.fth
+forth/directasm/direct.fth
+    # These files are repeated below.  They can contain only
+    # prim: definitions.
+    forth/direct/core/vmprim.fth
+    forth/direct/core/stackprim.fth
+    forth/direct/core/arithprim.fth
+    forth/direct/core/memprim.fth
+    forth/direct/core/multprim.fth

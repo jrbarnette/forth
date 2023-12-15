@@ -64,7 +64,7 @@ DOCOLON
 
 DOCREATE
 	movq	VIP, (VRSP)
-	addq	VRSP, 8
+	addq	VRSP, 8		# RPUSH VIP
 	pushq	TOS
 	leaq	8(DP), TOS
 	movq	(DP), VIP
@@ -131,16 +131,12 @@ ROT
 	NEXT
 
 >R
-	# cmpq	VRSP, %rbp
-	# jge	rstack_overflow
 	movq	TOS, (VRSP)
 	addq	VRSP, 8
 	popq	TOS
 	NEXT
 
 R>
-	# cmpq	VRSP, %rbp
-	# jge	rstack_overflow
 	pushq	TOS
 	subq	VRSP, 8
 	movq	(VRSP), TOS
@@ -151,7 +147,17 @@ R>
 	addq	SCR1, TOS
 	NEXT
 
+\ This could be done on memory operands.  Is that really better?
+\ Processor must read and write memory location to subtract, and then
+\ read again to pop.
 -
-	subq	TOS, (VSP)
-	popq	TOS
+	popq	SCR0
+	subq	TOS, SCR0
+	movq	SCR0, TOS
+	NEXT
+
+LSHIFT		\ TOS is %rcx
+	popq	SCR0
+	salq	SCR0, %cl
+	movq	SCR0, TOS
 	NEXT

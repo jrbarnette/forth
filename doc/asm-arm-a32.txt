@@ -76,8 +76,8 @@ DOCOL
 	NEXT
 
 DOCREATE
-	str	VIP, [RSP, #-4]!	@ RPUSH(VIP)
-	str	TOS, [SP, #-4]!		@ PUSH(TOS)
+	str	VIP, [VRSP, #-4]!	@ RPUSH(VIP)
+	str	TOS, [VSP, #-4]!	@ PUSH(TOS)
 	add	TOS, DP, #4
 	ldr	VIP, [DP]
 	NEXT
@@ -133,9 +133,9 @@ SWAP
 	NEXT
 
 ROT
-	ldr	r2, [SP]
-	ldr	DP, [SP, #4]
+	ldr	SCR0, [SP]
+	ldr	SCR1, [SP, #4]
 	str	TOS, [SP]
-	str	r2, [SP, #4]
-	mov	TOS, DP
+	str	SCR0, [SP, #4]
+	mov	TOS, SCR1
 	NEXT

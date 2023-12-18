@@ -68,6 +68,7 @@ DIRECT_FORTH(initialize_forth) // {
     compile-file: forth/common/core/number.fth
 
     compile-file: forth/common/core/state.fth
+    compile-file: forth/common/internal/numparse.fth
     compile-file: forth/common/internal/tokens.fth
     compile-file: forth/common/internal/interpret.fth
 

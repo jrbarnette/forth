@@ -15,7 +15,7 @@
 
 : WORDLIST ( -- wid ) here 0 , ;
 
-: do-vocabulary  get-order-first-entry ! ;
+: do-vocabulary  context ! ;
 : VOCABULARY create 0 , does> do-vocabulary ;
 : FORTH ( -- ) forth-wordlist do-vocabulary ;
 

@@ -24,8 +24,9 @@ union dict dictionary;
 struct options forth_options;
 
 static char *dictionary_stats[] = {
-    "allot-bounds swap 1- 2dup -             ( -inuse free -total )",
-    "negate swap rot negate                  ( total free inuse )",
+    "allot-bounds                            ( unused+1 -inuse )",
+    "negate swap 1- 2dup +                   ( inuse unused total )",
+    "swap rot                                ( total unused inuse )",
     ".( dictionary: ) . .( in use / ) . .( free / ) . .( total ) cr",
     NULL,
 };

@@ -1,0 +1,130 @@
+Actions of :
+    Use CREATE for new name in META-DEFS vocabulary
+    Remember current offset
+    Emit this form:
+	{ .handler = do_colon },
+    Remember name (for descriptive comment)
+    Put HERE on stack
+    Enter meta-defs compilation state:
+	ONLY FORTH ALSO META-DEFS DEFINITIONS
+    Behavior is to emit this form:
+	{ .ip = &initialize_forth[/* offset */] }, // name
+    So, something like this
+	DOES>
+	    2@ ( offset name )
+	    ." /* " name>string dup >r type 12 r> - spaces ."  */ "
+	    .label
+	;
+
+
+Actions of CONSTANT
+    Use CREATE for new name in META-DEFS vocabulary
+    Remember current offset
+    Emit this form:
+	{ .handler = do_constant }, { .cell = 0x### },
+    The cell value is TOS in the host interpreter
+    Behavior is as for :-definitions
+
+
+Actions of VARIABLE
+    Use CREATE for new name in META-DEFS vocabulary
+    Remember current offset
+    Emit this form:
+	{ .handler = do_variable }, { .cell = 0x0 },
+    Behavior is as for :-definitions
+
+
+Actions of ;
+    Compile EXIT
+    Using value of HERE provided by :
+	here over ( start end cur )
+	begin 2dup > while
+	    dup @ execute cell+
+	repeat drop - allot
+    Enter meta-defs interpretation state
+
+
+Special actions for do-literal branch ?branch
+    : param-cell  cell+ dup @ { .cell } ;
+    : do-literal  do-literal  param-cell ;
+    : branch      branch      param-cell ;
+    : ?branch     ?branch     param-cell ;
+
+
+Literal handling:
+    \ execute with META-DEFS shadowing FORTH in search order:
+    ONLY FORTH ALSO META-DEFS DEFINITIONS
+    \ POSTPONE first, to have access to FORTH version of LITERAL
+    : parse-valid-name ( "name" -- nt )
+	parse-name [ ' meta-defs >body ] literal @ wid-lookup
+	dup 0= if -13 .error then ;
+    : POSTPONE
+	parse-valid-name name>xt+flags immediate? 0=
+	if [compile] literal ['] compile, then compile,
+    ; compile-special
+    : LITERAL ['] do-literal , , ; compile-special
+
+
+Handling control.fth
+    >MARK >RESOLVE <MARK <RESOLVE
+	use the version from FORTH vocabulary
+	    must separate into their own file
+    Stuff that doesn't use >MARK/>RESOLVE chains:
+	compile using:
+	    only forth also meta-defs definitions previous
+	compile using meta POSTPONE
+    >MARK/>RESOLVE chains:
+	use the version from FORTH vocabulary
+	    must be separated into its own file
+	but need to change one instance of "POSTPONE THEN"
+	and need to keep branch>chain in control.fth
+	the builder version depends on BEGIN WHILE REPEAT
+	    so, have to divide control.fth
+    Stuff using >MARK/>RESOLVE chains:
+	separate into a new file
+	compile using same rules as other control.fth defs
+
+
+In meta-defs compilation state
+    Search order is limited:
+	included:
+	    primitives defined in target building code
+		with augmented do-literal branch ?branch
+	    LITERAL
+	    POSTPONE
+	    [COMPILE] (?)
+	    [
+	    control flow
+	    ;
+	    any :-definitions created in meta target code
+	excluded
+	    ." S" C" [CHAR]
+	    ['] (?)
+
+    ONLY META-DEFS DEFINITIONS
+
+    \ define using ONLY FORTH search order
+    : INTERPRET-NAME
+	name>xt+flags immediate? if execute else , then ;
+    : INTERPRET-NUMBER POSTPONE LITERAL ;
+
+
+In meta-defs interpret state
+    META-??? shadows FORTH:
+	:
+	CONSTANT
+	    Can create, but can't execute them
+	    Can only assign real values, can't use <C> expr;
+	VARIABLE
+	    Can create, but can't execute them
+	    Initialized to 0
+	CREATE -> error (?)
+	]
+
+
+While defining compile-special definitions for meta-defs (esp. for
+control.fth)
+    POSTPONE
+	operates on names in meta-defs compilation search order
+    LITERAL
+	use the version from meta-defs compilation search order

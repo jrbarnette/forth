@@ -1,0 +1,28 @@
+\ Need to figure out host/target-mode magic to initialize this;
+\ something like this:
+\   reference: ref-index
+\       handler: do_variable
+\       <C> 1;
+variable ref-index
+
+: ref-addr ( index -- a-addr ) cells <C> &ref_entries[0]; + ;
+: ref@ ( index -- xt ) ref-addr @ ;
+: ref! ( a-addr -- xt ) ref-addr ! ;
+: next-ref! ( name -- ) name>xt ref-index @ ref! 1 ref-index +! ;
+
+\ meta-mode dictionary building operations:
+: meta-initialize 1 ref-index ! ;
+
+: startname ( a-addr -- name a-addr' )
+    dup 2@ count name, dup next-ref! swap cell+ cell+ ;
+: meta-startname ( -- name ) r> startname >r ;
+: meta-addname ( -- ) r> startname >r link-name ;
+: meta-setflags ( -- ) r> dup @ current-name name-flags! cell+ >r ;
+
+: meta-interpret ( x*i -- x*j )
+    begin r> dup cell+ >r @ ?dup while ref@ execute repeat ;
+
+: meta-compile ( -- )
+    r> begin dup cell+ swap @ ?dup while ref@ compile, repeat >r ;
+
+: meta-reference ( -- ref ) r> dup @ ref@ swap cell+ >r ;

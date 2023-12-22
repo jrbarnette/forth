@@ -1,0 +1,72 @@
+Terminology/vocabularies
+
+BUILDER
+    Forth indirect code in the target for building the target
+    dictionary.
+
+BUILDER-DEFS
+    Forth definitions in the target called by BUILDER code.  The code
+    contains a number of definitions compiled from the Forth sources.
+    There is code space, but no name space or data space.
+
+Target source
+    Forth source code to be converted into BUILDER code.
+
+Meta compiler
+    Forth source for compilin the target source code into BUILDER and
+    BUILDER-DEFS output.
+
+Structure of the builder and builder-defs output in C
+
+    static vminstr_ft meta_initialize[];
+    static vminstr_ft meta_startname[];
+    static vminstr_ft meta_addname[];
+    static vminstr_ft meta_setflags[];
+    static vminstr_ft meta_interpret[];
+    static vminstr_ft meta_compile[];
+    static vminstr_ft meta_reference[];
+
+    vminstr_ft initialize_forth[] = {
+	{ .ip = meta_initialize },
+
+	/* BUILDER code - see forms.txt */
+
+	{ .ip = meta_reference },
+	    { /* EVALUATE        */ .cell = 0x### },
+	{ /* EXIT            */ .ip = &initialize_forth[###] },
+
+	/* META-BUILDER definitions - see forms.txt */
+    };
+
+    static vminstr_ft meta_initialize[] = {
+	/* compiled meta-addname */
+	{ /* EXIT            */ .ip = &initialize_forth[###] },
+    };
+
+    /* similar for other meta- definitions */
+
+    char *init_forth_defs[] = {
+	/* strings of Forth startup source text */
+    };
+
+    #define NREFERENCE ###
+    xt_ft reference_table[NREFERENCE] = { NULL };
+
+The BUILDER/META-BUILDER code has inherent circular dependencies.
+We're solving the problem here using C forward references, because
+that's easy; there are other possible solutions.
+
+The BUILDER code includes locations where all C primitive handlers are
+stored in memory.  Each such location serves as an XT for the primitive.
+These locations are remembered while emitting the BUILDER code, for use
+later in cases where they need to be invoked, whether by later BUILDER
+code, or by BUILDER-DEFS.
+
+Every definition created by BUILDER code in the target dictionary
+(either by meta_startname or meta_addname) is assigned a reference
+number at meta compilation time.  As the BUILDER code creates those
+definitions, the location of the XT in the target dictionary is
+remembered at the index of the reference's number.
+  * meta_interpret, meta_compile and meta_reference all use reference
+    numbers as operands, and convert them to the corresponding XT.
+  * For convenience, reference 0 is a NULL pointer.

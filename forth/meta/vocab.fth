@@ -15,5 +15,5 @@ vocabulary BUILDER-INTERP
 
 ' builder-defs >body constant builder-defs-wordlist
 
-: do-in-wordlist ( creator-xt wid "name" -- )
-    get-current >r set-current execute r> set-current ;
+\ : do-in-wordlist ( creator-xt wid "name" -- )
+\     get-current >r set-current execute r> set-current ;

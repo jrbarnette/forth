@@ -138,8 +138,6 @@ Also, think about possible hybrid solutions combining `direct` with
 
 - Need to implement `RECURSE`
 
-- Should implement `PAD`
-
 - Should implement `VALUE` and `TO`
 
 - Should implement `MARKER`

@@ -20,7 +20,7 @@ here over 1+ chars allot constant PROMPT 0 prompt c!
     prompt prompt-accept 0 prompt c! ;
 : ACCEPT ( c-addr +n1 -- +n2 ) refill-terminal drop ;
 
-: TYPE ( c-addr u -- ) 0 ?do dup i chars + c@ emit loop drop ;
+: TYPE ( c-addr u -- ) 0 ?do dup c@ emit char+ loop drop ;
 
 : CR ( -- ) 10 emit ;
 : SPACE ( -- ) bl emit ;

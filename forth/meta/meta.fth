@@ -1,14 +1,12 @@
-\ Need to figure out host/target-mode magic to initialize this;
-\ something like this:
-\   reference: ref-index
-\       handler: do_variable
-\       <C> 1;
+\ We can create this variable, but initialization has to be done by
+\ invoking a defintion; see meta-initialize, below.
+
 variable ref-index
 
 : ref-addr ( index -- a-addr ) cells <C> &ref_entries[0]; + ;
 : ref@ ( index -- xt ) ref-addr @ ;
-: ref! ( a-addr -- xt ) ref-addr ! ;
-: next-ref! ( name -- ) name>xt ref-index @ ref! 1 ref-index +! ;
+: ref! ( a-addr index -- ) ref-addr ! ;
+: next-ref! ( name -- ) name>xt ref-index @ tuck ref! 1+ ref-index ! ;
 
 \ meta-mode dictionary building operations:
 : meta-initialize 1 ref-index ! ;

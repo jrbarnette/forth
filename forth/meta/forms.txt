@@ -13,6 +13,8 @@ union instruction_cell {
 };
 
 valid output forms:
+
+BUILDER code
     { .ip = meta_interpret },
 	{ .cell = /* ref# */ }, // 1 or more times
 	{ .cell = 0x0 },
@@ -31,11 +33,36 @@ valid output forms:
     { .ip = meta_setflags }, { .cell = /* flags */ },
     { .ip = meta_reference }, { .cell = /* ref# */ },
 
+    { .ip = &initialize_forth[/* do-literal */] },
+	{ .cell = /* number */ },
+
+    { .ip = &initialize_forth[/* do-literal */] },
+	{ .cell = (cell_ft) (/* expr */) },
+
+    { .ip = &initialize_forth[/* do-literal */] },
+	{ .handler = /* name */ },
+
     { .ip = meta_literal },	// later
 
-    { .ip = &initialize_forth[/* index */] },
-    { .cell = /* number */ },
-    { .cell = (cell_ft) (/* expr */) },
+BUILDER-DEFS
+    { .handler = do_constant }, { .cell = /* number */ },
+    { .handler = do_variable }, { .cell = 0 },
+    { .handler = do_colon },
+	/* definition entries */
+
+	{ .ip = &initialize_forth[/* index */] },
+
+	{ .ip = &initialize_forth[/* do-literal */] },
+	    { .cell = (cell_ft) (/* expr */) },
+
+	{ .ip = &initialize_forth[/* do-literal */] },
+	    { .cell = /* number */ },
+
+	{ .ip = &initialize_forth[/* ?branch */] },
+	    { .cell = /* number */ },
+
+	{ .ip = &initialize_forth[/* branch */] },
+	    { .cell = /* number */ },
 
 
 Host interpret:

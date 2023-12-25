@@ -1,12 +1,12 @@
 Actions of :
-    Use CREATE for new name in META-DEFS vocabulary
+    Use CREATE for new name in BUILDER-DEFS vocabulary
     Remember current offset
     Emit this form:
 	{ .handler = do_colon },
     Remember name (for descriptive comment)
     Put HERE on stack
     Enter meta-defs compilation state:
-	ONLY FORTH ALSO META-DEFS DEFINITIONS
+	ONLY FORTH ALSO BUILDER-DEFS DEFINITIONS
     Behavior is to emit this form:
 	{ .ip = &initialize_forth[/* offset */] }, // name
     So, something like this
@@ -18,7 +18,7 @@ Actions of :
 
 
 Actions of CONSTANT
-    Use CREATE for new name in META-DEFS vocabulary
+    Use CREATE for new name in BUILDER-DEFS vocabulary
     Remember current offset
     Emit this form:
 	{ .handler = do_constant }, { .cell = 0x### },
@@ -27,7 +27,7 @@ Actions of CONSTANT
 
 
 Actions of VARIABLE
-    Use CREATE for new name in META-DEFS vocabulary
+    Use CREATE for new name in BUILDER-DEFS vocabulary
     Remember current offset
     Emit this form:
 	{ .handler = do_variable }, { .cell = 0x0 },
@@ -52,11 +52,11 @@ Special actions for do-literal branch ?branch
 
 
 Literal handling:
-    \ execute with META-DEFS shadowing FORTH in search order:
-    ONLY FORTH ALSO META-DEFS DEFINITIONS
+    \ execute with BUILDER-DEFS shadowing FORTH in search order:
+    ONLY FORTH ALSO BUILDER-DEFS DEFINITIONS
     \ POSTPONE first, to have access to FORTH version of LITERAL
     : parse-valid-name ( "name" -- nt )
-	parse-name [ ' meta-defs >body ] literal @ wid-lookup
+	parse-name [ ' builder-defs >body ] literal wid-lookup
 	dup 0= if -13 .error then ;
     : POSTPONE
 	parse-valid-name name>xt+flags immediate? 0=
@@ -101,7 +101,7 @@ In meta-defs compilation state
 	    ." S" C" [CHAR]
 	    ['] (?)
 
-    ONLY META-DEFS DEFINITIONS
+    ONLY BUILDER-DEFS DEFINITIONS
 
     \ define using ONLY FORTH search order
     : INTERPRET-NAME
@@ -110,7 +110,7 @@ In meta-defs compilation state
 
 
 In meta-defs interpret state
-    META-??? shadows FORTH:
+    BUILDER-INTERP shadows FORTH:
 	:
 	CONSTANT
 	    Can create, but can't execute them

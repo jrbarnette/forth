@@ -6,11 +6,15 @@ forth/meta/vocab.fth
 forth/c-gen/c-data.fth
 forth/c-gen/transcribe.fth
 forth/c-gen/entry.fth
-forth/meta/direct.fth
+forth/meta/builder.fth
 
-# Now start building up the TARGET vocabulary and meta-compiler.
-forth/meta/target.fth
-forth/meta/tokens.fth
-forth/common/internal/interpret.fth
-forth/meta/compile-file.fth
-forth/meta/output-dict.fth
+forth/c-gen/core/stackprim.fth
+forth/c-gen/core/arithprim.fth
+forth/c-gen/core/multprim.fth
+forth/c-gen/core/memprim.fth
+forth/c-gen/core/vmprim.fth
+forth/c-gen/core/control.fth
+
+forth/meta/build-defs.fth
+
+forth/c-gen/core/memops.fth

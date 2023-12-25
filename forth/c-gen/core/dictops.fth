@@ -14,7 +14,6 @@
 : ALIGN ( -- ) here aligned here-addr ! ;
 : C, ( char -- ) here [ 1 chars ] literal allot c! ;
 
-\ not yet defined - could be forth
-\ PAD ( -- c-addr )
+: PAD ( -- c-addr )  here [ 96 cells ] literal + ;
 
 : UNUSED ( -- u ) <C> DICTSPACE_END; here - ;

@@ -39,7 +39,10 @@ DIRECT_FORTH(initialize_forth) // {
     \ in turn depends on "stackops".
     compile-file: forth/common/core/stackops.fth
     compile-file: forth/c-gen/core/control.fth
+    compile-file: forth/common/internal/mark.fth
     compile-file: forth/common/core/control.fth
+    compile-file: forth/common/internal/markchain.fth
+    compile-file: forth/common/core/docase.fth
     compile-file: forth/common/core/arithops.fth
 
     compile-file: forth/common/internal/ascii.fth

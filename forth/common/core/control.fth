@@ -12,15 +12,8 @@
 \  UNTIL                 6.1.2390 CORE
 \  WHILE                 6.1.2430 CORE
 \
-\  ?DO                   6.2.0620 CORE EXT
 \  AGAIN                 6.2.0700 CORE EXT
 \ ------  ------  ------  ------  ------  ------  ------  ------
-
-\ FORTH-83 - System Extension Word Set
-: <MARK ( -- dest ) here ; compile-only
-: <RESOLVE ( dest -- ) here - [ 1 cells ] literal / , ; compile-only
-: >MARK ( -- orig ) here [ 1 cells ] literal allot ; compile-only
-: >RESOLVE ( orig -- ) here over - [ 1 cells ] literal / swap ! ; compile-only
 
 \ Building blocks - non-standard.
 : >BRANCH ( -- orig ) postpone branch >mark ; compile-only
@@ -38,53 +31,3 @@
 
 : REPEAT postpone again postpone then ; compile-special
 : WHILE ( C: dest -- orig dest ) postpone if swap ; compile-special
-
-\ Flow of control for constructs with internal branches to a common
-\ exit point, including DO, ?DO, and CASE.
-here 0 ,
-: chain-swap ( new-chain -- old-chain )
-    [ over ] literal @ swap [ swap ] literal ! ;
-: start-chain ( -- saved-chain ) 0 chain-swap ;
-: mark>chain ( orig -- ) dup chain-swap swap ! ;
-: branch>chain ( -- ) >branch mark>chain ;
-: resolve-chain ( saved-chain -- ) 
-    chain-swap begin dup while dup @ swap postpone then repeat drop ;
-
-\ Flow of control using DO, ?DO, +LOOP, and LEAVE
-\ Compilation of DO-loops
-\     DO a +LOOP ->   DO-DO BEGIN a DO-+LOOP UNTIL UNLOOP
-\ Compilation of ?DO-loops
-\     ?DO a +LOOP ->  DO-DO R@ IF BEGIN a DO-+LOOP UNTIL THEN UNLOOP
-\
-\ LEAVE compiles as a forward branch to the UNLOOP at the very end.
-
-: do-prolog postpone do-do start-chain ;
-: do-epilog postpone begin ;
-: DO ( C: -- saved-chain dest ) do-prolog do-epilog ; compile-special
-: ?DO ( C: -- saved-chain dest )
-    do-prolog postpone r@ postpone if mark>chain do-epilog ; compile-special
-
-: LEAVE branch>chain ; compile-special
-
-: +LOOP ( C: saved-chain dest -- )
-    postpone do-+loop postpone until resolve-chain postpone unloop
-; compile-special
-: LOOP 1 postpone literal postpone +loop ; compile-special
-
-\ CASE structure/syntax:
-\     a CASE b OF c ENDOF ENDCASE
-\       -> a b OVER = IF DROP c ELSE DROP THEN
-\     a CASE b OF c ENDOF d OF e ENDOF ENDCASE
-\       -> a b OVER = IF DROP c ELSE d OVER = IF DROP e ELSE DROP THEN THEN
-\ etc.
-
-: CASE ( C: -- saved-chain ) start-chain ; compile-special
-: OF ( C: saved-chain -- saved-chain orig )
-    postpone over postpone = postpone if postpone drop
-; compile-special
-: ENDOF ( C: saved-chain orig -- saved-chain )
-    branch>chain postpone then
-; compile-special
-: ENDCASE ( C: saved-chain -- )
-    postpone drop resolve-chain
-; compile-special

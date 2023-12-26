@@ -31,5 +31,3 @@ variable line-state      true line-state !
 
 HOST-MODE also BUILDER-INTERP definitions previous
 : prim: create-builder-def parse-name { .exec } emit-nl ;
-
-BUILDER-INTERP-MODE

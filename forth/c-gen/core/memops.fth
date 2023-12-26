@@ -15,3 +15,5 @@
 
 : CELLS <C> CELL_SIZE; * ;
 : CELL+ <C> CELL_SIZE; + ;
+
+: ALIGNED ( addr -- a-addr ) <C> CELL_SIZE-1; + <C> -CELL_SIZE; and ;

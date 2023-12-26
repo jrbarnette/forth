@@ -5,12 +5,12 @@ HOST-MODE definitions
 : OPEN-SOURCE-FILE ( "filename" -- fileid )
     parse-name 12 spaces ." /* ==== " 2dup type ."  ==== */" cr
     r/o open-file abort" failed to open file" ;
-: INTERPRET-META-FILE
-    target-mode
+: INTERPRET-BUILDER-FILE
+    builder-interp-mode
     begin refill if ['] interpret catch ?dup else 0 -1 then until
     host-mode source-id close-file drop throw ;
 : COMPILE-FILE: ( "filename" -- )
-    open-source-file ['] interpret-meta-file with-input-source ;
+    open-source-file ['] interpret-builder-file with-input-source ;
 
 create SOURCE-LINE 256 dup chars allot 2 - constant LINE-SIZE
 : read-source-line ( fileid -- line #line flag )

@@ -1,11 +1,17 @@
 \ Copyright 2019, by J. Richard Barnette, All Rights Reserved.
-\ Meta-interpreter token handling
+\ Forth text interpreter token handling
 
 HOST-MODE definitions
 
-: INTERPRET-NAME ( i*x name -- j*x ) name>xt execute ;
+: INTERPRET-NAME ( i*x name -- j*x )
+    state @ if
+	name>xt+flags immediate? if execute else , then
+    else
+	name>interpret ?dup if execute else -14 .error then
+    then
+;
 
-: INTERPRET-NUMBER ( x -- ) literal-cell meta-literal ;
 
-: INTERPRET-UNKNOWN ( str len -- )
-    meta-state @ negate 1+ meta-emit true ;
+: INTERPRET-NUMBER ( x -- | x ) state @ if postpone-builder literal then ;
+
+: INTERPRET-UNKNOWN ( str len -- ) false ;

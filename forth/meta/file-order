@@ -8,13 +8,4 @@ forth/c-gen/transcribe.fth
 forth/c-gen/entry.fth
 forth/meta/builder.fth
 
-forth/c-gen/core/stackprim.fth
-forth/c-gen/core/arithprim.fth
-forth/c-gen/core/multprim.fth
-forth/c-gen/core/memprim.fth
-forth/c-gen/core/vmprim.fth
-forth/c-gen/core/control.fth
-
-forth/meta/build-defs.fth
-
-forth/c-gen/core/memops.fth
+forth/meta/output-dict.fth

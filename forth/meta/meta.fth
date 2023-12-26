@@ -9,7 +9,10 @@ variable ref-index
 : next-ref! ( name -- ) name>xt ref-index @ tuck ref! 1+ ref-index ! ;
 
 \ meta-mode dictionary building operations:
-: meta-initialize 1 ref-index ! ;
+: meta-initialize
+    1 ref-index !
+    <C> DICTSPACE_START + sizeof (DICT); <C> &HERE; !
+;
 
 : startname ( a-addr -- name a-addr' )
     dup 2@ count name, dup next-ref! swap cell+ cell+ ;

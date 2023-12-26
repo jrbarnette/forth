@@ -25,7 +25,6 @@
 
 
 HOST-MODE definitions
-
 : parse-valid-name ( "name" -- nt )
     parse-name builder-defs-wordlist wid-lookup
     dup 0= if -13 .error then ;
@@ -42,7 +41,7 @@ also BUILDER-DEFS definitions previous
 HOST-MODE
 : POSTPONE
     parse-valid-name name>xt+flags immediate? 0=
-    if [compile] literal ['] , then , ; compile-special
+    if [compile] literal ['] , then compile, ; compile-special
 
 HOST-MODE definitions
 : POSTPONE-BUILDER [BUILDER] POSTPONE ; compile-special
@@ -96,5 +95,3 @@ also BUILDER-DEFS definitions previous
     begin 2dup > while
 	dup @ execute emit-nl cell+
     repeat drop - allot postpone-builder [ ; compile-special
-
-BUILDER-INTERP-MODE

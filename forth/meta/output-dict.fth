@@ -37,9 +37,32 @@ vminstr_ft builder_defs[] = {
     compile-file: forth/c-gen/core/multprim.fth
     compile-file: forth/c-gen/exception/throwprim.fth
 
+    HOST-MODE definitions also BUILDER-SPECIAL
+    include-file: forth/common/internal/branches.fth
+
+    also BUILDER-DEFS definitions previous
+    include-file: forth/common/core/control.fth
+
+    HOST-MODE definitions also BUILDER-SPECIAL
+    include-file: forth/common/internal/doprolog.fth
+
+    also BUILDER-DEFS definitions previous
+    include-file: forth/common/core/docase.fth
+
+    HOST-MODE
+
     compile-file: forth/c-gen/core/memops.fth
-    compile-file: forth/common/core/memops.fth
     compile-file: forth/c-gen/core/allot.fth
+    compile-file: forth/common/core/stackops.fth
+    compile-file: forth/common/core/arithops.fth
+    compile-file: forth/common/core/memops.fth
+
+    compile-file: forth/common/internal/ascii.fth
+    compile-file: forth/common/internal/namespace.fth
+    compile-file: forth/common/search/current.fth
+    compile-file: forth/common/internal/dictionary.fth
+    compile-file: forth/common/internal/wordlists.fth
+    compile-file: forth/meta/meta.fth
     TRANSCRIBE>
 };
 FORTH>

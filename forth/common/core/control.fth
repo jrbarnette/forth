@@ -15,12 +15,6 @@
 \  AGAIN                 6.2.0700 CORE EXT
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
-\ Building blocks - non-standard.
-: >BRANCH ( -- orig ) postpone branch >mark ; compile-only
-: >?BRANCH ( -- orig ) postpone ?branch >mark ; compile-only
-: <BRANCH ( dest -- ) postpone branch <resolve ; compile-only
-: <?BRANCH ( dest -- ) postpone ?branch <resolve ; compile-only
-
 \ Basic flow of control words
 : BEGIN ( C: -- dest ) <mark ; compile-special
 : THEN ( C: orig -- ) >resolve ; compile-special

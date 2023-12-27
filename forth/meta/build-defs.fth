@@ -1,7 +1,6 @@
 \  Copyright 2023, by J. Richard Barnette. All Rights Reserved.
 
 \ ------  ------  ------  ------  ------  ------  ------  ------
-\  POSTPONE-BUILDER		HOST (compile special)
 \  [BUILDER]			HOST (compile special)
 \
 \  <C>				BUILDER-DEFS (compile special)
@@ -38,13 +37,10 @@ HOST-MODE definitions also BUILDER-INTERP
 also BUILDER-DEFS definitions previous
 : [COMPILE] ' , ; compile-special
 
-HOST-MODE
+HOST-MODE also BUILDER-SPECIAL definitions
 : POSTPONE
     parse-valid-name name>xt+flags immediate? 0=
     if [compile] literal ['] , then compile, ; compile-special
-
-HOST-MODE definitions
-: POSTPONE-BUILDER [BUILDER] POSTPONE ; compile-special
 
 
 HOST-MODE definitions
@@ -61,7 +57,16 @@ also BUILDER-DEFS definitions previous
     swap move ['] expr-literal , r> , ; compile-special
 
 
-also BUILDER-INTERP definitions
+HOST-MODE definitions
+: xt-literal
+    [builder] do-literal cell+ dup @ execute ;
+
+HOST-MODE also BUILDER-INTERP
+also BUILDER-DEFS definitions previous
+: ['] ' ['] xt-literal , , ; compile-special
+
+
+HOST-MODE also BUILDER-INTERP definitions
 : ] builder-defs-wordlist 1 set-order ] ;
 : :
     create-builder-def
@@ -69,9 +74,9 @@ also BUILDER-INTERP definitions
     s" do_colon" { .exec } emit-nl expr-buffer expr-ptr ! here ] ;
 previous
 : VARIABLE
-    create-builder-def s" do_variable" { .exec }{ 0 .cell } ;
+    create-builder-def s" do_variable" { .exec }{ 0 .cell } emit-nl ;
 : CONSTANT
-    create-builder-def s" do_constant" { .exec }{ .cell } ;
+    create-builder-def s" do_constant" { .exec }{ .cell } emit-nl ;
 
 HOST-MODE definitions
 : operand-cell  cell+ dup @ { .cell } ;
@@ -81,17 +86,18 @@ also BUILDER-DEFS definitions previous
 : branch      [builder] branch      operand-cell ;
 : ?branch     [builder] ?branch     operand-cell ;
 
-: LITERAL postpone-builder do-literal , ; compile-special
-
 : \ postpone \ ; immediate
 : ( postpone ( ; immediate
 : .( postpone .( cr ; immediate
 
 : [ BUILDER-INTERP-MODE postpone [ ; immediate
+
+also BUILDER-SPECIAL
 : ;
-    postpone-builder EXIT
+    postpone EXIT
     here over ( start end cur )
     \ emit-compiling
     begin 2dup > while
 	dup @ execute emit-nl cell+
-    repeat drop - allot postpone-builder [ ; compile-special
+    repeat drop - allot postpone [ ; compile-special
+: LITERAL postpone do-literal , ; compile-special

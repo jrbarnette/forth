@@ -12,6 +12,6 @@ HOST-MODE definitions
 ;
 
 
-: INTERPRET-NUMBER ( x -- | x ) state @ if postpone-builder literal then ;
+: INTERPRET-NUMBER ( x -- | x ) state @ if [builder] literal then ;
 
 : INTERPRET-UNKNOWN ( str len -- ) false ;

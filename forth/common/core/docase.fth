@@ -14,8 +14,6 @@
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
 
-: branch>chain ( -- ) >branch mark>chain ;
-
 \ Flow of control using DO, ?DO, +LOOP, and LEAVE
 \ Compilation of DO-loops
 \     DO a +LOOP ->   DO-DO BEGIN a DO-+LOOP UNTIL UNLOOP
@@ -24,8 +22,6 @@
 \
 \ LEAVE compiles as a forward branch to the UNLOOP at the very end.
 
-: do-prolog postpone do-do start-chain ;
-: do-epilog postpone begin ;
 : DO ( C: -- saved-chain dest ) do-prolog do-epilog ; compile-special
 : ?DO ( C: -- saved-chain dest )
     do-prolog postpone r@ postpone if mark>chain do-epilog ; compile-special

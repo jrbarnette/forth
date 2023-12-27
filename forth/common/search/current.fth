@@ -10,5 +10,5 @@
 \ from Forth-83
 variable CURRENT
 
-: GET-CURRENT [ current ] literal @ ;	( -- wid )
-: SET-CURRENT [ current ] literal ! ;	( wid -- )
+: GET-CURRENT current @ ;	( -- wid )
+: SET-CURRENT current ! ;	( wid -- )

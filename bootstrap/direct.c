@@ -15,7 +15,6 @@
 void
 direct_execute(vmstate_ft *vm, vmip_ft ip)
 {
-    vm_initialize(vm);
     RPUSH(vm, NULL);
 
     int throwcode;

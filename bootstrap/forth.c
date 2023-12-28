@@ -140,6 +140,7 @@ main(int argc, char *argv[])
     process_args(argc, argv, &forth_options);
 
     vmstate_ft vmstate;
+    vm_initialize(&vmstate);
     xt_ft eval = initialize_dictionary(&vmstate);
 
     if (forth_options.startup_file != NULL) {

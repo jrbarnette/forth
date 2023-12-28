@@ -31,6 +31,9 @@ HOST-MODE definitions
 also BUILDER-INTERP definitions previous
 : ' ( "name" -- xt )  parse-valid-name name>xt ;
 
+also BUILDER-INTERP
+' do-literal constant do-literal-xt
+
 HOST-MODE definitions also BUILDER-INTERP
 : [BUILDER] ' compile, ; compile-special
 

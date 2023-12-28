@@ -3,7 +3,7 @@
 
 variable ref-index
 
-: ref-addr ( index -- a-addr ) cells <C> &ref_entries[0]; + ;
+: ref-addr ( index -- a-addr ) cells <C> &reference_table[0]; + ;
 : ref@ ( index -- xt ) ref-addr @ ;
 : ref! ( a-addr index -- ) ref-addr ! ;
 : next-ref! ( name -- ) name>xt ref-index @ tuck ref! 1+ ref-index ! ;
@@ -12,10 +12,12 @@ variable ref-index
 : meta-initialize
     1 ref-index !
     <C> DICTSPACE_START + sizeof (DICT); <C> &HERE; !
+    <C> &FORTH_WORDLIST; set-current
 ;
 
+: strlen dup begin dup c@ while char+ repeat swap - ;
 : startname ( a-addr -- name a-addr' )
-    dup 2@ count name, dup next-ref! swap cell+ cell+ ;
+    dup 2@ dup strlen name, dup next-ref! swap cell+ cell+ ;
 : meta-startname ( -- name ) r> startname >r ;
 : meta-addname ( -- ) r> startname >r link-name ;
 : meta-setflags ( -- ) r> dup @ current-name name-flags! cell+ >r ;

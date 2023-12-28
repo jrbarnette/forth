@@ -63,6 +63,22 @@ vminstr_ft builder_defs[] = {
     compile-file: forth/common/internal/dictionary.fth
     compile-file: forth/common/internal/wordlists.fth
     compile-file: forth/meta/meta.fth
+
     TRANSCRIBE>
 };
+FORTH>
+HOST-MODE definitions
+: builder-def-expr ." (&builder_defs[" >body cell+ @ 1 .r ." ])" ;
+also BUILDER-INTERP
+TRANSCRIBE>
+
+#define DO_LITERAL          ` do-literal-xt     builder-def-expr `
+#define META_INITIALIZE     ` ' meta-initialize builder-def-expr `
+#define META_STARTNAME      ` ' meta-startname  builder-def-expr `
+#define META_ADDNAME        ` ' meta-addname    builder-def-expr `
+#define META_LINKNAME       ` ' link-name       builder-def-expr `
+#define META_SETFLAGS       ` ' meta-setflags   builder-def-expr `
+#define META_INTERPRET      ` ' meta-interpret  builder-def-expr `
+#define META_COMPILE        ` ' meta-compile    builder-def-expr `
+#define META_REFERENCE      ` ' meta-reference  builder-def-expr `
 FORTH>

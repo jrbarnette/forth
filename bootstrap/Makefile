@@ -58,10 +58,10 @@ CHECKFLAG = -DSTACKCHECK=$(CHECK$(CHECKMODE))
 OTHER_FLAGS =
 
 # By default, -O doesn't apply the optimizations needed to open-code
-# functions declared with `inline`.  -O3 does include that optimization.
-# -O3 may be macOS/llvm specific; gcc may have different ideas of how
-# this is done.
-OPT_FLAG = -O3 -g
+# functions declared with `inline`.  -O2 does include that optimization.
+# This isn't exactly tested on Linux/gcc, but online documentation seems
+# to indicate they're the same, or close enough.
+OPT_FLAG = -O2 -g
 CFLAGS = $(OPT_FLAG) $(CHECKFLAG) -Wall $(OTHER_FLAGS)
 LDFLAGS = -lreadline
 

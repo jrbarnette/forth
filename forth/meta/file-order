@@ -6,6 +6,6 @@ forth/meta/vocab.fth
 forth/c-gen/c-data.fth
 forth/c-gen/transcribe.fth
 forth/c-gen/entry.fth
-forth/meta/builder.fth
+forth/meta/meta-host.fth
 
 forth/meta/output-dict.fth

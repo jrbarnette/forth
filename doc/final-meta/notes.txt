@@ -13,7 +13,7 @@ Target source
     Forth source code to be converted into BUILDER code.
 
 Meta compiler
-    Forth source for compilin the target source code into BUILDER and
+    Forth source for compiling the target source code into BUILDER and
     BUILDER-DEFS output.
 
 Structure of the builder and builder-defs output in C

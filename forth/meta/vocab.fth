@@ -5,21 +5,15 @@ vocabulary HOST
 : HOST-MODE only FORTH also HOST ;
 HOST-MODE definitions
 
-vocabulary BUILDER
-vocabulary BUILDER-DEFS
-vocabulary BUILDER-INTERP
-vocabulary BUILDER-SPECIAL
+vocabulary META-HOST
+vocabulary META-TARGET
+vocabulary META-DEFINERS
+vocabulary META-SPECIAL
 
-: BUILDER-INTERP-MODE
-    only FORTH also BUILDER-INTERP
-    also BUILDER-DEFS definitions previous ;
+: META-HOST-MODE     HOST-MODE also META-HOST ;
+: META-DEFINITIONS   also META-TARGET definitions previous ;
+: META-TARGET-MODE   only FORTH also META-DEFINERS META-DEFINITIONS ;
+: META-COMPILE-MODE  META-HOST-MODE also META-SPECIAL META-DEFINITIONS ;
 
-: BUILDER-COMPILE-MODE
-    HOST-MODE also BUILDER-DEFS definitions previous
-    also BUILDER-SPECIAL ;
-
-' builder-defs >body constant builder-defs-wordlist
-' builder-special >body constant builder-special-wordlist
-
-\ : do-in-wordlist ( creator-xt wid "name" -- )
-\     get-current >r set-current execute r> set-current ;
+' META-TARGET  >body constant META-TARGET-WORDLIST
+' META-SPECIAL >body constant META-SPECIAL-WORDLIST

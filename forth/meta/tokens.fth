@@ -1,7 +1,7 @@
 \ Copyright 2019, by J. Richard Barnette, All Rights Reserved.
 \ Forth text interpreter token handling
 
-HOST-MODE definitions
+META-HOST-MODE definitions
 
 : INTERPRET-NAME ( i*x name -- j*x )
     state @ if
@@ -12,6 +12,9 @@ HOST-MODE definitions
 ;
 
 
-: INTERPRET-NUMBER ( x -- | x ) state @ if [builder] literal then ;
+also META-SPECIAL
+: INTERPRET-NUMBER ( x -- | x ) state @ if postpone literal then ;
+previous
+
 
 : INTERPRET-UNKNOWN ( str len -- ) false ;

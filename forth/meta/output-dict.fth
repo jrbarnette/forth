@@ -1,13 +1,5 @@
 \  Copyright 2023, by J. Richard Barnette. All Rights Reserved.
 
-HOST-MODE definitions
-: dump-wordlist
-    @ begin dup while
-       ." // " dup name>string type cr name>prev
-    repeat drop
-;
-
-
 only FORTH definitions
 : include-file: ( "filename" -- ) parse-name included ;
 
@@ -20,13 +12,14 @@ TRANSCRIBE>
 #include "meta.h"
 
 
-vminstr_ft builder_defs[] = {
+vminstr_ft meta_definitions[] = {
     FORTH>
-    builder-interp-mode
+    META-TARGET-MODE
     include-file: forth/c-gen/core/vmprim.fth
     include-file: forth/c-gen/core/control.fth
 
-    include-file: forth/meta/build-defs.fth
+    HOST-MODE
+    include-file: forth/meta/meta-target.fth
     include-file: forth/meta/tokens.fth
     include-file: forth/common/internal/interpret.fth
     include-file: forth/meta/compile-file.fth
@@ -37,20 +30,19 @@ vminstr_ft builder_defs[] = {
     compile-file: forth/c-gen/core/multprim.fth
     compile-file: forth/c-gen/exception/throwprim.fth
 
-    HOST-MODE definitions also BUILDER-SPECIAL
+    META-HOST-MODE definitions also META-SPECIAL
     include-file: forth/common/internal/branches.fth
 
-    also BUILDER-DEFS definitions previous
+    META-DEFINITIONS
     include-file: forth/common/core/control.fth
 
-    HOST-MODE definitions also BUILDER-SPECIAL
+    META-HOST-MODE definitions also META-SPECIAL
     include-file: forth/common/internal/doprolog.fth
 
-    also BUILDER-DEFS definitions previous
+    META-DEFINITIONS
     include-file: forth/common/core/docase.fth
 
-    HOST-MODE
-
+    META-HOST-MODE
     compile-file: forth/c-gen/core/memops.fth
     compile-file: forth/c-gen/core/allot.fth
     compile-file: forth/common/core/stackops.fth
@@ -67,18 +59,48 @@ vminstr_ft builder_defs[] = {
     TRANSCRIBE>
 };
 FORTH>
-HOST-MODE definitions
-: builder-def-expr ." (&builder_defs[" >body cell+ @ 1 .r ." ])" ;
-also BUILDER-INTERP
+META-HOST-MODE definitions
+: .target-ref
+    ." (&meta_definitions[" >body @ .c-decimal ." ])" ;
 TRANSCRIBE>
 
-#define DO_LITERAL          ` do-literal-xt     builder-def-expr `
-#define META_INITIALIZE     ` ' meta-initialize builder-def-expr `
-#define META_STARTNAME      ` ' meta-startname  builder-def-expr `
-#define META_ADDNAME        ` ' meta-addname    builder-def-expr `
-#define META_LINKNAME       ` ' link-name       builder-def-expr `
-#define META_SETFLAGS       ` ' meta-setflags   builder-def-expr `
-#define META_INTERPRET      ` ' meta-interpret  builder-def-expr `
-#define META_COMPILE        ` ' meta-compile    builder-def-expr `
-#define META_REFERENCE      ` ' meta-reference  builder-def-expr `
+#define DO_LITERAL          ` ' do-literal       .target-ref `
+#define META_INITIALIZE     ` ' meta-initialize  .target-ref `
+#define META_LINKNAME       ` ' link-name        .target-ref `
+#define META_STARTNAME      ` ' meta-startname   .target-ref `
+#define META_ADDNAME        ` ' meta-addname     .target-ref `
+#define META_SETFLAGS       ` ' meta-setflags    .target-ref `
+#define META_INTERPRET      ` ' meta-interpret   .target-ref `
+#define META_COMPILE        ` ' meta-compile     .target-ref `
+#define META_REFERENCE      ` ' meta-reference   .target-ref `
+
 FORTH>
+\ META-HOST-MODE definitions
+\ create flag-chars
+\     '-' C, '-' C, \ 00 default semantics
+\     'C' C, 'O' C, \ 01 compile-only
+\     'I' C, 'M' C, \ 10 IMMEDIATE
+\     'S' C, 'P' C, \ 11 special
+\ 
+\ : .flags
+\     6 rshift 1 lshift flag-chars + 2 type
+\ ;
+\ 
+\ : dump-wordlist
+\     @ begin dup while
+\ 	." //   "
+\ 	dup name>xt+flags .flags space drop dup
+\ 	name>string type cr name>prev
+\     repeat drop ;
+\ 
+\ : show-vocabularies
+\     ." // META-TARGET" cr
+\ 	meta-target-wordlist dump-wordlist cr
+\     ." // META-DEFINERS" cr
+\ 	['] META-DEFINERS >body dump-wordlist cr
+\     ." // META-SPECIAL" cr
+\ 	['] META-SPECIAL >body dump-wordlist cr
+\     ." // HOST" cr
+\ 	['] HOST >body dump-wordlist
+\ ;
+\ cr show-vocabularies

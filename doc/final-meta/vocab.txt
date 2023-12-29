@@ -1,0 +1,50 @@
+HOST
+    Basic utilities for output to target code
+
+META-HOST
+    Host stuff that can't be shared with BUILDER, such as:
+	INTERPRET and constituents
+	COMPILE-FILE:
+	' (redefined to search META-BUILDER only)
+	local helpers, see build-defs:
+	    parse-valid-name
+	    augmented do-literal, ?branch, branch
+		(?) maybe could/should be META-BUILDER
+	    expr-literal, et al.
+	    xt-literal
+	    operand-cell
+	    control utilities, e.g. <?BRANCH et al., DO-EPILOG
+
+META-TARGET
+    Definitions that can be compiled to target builder, and compiler
+    special definitions for building them.  Everything needed to
+    implement the BUILDER primitives:
+	meta-initialize
+	do-literal
+	linkname
+	meta-addname
+	meta-startname
+	meta-setflags
+	meta-compile
+	meta-interpret
+	meta-reference
+
+META-DEFINERS
+    Extension of HOST to contain/redefine key words, especially
+    defining words.  Exists to support adding definitions into
+    META-BUILDER.  At minimum, these:
+	PRIM:
+	:
+	CONSTANT
+	VARIABLE
+	]
+
+META-SPECIAL
+    meta-builder compiler special definitions that need to override
+    standard definitions when compiling what is otherwise HOST or
+    META-HOST code.  Currently that means POSTPONE (and nothing else).
+
+    (Consider including [COMPILE] and ['])
+
+TARGET
+    Vocabulary (-ies?) to support BUILDER target code source

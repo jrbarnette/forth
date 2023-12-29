@@ -1,5 +1,4 @@
-\ We can create this variable, but initialization has to be done by
-\ invoking a defintion; see meta-initialize, below.
+\  Copyright 2023, by J. Richard Barnette. All Rights Reserved.
 
 variable ref-index
 

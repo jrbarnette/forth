@@ -13,12 +13,12 @@
 
 if ( cd bootstrap ; make clean all ) >/dev/null
 then
-    ( echo forth/direct/file-order
+    ( ls forth/meta/file-order gen-dict
       ( git ls-files bootstrap | sed '/\.c$/ !p'
         ls bootstrap/*.o | sed 's=\.o$=\.c=' ) |
 	      sort | uniq -d
-      ./gen-dict -l direct
-      ./gen-dict direct | awk '/ ==== / { print $3 }' ) | sort -u
+      ./gen-dict -l meta
+      ./gen-dict meta | awk '/ ==== / { print $3 }' ) | sort -u
 else
     echo "build failure" >&2
     exit 1

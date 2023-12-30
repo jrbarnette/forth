@@ -9,7 +9,6 @@ TRANSCRIBE>
 
 #include "forth.h"
 #include "dictionary.h"
-#include "meta.h"
 
 
 vminstr_ft meta_definitions[] = {
@@ -173,5 +172,4 @@ char *init_forth_defs[] = {
 
 #define NREFERENCE `nreference @ .c-decimal`
 xt_ft reference_table[NREFERENCE] = { NULL };
-xt_ft *reference_ptr = &reference_table[1];
 FORTH>

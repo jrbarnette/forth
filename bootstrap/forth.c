@@ -120,9 +120,7 @@ interpret_arguments(xt_ft eval, vmstate_ft *vm, int argc, char *argv[])
 static xt_ft
 initialize_dictionary(vmstate_ft *vm)
 {
-    // HERE = DICTSPACE_START + sizeof (DICT);
-    // direct_execute(vm, initialize_forth);
-    execute(vm, initialize_forth);
+    execute(vm, (xt_ft) initialize_forth);
     xt_ft eval = (xt_ft) POP(vm);
     assert(EMPTY(vm));
     assert(REMPTY(vm));

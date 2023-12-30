@@ -1,115 +1,59 @@
 ## Design/Implementation Refinements
 ### Where we are
-All Forth code now lives under `forth/`, and gets built (one way or
-another) into `initdict.c`.  This includes source code built into the
-interpreter for interpretation at startup.
+There's now a new meta-compiler, living under `forth/meta`.
+Dependencies on C code are now just command-line processing,
+certain parts of initialization, and the necessary C primitive
+functions.
 
-`QUIT` has an implementation in the source text that we interpret at
-startup, and the static dictionary is gone, except for `HERE` and
-`FORTH-WORDLIST`. So, at this point, almost everything that might
-plausibly be in Forth in the target dictionary is now in Forth.  The
-only C code left to eliminate is the stuff used for direct mode and
-meta-interpretation during dictionary construction at startup.
+### Where to go next
+The meta-compiler still has rough edges, mostly relating to
+niceties of design and organization, outlined below.
 
-### Plan to move forward
-The long-term goal is to get rid of C code that isn't a Forth
-primitive or the interpreter loop.  Preserving both the indirect-
-and direct-threaded loops is OK, and maybe useful/necessary.
-Simplifying the generation of direct interpreted code in `initdict.c`
-would be nice, but not required.
+Some of the names in `forth/meta/host.fth` still use the prefix
+`direct-`.  This isn't the right naming convention any more.
+Lots of other naming conventions need revisiting, too.
 
-In practice, we want to eliminate these C primitives:
-  * `i_addname`
-  * `i_linkname`
-  * `i_setflags`
-  * `i_startname`
-  * `i_reference`
-  * `meta_compile`
-  * `meta_interpret`
+The meta-compiler is stable enough to justify spending time on
+documentation.  Some time spent here might help produce clarity
+in terminology and naming conventions, too.
 
-Additionally, we'll want Forth code for most of the system startup
-stuff called from `main()` (in `forth.c`).
+We want the `HOST` vocabulary to be "everything needed to produce
+simple C code forms in the output".  However, currently `META-HOST`
+contains private versions that are customized to its needs.
+Ideally, we'd find ways to unify the various output modes.  In
+particular, it would be nice to be able to invoke some of the
+definitions from `META-TARGET` in `TARGET` code rather than creating
+`#define` values for them in C source.
 
-All told, that means eliminating/replacing the content in these files:
-  * `allot.c`
-  * `names.c`
-  * `meta.c`
-  * `forth.c`
+The `TARGET` code in `forth/c-gen/core/literal.fth` is complicated.
+It would be nice if it looked more like `forth/c-gen/core/allot.fth`.
+That would require using more of the `META-TARGET` code, like
+`ALLOT` and friends, and compiling `LITERAL` on the host rather
+than waiting for the builder to invoke it from the dictionary.
 
-#### The `direct` option
-The content to be replaced isn't much: ~368 lines, including comments
-and some content in `forth.c` that won't be converted.  But... It'd all
-have to be implemented as direct-mode code, so we'd need to add
-`i_call()`.  That's nominally not a big deal...
-```
-    PRIM_HDLR(i_call)
-    {
-	CHECK_RPUSH(vm, 1);
-	RPUSH(vm, ip + 1);
-	return ip->ip;
-    }
-```
+At this point, the names of all definitions that go into
+the builder code on the target are known (indirectly) on the target
+at meta-compilation time (they're in the `TARGET-NAMES` wordlist).
+So, in meta-compiler target code, we could look up target names in
+`INTERPRET-NAME`, rather than leaving it to `INTERPRET-UNKNOWN`.
+That would mean we'd make all target definitions be executable code
+that outputs the needed forms.  This could simplify the code
+(maybe?), although the lesson from `META-TARGET` is that the
+approach needs several (3-4) separate vocabularies to keep it all
+straight.
 
-But... we'd also have to implement several new things:
-  * New direct code invoked via `i_call()` in `initdict.c` to replace
-    the existing C functions.
-  * New support infrastructure to generate the new direct code.
+The dictionary still has some data that's laid out statically, not
+by the builder.  It would be nice to get rid of it.  The file
+related stuff is used by command-line processing, and could just be
+global variables.  Getting rid of the storage for HERE and
+FORTH-WORDLIST is a bit more work.
 
-That could turn out to be large and complicated, and could create its
-own code duplication...
-
-#### The `rawdict` option
-The complexity of staying `direct` argues for the `rawdict` approach:
-build up a dictionary image at compile time, then at startup just `MOVE`
-the data to the dictionary storage.  The problem is that this means
-`initdict.c` is tied to a particular cell size.  I don't like that...
-
-So, I'm looking at a hybrid approach to `rawdict`.  The dictionary would
-be an arrary of entries like this:
-```
-    union {
-	cell_ft         cell;
-	c_addr_ft       str;
-	cell_ft         ref;
-	vminstr_fn      handler;
-    } raw_dictionary[] = {
-	...
-    };
-```
-
-Rather than populating the dictionary with a raw `memcpy()`, each entry
-in `raw_dictionary` would be processed along these lines:
-  * A `cell` or `handler` entry is appended directly to the next cell in
-    the dictionary.
-  * The bytes pointed to by a `str` entry are appended to the
-    dictionary.
-  * A `ref` entry holds the index of an earlier entry in the
-    `raw_dictionary` array: append to the dictionary the address where
-    that entry was copied to in the dictionary.
-
-This implies we'd need a secondary array of relocation addresses for
-`ref` entries. In theory we could reuse the slot in `raw_dictionary`,
-but that makes me itchy, so maybe not...
-
-Additionally, `rawdict` would have to include a tag for each entry in
-`raw_dictionary` so the copy code would know how to process the entry.
-
-This hybrid approach would also need some special processing for cells
-with forward references, namely `HERE` and `FORTH-WORDLIST`.
-
-#### Obvious next steps
-Fix known bugs, and implement missing standard features.  Basically,
-bring the `bootstrap` interpreter up to full compliance with CORE,
-CORE EXT, and a few selected other word sets (especially EXCEPTION,
-FILE, TOOLS and SEARCH).
-
-Also, think about possible hybrid solutions combining `direct` with
-`rawdict`.
+Command-line processing and related initialization are still all
+in C.  A lot of it could be Forth.  Ideally, we'd only depend on
+C to invoke `getopt()`, and then pass the information to some sort
+of `MAIN` routine in Forth to walk through file arguments and such.
 
 ## New Features/Bugs/Flaws
-
-- In direct meta code, we should look up target names in INTERPRET-NAME,
-  rather than leaving it to INTERPRET-UNKNOWN.
 
 - In output-dict.fth, you find this:
 ```
@@ -134,6 +78,8 @@ Also, think about possible hybrid solutions combining `direct` with
 - We are ready to get rid of `file-order`, by using `INCLUDE-FILE` and
   other code to load directly from source.  (But do we want to?)
 
+- Consider making `ONLY` a real Root vocabulary.
+
 - Need to implement `ENVIRONMENT?`
 
 - Need to implement `RECURSE`
@@ -141,3 +87,13 @@ Also, think about possible hybrid solutions combining `direct` with
 - Should implement `VALUE` and `TO`
 
 - Should implement `MARKER`
+
+- Consider implementing the DOUBLE Word Set
+
+- Should finish the FILE Word Set:
+  * `DELETE-FILE`
+  * `RESIZE-FILE`
+  * `S"`  (This is a pain)
+  * `FILE-STATUS`  - EXT (What should this even mean?)
+  * `FLUSH-FILE`  - EXT
+  * `RENAME-FILE`  - EXT

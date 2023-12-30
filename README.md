@@ -4,8 +4,11 @@ This is an implementation of a Forth interpreter in C for a POSIX
 environment, targeting conformance with ANSI X3.215-1994 (ANS Forth).
 
 The code has a small handful of dependencies:
-  * The C sources depend on a modern standard C compiler.  Anything
-    supporting the C99 standard or later should work.
+  * Consistent with POSIX standard requirements, the C sources
+    depend on a standard C compiler supporting the C99 standard or
+    later.
+  * The C sources depend on the <stdio.h> library for file
+    operations, not the POSIX system calls.
   * The C sources depend on POSIX `getopt()`.
   * The C sources depend on GNU `readline()`.
   * The `gen-dict` script depends on a Bourne/POSIX style shell.  This

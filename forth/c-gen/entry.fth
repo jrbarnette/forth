@@ -4,6 +4,7 @@
     ." ." dup cell+ count type ."  = " @ execute ;
 
 ' type          entry: .exec handler ( c-addr u -- )
+' type          entry: .meta ip ( +n -- )
 ' .c-string     entry: .str id ( c-addr u -- )
 ' .c-cell       entry: .expr cell ( c-addr u -- )
 ' .c-hex        entry: .cell cell ( x -- )
@@ -22,3 +23,7 @@ entry: .label ip ( +n -- )
 entry: .dict ref ( +n -- )
 
 : .id ( c-addr -- ) ?dup if count .str else .NULL then ;
+
+:noname ." &meta_definitions[" .c-decimal ." ]" ;
+entry: .defs ip ( +n -- )
+

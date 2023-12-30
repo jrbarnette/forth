@@ -2,9 +2,6 @@
 
 META-HOST-MODE definitions
 
-:noname ." &meta_definitions[" .c-decimal ." ]" ;
-entry: .defs ip ( +n -- )
-
 variable offset          0 offset !
 variable emit-state      0 emit-state !
 variable line-state      true line-state !

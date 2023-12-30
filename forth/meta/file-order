@@ -8,4 +8,11 @@ forth/c-gen/transcribe.fth
 forth/c-gen/entry.fth
 forth/meta/meta-host.fth
 
+forth/meta/host.fth
+# forth/meta/target.fth
+# forth/direct/direct.fth
+forth/direct/target.fth
+forth/direct/tokens.fth
+forth/common/internal/interpret.fth
+
 forth/meta/output-dict.fth

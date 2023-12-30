@@ -1,8 +1,11 @@
+Vocabularies:
 HOST
-    Basic utilities for output to target code
+    Basic utilities for producing target code; available to both the
+    meta-compiler and TARGET
 
 META-HOST
-    Host stuff that can't be shared with BUILDER, such as:
+    HOST stuff that conflicts (or might conflict) with names in
+    TARGET, such as:
 	INTERPRET and constituents
 	COMPILE-FILE:
 	' (redefined to search META-BUILDER only)
@@ -18,15 +21,15 @@ META-HOST
 META-TARGET
     Definitions that can be compiled to target builder, and compiler
     special definitions for building them.  Everything needed to
-    implement the BUILDER primitives:
+    implement the TARGET primitives:
 	meta-initialize
 	do-literal
 	linkname
-	meta-addname
 	meta-startname
+	meta-addname
 	meta-setflags
-	meta-compile
 	meta-interpret
+	meta-compile
 	meta-reference
 
 META-DEFINERS
@@ -48,3 +51,21 @@ META-SPECIAL
 
 TARGET
     Vocabulary (-ies?) to support BUILDER target code source
+
+
+Modes:
+    : HOST-MODE
+	only FORTH also HOST ;
+
+    : META-HOST-MODE
+	HOST-MODE also META-HOST ;
+
+    : META-DEFINITIONS
+	also META-TARGET definitions previous ;
+
+    : META-INTERP-MODE
+	only FORTH also META-DEFINERS META-DEFINTIONS ;
+
+    : META-COMPILE-MODE
+	\ HOST-MODE also META-SPECIAL META-DEFINITIONS ;
+	META-HOST-MODE also META-SPECIAL META-DEFINITIONS ;

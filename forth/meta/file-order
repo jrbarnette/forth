@@ -1,18 +1,15 @@
 # Copyright 2016, by J. Richard Barnette, All Rights Reserved.
 
-# First, build up the vocabulary that's responsible for primitives to
-# emit syntactically correct builder and builder-defs code.
 forth/meta/vocab.fth
 forth/c-gen/c-data.fth
 forth/c-gen/transcribe.fth
 forth/c-gen/entry.fth
-forth/meta/meta-host.fth
 
+forth/meta/meta-host.fth
 forth/meta/host.fth
-# forth/meta/target.fth
-# forth/direct/direct.fth
-forth/direct/target.fth
-forth/direct/tokens.fth
+forth/meta/target.fth
+
+forth/meta/target-tokens.fth
 forth/common/internal/interpret.fth
 
 forth/meta/output-dict.fth

@@ -64,16 +64,17 @@ META-DEFINITIONS
 : .( postpone .( cr ; immediate
 
 
+META-HOST-MODE definitions
+: start-name
+    target-create 15 spaces ." // " current-name name>string type cr ;
+
 META-HOST-MODE also META-DEFINERS definitions
 : VARIABLE
-    target-create s" do_variable" { .exec }{ 0 .cell } emit-nl ;
+    start-name s" do_variable" { .exec }{ 0 .cell } emit-nl ;
 : CONSTANT
-    target-create s" do_constant" { .exec }{ .cell } emit-nl ;
+    start-name s" do_constant" { .exec }{ .cell } emit-nl ;
 : ] meta-target-wordlist meta-special-wordlist 2 set-order ] ;
-: :
-    target-create
-    15 spaces ." // " current-name name>string type cr
-    s" do_colon" { .exec } emit-nl expr-buffer expr-ptr ! here ] ;
+: : start-name s" do_colon" { .exec } emit-nl expr-buffer expr-ptr ! here ] ;
 
 
 META-HOST-MODE definitions

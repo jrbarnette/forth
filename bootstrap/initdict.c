@@ -10,6 +10,8 @@
 #include "dictionary.h"
 
 
+static xt_ft references[];
+
 vminstr_ft meta_definitions[] = {
 /*    0 */ { .handler = x_execute },
 /*    1 */ { .handler = x_exit },
@@ -556,7 +558,7 @@ vminstr_ft meta_definitions[] = {
                // REF-ADDR
 /*  510 */ { .handler = do_colon },
 /*  511 */ { .ip = &meta_definitions[71] },
-/*  512 */ { .ip = &meta_definitions[2] }, { .cell = (cell_ft) (&reference_table[0]) },
+/*  512 */ { .ip = &meta_definitions[2] }, { .cell = (cell_ft) (&references[0]) },
 /*  514 */ { .ip = &meta_definitions[29] },
 /*  515 */ { .ip = &meta_definitions[1] },
                // REF@
@@ -4320,4 +4322,4 @@ char *init_forth_defs[] = {
 };
 
 #define NREFERENCE 260
-xt_ft reference_table[NREFERENCE] = { NULL };
+static xt_ft references[NREFERENCE] = { NULL };

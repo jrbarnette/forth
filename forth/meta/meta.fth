@@ -2,7 +2,7 @@
 
 variable ref-index
 
-: ref-addr ( index -- a-addr ) cells <C> &reference_table[0]; + ;
+: ref-addr ( index -- a-addr ) cells <C> &references[0]; + ;
 : ref@ ( index -- xt ) ref-addr @ ;
 : ref! ( a-addr index -- ) ref-addr ! ;
 : next-ref! ( name -- ) name>xt ref-index @ tuck ref! 1+ ref-index ! ;

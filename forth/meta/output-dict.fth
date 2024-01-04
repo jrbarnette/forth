@@ -11,6 +11,8 @@ TRANSCRIBE>
 #include "dictionary.h"
 
 
+static xt_ft references[];
+
 vminstr_ft meta_definitions[] = {
     FORTH>
     META-TARGET-MODE
@@ -171,5 +173,5 @@ char *init_forth_defs[] = {
 };
 
 #define NREFERENCE `nreference @ .c-decimal`
-xt_ft reference_table[NREFERENCE] = { NULL };
+static xt_ft references[NREFERENCE] = { NULL };
 FORTH>

@@ -14,163 +14,165 @@ union instruction_cell {
 
 valid output forms:
 
+META-BUILDER
+    { .handler = /* primitive name */ },
+
+    { .handler = do_constant }, { .cell = /* number */ },
+
+    { .handler = do_variable }, { .cell = 0 },
+
+    { .handler = do_colon },
+	/* definition entries */
+
+	{ .ip = &meta_definitios[/* index */] },
+
+	{ .ip = &meta_definitios[/* do-literal */] },
+	    { .cell = (cell_ft) (/* expr */) },
+
+	{ .ip = &meta_definitios[/* do-literal */] },
+	    { .cell = /* number */ },
+
+	{ .ip = &meta_definitios[/* do-literal */] },
+	    { .handler = /* name */ },
+
+	{ .ip = &meta_definitios[/* ?branch */] },
+	    { .cell = /* number */ },
+
+	{ .ip = &meta_definitions[/* branch */] },
+	    { .cell = /* number */ },
+
+
 BUILDER code
-    { .ip = meta_interpret },
+    { .ip = META_INITIALIZE },
+
+    { .ip = META_INTERPRET },
 	{ .cell = /* ref# */ }, // 1 or more times
 	{ .cell = 0x0 },
 
-    { .ip = meta_compile },
+    { .ip = META_COMPILE },
 	{ .cell = /* ref# */ }, // 1 or more times
 	{ .cell = 0x0 },
 
-    { .ip = meta_startname },
+    { .ip = META_STARTNAME },
 	{ .id = /* counted */ }, { .handler = /* name */ },
 
-    { .ip = meta_addname },
+    { .ip = META_ADDNAME },
 	{ .id = /* counted */ }, { .handler = /* name */ },
 
-    { .ip = meta_linkname },
-    { .ip = meta_setflags }, { .cell = /* flags */ },
-    { .ip = meta_reference }, { .cell = /* ref# */ },
+    { .ip = META_LINKNAME },
+    { .ip = META_SETFLAGS }, { .cell = /* flags */ },
+    { .ip = META_REFERENCE }, { .cell = /* ref# */ },
 
-    { .ip = &initialize_forth[/* do-literal */] },
+    { .ip = DO_LITERAL },
 	{ .cell = /* number */ },
 
-    { .ip = &initialize_forth[/* do-literal */] },
+    { .ip = DO_LITERAL },
 	{ .cell = (cell_ft) (/* expr */) },
 
-    { .ip = &initialize_forth[/* do-literal */] },
+    { .ip = DO_LITERAL },
 	{ .handler = /* name */ },
 
     { .ip = meta_literal },	// later
 
-BUILDER-DEFS
-    { .handler = do_constant }, { .cell = /* number */ },
-    { .handler = do_variable }, { .cell = 0 },
-    { .handler = do_colon },
-	/* definition entries */
-
-	{ .ip = &initialize_forth[/* index */] },
-
-	{ .ip = &initialize_forth[/* do-literal */] },
-	    { .cell = (cell_ft) (/* expr */) },
-
-	{ .ip = &initialize_forth[/* do-literal */] },
-	    { .cell = /* number */ },
-
-	{ .ip = &initialize_forth[/* ?branch */] },
-	    { .cell = /* number */ },
-
-	{ .ip = &initialize_forth[/* branch */] },
-	    { .cell = /* number */ },
+    { .ip = EXIT },
 
 
-Host interpret:
-    Normal vocabulary, except these need to be special somehow:
-	HERE ALLOT ALIGN , C,
-
-Target compile:
+Meta-builder compile:
     For compiling meta-interpret/meta-compile, etc.
 
     Default compilation semantics:
-	{ .ip = &initialize_forth[/* index */] },
+	{ .ip = &meta_definitions[/* index */] },
 
     Number:
-	{ .ip = &initialize_forth[/* do-literal */] },
-	{ .cell = /* number */ },
+	{ .ip = &meta_definitions[/* do-literal */] },
+	    { .cell = /* number */ },
 
     Branch:
-	{ .ip = &initialize_forth[/* skip xt */] },
-	{ .cell = /* number */ },
+	{ .ip = &meta_definitions[/* skip xt */] },
+	    { .cell = /* number */ },
 
     Colon definition:
 	{ .handler = do_colon },
 	    /* entries */
-	{ .ip = &initialize_forth[/* exit */] },
+	    { .ip = &meta_definitions[/* exit */] },
 
-Meta-interpret:
-    Default for recognized definition is meta-interpret
 
-    Default interpretation semantics:
-	{ .ip = meta_interpret },
-	    { .cell = /* ref# */ },
+TARGET source code forms:
+    <name>			( interpretation semantics )
+	{ .ip = META_INTERPRET },	// if not already in META_INTERPRET
+	    { .cell = /* name index */ },
+
+    <name>			( default compilation )
+	{ .ip = META_COMPILE },		// if not already in META_COMPILE
+	    { .cell = /* name index */ },
+
+    : <name>			( interpretation state )
+	{ .ip = META_STARTNAME },
+	    { .id = /* name */ }, { .handler = do_colon },
+
+    CONSTANT <name>		( interpretation state )
+	{ .ip = META_ADDNAME },
+	    { .id = /* name */ }, { .handler = do_constant },
+
+    VARIABLE <name>		( interpretation state )
+	{ .ip = META_ADDNAME },
+	    { .id = /* name */ }, { .handler = do_variable },
+
+    PRIM: <name> <handler>	( interpretation state )
+	{ .ip = META_ADDNAME },
+	    { .id = /* name */ }, { .handler = /* handler */ },
+
+    POSTPONE <name>		( default semantics )
+	{ .ip = META_REFERENCE }, { .cell = /* name index */ },
+	{ .ip = META_INTERPRET },
+	    { .cell = /* LITERAL index */ },
 	    { .cell = 0x0 },
+	{ .ip = META_COMPILE },
+	    { .cell = /* COMPILE, index */ },
 
-    Number:
-	{ .ip = &initialize_forth[/* do-literal */] },
-	    { .cell = /* number */ },
+    POSTPONE <name>		( non-default semantics )
+	{ .ip = META_COMPILE },
+	    { .cell = /* name index */ },
 
-    Expression:
-	{ .ip = &initialize_forth[/* do-literal */] },
-	    { .cell = (cell_ft) (/* expr */) },
+    [COMPILE] <name>		( compilation state )
+	{ .ip = META_COMPILE },
+	    { .cell = /* name index */ },
 
-Meta-compile:
-    Default for recognized definition is meta-compile
+    ['] <name>			( compilation state )
+	{ .ip = META_REFERENCE }, { .cell = /* name index */ },
+	{ .ip = META_INTERPRET },
+	    { .cell = /* LITERAL index */ },
 
-    Default compilation semantics:
-	{ .ip = meta_compile },
-	    { .cell = /* ref# */ },
+    [CHAR] <char>		( compilation state )
+	{ .ip = DO_LITERAL }, { .cell = /* char */ },
+	{ .ip = META_INTERPRET },
+	    { .cell = /* LITERAL index */ },
+
+    ;				( compilation state )
+	    { .cell = /* EXIT index */ },
 	    { .cell = 0x0 },
+	{ .ip = META_LINKNAME },
 
-    Number:
-	{ .ip = &initialize_forth[/* do-literal */] },
-	    { .cell = /* number */ },
-	{ .ip = meta_interpret },
-	    { .cell = /* LITERAL */ },
-	    { .cell = 0x0 },
+    IMMEDIATE COMPILE-ONLY	( interpretation state )
+	{ .ip = META_SETFLAGS }, { .cell = /* flags */ },
 
-    POSTPONE default semantics:
-	{ .ip = meta_reference }, { .cell = /* ref# */ },
-	{ .ip = meta_interpret },
-	    { .cell = /* LITERAL */ },
-	    { .cell = 0x0 },
-	{ .ip = meta_compile },
-	    { .cell = /* compile, */ },
-	    /* ... */
+    <number>			( interpretation state )
+	{ .ip = DO_LITERAL }, { .cell = /* number */ },
 
-    POSTPONE non-default semantics:
-	{ .ip = meta_compile },
-	    { .cell = /* ref# */ },
-	    /* ... */
+    <number>			( compilation state )
+	{ .ip = DO_LITERAL }, { .cell = /* number */ },
+	{ .ip = META_INTERPRET },
+	    { .cell = /* LITERAL index */ },
 
-    Expression:
-	{ .ip = &initialize_forth[/* do-literal */] },
-	    { .cell = (cell_ft) (/* expr */) },
-	{ .ip = meta_interpret },
-	    { .cell = /* LITERAL */ },
-	    { .cell = 0x0 },
+    <C> <C expression>		( interpretation state )
+	{ .ip = DO_LITERAL }, { .cell = /* C expression */ },
 
-    Handler:
-	{ .ip = &initialize_forth[/* do-literal */] },
-	    { .handler = /* handler */ },
-	{ .ip = meta_interpret },
-	    { .cell = /* LITERAL */ },
-	    { .cell = 0x0 },
+    <C> <C expression>		( compilation state )
+	{ .ip = DO_LITERAL }, { .cell = /* C expression */ },
+	{ .ip = META_INTERPRET },
+	    { .cell = /* LITERAL index */ },
 
-Definitions:
-    Colon definition:
-	{ .ip = meta_startname },
-	    { .id = /* counted */ }, { .handler = do_colon },
-	    /* entries */
-	{ .ip = meta_compile },
-	    { .cell = /* exit */ },
-	    { .cell = 0x0 },
-	{ .ip = meta_linkname },
-	{ .ip = meta_setflags }, { .cell = /* flags */ }, // optional
-
-    CONSTANT:
-	/* value generation */
-	{ .ip = meta_addname },
-	    { .id = /* counted */ }, { .handler = do_constant },
-	{ .ip = meta_interpret },
-	    { .cell = /* , */ },
-	    { .cell = 0x0 },
-
-    VARIABLE:
-	{ .ip = meta_addname },
-	    { .id = /* counted */ }, { .handler = do_variable },
-	{ .ip = &initialize_forth[/* do-literal */] },
-	    { .cell = (cell_ft) (CELL_SIZE) },
-	{ .ip = meta_interpret },
-	    { .cell = /* allot */ },
-	    { .cell = 0x0 },
+    handler: <handler>		( compilation state )
+	{ .ip = DO_LITERAL }, { .cell = /* handler */ },
+	{ .ip = META_INTERPRET },
+	    { .cell = /* LITERAL index */ },

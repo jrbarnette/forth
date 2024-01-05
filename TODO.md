@@ -55,14 +55,6 @@ of `MAIN` routine in Forth to walk through file arguments and such.
 
 ## New Features/Bugs/Flaws
 
-- In output-dict.fth, you find this:
-```
-	parse-name EVALUATE direct-lookup
-```
-  We should find a way to do this that doesn't involve calling
-  `parse-name` from interpretation state.  Calling `direct-lookup` is
-  dodgy, too.
-
 - WORD is supposed to skip leading delimiters.  It doesn't.
 
 - Error handling is dodgy.  Errors get flagged by printing the last

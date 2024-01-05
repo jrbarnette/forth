@@ -1,6 +1,6 @@
 ## Design/Implementation Refinements
 ### Where we are
-There's now a new meta-compiler, living under `forth/meta`.
+There's now a new meta-compiler, living under [forth/meta](forth/meta).
 Dependencies on C code are now just command-line processing,
 certain parts of initialization, and the necessary C primitive
 functions.
@@ -9,9 +9,10 @@ functions.
 The meta-compiler still has rough edges, mostly relating to
 niceties of design and organization, outlined below.
 
-Some of the names in `forth/meta/host.fth` still use the prefix
-`direct-`.  This isn't the right naming convention any more.
-Lots of other naming conventions need revisiting, too.
+Some of the names in [forth/meta/host.fth](forth/meta/host.fth)
+still use the prefix `direct-`.  This isn't the right naming
+convention any more.  Lots of other naming conventions need
+revisiting, too.
 
 The meta-compiler is stable enough to justify spending time on
 documentation.  Some time spent here might help produce clarity
@@ -25,8 +26,9 @@ particular, it would be nice to be able to invoke some of the
 definitions from `META-TARGET` in `TARGET` code rather than creating
 `#define` values for them in C source.
 
-The `TARGET` code in `forth/c-gen/core/literal.fth` is complicated.
-It would be nice if it looked more like `forth/c-gen/core/allot.fth`.
+The `TARGET` code in [forth/c-gen/core/literal.fth](forth/c-gen/core/literal.fth)
+is complicated. It would be nice if it looked more like
+[forth/c-gen/core/allot.fth](forth/c-gen/core/allot.fth).
 That would require using more of the `META-TARGET` code, like
 `ALLOT` and friends, and compiling `LITERAL` on the host rather
 than waiting for the builder to invoke it from the dictionary.

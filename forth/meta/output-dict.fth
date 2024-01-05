@@ -153,7 +153,7 @@ vminstr_ft initialize_forth[] = {
 
     compile-target: forth/common/core/evaluate.fth
 
-    parse-name EVALUATE direct-lookup
+    also TARGET ['] EVALUATE previous
     meta-exit
     TRANSCRIBE>
 };

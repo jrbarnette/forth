@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# List all Forth definitions named as arguments to meta_interpret().
+
+# cd $(dirname $0)
+awk '
+    BEGIN { interpreting = 0 }
+    /\.ip = META_INTERPRET/ {
+	interpreting = 1
+    }
+
+    /\.ip = META_COMPILE/ {
+	interpreting = 0
+    }
+
+    /    { \/\* .* \*\/ *.cell =/ && interpreting {
+	print $6
+    }
+' bootstrap/initdict.c | tr '[a-z]' '[A-Z]' | sort -u

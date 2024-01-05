@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# cd $(dirname $0)
+awk '
+    /\.ip = META_INTERPRET/ {
+	mode = "interpret"
+	starts[mode] += 1
+    }
+
+    /\.ip = META_COMPILE/ {
+	mode = "compile"
+	starts[mode] += 1
+    }
+
+    /    { \/\* .* \*\/ *.cell =/ {
+	idents[mode] += 1
+    }
+
+    END {
+	mode = "interpret"
+	nsi = starts[mode]
+	nii = idents[mode]
+	print "compound " mode ": " 2*nsi + nii
+	print "simple " mode ": " 2*nii
+	print ""
+
+	mode = "compile"
+	nsc = starts[mode]
+	nic = idents[mode]
+	print "compound " mode ": " 2*nsc + nic
+	print "simple " mode ": " 2*nic
+	print ""
+
+	meta_starts = nsi + nsc
+	meta_idents = nii + nic
+	print "compound total: " 2*meta_starts + meta_idents
+	print "simple total: " 2*meta_idents
+    }
+' bootstrap/initdict.c 

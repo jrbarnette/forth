@@ -29,7 +29,6 @@
 #define FILE_MODE_BIN	((cell_ft) 04)
 
 extern void execute(vmstate_ft *, xt_ft);
-extern void direct_execute(vmstate_ft *, vmip_ft);
 
 extern void report_exception(int, vmstate_ft *, char *);
 

@@ -6,6 +6,7 @@ certain parts of initialization, and the necessary C primitive
 functions.
 
 ### Where to go next
+#### Cleanup
 The meta-compiler still has rough edges, mostly relating to
 niceties of design and organization, outlined below.
 
@@ -55,14 +56,25 @@ in C.  A lot of it could be Forth.  Ideally, we'd only depend on
 C to invoke `getopt()`, and then pass the information to some sort
 of `MAIN` routine in Forth to walk through file arguments and such.
 
+#### Design improvements
+There's room now to re-implement primitives from C to assembly.  Starter
+code for AMD64 is under [reference/amd64](reference/amd64).  Notes on
+VM design for AMD64 and ARM32 are in
+[doc/asm-x86-amd64.txt](doc/asm-x86-amd64.txt) and
+[doc/asm-arm-a32.txt](doc/asm-arm-a32.txt), respectively.
+
 ## New Features/Bugs/Flaws
 
 - WORD is supposed to skip leading delimiters.  It doesn't.
 
-- Error handling is dodgy.  Errors get flagged by printing the last
-  source line, with a **^^^** indicator for the token at the failure.
-  But, that goes to `stdout`.  Then, the exception is raised, and the
-  exception message goes to `stderr`.
+- Error handling at initialization is dodgy.  Errors get flagged by
+  printing the last source line, with a **^^^** indicator for the token
+  at the failure.  But, that goes to `stdout`.  Then, the exception is
+  raised, and the exception message goes to `stderr`.
+  + ... But this seems to matter only for errors from `interpret_lines()`,
+    meaning primarily initialization code in `init_forth_defs`.
+  + ... And this problem can be fixed by moving the relevant
+    initialization from C to Forth.
 
 - Need better recovery when there's an error while compiling a
   `:` definition.  I think mostly that means roll back the dictionary
@@ -71,6 +83,11 @@ of `MAIN` routine in Forth to walk through file arguments and such.
 
 - We are ready to get rid of `file-order`, by using `INCLUDE-FILE` and
   other code to load directly from source.  (But do we want to?)
+
+- `gen-dict` takes a target name (e.g. `meta`) as an argument.  That was
+  useful for experimenting with different meta-compiler strategies, but
+  maybe doesn't make sense any more.  At some point, we'll want to
+  simplify it a bit.
 
 - Consider making `ONLY` a real Root vocabulary.
 

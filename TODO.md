@@ -48,8 +48,8 @@ straight.
 The dictionary still has some data that's laid out statically, not
 by the builder.  It would be nice to get rid of it.  The file
 related stuff is used by command-line processing, and could just be
-global variables.  Getting rid of the storage for HERE and
-FORTH-WORDLIST is a bit more work.
+global variables.  Getting rid of the storage for `HERE` and
+`FORTH-WORDLIST` is a bit more work.
 
 Command-line processing and related initialization are still all
 in C.  A lot of it could be Forth.  Ideally, we'd only depend on
@@ -65,7 +65,7 @@ VM design for AMD64 and ARM32 are in
 
 ## New Features/Bugs/Flaws
 
-- WORD is supposed to skip leading delimiters.  It doesn't.
+- `WORD` is supposed to skip leading delimiters.  It doesn't.
 
 - Error handling at initialization is dodgy.  Errors get flagged by
   printing the last source line, with a **^^^** indicator for the token

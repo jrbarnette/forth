@@ -14,3 +14,7 @@ define(`PRIM',
 `	.globl	_$1
 	.p2align	4, 0x90
 _$1')dnl
+define(`FLAG',
+	`set$1	$2
+	movzbq	$2, TOS
+	negq	TOS')dnl

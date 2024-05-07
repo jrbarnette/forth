@@ -45,7 +45,7 @@ PRIM(do_s_quote):
 	NEXT
 
 PRIM(do_c_quote):
-	push	TOS
+	pushq	TOS
 	movq	VIP, TOS
 	movzbq	(VIP), %rax
 	addq	$8, %rax

@@ -80,15 +80,15 @@ PRIM(x_pick):
 	NEXT
 
 PRIM(x_roll):
-	jrcxz	droproll
+	jrcxz	.droproll
 	movq	8(VSP,TOS,8), SCR1
-roll:
+.roll:
 	movq	(VSP,TOS,8), SCR0
 	movq	SCR0, 8(VSP,TOS,8)
-	loop	roll
+	loop	.roll
 	addq	$8, VSP
 	movq	SCR1, TOS
 	NEXT
-droproll:
+.droproll:
 	popq	TOS
 	NEXT

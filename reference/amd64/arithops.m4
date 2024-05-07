@@ -22,25 +22,19 @@ PRIM(x_two_slash):
 PRIM(x_less_than):
 	popq	SCR0
 	cmpq	TOS, SCR0
-	setl	%al
-	movzbq	%al, TOS
-	negq	TOS
+	FLAG(l, %al, TOS)
 	NEXT
 
 PRIM(x_equals):
 	popq	SCR0
 	cmpq	TOS, SCR0
-	sete	%al
-	movzbq	%al, TOS
-	negq	TOS
+	FLAG(e, %al, TOS)
 	NEXT
 
 PRIM(x_greater_than):
 	popq	SCR0
 	cmpq	TOS, SCR0
-	setg	%al
-	movzbq	%al, TOS
-	negq	TOS
+	FLAG(g, %al, TOS)
 	NEXT
 
 PRIM(x_and):
@@ -76,9 +70,7 @@ PRIM(x_rshift):
 PRIM(x_u_less):
 	popq	SCR0
 	cmpq	TOS, SCR0
-	setb	%al
-	movzbq	%al, TOS
-	negq	TOS
+	FLAG(b, %al, TOS)
 	NEXT
 
 PRIM(x_xor):

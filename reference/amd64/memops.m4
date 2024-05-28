@@ -28,7 +28,7 @@ PRIM(x_fill):
 	popq	%rdi
 	pushq	%rax
 
-	leaq	-8(%esp), %rax
+	leaq	-8(%rsp), %rax
 	andq	$-16, %rax
 	movq	%rsp, (%rax)
 	movq	%rax, %rsp
@@ -40,14 +40,14 @@ PRIM(x_fill):
 	NEXT
 
 PRIM(x_move):
-	# ( src dst u ) -> memmove(dst, src, u);
+	# ( addr-src addr-dst u ) -> memmove(dst, src, u);
 	movq	%rsi, %rax
 	movq	TOS, %rdx
 	popq	%rdi
 	popq	%rsi
 	pushq	%rax
 
-	leaq	-8(%esp), %rax
+	leaq	-8(%rsp), %rax
 	andq	$-16, %rax
 	movq	%rsp, (%rax)
 	movq	%rax, %rsp

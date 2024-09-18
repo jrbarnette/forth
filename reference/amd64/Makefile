@@ -1,15 +1,20 @@
-SOURCES =	arithops.m4	control.m4	definers.m4	fileops.m4 \
-		memops.m4	multops.m4	stackops.m4	terminal.m4 \
-		vm.m4
+H_FILES =	cforth.h ftypes.h prim.h
+SOURCES =	arithops.m4	control.m4	execute.m4	fileops.m4 \
+		memops.m4	multops.m4	stackops.m4	terminal.m4
 
 ASM_FILES = $(SOURCES:.m4=.s)
 
-OBJECTS = $(SOURCES:.m4=.o)
+OBJECTS = $(SOURCES:.m4=.o) primtest.o
+
+CFLAGS = -O
 
 %.s: %.m4
 	m4 $< > $@
 
-all: $(OBJECTS)
+all: primtest
+
+primtest: $(OBJECTS)
+	$(CC) $(CFLAGS) $(OBJECTS) -o $@
 
 $(ASM_FILES): prim.m4
 

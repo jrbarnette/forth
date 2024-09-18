@@ -12,10 +12,6 @@ PRIM(x_question_dup):
 .qdup_end:
 	NEXT
 
-PRIM(x_depth):
-	# ...
-	NEXT
-
 PRIM(x_drop):
 	popq	TOS
 	NEXT

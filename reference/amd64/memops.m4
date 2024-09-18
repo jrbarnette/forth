@@ -1,8 +1,7 @@
 include(`prim.m4')dnl
 
 PRIM(x_store):
-	popq	SCR0
-	movq	SCR0, (TOS)
+	popq	(TOS)
 	popq	TOS
 	NEXT
 
@@ -23,37 +22,27 @@ PRIM(x_c_fetch):
 PRIM(x_fill):
 	# ( c-addr u char ) -> memset(addr, char, u);
 	movq	%rsi, %rax
-	movq	TOS, %rsi
-	popq	%rdx
-	popq	%rdi
+	movq	TOS, %rsi	# char -> ARG1
+	popq	%rdx		# u -> ARG2
+	popq	%rdi		# c-addr -> ARG0
 	pushq	%rax
 
-	leaq	-8(%rsp), %rax
-	andq	$-16, %rax
-	movq	%rsp, (%rax)
-	movq	%rax, %rsp
-
-	callq	_memset
-	movq	(%rsp), %rsp
+	CCALL(memset)
 
 	popq	%rsi
+	popq	TOS
 	NEXT
 
 PRIM(x_move):
 	# ( addr-src addr-dst u ) -> memmove(dst, src, u);
 	movq	%rsi, %rax
-	movq	TOS, %rdx
-	popq	%rdi
-	popq	%rsi
+	movq	TOS, %rdx	# u -> ARG2
+	popq	%rdi		# addr-dst -> ARG0
+	popq	%rsi		# addr-src -> ARG1
 	pushq	%rax
 
-	leaq	-8(%rsp), %rax
-	andq	$-16, %rax
-	movq	%rsp, (%rax)
-	movq	%rax, %rsp
-
-	callq	_memmove
-	movq	(%rsp), %rsp
+	CCALL(memmove)
 
 	popq	%rsi
+	popq	TOS
 	NEXT

@@ -19,4 +19,4 @@ primtest: $(OBJECTS)
 $(ASM_FILES): prim.m4
 
 clean:
-	rm -f $(ASM_FILES) $(OBJECTS)
+	rm -f $(ASM_FILES) $(OBJECTS) primtest

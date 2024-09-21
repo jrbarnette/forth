@@ -102,7 +102,8 @@ CDECL(forth_execute):
 	negq	SCR0
 	jz	start_forth
 copy_args_in:
-	pushq	(SCR1,SCR0,8)
+	pushq	TOS
+	movq	(SCR1,SCR0,8), TOS
 	incq	SCR0
 	jnz	copy_args_in
 

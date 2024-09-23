@@ -15,9 +15,7 @@ PRIM(do_fskip):
 
 PRIM(do_plus_loop):
 	addq	TOS, (VRSP)
-	seto	%al
-	movzbq	%al, TOS
-	negq	TOS
+	FLAG(o, %al)
 	NEXT
 
 PRIM(do_do):

@@ -10,3 +10,4 @@ bootstrap/stdforth.c
 experiment/ip
 experiment/tos
 experiment/cdivbench
+reference/amd64/primtest

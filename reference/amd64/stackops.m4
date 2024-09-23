@@ -77,10 +77,10 @@ PRIM(x_pick):
 
 PRIM(x_roll):
 	jrcxz	.droproll
-	movq	8(VSP,TOS,8), SCR1
+	movq	(VSP,TOS,8), SCR1
 .roll:
-	movq	(VSP,TOS,8), SCR0
-	movq	SCR0, 8(VSP,TOS,8)
+	movq	-8(VSP,TOS,8), SCR0
+	movq	SCR0, (VSP,TOS,8)
 	loop	.roll
 	addq	$8, VSP
 	movq	SCR1, TOS

@@ -76,41 +76,87 @@ DEF_PRIM(XOR, x_xor);
 
 static struct test_case
 arithops_tests[] = {
-    { "+", { 2, 1, 2 }, { 1, 3 }, PLUS },		// ( 1 2 -- 3 )
-    { "-", { 2, 3, 2 }, { 1, 1 }, MINUS },		// ( 3 2 -- 1 )
-    { "2*", { 1, 3 }, { 1, 6 }, TWO_STAR },		// ( 3 -- 6 )
-    { "2/", { 1, -2 }, { 1, -1 }, TWO_SLASH },		// ( -2 -- -1 )
-    { "< true", { 2, 1, 2 },
-		{ 1, F_TRUE }, LESS_THAN },		// ( 1 2 -- true )
-    { "< false", { 2, 2, 1 },
-		{ 1, F_FALSE }, LESS_THAN },		// ( 2 1 -- false )
-    { "= true", { 2, 1, 1 },
-		{ 1, F_TRUE }, EQUALS },		// ( 1 1 -- true )
-    { "= false", { 2, 1, 2 },
-		{ 1, F_FALSE }, EQUALS },		// ( 1 2 -- false )
-    { "> true", { 2, 2, 1 },
-		{ 1, F_TRUE }, GREATER_THAN },		// ( 2 1 -- true )
-    { "> false", { 2, 1, 2 },
-		{ 1, F_FALSE }, GREATER_THAN },		// ( 1 2 -- false )
-    { "and", { 2, 0xc, 0xa }, { 1, 0x8 }, AND },	// ( $c $a -- $8 )
-    { "invert", { 1, F_FALSE },
-		{ 1, F_TRUE }, INVERT },		// ( false -- true )
-    { "lshift", { 2, 3, 1 }, { 1, 6 }, LSHIFT },	// ( 3 1 -- 6 )
-    { "negate", { 1, 1 }, { 1, -1 }, NEGATE },		// ( -- true )
-    { "or", { 2, 0xc, 0xa }, { 1, 0xe }, OR },		// ( $c $a -- $e )
-    { "rshift", { 0 }, { 1, F_TRUE }, TEST_LIT },	// ( -- true )
-    { "rshift", { 2, 3, 1 }, { 1, 1 }, RSHIFT },	// ( 3 1 -- 1 )
-    { "u< true", { 2, 0, -1 },
-		{ 1, F_TRUE }, U_LESS },		// ( 0 -1 -- true )
-    { "u< false", { 2, -1, 0 },
-		{ 1, F_FALSE }, U_LESS },		// ( -1 0 -- false )
-    { "xor", { 0 }, { 1, F_TRUE }, TEST_LIT }	,	// ( -- true )
-    { "xor", { 2, 0xc, 0xa }, { 1, 0x6 }, XOR },	// ( $c $a -- $6 )
+    { "+",    { 2, 1, 2 },     { 1, 3 },	PLUS },
+    { "-",    { 2, 3, 2 },     { 1, 1 },	MINUS },
+    { "2*",   { 1, 3 },        { 1, 6 },	TWO_STAR },
+    { "2/",   { 1, -2 },       { 1, -1 },	TWO_SLASH },
+    { "and",  { 2, 0xc, 0xa }, { 1, 0x8 },	AND },
+    { "or",   { 2, 0xc, 0xa }, { 1, 0xe },	OR },
+    { "xor",  { 2, 0xc, 0xa }, { 1, 0x6 },	XOR },
+
+    { "invert", { 1, F_FALSE }, { 1, F_TRUE },	INVERT },
+    { "negate", { 1, 1 },       { 1, -1 },	NEGATE },
+    { "lshift", { 2, 3, 1 },    { 1, 6 },	LSHIFT },
+    { "rshift", { 2, 3, 1 },    { 1, 1 },	RSHIFT },
+
+    { "< true",  { 2, 1, 2 },   { 1, F_TRUE },	LESS_THAN },
+    { "< false", { 2, 2, 1 },   { 1, F_FALSE },	LESS_THAN },
+    { "= true",  { 2, 1, 1 },   { 1, F_TRUE },	EQUALS },
+    { "= false", { 2, 1, 2 },   { 1, F_FALSE },	EQUALS },
+    { "> true",  { 2, 2, 1 },   { 1, F_TRUE },	GREATER_THAN },
+    { "> false", { 2, 1, 2 },   { 1, F_FALSE },	GREATER_THAN },
+    { "u< true", { 2, 0, -1 },  { 1, F_TRUE },	U_LESS },
+    { "u< false", { 2, -1, 0 }, { 1, F_FALSE },	U_LESS },
+
     { NULL },
 };
 
 static struct test_suite
 arithops_suite = { "arithops", arithops_tests };
+
+
+/*
+ * Tests for stuff in stackops.m4
+ */
+DEF_PRIM(TO_R, x_to_r);
+DEF_PRIM(QUESTION_DUP, x_question_dup);
+DEF_PRIM(DROP, x_drop);
+DEF_PRIM(DUP, x_dup);
+DEF_PRIM(OVER, x_over);
+DEF_PRIM(R_FROM, x_r_from);
+DEF_PRIM(R_FETCH, x_r_fetch);
+DEF_PRIM(ROT, x_rot);
+DEF_PRIM(SWAP, x_swap);
+DEF_PRIM(TWO_TO_R, x_two_to_r);
+DEF_PRIM(TWO_R_FROM, x_two_r_from);
+DEF_PRIM(TWO_R_FETCH, x_two_r_fetch);
+DEF_PRIM(PICK, x_pick);
+DEF_PRIM(ROLL, x_roll);
+
+CODE(TEST_RSTACK) X(TO_R) X(INVERT) X(R_FROM) END_CODE;
+CODE(TEST_RFETCH) X(TO_R) X(R_FETCH) X(R_FROM) END_CODE;
+CODE(TEST_TWO_TO_R) X(TWO_TO_R) X(R_FROM) X(R_FROM) END_CODE;
+CODE(TEST_TWO_R_FROM) X(TO_R) X(TO_R) X(TWO_R_FROM) END_CODE;
+CODE(TEST_TWO_R_FETCH)
+    X(TWO_TO_R) X(TWO_R_FETCH) X(TWO_R_FROM) X(DROP) X(DROP)
+END_CODE;
+
+static struct test_case
+stackops_tests[] = {
+    { "drop", { 1, 1 },       { 0 },			DROP },
+    { "dup",  { 1, 1 },       { 2, 1, 1 },		DUP },
+    { "over", { 2, 1, 2 },    { 3, 1, 2, 1 },		OVER },
+    { "rot",  { 3, 1, 2, 3 }, { 3, 2, 3, 1 },		ROT },
+    { "swap", { 2, 1, 2 },    { 2, 2, 1 },		SWAP },
+
+    { "2>r",  { 2, 1, 2 },    { 2, 2, 1 },		TEST_TWO_TO_R },
+    { "2r>",  { 2, 1, 2 },    { 2, 2, 1 },		TEST_TWO_R_FROM },
+    { "2r@",  { 2, 1, 2 },    { 2, 1, 2 },		TEST_TWO_R_FETCH },
+
+    { "rstack", { 2, F_FALSE, F_TRUE}, { 2, F_TRUE, F_TRUE},	TEST_RSTACK },
+    { "r@", { 1, 1 }, { 2, 1, 1 },				TEST_RFETCH },
+
+    { "?dup true", { 1, F_TRUE }, { 2, F_TRUE, F_TRUE },	QUESTION_DUP },
+    { "?dup false", { 1, F_FALSE }, { 1, F_FALSE },		QUESTION_DUP },
+
+    { "pick", { 4, 1, 2, 3, 2 },     { 4, 1, 2, 3, 1 },		PICK },
+    { "roll", { 5, 1, 2, 3, 4, 3 },  { 4, 2, 3, 4, 1 },		ROLL },
+
+    { NULL },
+};
+
+static struct test_suite
+stackops_suite = { "stackops", stackops_tests };
 
 
 static bool
@@ -170,5 +216,6 @@ main(int argc, char *argv[])
 {
     run_suite(&execute_suite);
     run_suite(&arithops_suite);
+    run_suite(&stackops_suite);
     return EXIT_SUCCESS;
 }

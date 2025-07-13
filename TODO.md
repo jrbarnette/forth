@@ -6,6 +6,18 @@ certain parts of initialization, and the necessary C primitive
 functions.
 
 ### Where to go next
+#### Assembly primitives
+There are experimental versions in assembly for amd64 in
+[reference/amd64](reference/amd64/).
+
+To get to a working set of primitives in assmembly, we need the following
+changes (roughly in this order):
+  * Convert `bootstrap` to use the new forth_execute() interface in
+    place of the current interface.  The initial implementation should
+    be a wrapper around the existing C primitves.
+  * Adjust the build system to support multiple targets, and add the
+    assembly primitives as a second target
+
 #### Cleanup
 The meta-compiler still has rough edges, mostly relating to
 niceties of design and organization, outlined below.

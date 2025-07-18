@@ -8,6 +8,10 @@
 /*
  * C interface to invoke the Forth interpreter.  The interface is
  * independent of the implementation details of the underlying Forth VM.
+ *
+ * N.B.  These declarations are duplicated in any assembly file
+ * implementing this interface.  Changes here will ripple out to all
+ * those files.
  */
 
 #include "ftypes.h"

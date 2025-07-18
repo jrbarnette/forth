@@ -1,8 +1,21 @@
 include(`prim.m4')dnl
 
+# The code in this file replicates/implements the declarations below
+# from cforth.h.  Changes there must be matched here.
+#
+# struct fargs {
+#     cell_ft depth;
+#     cell_ft stack[FARGS_LEN];
+# };
+# extern cell_ft forth_execute(struct fstack *args, xt_ft xt);
+
+# This constant is also defined in cforth.h
 define(`FARGS_LEN', `7')dnl
 
-define(`XFRAME', `3*8')dnl
+define(`XFRAME_VIP', `0')dnl
+define(`XFRAME_VSP', `8')dnl
+define(`XFRAME_VXSP', `16')dnl
+define(`XFRAME_SIZE', `24')dnl
 
 define(`SAVE_REGS', `5*8')dnl
 define(`RSTACK_BUFFER', `(SAVE_REGS+3*8)')dnl
@@ -11,8 +24,8 @@ define(`RSTACK_BASE', `(RSTACK_SIZE+RSTACK_BUFFER)')dnl
 define(`STACK_BASE', `(RSTACK_SIZE+RSTACK_BUFFER+STACK_BUFFER)')dnl
 define(`SENTINEL', `0xfeedfacedeadbeef')dnl
 
-        .section        __DATA,__data
-        .p2align        4
+	.section	__DATA,__const
+        .p2align        4, 0x0
 exception_xt:
 	.quad	exception
 exception_vip:
@@ -22,15 +35,9 @@ successful_xt:
 successful_vip:
 	.quad	successful_xt
 
-# struct fargs {
-#     cell_ft depth;
-#     cell_ft stack[FARGS_LEN];
-# };
-# extern cell_ft forth_execute(struct fstack *args, xt_ft xt);
-
-# Stack layout during interpretation:
+# Stack layout during interpretation (high addresses on top):
 #	ret addr
-#	prev %ebp			<----	%ebp
+#	prev %rbp			<----	%rbp
 #
 #					\ \
 #	<callee saved regs>		| +---> SAVE_REGS
@@ -40,7 +47,7 @@ successful_vip:
 #					/
 #
 #					\
-#	<top of return stack>		|
+#	<limit of return stack>		|
 #		.			|
 #		.			+---> RSTACK_SIZE
 #		.			|
@@ -61,7 +68,13 @@ successful_vip:
 CDECL(forth_execute):
 	pushq	%rbp		# stack aligned
 	movq	%rsp, %rbp
+	# At entry:
+	#   ARG0 = %rdi = args
+	#   ARG1 = %rsi = xt
+	# Scratch (unused args + return values):
+	#   %rax %rdx %rcx %r8 %r9
 
+	# Save all registers designated in the ABI as callee-saved.
 	# N.B. RSTACK_BUFFER is one cell for each `pushq` instruction
 	# from here until we allocate space for the return stack.
 	pushq	%rbx		# 1 - offset -8
@@ -74,31 +87,34 @@ CDECL(forth_execute):
 	pushq	%rax		# 6 - offset -48
 	pushq	%rax		# 7 - offset -56
 	pushq	%rax		# 8 - offset -64
-	subq	$RSTACK_SIZE, %rsp
 	# ... RSTACK_BUFFER count ends here.
 
+	subq	$RSTACK_SIZE, %rsp	# allocate return stack
 	# N.B. STACK_BUFFER is one cell for each `pushq` instruction
-	# following...
+	# following allocation of the return stack.
 	pushq	%rdi		# 1 - offset -RSTACK_SIZE-72
 	pushq	%rax		# 2 - offset -RSTACK_SIZE-80
 	pushq	%rax		# 3 - offset -RSTACK_SIZE-88
 	pushq	%rax		# 4 - offset -RSTACK_SIZE-96
 	# ... STACK_BUFFER count ends here.
 
+	# Begin initializing VM registers here:
+	#   TOS
+	#   VRSP
+	#   VXSP
 	movq	%rax, TOS
-
 	leaq	STACK_BUFFER`'(VSP), VRSP
 	xorq	VXSP, VXSP
 
 	leaq	exception_vip(%rip), SCR0
-	movq	SCR0, 0(VRSP)
-	movq	VSP, 8(VRSP)
-	movq	VXSP, 16(VRSP)
+	movq	SCR0, XFRAME_VIP`'(VRSP)
+	movq	VSP, XFRAME_VSP`'(VRSP)
+	movq	VXSP, XFRAME_VXSP`'(VRSP)
 	movq	VRSP, VXSP
-	addq	$XFRAME, VRSP
+	addq	$XFRAME_SIZE, VRSP
 
-	movq	(%rdi), SCR0
-	leaq	8(%rdi,SCR0,8), SCR1
+	movq	(%rdi), SCR0		# arg count
+	leaq	8(%rdi,SCR0,8), SCR1	# arg pointer
 	negq	SCR0
 	jz	start_forth
 copy_args_in:
@@ -110,7 +126,7 @@ copy_args_in:
 start_forth:
 	movq	%rsi, XT
 	leaq	successful_vip(%rip), VIP
-	jmpq	*(XT)
+	EXECUTE
 
 exception:
 	movq	TOS, %rax
@@ -118,8 +134,8 @@ exception:
 	jmp	finish
 
 successful:
-	xorq	%rax, %rax
 	movq	TOS, %rdx
+	xorq	%rax, %rax
 
 finish:
 	movq	-(RSTACK_BASE+8)(%rbp), %rdi
@@ -155,7 +171,7 @@ PRIM(x_clear):
 
 PRIM(x_rclear):
 	leaq	-RSTACK_BASE`'(%rbp), VXSP
-	leaq	-RSTACK_BASE+XFRAME`'(%rbp), VRSP
+	leaq	-RSTACK_BASE+XFRAME_SIZE`'(%rbp), VRSP
 	NEXT
 
 PRIM(x_depth):
@@ -170,21 +186,21 @@ PRIM(x_depth):
 PRIM(x_execute):
 	movq	TOS, XT
 	popq	TOS
-	jmpq	*(XT)
+	EXECUTE
 
 PRIM(do_catch):
-	movq	VIP, 0(VRSP)
-	movq	VSP, 8(VRSP)
-	movq	VXSP, 16(VRSP)
+	movq	VIP, XFRAME_VIP`'(VRSP)
+	movq	VSP, XFRAME_VSP`'(VRSP)
+	movq	VXSP, XFRAME_VXSP`'(VRSP)
 	movq	VRSP, VXSP
-	addq	$XFRAME, VRSP
+	addq	$XFRAME_SIZE, VRSP
 	pushq	TOS
 	xorq	TOS, TOS
 	NEXT
 
 PRIM(drop_catch):
-	subq	$XFRAME, VRSP
-	movq	16(VRSP), VXSP
+	movq	XFRAME_VXSP`'(VXSP), VXSP
+	leaq	XFRAME_SIZE`'(VXSP), VRSP
 	NEXT
 
 PRIM(x_throw):
@@ -194,9 +210,9 @@ PRIM(x_throw):
 	NEXT
 thrown:
 	movq	VXSP, VRSP
-	movq	0(VXSP), VIP
-	movq	8(VXSP), VSP
-	movq	16(VXSP), VXSP
+	movq	XFRAME_VIP`'(VXSP), VIP
+	movq	XFRAME_VSP`'(VXSP), VSP
+	movq	XFRAME_VXSP`'(VXSP), VXSP
 	NEXT
 
 PRIM(do_colon):

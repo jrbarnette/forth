@@ -21,21 +21,20 @@ PRIM(x_c_fetch):
 
 PRIM(x_fill):
 	# ( c-addr u char ) -> memset(addr, char, u);
-	movq	%rsi, %rax
+	movq	VIP, %r12
 	movq	TOS, %rsi	# char -> ARG1
 	popq	%rdx		# u -> ARG2
 	popq	%rdi		# c-addr -> ARG0
-	pushq	%rax
 
 	CCALL(memset)
 
-	popq	%rsi
+	movq	%r12, VIP
 	popq	TOS
 	NEXT
 
 PRIM(x_move):
 	# ( addr-src addr-dst u ) -> memmove(dst, src, u);
-	movq	%rsi, %rax
+	movq	VIP, %r12
 	movq	TOS, %rdx	# u -> ARG2
 	popq	%rdi		# addr-dst -> ARG0
 	popq	%rsi		# addr-src -> ARG1
@@ -43,6 +42,6 @@ PRIM(x_move):
 
 	CCALL(memmove)
 
-	popq	%rsi
+	movq	%r12, VIP
 	popq	TOS
 	NEXT

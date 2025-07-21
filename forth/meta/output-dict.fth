@@ -13,6 +13,7 @@ TRANSCRIBE>
 
 static xt_ft references[];
 
+static
 vminstr_ft meta_definitions[] = {
     FORTH>
     META-TARGET-MODE

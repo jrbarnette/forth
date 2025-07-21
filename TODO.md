@@ -12,7 +12,7 @@ There are experimental versions in assembly for amd64 in
 
 To get to a working set of primitives in assmembly, we need the following
 changes (roughly in this order):
-  * Convert `bootstrap` to use the new forth_execute() interface in
+  * Convert `bootstrap` to use the new `forth_execute()` interface in
     place of the current interface.  The initial implementation should
     be a wrapper around the existing C primitves.
   * Adjust the build system to support multiple targets, and add the
@@ -78,6 +78,14 @@ VM design for AMD64 and ARM32 are in
 ## New Features/Bugs/Flaws
 
 - `WORD` is supposed to skip leading delimiters.  It doesn't.
+
+- `THROW` is supposed to restore the previous input source
+  specification.  It doesn't.
+
+- Related to the problem with `THROW`: Are `SAVE-INPUT` and
+  `RESTORE-INPUT` done right?  Need to study the definition of
+  "input source specification", and read the fine print in the
+  specifications in 6.2.2148 and 6.2.2182.
 
 - Error handling at initialization is dodgy.  Errors get flagged by
   printing the last source line, with a **^^^** indicator for the token

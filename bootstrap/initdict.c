@@ -7,13 +7,14 @@
 #include <stddef.h>
 
 #include "forth.h"
+#include "cforth.h"
 #include "dictionary.h"
 
 
 static xt_ft references[];
 
 static
-vminstr_ft meta_definitions[] = {
+vmcode_ft meta_definitions[] = {
 /*    0 */ { .handler = x_execute },
 /*    1 */ { .handler = x_exit },
 /*    2 */ { .handler = do_literal },
@@ -692,7 +693,7 @@ vminstr_ft meta_definitions[] = {
 #define META_REFERENCE      (&meta_definitions[621])
 
 
-vminstr_ft initialize_forth[] = {
+vmcode_ft initialize_forth[] = {
 /*    0 */ { .handler = do_colon }, { .ip = META_INITIALIZE },
             /* ==== forth/c-gen/core/stackprim.fth ==== */
 /*    2 */ { .ip = META_ADDNAME }, { .id = ">R" }, { .handler = x_to_r },

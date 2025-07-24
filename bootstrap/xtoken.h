@@ -67,11 +67,6 @@ union instruction_cell {
     snumber_ft		offset;
     char_ft		cdata[CELL_SIZE / CHAR_SIZE];
     addr_unit_ft	data[CELL_SIZE];
-
-    /* direct execution only */
-    vmhdlr_fn		handler;
-    vmip_ft		ip;
-    char *		id;
 };
 
 union parameter_cell {

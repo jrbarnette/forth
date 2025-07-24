@@ -8,13 +8,14 @@ TRANSCRIBE>
 #include <stddef.h>
 
 #include "forth.h"
+#include "cforth.h"
 #include "dictionary.h"
 
 
 static xt_ft references[];
 
 static
-vminstr_ft meta_definitions[] = {
+vmcode_ft meta_definitions[] = {
     FORTH>
     META-TARGET-MODE
     include-file: forth/c-gen/core/vmprim.fth
@@ -79,7 +80,7 @@ TRANSCRIBE>
 #define META_REFERENCE      ` ' meta-reference   .target-ref `
 
 
-vminstr_ft initialize_forth[] = {
+vmcode_ft initialize_forth[] = {
     FORTH>
     meta-init
     \ These initial files can contain only "prim:" definitions.

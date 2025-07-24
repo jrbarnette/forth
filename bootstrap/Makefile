@@ -57,7 +57,7 @@ $(PRIM_DEP): $(PRIM_HDRS)
 $(DICT_DEP): $(PRIM_HDRS) dictionary.h
 
 forth: $(OBJECTS)
-	$(CC) $(LDFLAGS) -o $@ $(OBJECTS)
+	$(CC) -o $@ $(OBJECTS) $(LDFLAGS)
 
 tags: $(SOURCES)
 	ctags -w $(SOURCES)

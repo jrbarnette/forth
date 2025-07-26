@@ -18,6 +18,23 @@ changes (roughly in this order):
   * Adjust the build system to support multiple targets, and add the
     assembly primitives as a second target
 
+First problem: In [bootstrap/forth.c](bootstrap/forth.c), if we do a
+simple conversion that changes calls to `execute()` into calls to
+`forth_execute()`, then the mini-stack in `struct fargs` overflows
+while interpreting the Forth source text in `init_forth_defs`.
+The issue is that when creating the table of exception strings, we
+build up the table content on the stack before populating the table.
+
+The preferred solution is to move processing of all that source text
+into Forth code embedded as C data in
+[bootstrap/initdict.c](bootstrap/initdict.c).  There are at least two
+other options:
+  * Allow a variable length stack in `forth_execute()`.  But the
+    caller in `initialize_dictionary()` would have to know about
+    the extra stack requirements.
+  * Change how we build the error table, so that it lives inside a
+    constant size stack.
+
 #### Cleanup
 The meta-compiler still has rough edges, mostly relating to
 niceties of design and organization, outlined below.

@@ -34,7 +34,7 @@ PRIM_DEP =      arithops.o	control.o	definers.o	\
 DICT_DEP =	exception.o	forth.o		initdict.o	\
 		terminal.o
 
-PRIM_HDRS = forth.h ftypes.h vmstate.h xtoken.h vmcheck.h prim.h
+PRIM_HDRS = forth.h ftypes.h vmstate.h xtoken.h vmcheck.h prim.h cforth.h
 
 CHECKENABLE = CHECK
 CHECKDISABLE = NOCHECK

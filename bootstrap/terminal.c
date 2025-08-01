@@ -2,10 +2,12 @@
  * Copyright 2019, by J. Richard Barnette. All Rights Reserved.
  */
 
+/* ISO/IEC standard */
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 
+/* 3rd party library */
 #include <readline/readline.h>
 #include <readline/history.h>
 

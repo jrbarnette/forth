@@ -2,12 +2,16 @@
  * Copyright 2013, by J. Richard Barnette. All Rights Reserved.
  */
 
+/* ISO/IEC standard */
 #include <assert.h>
 #include <errno.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+/* IEEE 1003 (POSIX) */
+#include <time.h>
 
 #include "forth.h"
 #include "dictionary.h"
@@ -138,9 +142,14 @@ main(int argc, char *argv[])
 {
     process_args(argc, argv, &forth_options);
 
+    struct timespec curtime;
+    clock_gettime(CLOCK_REALTIME, &curtime);
+    long start = 1000000000 * curtime.tv_sec + curtime.tv_nsec;
     vmstate_ft vmstate;
     vm_initialize(&vmstate);
     xt_ft eval = initialize_dictionary(&vmstate);
+    clock_gettime(CLOCK_REALTIME, &curtime);
+    long end = 1000000000 * curtime.tv_sec + curtime.tv_nsec;
 
     if (forth_options.startup_file != NULL) {
 	bool saved_interactive = forth_options.is_interactive;
@@ -156,6 +165,9 @@ main(int argc, char *argv[])
 				     forth_options.argv);
     } else {
 	if (IS_INTERACTIVE(stdin)) {
+	    long elapsed = end - start + 50000;
+	    fprintf(stderr, "initialization: %ld.%ld ms\n",
+		    elapsed / 1000000, (elapsed % 1000000) / 100000);
 	    interpret_lines(eval, &vmstate, dictionary_stats);
 	}
 	status = interpret_file(eval, &vmstate, NULL);

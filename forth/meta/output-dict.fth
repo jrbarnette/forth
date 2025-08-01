@@ -21,6 +21,9 @@ vmcode_ft meta_definitions[] = {
     include-file: forth/c-gen/core/vmprim.fth
     include-file: forth/c-gen/core/control.fth
 
+    \ The files below produce no output, but `meta-target.fth` depends
+    \ on the primitives defined above, and each file that follows
+    \ depends on its immediate predecessor.
     HOST-MODE META-HOST-MODE definitions
     include-file: forth/meta/meta-target.fth
     include-file: forth/meta/meta-tokens.fth

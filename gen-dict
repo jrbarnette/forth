@@ -5,6 +5,7 @@ cd $(dirname $0)
 
 MODE=gen
 FILE=bootstrap/initdict.c
+META=meta
 
 usage() {
 cat <<END >&2
@@ -90,14 +91,17 @@ do
     esac
 done
 shift $(( OPTIND - 1 ))
-GENCMD="$(basename $0) $*"
 
-if [ $# -ne 1 ]
+if [ $# -eq 1 ]
+then
+    META="$1"
+elif [ $# -gt 1 ]
 then
     usage
 fi
 
-FILEORDER="forth/$1/file-order"
+GENCMD="$(basename $0) $META"
+FILEORDER="forth/$META/file-order"
 if [ ! -f $FILEORDER ]
 then
     echo "$FILEORDER: no file" >&2

@@ -26,10 +26,6 @@
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
 
-\ That was the last time we'll want to put META-DEFINERS onto the
-\ search-order uncontrolled, because it now contains a special
-\ version of `:` that could screw us up if misused.
-
 META-HOST-MODE definitions
 : operand>  cell+ dup @ ; compile-only
 : cell-operand  operand> { .cell } ;
@@ -53,10 +49,11 @@ here 64 chars allot constant expr-buffer
 variable expr-ptr
 
 META-DEFINITIONS
-: <C>  ';' parse chars expr-ptr @ dup >r
+: <C>  ';' parse expr-ptr @ dup >r
     ( src u dst ) ( R: dst )
-    2dup c! char+ 2dup + expr-ptr !
-    swap move ['] expr-literal , r> , ; compile-special
+    2dup c! char+ swap chars 2dup + expr-ptr !
+    move ['] expr-literal , r> , ; compile-special
+
 : LITERAL ['] cell-literal , , ; compile-special
 
 : \ postpone \ ; immediate
@@ -76,6 +73,9 @@ META-HOST-MODE also META-DEFINERS definitions
 : ] meta-target-wordlist meta-special-wordlist 2 set-order ] ;
 : : start-name s" do_colon" { .exec } emit-nl expr-buffer expr-ptr ! here ] ;
 
+\ That was the last time we'll want to put META-DEFINERS onto the
+\ search-order uncontrolled, because it now contains a special
+\ version of `:` that could screw us up if misused.
 
 META-HOST-MODE definitions
 : parse-valid-name ( "name" -- nt )

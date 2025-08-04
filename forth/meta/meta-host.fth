@@ -3,13 +3,11 @@
 META-HOST-MODE definitions
 
 variable offset          0 offset !
-variable emit-state      0 emit-state !
 variable line-state      true line-state !
 
-: .indent ( state -- ) if 4 else 0 then spaces ;
-: .offset ( state -- ) ." /* " offset @ 4 .r ."  */" .indent ;
+: .offset ( state -- ) ." /* " offset @ 4 .r ."  */" ;
 
-: start-entry line-state @ if emit-state @ .offset then ;
+: start-entry line-state @ if .offset then ;
 : { start-entry ."  { " ;
 : } ."  }," 1 offset +! false line-state ! ;
 : }{ } { ;

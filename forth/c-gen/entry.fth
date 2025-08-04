@@ -26,3 +26,4 @@ entry: .dict ref ( +n -- )
 
 :noname ." &meta_definitions[" .c-decimal ." ]" ;
 entry: .defs ip ( +n -- )
+

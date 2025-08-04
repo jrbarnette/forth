@@ -1,0 +1,30 @@
+\ Copyright 2023, by J. Richard Barnette, All Rights Reserved.
+\
+\ Parse a number per the rules in section 3.4.1.3 of the standard.
+
+
+: nextchar ( limit c-addr -- limit c-addr+1 char )
+    dup char+ swap c@ ;
+: lastchar? ( limit c-addr -- limit c-addr flag ) 2dup = ;
+
+
+: 'CHAR' ( c-addr u -- char true | false )
+    3 <> if drop false exit then
+    char+ dup c@ swap char+
+    c@ [char] ' = if true else drop false then ;
+: SIGNED-NUMBER ( c-addr u -- x -1 | 0 )
+    dup 0= if 2drop false exit then
+    over c@ '-' = tuck + dup 0= if drop 2drop false exit then
+    >r tuck chars - >r
+    0 dup r> r> >number if 2drop 2drop false exit then
+    2drop swap if negate then true ;
+: SET-BASE ( c-addr u base -- c-addr+1 u-1 char )
+    base ! swap char+ swap 1- ;
+: NUMBER-TOKEN? ( c-addr u -- x -1 | 0 )
+    base @ >r
+    case c@
+	'#' of #10 set-base endof   \ decimal
+	'$' of $10 set-base endof   \ hex
+	'%' of %10 set-base endof   \ binary
+	[char] ' of 'char' exit endof
+    endcase signed-number r> base ! ;

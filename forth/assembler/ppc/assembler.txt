@@ -1,0 +1,385 @@
+25:02			b
+25:02			ba
+25:02			bl
+25:02			bla
+25:21 20:16 15:02	bc
+25:21 20:16 15:02	bca
+25:21 20:16 15:02	bcl
+25:21 20:16 15:02	bcla
+
+			! XL-Form
+			! | 0    | 6    | 11   | 16   | 19   | 21  | 31 |
+			! { 31:26, 25:21, 20:16, 15:13, 12:11, 10:1,  0 }
+			! {  OPCD,    BO,    BI,     x,    BH,   XO, LK }
+bclr	BO, BI, BH	! {    19,    BO,    BI,     0,    BH,   16,  0 }
+bclrl	BO, BI, BH	! {    19,    BO,    BI,     0,    BH,   16,  1 }
+bcctr	BO, BI, BH	! {    19,    BO,    BI,     0,    BH,  528,  0 }
+bcctrl	BO, BI, BH	! {    19,    BO,    BI,     0,    BH,  528,  1 }
+
+			! XL-Form
+			! | 0    | 6    | 11   | 16   | 21  | 31 |
+			! { 31:26, 25:21, 20:16, 15:11, 10:1,  0 }
+			! {  OPCD,    BT,    BA,    BB,   XO,  x }
+crand	BT, BA, BB	! {    19,    BT,    BA,    BB,  257,  0 }
+cror	BT, BA, BB	! {    19,    BT,    BA,    BB,  449,  0 }
+crxor	BT, BA, BB	! {    19,    BT,    BA,    BB,  193,  0 }
+crnand	BT, BA, BB	! {    19,    BT,    BA,    BB,  225,  0 }
+crnor	BT, BA, BB	! {    19,    BT,    BA,    BB,   33,  0 }
+creqv	BT, BA, BB	! {    19,    BT,    BA,    BB,  289,  0 }
+crandc	BT, BA, BB	! {    19,    BT,    BA,    BB,  129,  0 }
+crorc	BT, BA, BB	! {    19,    BT,    BA,    BB,  417,  0 }
+
+			! XL-Form
+			! | 0    | 6    | 9    | 11   | 14 | 16 | 21  | 31 |
+			! { 31:26, 25:23, 22:21, 20:18,    17:11, 10:1,  0 }
+			! {  OPCD,    BF,     x,   BFA,       xx,   XO,  x }
+mcrf	BF, BFA		! {    19,    BF,     0,   BFA,        0,    0,  0 }
+
+			! D-Form
+			! | 0    | 6    | 11   | 16   |
+			! { 31:26, 25:21, 20:16, 15:0 }
+			! {  OPCD, RS/RT,    RA, UI/SI/D }
+lbz	RT, D(RA)	! {    34,    RT,    RA,       D }
+lbzu	RT, D(RA)	! {    35,    RT,    RA,       D }
+lhz	RT, D(RA)	! {    40,    RT,    RA,       D }
+lhzu	RT, D(RA)	! {    41,    RT,    RA,       D }
+lha	RT, D(RA)	! {    42,    RT,    RA,       D }
+lhau	RT, D(RA)	! {    43,    RT,    RA,       D }
+lwz	RT, D(RA)	! {    32,    RT,    RA,       D }
+lwzu	RT, D(RA)	! {    33,    RT,    RA,       D }
+stb	RS, D(RA)	! {    38,    RS,    RA,       D }
+stbu	RS, D(RA)	! {    39,    RS,    RA,       D }
+sth	RS, D(RA)	! {    44,    RS,    RA,       D }
+sthu	RS, D(RA)	! {    45,    RS,    RA,       D }
+stw	RS, D(RA)	! {    36,    RS,    RA,       D }
+stwu	RS, D(RA)	! {    37,    RS,    RA,       D }
+lmw	RT, D(RA)	! {    46,    RT,    RA,       D }
+stmw	RS, D(RA)	! {    47,    RS,    RA,       D }
+addi	RT, RA, SI	! {    14,    RT,    RA,      SI }
+addis	RT, RA, SI	! {    15,    RT,    RA,      SI }
+addic	RT, RA, SI	! {    12,    RT,    RA,      SI }
+addic.	RT, RA, SI	! {    13,    RT,    RA,      SI }
+subfic	RT, RA, SI	! {     8,    RT,    RA,      SI }
+mulli	RT, RA, SI	! {     7,    RT,    RA,      SI }
+andi.	RA, RS, SI	! {    28,    RS,    RA,      UI }
+andis.	RA, RS, SI	! {    29,    RS,    RA,      UI }
+ori	RA, RS, SI	! {    24,    RS,    RA,      UI }
+oris	RA, RS, SI	! {    25,    RS,    RA,      UI }
+xori	RA, RS, SI	! {    26,    RS,    RA,      UI }
+xoris	RA, RS, SI	! {    27,    RS,    RA,      UI }
+
+			! D-Form
+			! | 0    | 6    | 9 | 10 | 11   |  16   |
+			! { 31:26, 25:23, 22,  21, 20:16,  15:0 }
+			! {  OPCD,    BF,  x,   L,    RA, UI/SI }
+cmpi	BF, L, RA, SI	! {     7,    BF,  0,   L,    RA,    SI }
+cmpli	BF, L, RA, UI	! {    10,    BF,  0,   L,    RA,    UI }
+
+			! D-Form
+			! | 0    | 6    | 9 | 10 | 11   | 16   | 21  | 31 |
+			! { 31:26, 25:23, 22,  21, 20:16, 15:11, 10:1,  0 }
+			! {  OPCD,    BF,  x,   L,    RA,    RB,   XO,  x }
+cmp	BF, L, RA, RB	! {    31,    BF,  0,   L,    RA,    RB,    0,  0 }
+cmpl	BF, L, RA, RB	! {    31,    BF,  0,   L,    RA,    RB,   32,  0 }
+
+			! XFX-Form
+			! | 0    | 6    | 11   | 21  | 31 |
+			! { 31:26, 25:21, 20:11, 10:1,  0 }
+			! {  OPCD, RS/RT,   SPR,   XO,  x }
+mtspr	SPR, RS		! {    31,    RS,   SPR,  467,  0 }
+mfspr	RT, SPR		! {    31,    RT,   SPR,  339,  0 }
+
+			! XFX-Form
+			! | 0    | 6    | 11 | 12  | 20 | 21  | 31 |
+			! { 31:26, 25:21, 20, 19:12,  11, 10:1,  0 }
+			! {  OPCD,    RS, op,   FXM,   x,   XO,  x }
+mtcrf	FXM, RS		! {    31,    RS,  0,   FXM,   0,  144,  0 }
+mtocrf	FXM, RS		! {    31,    RS,  1,   FXM,   0,  144,  0 }
+
+			! XFX-Form
+			! | 0    | 6    | 11 | 12  | 21  | 31 |
+			! { 31:26, 25:21, 20, 19:11, 10:1,  0 }
+			! {  OPCD,    RT, op,     x,   XO,  x }
+mfcr	RT, FXM		! {    31,    RT,  0,     0,   19,  0 }
+mfocrf	RT, FXM		! {    31,    RT,  1,     0,   19,  0 }
+
+			! X-Form
+			! | 0    | 6    | 11   | 16   | 21  | 31 |
+			! { 31:26, 25:21, 20:16, 15:11, 10:1,  0 }
+			! {  OPCD, RS/RT,    RA, RB/NB,   XO,  x }
+lbzx	RT, RA, RB	! {    31,    RT,    RA,    RB,   87,  0 }
+lbzux	RT, RA, RB	! {    31,    RT,    RA,    RB,  119,  0 }
+lhzx	RT, RA, RB	! {    31,    RT,    RA,    RB,  279,  0 }
+lhzux	RT, RA, RB	! {    31,    RT,    RA,    RB,  311,  0 }
+lhax	RT, RA, RB	! {    31,    RT,    RA,    RB,  343,  0 }
+lhaux	RT, RA, RB	! {    31,    RT,    RA,    RB,  375,  0 }
+lwzx	RT, RA, RB	! {    31,    RT,    RA,    RB,   23,  0 }
+lwzux	RT, RA, RB	! {    31,    RT,    RA,    RB,   55,  0 }
+lwax	RT, RA, RB	! {    31,    RT,    RA,    RB,  341,  0 }
+lwaux	RT, RA, RB	! {    31,    RT,    RA,    RB,  373,  0 }
+ldx	RT, RA, RB	! {    31,    RT,    RA,    RB,   21,  0 }
+ldux	RT, RA, RB	! {    31,    RT,    RA,    RB,   53,  0 }
+stbx	RS, RA, RB	! {    31,    RS,    RA,    RB,  215,  0 }
+stbux	RS, RA, RB	! {    31,    RS,    RA,    RB,  247,  0 }
+sthx	RS, RA, RB	! {    31,    RS,    RA,    RB,  407,  0 }
+sthux	RS, RA, RB	! {    31,    RS,    RA,    RB,  439,  0 }
+stwx	RS, RA, RB	! {    31,    RS,    RA,    RB,  151,  0 }
+stwux	RS, RA, RB	! {    31,    RS,    RA,    RB,  183,  0 }
+stdx	RS, RA, RB	! {    31,    RS,    RA,    RB,  149,  0 }
+stdux	RS, RA, RB	! {    31,    RS,    RA,    RB,  181,  0 }
+lhbrx	RT, RA, RB	! {    31,    RT,    RA,    RB,  790,  0 }
+lwbrx	RT, RA, RB	! {    31,    RT,    RA,    RB,  534,  0 }
+sthbrx	RS, RA, RB	! {    31,    RS,    RA,    RB,  918,  0 }
+stwbrx	RS, RA, RB	! {    31,    RS,    RA,    RB,  662,  0 }
+lswi	RT, RA, NB	! {    31,    RT,    RA,    NB,  597,  0 }
+lswx	RT, RA, RB	! {    31,    RT,    RA,    RB,  533,  0 }
+stswi	RS, RA, NB	! {    31,    RS,    RA,    NB,  725,  0 }
+stsw	RS, RA, RB	! {    31,    RS,    RA,    RB,  661,  0 }
+
+			! X-Form
+			! | 0    | 6    | 11   | 16   | 21  | 31 |
+			! { 31:26, 25:21, 20:16, 15:11, 10:1,  0 }
+			! {  OPCD,    RS,    RA,    RB,   XO, Rc }
+and	RA, RS, RB	! {    31,    RS,    RA,    RB,   28,  0 }
+and.	RA, RS, RB	! {    31,    RS,    RA,    RB,   28,  1 }
+or	RA, RS, RB	! {    31,    RS,    RA,    RB,  444,  0 }
+or.	RA, RS, RB	! {    31,    RS,    RA,    RB,  444,  1 }
+xor	RA, RS, RB	! {    31,    RS,    RA,    RB,  316,  0 }
+xor.	RA, RS, RB	! {    31,    RS,    RA,    RB,  316,  1 }
+nand	RA, RS, RB	! {    31,    RS,    RA,    RB,  476,  0 }
+nand.	RA, RS, RB	! {    31,    RS,    RA,    RB,  476,  1 }
+nor	RA, RS, RB	! {    31,    RS,    RA,    RB,  124,  0 }
+nor.	RA, RS, RB	! {    31,    RS,    RA,    RB,  124,  1 }
+eqv	RA, RS, RB	! {    31,    RS,    RA,    RB,  284,  0 }
+eqv.	RA, RS, RB	! {    31,    RS,    RA,    RB,  284,  1 }
+andc	RA, RS, RB	! {    31,    RS,    RA,    RB,   60,  0 }
+andc.	RA, RS, RB	! {    31,    RS,    RA,    RB,   60,  1 }
+orc	RA, RS, RB	! {    31,    RS,    RA,    RB,  412,  0 }
+orc.	RA, RS, RB	! {    31,    RS,    RA,    RB,  412,  1 }
+sld	RA, RS, RB	! {    31,    RS,    RA,    RB,   27,  0 }
+sld.	RA, RS, RB	! {    31,    RS,    RA,    RB,   27,  1 }
+slw	RA, RS, RB	! {    31,    RS,    RA,    RB,   24,  0 }
+slw.	RA, RS, RB	! {    31,    RS,    RA,    RB,   24,  1 }
+srd	RA, RS, RB	! {    31,    RS,    RA,    RB,  539,  0 }
+srd.	RA, RS, RB	! {    31,    RS,    RA,    RB,  539,  1 }
+srw	RA, RS, RB	! {    31,    RS,    RA,    RB,  536,  0 }
+srw.	RA, RS, RB	! {    31,    RS,    RA,    RB,  536,  1 }
+
+			! X-Form
+			! | 0    | 6    | 11   | 16   | 21 | 22 | 31 |
+			! { 31:26, 25:21, 20:16, 15:11,  10, 9:1,  0 }
+			! {  OPCD,    RT,    RA,    RB,  OE,  XO, Rc }
+add	RT, RA, RB	! {    31,    RT,    RA,    RB,   0, 266,  0 }
+add.	RT, RA, RB	! {    31,    RT,    RA,    RB,   0, 266,  1 }
+addo	RT, RA, RB	! {    31,    RT,    RA,    RB,   1, 266,  0 }
+addo.	RT, RA, RB	! {    31,    RT,    RA,    RB,   1, 266,  1 }
+subf	RT, RA, RB	! {    31,    RT,    RA,    RB,   0,  40,  0 }
+subf.	RT, RA, RB	! {    31,    RT,    RA,    RB,   0,  40,  1 }
+subfo	RT, RA, RB	! {    31,    RT,    RA,    RB,   1,  40,  0 }
+subfo.	RT, RA, RB	! {    31,    RT,    RA,    RB,   1,  40,  1 }
+addc	RT, RA, RB	! {    31,    RT,    RA,    RB,   0,  10,  0 }
+addc.	RT, RA, RB	! {    31,    RT,    RA,    RB,   0,  10,  1 }
+addco	RT, RA, RB	! {    31,    RT,    RA,    RB,   1,  10,  0 }
+addco.	RT, RA, RB	! {    31,    RT,    RA,    RB,   1,  10,  1 }
+subfc	RT, RA, RB	! {    31,    RT,    RA,    RB,   0,   8,  0 }
+subfc.	RT, RA, RB	! {    31,    RT,    RA,    RB,   0,   8,  1 }
+subfco	RT, RA, RB	! {    31,    RT,    RA,    RB,   1,   8,  0 }
+subfco.	RT, RA, RB	! {    31,    RT,    RA,    RB,   1,   8,  1 }
+adde	RT, RA, RB	! {    31,    RT,    RA,    RB,   0, 138,  0 }
+adde.	RT, RA, RB	! {    31,    RT,    RA,    RB,   0, 138,  1 }
+addeo	RT, RA, RB	! {    31,    RT,    RA,    RB,   1, 138,  0 }
+addeo.	RT, RA, RB	! {    31,    RT,    RA,    RB,   1, 138,  1 }
+subfe	RT, RA, RB	! {    31,    RT,    RA,    RB,   0, 136,  0 }
+subfe.	RT, RA, RB	! {    31,    RT,    RA,    RB,   0, 136,  1 }
+subfeo	RT, RA, RB	! {    31,    RT,    RA,    RB,   1, 136,  0 }
+subfeo.	RT, RA, RB	! {    31,    RT,    RA,    RB,   1, 136,  1 }
+mulld	RT, RA, RB	! {    31,    RT,    RA,    RB,   0, 233,  0 }
+mulld.	RT, RA, RB	! {    31,    RT,    RA,    RB,   0, 233,  1 }
+mulldo	RT, RA, RB	! {    31,    RT,    RA,    RB,   1, 233,  0 }
+mulldo.	RT, RA, RB	! {    31,    RT,    RA,    RB,   1, 233,  1 }
+mullw	RT, RA, RB	! {    31,    RT,    RA,    RB,   0, 235,  0 }
+mullw.	RT, RA, RB	! {    31,    RT,    RA,    RB,   0, 235,  1 }
+mullwo	RT, RA, RB	! {    31,    RT,    RA,    RB,   1, 235,  0 }
+mullwo.	RT, RA, RB	! {    31,    RT,    RA,    RB,   1, 235,  1 }
+divd	RT, RA, RB	! {    31,    RT,    RA,    RB,   0, 489,  0 }
+divd.	RT, RA, RB	! {    31,    RT,    RA,    RB,   0, 489,  1 }
+divdo	RT, RA, RB	! {    31,    RT,    RA,    RB,   1, 489,  0 }
+divdo.	RT, RA, RB	! {    31,    RT,    RA,    RB,   1, 489,  1 }
+divw	RT, RA, RB	! {    31,    RT,    RA,    RB,   0, 491,  0 }
+divw.	RT, RA, RB	! {    31,    RT,    RA,    RB,   0, 491,  1 }
+divwo	RT, RA, RB	! {    31,    RT,    RA,    RB,   1, 491,  0 }
+divwo.	RT, RA, RB	! {    31,    RT,    RA,    RB,   1, 491,  1 }
+divdu	RT, RA, RB	! {    31,    RT,    RA,    RB,   0, 457,  0 }
+divdu.	RT, RA, RB	! {    31,    RT,    RA,    RB,   0, 457,  1 }
+divduo	RT, RA, RB	! {    31,    RT,    RA,    RB,   1, 457,  0 }
+divduo.	RT, RA, RB	! {    31,    RT,    RA,    RB,   1, 457,  1 }
+divwu	RT, RA, RB	! {    31,    RT,    RA,    RB,   0, 459,  0 }
+divwu.	RT, RA, RB	! {    31,    RT,    RA,    RB,   0, 459,  1 }
+divwuo	RT, RA, RB	! {    31,    RT,    RA,    RB,   1, 459,  0 }
+divwuo.	RT, RA, RB	! {    31,    RT,    RA,    RB,   1, 459,  1 }
+
+			! X-Form
+			! | 0    | 6    | 11   | 16   | 21 | 22 | 31 |
+			! { 31:26, 25:21, 20:16, 15:11,  10, 9:1,  0 }
+			! {  OPCD,    RT,    RA,    RB,   x,  XO, Rc }
+mullhd	RT, RA, RB	! {    31,    RT,    RA,    RB,   0,  73,  0 }
+mullhd.	RT, RA, RB	! {    31,    RT,    RA,    RB,   0,  73,  1 }
+mullhw	RT, RA, RB	! {    31,    RT,    RA,    RB,   0,  75,  0 }
+mullhw.	RT, RA, RB	! {    31,    RT,    RA,    RB,   0,  75,  1 }
+mullhdu	RT, RA, RB	! {    31,    RT,    RA,    RB,   0,   9,  0 }
+mullhdu. RT, RA, RB	! {    31,    RT,    RA,    RB,   0,   9,  1 }
+mullhwu	RT, RA, RB	! {    31,    RT,    RA,    RB,   0,  11,  0 }
+mullhwu. RT, RA, RB	! {    31,    RT,    RA,    RB,   0,  11,  1 }
+
+			! X-Form
+			! | 0    | 6    | 11   | 16   | 21  | 31 |
+			! { 31:26, 25:21, 20:16, 15:11, 10:1,  0 }
+			! {  OPCD,    RS,    RA,     x,   XO, Rc }
+extsb	RA, RS		! {    31,    RS,    RA,     0,  954,  0 }
+extsb.	RA, RS		! {    31,    RS,    RA,     0,  954,  1 }
+extsh	RA, RS		! {    31,    RS,    RA,     0,  922,  0 }
+extsh.	RA, RS		! {    31,    RS,    RA,     0,  922,  1 }
+extsw	RA, RS		! {    31,    RS,    RA,     0,  986,  0 }
+extsw.	RA, RS		! {    31,    RS,    RA,     0,  986,  1 }
+cntlzd	RA, RS		! {    31,    RS,    RA,     0,   58,  0 }
+cntlzd.	RA, RS		! {    31,    RS,    RA,     0,   58,  1 }
+cntlzw	RA, RS		! {    31,    RS,    RA,     0,   26,  0 }
+cntlzw.	RA, RS		! {    31,    RS,    RA,     0,   26,  1 }
+
+			! XS-Form
+			! | 0    | 6    | 11   | 16   | 21  | 30 | 31 |
+			! { 31:26, 25:21, 20:16, 15:11, 10:2,   1,  0 }
+			! {  OPCD,    RS,    RA,    SH,   XO,  SH, Rc }
+sradi	RA, RS, SH	! {    31,    RS,    RA,    SH,  413,  SH,  0 }
+sradi.	RA, RS, SH	! {    31,    RS,    RA,    SH,  413,  SH,  1 }
+
+			! X-Form
+			! | 0    | 6    | 11   | 16   | 21  | 31 |
+			! { 31:26, 25:21, 20:16, 15:11, 10:2,  0 }
+			! {  OPCD,    RS,    RA, RB/SH,   XO, Rc }
+srawi	RA, RS, SH	! {    31,    RS,    RA,    SH,  824,  0 }
+srawi.	RA, RS, SH	! {    31,    RS,    RA,    SH,  824,  1 }
+srad	RA, RS, RB	! {    31,    RS,    RA,    RB,  794,  0 }
+srad.	RA, RS, RB	! {    31,    RS,    RA,    RB,  794,  1 }
+sraw	RA, RS, RB	! {    31,    RS,    RA,    RB,  792,  0 }
+sraw.	RA, RS, RB	! {    31,    RS,    RA,    RB,  792,  1 }
+
+			! MD-Form
+			! | 0    | 6    | 11   | 16   | 21  | 27 | 30 | 31 |
+			! { 31:26, 25:21, 20:16, 15:11, 10:5, 4:2,   1,  0 }
+			! {  OPCD,    RS,    RA,    SH,   MB,  XO,  SH, Rc }
+rldicl	RA, RS, SH, MB  ! {    30,    RS,    RA,    SH,   MB,   0,  SH,  0 }
+rldicl.	RA, RS, SH, MB  ! {    30,    RS,    RA,    SH,   MB,   0,  SH,  1 }
+rldicr	RA, RS, SH, MB  ! {    30,    RS,    RA,    SH,   MB,   1,  SH,  0 }
+rldicr.	RA, RS, SH, MB  ! {    30,    RS,    RA,    SH,   MB,   1,  SH,  1 }
+rldic	RA, RS, SH, MB  ! {    30,    RS,    RA,    SH,   MB,   2,  SH,  0 }
+rldic.	RA, RS, SH, MB  ! {    30,    RS,    RA,    SH,   MB,   2,  SH,  1 }
+rldimi	RA, RS, SH, MB  ! {    30,    RS,    RA,    SH,   MB,   3,  SH,  0 }
+rldimi.	RA, RS, SH, MB  ! {    30,    RS,    RA,    SH,   MB,   3,  SH,  1 }
+
+			! MDS-Form
+			! | 0    | 6    | 11   | 16   | 21   | 27 | 31 |
+			! { 31:26, 25:21, 20:16, 15:11,  10:5, 4:2,  0 }
+			! {  OPCD,    RS,    RA,    RB, MB/ME,  XO, Rc }
+rldcl	RA, RS, RB, MB	! {    30,    RS,    RA,    RB,    MB,   8,  0 }
+rldcl.	RA, RS, RB, MB	! {    30,    RS,    RA,    RB,    MB,   8,  1 }
+rldcr	RA, RS, RB, MB	! {    30,    RS,    RA,    RB,    ME,   9,  0 }
+rldcr.	RA, RS, RB, MB	! {    30,    RS,    RA,    RB,    ME,   9,  1 }
+
+			   ! M-Form
+			   ! | 0    | 6    | 11   | 16   | 21  | 26 | 31 |
+			   ! { 31:26, 25:21, 20:16, 15:11, 10:6, 5:1,  0 }
+			   ! {  OPCD,    RS,    RA, SH/RB,   MB,  ME, Rc }
+rlwinm	RA, RS, SH, MB, ME ! {    21,    RS,    RA,    SH,   MB,  ME,  0 }
+rlwinm.	RA, RS, SH, MB, ME ! {    21,    RS,    RA,    SH,   MB,  ME,  1 }
+rlwnm	RA, RS, RB, MB, ME ! {    23,    RS,    RA,    RB,   MB,  ME,  0 }
+rlwnm.	RA, RS, RB, MB, ME ! {    23,    RS,    RA,    RB,   MB,  ME,  1 }
+rlwimi	RA, RS, SH, MB, ME ! {    20,    RS,    RA,    SH,   MB,  ME,  0 }
+rlwimi.	RA, RS, SH, MB, ME ! {    20,    RS,    RA,    SH,   MB,  ME,  1 }
+
+			! X-Form
+			! | 0    | 6    | 11   | 16   | 21 | 22 | 31 |
+			! { 31:26, 25:21, 20:16, 15:11,  10, 9:1,  0 }
+			! {  OPCD,    RT,    RA,     x,  OE,  XO, Rc }
+addme	RT, RA		! {    31,    RT,    RA,     0,   0, 234,  0 }
+addme.	RT, RA		! {    31,    RT,    RA,     0,   0, 234,  1 }
+addmeo	RT, RA		! {    31,    RT,    RA,     0,   1, 234,  0 }
+addmeo.	RT, RA		! {    31,    RT,    RA,     0,   1, 234,  1 }
+subfme	RT, RA		! {    31,    RT,    RA,     0,   0, 232,  0 }
+subfme.	RT, RA		! {    31,    RT,    RA,     0,   0, 232,  1 }
+subfmeo	RT, RA		! {    31,    RT,    RA,     0,   1, 232,  0 }
+subfmeo. RT, RA		! {    31,    RT,    RA,     0,   1, 232,  1 }
+addze	RT, RA		! {    31,    RT,    RA,     0,   0, 202,  0 }
+addze.	RT, RA		! {    31,    RT,    RA,     0,   0, 202,  1 }
+addzeo	RT, RA		! {    31,    RT,    RA,     0,   1, 202,  0 }
+addzeo.	RT, RA		! {    31,    RT,    RA,     0,   1, 202,  1 }
+subfze	RT, RA		! {    31,    RT,    RA,     0,   0, 200,  0 }
+subfze.	RT, RA		! {    31,    RT,    RA,     0,   0, 200,  1 }
+subfzeo	RT, RA		! {    31,    RT,    RA,     0,   1, 200,  0 }
+subfzeo. RT, RA		! {    31,    RT,    RA,     0,   1, 200,  1 }
+neg	RT, RA		! {    31,    RT,    RA,     0,   0, 104,  0 }
+neg.	RT, RA		! {    31,    RT,    RA,     0,   0, 104,  1 }
+nego	RT, RA		! {    31,    RT,    RA,     0,   1, 104,  0 }
+nego.	RT, RA		! {    31,    RT,    RA,     0,   1, 104,  1 }
+
+			! DS-Form
+			! | 0    | 6    | 11   | 16  | 30   |
+			! { 31:26, 25:21, 20:16, 15:2,  1:0 }
+			! {  OPCD, RS/RT,    RA,    DS,  XO }
+lwa	RT, DS(RA)	! {    58,    RT,    RA,    DS,   2 }
+ld	RT, DS(RA)	! {    58,    RT,    RA,    DS,   0 }
+ldu	RT, DS(RA)	! {    58,    RT,    RA,    DS,   1 }
+std	RS, DS(RA)	! {    58,    RS,    RA,    DS,   0 }
+stdu	RS, DS(RA)	! {    58,    RS,    RA,    DS,   1 }
+
+----
+bclr	BO, BI		!	bclr	BO, BI, 0
+bclrl	BO, BI		!	bclrl	BO, BI, 0
+bcctr	BO, BI		!	bcctr	BO, BI, 0
+bcctrl	BO, BI		!	bcctrl	BO, BI, 0
+... more branches
+
+crset	bx		!	creqv	bx, bx, bx
+crclr	bx		!	crxor	bx, bx, bx
+crmove	bx, by		!	cror	bx, by, by
+crnot	bx, by		!	crnor	bx, by, by
+
+subi	RT, RA, SI	!	addi	RT, RA, -SI
+subis	RT, RA, SI	!	addi	RT, RA, -SI
+subic	RT, RA, SI	!	addi	RT, RA, -SI
+subic.	RT, RA, SI	!	addi	RT, RA, -SI
+
+sub	RT, RA, RB	!	subf	RT, RB, RA
+subc	RT, RA, RB	!	subfc	RT, RB, RA
+
+cmpd	BF, RA, RB	!	cmp	BF, 1, RA, RB
+cmpld	BF, RA, RB	!	cmpl	BF, 1, RA, RB
+cmpdi	BF, RA, SI	!	cmpi	BF, 1, RA, SI
+cmpldi	BF, RA, UI	!	cmpli	BF, 1, RA, UI
+cmpw	BF, RA, RB	!	cmp	BF, 0, RA, RB
+cmplw	BF, RA, RB	!	cmpl	BF, 0, RA, RB
+cmpwi	BF, RA, SI	!	cmpi	BF, 0, RA, SI
+cmplwi	BF, RA, UI	!	cmpli	BF, 0, RA, UI
+cmpd	RA, RB		!	cmp	0, 1, RA, RB
+cmpld	RA, RB		!	cmpl	0, 1, RA, RB
+cmpdi	RA, SI		!	cmpi	0, 1, RA, SI
+cmpldi	RA, UI		!	cmpli	0, 1, RA, UI
+cmpw	RA, RB		!	cmp	0, 0, RA, RB
+cmplw	RA, RB		!	cmpl	0, 0, RA, RB
+cmpwi	RA, SI		!	cmpi	0, 0, RA, SI
+cmplwi	RA, UI		!	cmpli	0, 0, RA, UI
+
+... rotate variants
+
+mtxer	RS		!	mtspr	1, RS
+mtlr	RS		!	mtspr	8, RS
+mtctr	RS		!	mtspr	9, RS
+mfxer	RT		!	mfspr	RT, 1
+mflr	RT		!	mfspr	RT, 8
+mfcfr	RT		!	mfspr	RT, 9
+
+nop			!	ori	0, 0, 0
+li	RT, SI		!	addi	RT, 0, SI
+lis	RT, SI		!	addis	RT, 0, SI
+mr	RA, RS		!	or	RA, RS, RS
+not	RA, RS		!	nor	RA, RS, RS

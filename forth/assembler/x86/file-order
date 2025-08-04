@@ -1,0 +1,3 @@
+reference/assembler/x86/assembler.fth
+reference/assembler/x86/operands.fth
+reference/assembler/x86/instructions.fth

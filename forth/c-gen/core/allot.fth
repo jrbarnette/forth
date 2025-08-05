@@ -9,11 +9,11 @@
 
 : UNUSED ( -- u ) <C> DICTSPACE_END; here - ;
 : allot-bounds ( -- unused+1 -inuse )
-    UNUSED 1 + dup <C> DICTSPACE_SIZE+1; - ;
+    unused 1 + dup <C> DICTSPACE_SIZE+1; - ;
 
 : ALLOT ( n -- )
     dup allot-bounds within -8 and throw <C> &HERE; +! ;
 : ALIGN ( -- ) here aligned <C> &HERE; ! ;
 : , ( x -- ) here <C> CELL_SIZE; allot ! ;
-: C, ( char -- ) here 1 allot c! ;
+: C, ( char -- ) here <C> CHAR_SIZE; allot c! ;
 : COMPILE, ( xt -- ) , ;

@@ -177,7 +177,7 @@ vmcode_ft meta_definitions[] = {
                // C,
 /*  152 */ { .handler = do_colon },
 /*  153 */ { .ip = &meta_definitions[105] },
-/*  154 */ { .ip = &meta_definitions[2] }, { .cell = 0x1 },
+/*  154 */ { .ip = &meta_definitions[2] }, { .cell = (cell_ft) (CHAR_SIZE) },
 /*  156 */ { .ip = &meta_definitions[126] },
 /*  157 */ { .ip = &meta_definitions[46] },
 /*  158 */ { .ip = &meta_definitions[1] },

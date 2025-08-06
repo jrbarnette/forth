@@ -26,7 +26,9 @@ vmcode_ft meta_definitions[] = {
     \ depends on its immediate predecessor.
     HOST-MODE META-HOST-MODE definitions
     include-file: forth/meta/meta-target.fth
-    include-file: forth/meta/meta-tokens.fth
+    META-HOST-MODE definitions also META-SPECIAL
+    include-file: forth/common/internal/tokens.fth
+    previous
     include-file: forth/common/internal/interpret.fth
     include-file: forth/meta/compile-file.fth
 

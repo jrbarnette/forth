@@ -15,7 +15,7 @@ TRANSCRIBE>
 static xt_ft references[];
 
 static
-vmcode_ft meta_definitions[] = {
+vmcode_ft meta_dictionary[] = {
     FORTH>
     META-TARGET-MODE
     include-file: forth/c-gen/core/vmprim.fth
@@ -70,7 +70,7 @@ vmcode_ft meta_definitions[] = {
 FORTH>
 META-HOST-MODE definitions
 : .target-ref
-    ." (&meta_definitions[" >body @ .c-decimal ." ])" ;
+    ." (&meta_dictionary[" >body @ .c-decimal ." ])" ;
 TRANSCRIBE>
 
 #define EXIT                ` ' exit             .target-ref `

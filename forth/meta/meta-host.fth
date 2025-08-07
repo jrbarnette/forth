@@ -13,7 +13,7 @@ variable line-state      true line-state !
 : }{ } { ;
 : emit-nl cr true line-state ! ;
 
-: target-create ( -- ) create offset @ , does> @ { .defs } ;
+: target-create ( -- ) create offset @ , does> @ { .meta-exec } ;
 
 also META-DEFINERS definitions previous
 : prim: target-create parse-name { .exec } emit-nl ;

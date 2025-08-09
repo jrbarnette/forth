@@ -13,7 +13,9 @@ variable line-state      true line-state !
 : }{ } { ;
 : emit-nl cr true line-state ! ;
 
-: target-create ( -- ) create offset @ , does> @ { .meta-exec } ;
+:noname ." &meta_dictionary[" .c-decimal ." ]" ;
+		entry: .meta-xt ip ( +n -- )
+: target-create ( -- ) create offset @ , does> @ { .meta-xt } ;
 
 also META-DEFINERS definitions previous
 : prim: target-create parse-name { .exec } emit-nl ;

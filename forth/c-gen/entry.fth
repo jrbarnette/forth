@@ -14,7 +14,5 @@
 		entry: .NULL id ( -- )
 :noname ." &initialize_forth[" .c-decimal ." ]" ;
 		entry: .label ip ( +n -- )
-:noname ." &meta_dictionary[" .c-decimal ." ]" ;
-		entry: .meta-exec ip ( +n -- )
 
 : .id ( c-addr -- ) ?dup if count .str else .NULL then ;

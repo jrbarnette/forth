@@ -29,7 +29,7 @@ wordlist constant TARGET-NAMES
 variable nreference  1 nreference !
 : create-reference
     align here get-current target-names set-current
-    nreference @ 1 nreference +! constant
+    nreference @ constant 1 nreference +!
     set-current name>string
 ;
 

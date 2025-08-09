@@ -95,7 +95,7 @@ also META-SPECIAL definitions previous
 META-DEFINITIONS
 : [ meta-target-mode postpone [ ; immediate
 
-META-COMPILE-MODE
+also META-SPECIAL
 : ;
     postpone EXIT
     here over ( start end cur )

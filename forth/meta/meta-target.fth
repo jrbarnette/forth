@@ -76,7 +76,7 @@ META-HOST-MODE definitions
 : start-name
     target-create 15 spaces ." // " current-name name>string type cr ;
 
-META-HOST-MODE also META-DEFINERS definitions previous
+META-HOST-MODE also META-DEFINERS definitions
 : VARIABLE
     start-name s" do_variable" { .exec }{ 0 .cell } emit-nl ;
 : CONSTANT

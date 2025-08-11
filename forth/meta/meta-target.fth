@@ -26,6 +26,8 @@
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
 
+\ Support for literals when compiling meta-dictionary source files
+
 META-HOST-MODE definitions
 : operand>  cell+ dup @ ; compile-only
 : cell-operand  operand> { .cell } ;
@@ -37,12 +39,6 @@ also META-TARGET
 also META-TARGET
 : expr-literal  do-literal operand> count { .expr } ; compile-only
 : cell-literal  do-literal cell-operand ; compile-only
-
-definitions
-: branch        branch     cell-operand ; compile-only
-: ?branch       ?branch    cell-operand ; compile-only
-previous
-
 
 META-HOST-MODE definitions
 here 64 chars allot constant expr-buffer
@@ -56,16 +52,31 @@ META-DEFINITIONS
 
 : LITERAL ['] cell-literal , , ; compile-special
 
+
+\ Definitions needed for the implementation of control flow primitives
+\ to compile meta=dictionary target sources
+
+also META-TARGET definitions
+: branch        branch     cell-operand ; compile-only
+: ?branch       ?branch    cell-operand ; compile-only
+previous
+
+
+\ Support for comments when compiling meta-dictionary sources
+
 : \ postpone \ ; immediate
 : ( postpone ( ; immediate
 : .( postpone .( cr ; immediate
 
 
+\ Standard defining words implemented for compiling meta-dictionary
+\ sources
+
 META-HOST-MODE definitions
 : start-name
     target-create 15 spaces ." // " current-name name>string type cr ;
 
-META-HOST-MODE also META-DEFINERS definitions
+META-HOST-MODE also META-DEFINERS definitions previous
 : VARIABLE
     start-name s" do_variable" { .exec }{ 0 .cell } emit-nl ;
 : CONSTANT
@@ -73,9 +84,12 @@ META-HOST-MODE also META-DEFINERS definitions
 : ] meta-target-wordlist meta-special-wordlist 2 set-order ] ;
 : : start-name s" do_colon" { .exec } emit-nl expr-buffer expr-ptr ! here ] ;
 
+
 \ That was the last time we'll want to put META-DEFINERS onto the
 \ search-order uncontrolled, because it now contains a special
 \ version of `:` that could screw us up if misused.
+
+\ Special words implemented for compiling meta-dictionary sources
 
 META-HOST-MODE definitions
 : parse-valid-name ( "name" -- nt )

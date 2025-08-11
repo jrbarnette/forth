@@ -1,12 +1,9 @@
 \ Copyright 2017, by J. Richard Barnette. All Rights Reserved.
 
 \ ------  ------  ------  ------  ------  ------  ------  ------
-\  +LOOP                 6.1.0140 CORE
 \  BEGIN                 6.1.0760 CORE
-\  DO                    6.1.1240 CORE
 \  ELSE                  6.1.1310 CORE
 \  IF                    6.1.1700 CORE
-\  LEAVE                 6.1.1760 CORE
 \  REPEAT                6.1.2140 CORE
 \  THEN                  6.1.2270 CORE
 \  UNTIL                 6.1.2390 CORE

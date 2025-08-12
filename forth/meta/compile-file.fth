@@ -1,13 +1,13 @@
 \  Copyright 2020, by J. Richard Barnette. All Rights Reserved.
 
-HOST-MODE definitions
+HOST-MODE
 
 : OPEN-SOURCE-FILE ( "filename" -- fileid )
     parse-name 12 spaces ." /* ==== " 2dup type ."  ==== */" cr
     r/o open-file abort" failed to open file" ;
 
 
-METADICT-HOST-MODE definitions
+METADICT-HOST-MODE
 
 : INTERPRET-META-FILE
     metadict-target-mode
@@ -17,7 +17,7 @@ METADICT-HOST-MODE definitions
     open-source-file ['] interpret-meta-file with-input-source ;
 
 
-HOST-MODE definitions
+HOST-MODE
 
 : INTERPRET-TARGET-FILE
     target-mode

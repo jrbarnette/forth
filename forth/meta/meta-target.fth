@@ -17,18 +17,18 @@
 \  [				METADICT-TARGET (compile special)
 \  ;				METADICT-TARGET (compile special)
 \
+\  ?branch			METADICT-TARGET (augmented primitive)
+\  branch			METADICT-TARGET (augmented primitive)
+\
 \  [']				METADICT-SPECIAL (compile special)
 \  [COMPILE]			METADICT-SPECIAL (compile special)
 \  POSTPONE			METADICT-SPECIAL (compile special)
-\
-\  ?branch			METADICT-TARGET (augmented primitive)
-\  branch			METADICT-TARGET (augmented primitive)
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
 
 \ Support for literals when compiling meta-dictionary source files
 
-METADICT-HOST-MODE definitions
+METADICT-HOST-MODE
 : operand>  cell+ dup @ ; compile-only
 : cell-operand  operand> { .cell } ;
 
@@ -69,7 +69,7 @@ previous
 \ Standard defining words implemented for compiling meta-dictionary
 \ sources
 
-METADICT-HOST-MODE definitions
+METADICT-HOST-MODE
 : start-name
     target-create 15 spaces ." // " current-name name>string type cr ;
 
@@ -84,7 +84,7 @@ also METADICT-DEFINERS definitions
 
 \ Special words implemented for compiling meta-dictionary sources
 
-METADICT-HOST-MODE definitions
+METADICT-HOST-MODE
 : parse-valid-name ( "name" -- nt )
     parse-name metadict-target-wordlist wid-lookup
     dup 0= if -13 .error then ;

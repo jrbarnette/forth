@@ -26,26 +26,26 @@ vmcode_ft meta_dictionary[] = {
     \ depends on its immediate predecessor.
     HOST-MODE
     include-file: forth/meta/meta-target.fth
-    METADICT-HOST-MODE definitions also METADICT-SPECIAL
+    METADICT-COMPILE-MODE
     include-file: forth/common/internal/tokens.fth
-    previous
+    METADICT-HOST-MODE
     include-file: forth/common/internal/interpret.fth
     include-file: forth/meta/compile-file.fth
 
-    METADICT-HOST-MODE definitions
+    METADICT-HOST-MODE
     compile-meta: forth/c-gen/core/stackprim.fth
     compile-meta: forth/c-gen/core/arithprim.fth
     compile-meta: forth/c-gen/core/memprim.fth
     compile-meta: forth/c-gen/core/multprim.fth
     compile-meta: forth/c-gen/exception/throwprim.fth
 
-    METADICT-HOST-MODE definitions also METADICT-SPECIAL
+    METADICT-COMPILE-MODE
     include-file: forth/common/internal/branches.fth
 
     METADICT-DEFINITIONS
     include-file: forth/common/core/control.fth
 
-    METADICT-HOST-MODE definitions also METADICT-SPECIAL
+    METADICT-COMPILE-MODE
     include-file: forth/common/internal/doprolog.fth
 
     METADICT-DEFINITIONS
@@ -68,7 +68,7 @@ vmcode_ft meta_dictionary[] = {
     TRANSCRIBE>
 };
 FORTH>
-METADICT-HOST-MODE definitions
+METADICT-HOST-MODE
 : .target-ref
     ." (&meta_dictionary[" >body @ .c-decimal ." ])" ;
 TRANSCRIBE>

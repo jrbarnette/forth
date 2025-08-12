@@ -1,6 +1,6 @@
 \  Copyright 2019, by J. Richard Barnette. All Rights Reserved.
 
-HOST-MODE definitions
+HOST-MODE
 
 variable offset      0 offset !
 

@@ -26,32 +26,32 @@ vmcode_ft meta_dictionary[] = {
     \ depends on its immediate predecessor.
     HOST-MODE
     include-file: forth/meta/meta-target.fth
-    META-HOST-MODE definitions also META-SPECIAL
+    METADICT-HOST-MODE definitions also METADICT-SPECIAL
     include-file: forth/common/internal/tokens.fth
     previous
     include-file: forth/common/internal/interpret.fth
     include-file: forth/meta/compile-file.fth
 
-    META-HOST-MODE definitions
+    METADICT-HOST-MODE definitions
     compile-meta: forth/c-gen/core/stackprim.fth
     compile-meta: forth/c-gen/core/arithprim.fth
     compile-meta: forth/c-gen/core/memprim.fth
     compile-meta: forth/c-gen/core/multprim.fth
     compile-meta: forth/c-gen/exception/throwprim.fth
 
-    META-HOST-MODE definitions also META-SPECIAL
+    METADICT-HOST-MODE definitions also METADICT-SPECIAL
     include-file: forth/common/internal/branches.fth
 
-    META-DEFINITIONS
+    METADICT-DEFINITIONS
     include-file: forth/common/core/control.fth
 
-    META-HOST-MODE definitions also META-SPECIAL
+    METADICT-HOST-MODE definitions also METADICT-SPECIAL
     include-file: forth/common/internal/doprolog.fth
 
-    META-DEFINITIONS
+    METADICT-DEFINITIONS
     include-file: forth/common/core/docase.fth
 
-    META-HOST-MODE
+    METADICT-HOST-MODE
     compile-meta: forth/c-gen/core/memops.fth
     compile-meta: forth/c-gen/core/allot.fth
     compile-meta: forth/common/core/stackops.fth
@@ -68,7 +68,7 @@ vmcode_ft meta_dictionary[] = {
     TRANSCRIBE>
 };
 FORTH>
-META-HOST-MODE definitions
+METADICT-HOST-MODE definitions
 : .target-ref
     ." (&meta_dictionary[" >body @ .c-decimal ." ])" ;
 TRANSCRIBE>

@@ -7,12 +7,12 @@ HOST-MODE definitions
     r/o open-file abort" failed to open file" ;
 
 
-META-HOST-MODE definitions
+METADICT-HOST-MODE definitions
 
 : INTERPRET-META-FILE
     metadict-target-mode
     begin refill if ['] interpret catch ?dup else 0 -1 then until
-    meta-host-mode source-id close-file drop throw ;
+    metadict-host-mode source-id close-file drop throw ;
 : COMPILE-META: ( "filename" -- )
     open-source-file ['] interpret-meta-file with-input-source ;
 

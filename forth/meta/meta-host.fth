@@ -1,6 +1,6 @@
 \  Copyright 2023, by J. Richard Barnette. All Rights Reserved.
 
-META-HOST-MODE definitions
+METADICT-HOST-MODE definitions
 
 variable offset          0 offset !
 variable line-state      true line-state !
@@ -17,5 +17,5 @@ variable line-state      true line-state !
 		entry: .meta-xt ip ( +n -- )
 : target-create ( -- ) create offset @ , does> @ { .meta-xt } ;
 
-also META-DEFINERS definitions previous
+also METADICT-DEFINERS definitions previous
 : prim: target-create parse-name { .exec } emit-nl ;

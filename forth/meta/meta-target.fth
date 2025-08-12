@@ -78,7 +78,7 @@ also METADICT-DEFINERS definitions
     start-name s" do_variable" { .exec }{ 0 .cell } emit-nl ;
 : CONSTANT
     start-name s" do_constant" { .exec }{ .cell } emit-nl ;
-: ] meta-target-wordlist meta-special-wordlist 2 set-order ] ;
+: ] metadict-target-wordlist metadict-special-wordlist 2 set-order ] ;
 : : start-name s" do_colon" { .exec } emit-nl expr-buffer expr-ptr ! here ] ;
 
 
@@ -86,7 +86,7 @@ also METADICT-DEFINERS definitions
 
 METADICT-HOST-MODE definitions
 : parse-valid-name ( "name" -- nt )
-    parse-name meta-target-wordlist wid-lookup
+    parse-name metadict-target-wordlist wid-lookup
     dup 0= if -13 .error then ;
 
 : ' ( "name" -- xt )  parse-valid-name name>xt ;
@@ -100,7 +100,7 @@ also METADICT-SPECIAL definitions previous
 
 
 METADICT-DEFINITIONS
-: [ meta-target-mode postpone [ ; immediate
+: [ metadict-target-mode postpone [ ; immediate
 
 also METADICT-SPECIAL
 : ;

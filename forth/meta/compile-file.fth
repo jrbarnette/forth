@@ -10,7 +10,7 @@ HOST-MODE definitions
 META-HOST-MODE definitions
 
 : INTERPRET-META-FILE
-    meta-target-mode
+    metadict-target-mode
     begin refill if ['] interpret catch ?dup else 0 -1 then until
     meta-host-mode source-id close-file drop throw ;
 : COMPILE-META: ( "filename" -- )

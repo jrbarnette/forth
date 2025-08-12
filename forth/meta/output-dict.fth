@@ -17,14 +17,14 @@ static xt_ft references[];
 static
 vmcode_ft meta_dictionary[] = {
     FORTH>
-    META-TARGET-MODE
+    METADICT-TARGET-MODE
     include-file: forth/c-gen/core/vmprim.fth
     include-file: forth/c-gen/core/control.fth
 
     \ The files below produce no output, but `meta-target.fth` depends
     \ on the primitives defined above, and each file that follows
     \ depends on its immediate predecessor.
-    HOST-MODE META-HOST-MODE definitions
+    HOST-MODE
     include-file: forth/meta/meta-target.fth
     META-HOST-MODE definitions also META-SPECIAL
     include-file: forth/common/internal/tokens.fth

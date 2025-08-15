@@ -35,6 +35,13 @@ other options:
   * Change how we build the error table, so that it lives inside a
     constant size stack.
 
+The existing metacompiler code is a bit too disorganized; I'm currently
+working to improve the organization, and to convert the builder portion
+of the metacompiler to use the same basic strategy as meta-dictionary
+compilation.  That is, for each definition in the target dictionary,
+have a local definition that can be executed; don't rely on
+INTERPRET-UNKNOWN.
+
 #### Cleanup
 The meta-compiler still has rough edges, mostly relating to
 niceties of design and organization, outlined below.

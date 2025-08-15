@@ -10,7 +10,7 @@ functions.
 There are experimental versions in assembly for amd64 in
 [reference/amd64](reference/amd64/).
 
-To get to a working set of primitives in assmembly, we need the following
+To get to a working set of primitives in assembly, we need the following
 changes (roughly in this order):
   * Convert `bootstrap` to use the new `forth_execute()` interface in
     place of the current interface.  The initial implementation should
@@ -53,10 +53,10 @@ documentation.  Some time spent here might help produce clarity
 in terminology and naming conventions, too.  My thinking on
 terminology is in [doc/final-meta/vocab.txt](doc/final-meta/vocab.txt)
 
-We want the `HOST` vocabulary to be "everything needed to produce
-simple C code forms in the output".  However, currently `META-HOST`
-contains private versions that are customized to its needs.
-Ideally, we'd find ways to unify the various output modes.  In
+We want the `METACOMPILER` vocabulary to be "everything needed to
+produce simple C code forms in the output".  However, currently
+`METADICT-HOST` contains private versions that are customized to its
+needs.  Ideally, we'd find ways to unify the various output modes.  In
 particular, it would be nice to be able to invoke some of the
 definitions from `META-TARGET` in `TARGET` code rather than creating
 `#define` values for them in C source.
@@ -75,7 +75,7 @@ So, in meta-compiler target code, we could look up target names in
 `INTERPRET-NAME`, rather than leaving it to `INTERPRET-UNKNOWN`.
 That would mean we'd make all target definitions be executable code
 that outputs the needed forms.  This could simplify the code
-(maybe?), although the lesson from `META-TARGET` is that the
+(maybe?), although the lesson from `METADICT-TARGET` is that the
 approach needs several (3-4) separate vocabularies to keep it all
 straight.
 

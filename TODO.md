@@ -35,12 +35,9 @@ other options:
   * Change how we build the error table, so that it lives inside a
     constant size stack.
 
-The existing metacompiler code is a bit too disorganized; I'm currently
-working to improve the organization, and to convert the builder portion
-of the metacompiler to use the same basic strategy as meta-dictionary
-compilation.  That is, for each definition in the target dictionary,
-have a local definition that can be executed; don't rely on
-INTERPRET-UNKNOWN.
+ATM, I think the easiest way to get a handle on the necessary 
+improvements is to implement some of the cleanup described in the
+next section.
 
 #### Cleanup
 The meta-compiler still has rough edges, mostly relating to
@@ -53,7 +50,8 @@ revisiting, too.
 
 The meta-compiler is stable enough to justify spending time on
 documentation.  Some time spent here might help produce clarity
-in terminology and naming conventions, too.
+in terminology and naming conventions, too.  My thinking on
+terminology is in [doc/final-meta/vocab.txt](doc/final-meta/vocab.txt)
 
 We want the `HOST` vocabulary to be "everything needed to produce
 simple C code forms in the output".  However, currently `META-HOST`

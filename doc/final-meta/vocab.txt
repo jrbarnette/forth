@@ -1,27 +1,66 @@
-Vocabularies:
-HOST
-    Basic utilities for producing target code; available to both the
-    meta-compiler and TARGET
+# Introduction:
+Following standard Forth terminology, the _metacompiler_ is a program
+that builds a Forth interpreter from scratch using a language that looks
+like Forth (but typically isn't quite Forth).
 
-META-HOST
-    HOST stuff that conflicts (or might conflict) with names in
-    TARGET, such as:
+## Basic terminology
+`VM`: Native machine code written in C or assembly implementing the
+    Forth primitives and interpreter loop.
+`Metacompiler`: Forth code that produces the dictionary initialization
+    code.
+`Host`: The Forth VM running the metacompiler.
+`Target`: The Forth VM running the builder.
+`Meta-dictionary`:  Headerless dictionary with definitions for use by
+    the builder.  Found in the vmcode_ft code array named
+    `meta_dictionary` in [bootstrap/initdict.c](bootstrap/initdict.c).
+`Builder`: Executable code to initialize the dictionary in the target.
+    Found in the vmcode_ft code array named `initialize_forth` in
+    [bootstrap/initdict.c](bootstrap/initdict.c).
+
+## Structure of metacompiler output
+The output of the metacompiler is C code statements initializing global
+data that can be interpreted by the VM; that is, it's Forth definitions.
+The code, when executed by the VM, will build the initial Forth
+dictionary in the target.
+
+The output consists of three parts:
+ 1) The meta-dictionary
+ 2) The builder
+ 3) Forth source text in an array of strings to be interpreted by
+    EVALUATE.
+
+## Structure of metacompiler source
+Input sources are processed in one of three modes:
+  * Definitions for the implementation of some aspect of
+    metacompilation.
+  * Definitions being compiled into the meta-dictionary.
+  * Definitions being compiled into the builder.
+
+## Metacompiler vocabularies
+METACOMPILER
+    Basic metacompiler code shared between the meta-dictionary and the
+    builder.
+
+METADICT-HOST
+    Utilities used to build up the code for compiling the
+    meta-dictionary.  Contains stuff meant to be invoked from code in
+    METADIC-TARGET that's specific to the meta-dictionary, especially
+    stuff that conflicts (or might conflict) with names in BUILDER, such
+    as:
 	INTERPRET and constituents
 	COMPILE-FILE:
-	' (redefined to search META-BUILDER only)
-	local helpers, see build-defs:
-	    parse-valid-name
-	    augmented do-literal, ?branch, branch
-		(?) maybe could/should be META-BUILDER
-	    expr-literal, et al.
-	    xt-literal
-	    operand-cell
-	    control utilities, e.g. <?BRANCH et al., DO-EPILOG
+	' (redefined to search META-TARGET only
+	local helpers, see meta-target.fth
 
-META-TARGET
-    Definitions that can be compiled to target builder, and compiler
-    special definitions for building them.  Everything needed to
-    implement the TARGET primitives:
+METADICT-TARGET
+    Definitions corresponding to target code in the meta-dictionary.
+    This should be (nearly) everything that can be mentioned in
+    meta-dictionary sources, and nothing else.
+
+    Generally, each definition in this vocabulary has a location and
+    content in the meta-dictionary, and can in turn be invoked by
+    other code in the meta-dictionary or builder.  Specifically,
+    everything needed to implement the builder primitives:
 	meta-initialize
 	do-literal
 	linkname
@@ -31,41 +70,33 @@ META-TARGET
 	meta-interpret
 	meta-compile
 	meta-reference
+    Some of the content is immediate words that are used to compile
+    other target code (especially LITERAL and control flow primitives).
 
-META-DEFINERS
-    Extension of HOST to contain/redefine key words, especially
-    defining words.  Exists to support adding definitions into
-    META-BUILDER.  At minimum, these:
+METADICT-DEFINERS
+    Meta-dictionary compilation support for creating definitions in
+    METADICT-TARGET.  These need to be available when in interpretation
+    state in meta-compiler source. At minimum, these:
 	PRIM:
 	:
 	CONSTANT
 	VARIABLE
 	]
 
-META-SPECIAL
-    meta-builder compiler special definitions that need to override
-    standard definitions when compiling what is otherwise HOST or
-    META-HOST code.  Currently that means POSTPONE (and nothing else).
+METADICT-SPECIAL
+    Meta-dictionary compiler special definitions that operate on names
+    in the METADICT-TARGET.  Currently these:
+	POSTPONE
+	[COMPILE]
+	[']
 
-    (Consider including [COMPILE] and ['])
+## Modes:
+Creating definitions for METACOMPILER.
 
-TARGET
-    Vocabulary (-ies?) to support BUILDER target code source
+Creating definitions to be used for meta-dictionary compilation:
+  * Ordinary definitions into METADICT-HOST
+  * Definitions into METADICT-HOST using POSTPONE et al. from
+    METADICT-SPECIAL
+  * Definitions into METADICT-TARGET; always uses METADICT-SPECIAL
 
-
-Modes:
-    : HOST-MODE
-	only FORTH also HOST ;
-
-    : META-HOST-MODE
-	HOST-MODE also META-HOST ;
-
-    : META-DEFINITIONS
-	also META-TARGET definitions previous ;
-
-    : META-INTERP-MODE
-	only FORTH also META-DEFINERS META-DEFINTIONS ;
-
-    : META-COMPILE-MODE
-	\ HOST-MODE also META-SPECIAL META-DEFINITIONS ;
-	META-HOST-MODE also META-SPECIAL META-DEFINITIONS ;
+Compiling meta-dictionary code.  Will produce compilation output.

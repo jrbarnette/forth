@@ -35,9 +35,8 @@ other options:
   * Change how we build the error table, so that it lives inside a
     constant size stack.
 
-ATM, I think the easiest way to get a handle on the necessary 
-improvements is to implement some of the cleanup described in the
-next section.
+ATM, I think the easiest way to get a handle on the necessary
+improvements is to implement the cleanup described in the next section.
 
 #### Cleanup
 The meta-compiler still has rough edges, mostly relating to
@@ -46,7 +45,8 @@ niceties of design and organization, outlined below.
 Some of the names in [forth/meta/host.fth](forth/meta/host.fth)
 still use the prefix `direct-`.  This isn't the right naming
 convention any more.  Lots of other naming conventions need
-revisiting, too.
+revisiting, too.  My ideas on terminology are in
+[doc/final-meta/vocab.txt](doc/final-meta/vocab.txt).
 
 The meta-compiler is stable enough to justify spending time on
 documentation.  Some time spent here might help produce clarity

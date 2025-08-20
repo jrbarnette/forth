@@ -1,0 +1,89 @@
+Terminology
+    VM: Primitives and the interpretation engine around them
+
+    Metacompiler: Forth code that produces the dictionary initialization
+	code
+
+    Host: The Forth VM running the metacompiler
+
+    Target:  The Forth VM running the builder
+
+    Host source: The part of the metacompiler that interprets
+	metacompiler target code
+
+    Meta source: Input source that the metacompiler compiles into the
+	meta-dictionary
+
+    Builder source: Input source that the metacompiler compiles into the
+	builder
+
+    Target source:  The combination of meta and builder source code
+
+    Meta-dictionary:  A vmcode_ft array (named meta_dictionary) with
+	definitions used by the builder
+
+    Builder: A vmcode_ft array (named initialize_forth) with the
+	instructions for building the target dictionary
+
+Modes are comprised of three parts:
+  * A custom version of INTERPRET, made to specialize handilng of
+    number literals.
+  * A specific vocabulary search order.
+  * A specific compilation wordlist.
+
+Three basic modes:
+  * HOST - input source is host source
+  * META - input source is meta source
+  * BUILDER - input source is builder source
+
+META and BUILDER modes must support both interpretation and compilation
+states, because interpretation state is what happens after `;` and
+before the next `:`.  Interpration needs to support the following (at
+minimum):
+    :
+    ]
+    IMMEDIATE
+    COMPILE-ONLY
+    COMPILE-SPECIAL
+
+Interpreting META code:
+  * Standard operation for INTERPRET - numbers are placed on the stack
+  * Search order is restricted.  The full FORTH vocabulary isn't
+    available. The available words will generally be custom
+    implementations:
+	prim: : VARIABLE CONSTANT CREATE etc.
+	    add definitions to meta compilation vocabulary
+	IMMEDIATE, et al.
+	]
+	'
+	comments will work as for standard FORTH.
+	mode control, and file inclusion
+	    HOST[ COMPILE-META: COMPILE-BUILDER:
+	stack and arithmetic
+	    some may be supported to calculate inputs to LITERAL
+	dictionary allocation
+	    ALLOT , C, ALIGN COMPILE,
+	@ ! C@ C! CHARS CHAR+ CELLS CELL+ etc.
+	    if supported, work as operations in the HOST VM
+
+Compiling META code:
+  * INTERPRET handles number literals with this output:
+	{ &meta_dictionary[<do-literal>] }, { .cell = <value> },
+    wherh <do-literal> is the index of the do-literal xt.
+
+Compiling meta source code
+  * Standard INTERPRET
+  * Whatever Word order is specified by SET-ORDER
+  * Whatever compilation wordlist is specified by SET-CURRENT
+
+Naming and usage of modes
+
+HOST-MODE
+    Host mode for interpretation and compilation states; definitions are
+    for 
+
+META-HOST-MODE
+    Interpreation state for META mode
+
+META-TARGET-MODE
+    Interpreation state for META mode

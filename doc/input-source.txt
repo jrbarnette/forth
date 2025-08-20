@@ -1,0 +1,24 @@
+From the standard, "input source specification" means the collection of
+the following information
+  * "input source": When BLK is not 0, the indicated block. Otherwise,
+    the source indicated by the value of SOURCE-iD.
+  * Input buffer, as returned by SOURCE.
+  * Parse area, as determined by >IN.
+
+In theory, the full specification is known by something like this:
+(When the Block word set is present)
+  SOURCE >IN @ SOURCE-ID BLK @
+(When the Block word set is not present)
+  SOURCE >IN @ SOURCE-ID
+
+However, SOURCE may be a function of SOURCE-ID.  Additionally, in the
+current implementation, every buffer has two sizes:  The current size
+(the number of bytes returned by the last read), and the maximum size
+(the number of bytes allocated in storage)
+
+Calculating the parse area:
+    SOURCE >IN @ - >R >IN @ + R>
+
+    SOURCE >IN @ SWAP OVER - >R + R>
+
+    SOURCE >IN @ TUCK - >R + R>

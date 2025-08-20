@@ -1,0 +1,16 @@
+0 0	%rax	SCR0		RET0
+0 1	%rcx		ARG3
+0 2	%rdx	SCR1	ARG2	RET1
+0 3	%rbx	VRSP
+0 4	%rsp	VSP
+0 5	%rbp
+0 6	%rsi	VIP	ARG1
+0 7	%rdi		ARG0
+1 0	%r8		ARG4
+1 1	%r9		ARG5
+1 2	%r10
+1 3	%r11
+1 4	%r12
+1 5	%r13
+1 6	%r14	VXSP
+1 7	%r15

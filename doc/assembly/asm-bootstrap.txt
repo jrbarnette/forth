@@ -1,0 +1,79 @@
+Have these three:
+    union instruction_cell
+    union parameter_cell
+    struct definition
+
+Need to extract a fourth from "union instruction_cell" to be used in
+constructing code for things like initialize_forth, and the code in
+primtest.c.
+
+Issues:
+  * What to call it?
+  * xt_ft is defined as "struct definition *", but code implemented
+    as a C array initialize has trouble with that syntactically
+
+maybe
+
+typedef union code_cell *code_ft;
+
+union code_cell {
+    cell_ft		cell;
+    vmhdlr_fn		handler;
+    code_ft		ip;
+    char *		id;
+};
+
+====
+Changes we'll need to adapt bootstrap code to support both the C
+code and matching assembly, that I know of so far.
+
+Headers target three categories of code consumer:
+ T) Target VM specific implementation code - common declaration
+    reimplemented for each target
+ C) Common code independent of the target VM - common declaration
+    with a common implementation in C
+ X) External consumers of common, public C declarations
+
+Targets are the C bootstrap and each CPU+OS combination that has an
+assembly implementation.
+
+Header usage divides up thus:
+
+ftypes.h
+    category "X"
+
+vmstate.h
+    for assembly code, only RSTACK_SIZE would seem to be category "C";
+    the rest is category "T", specific to the C bootstrap target
+
+xtoken.h
+    specific to the bootstrap VM implementation, but needs some parts
+    to be factored into category "C", or "X".
+
+vmcheck.h
+    specific to the bootstrap VM
+
+prim.h
+    category "C", internal
+
+Inventory by category
+
+Category T (C bootstrap)
+    vmstate.h
+	all except RSTACK_SIZE
+    xtoken.h
+	all except vmhdlr_fn
+
+Category C
+    (new headers)
+	RSTACK_SIZE
+	vmhdlr_fn
+	new union code_cell (or whatever we call it)
+
+Category X
+    ftypes.h
+    (new header)
+	struct fstack
+	external declaration of XT for forth_execute()
+	forth_execute()
+	(other names? maybe exception values?)

@@ -1,0 +1,80 @@
+Memory locations
+
+SP - w/ indirect bit set
+RSP - w/ indirect bit set
+IP - w/ indirect bit set
+XT - current XT
+
+NEXT:
+	lac i ip	/ AC = C(C(ip)) = xt
+	dac xt
+	idx ip		/ AC now has a copy of IP
+	jmp i xt
+
+PUSH:
+	dac i sp
+	law i 1
+	add sp
+	dac sp
+
+POP:
+	idx sp
+	lac i sp
+
+RPUSH:
+	dac i rsp
+	law i 1
+	add rsp
+	dac rsp
+
+	/ lac rsp
+	/ sub (1)
+	/ dac rsp
+
+RPOP:
+	idx rsp
+	lac i rsp
+
+DOCOL:
+	RPUSH
+	idx xt
+	dac ip
+	NEXT
+
+DOCONS:
+	idx xt
+	lac xt
+	PUSH
+	NEXT
+
+DOVAR:
+	idx xt
+	PUSH
+	NEXT
+
+DOCREATE:
+	RPUSH
+	law 2
+	add xt
+	PUSH
+	idx xt
+	lac xt
+	dac ip
+	jmp nxt
+
+DOLIT:
+	lac i ip
+	PUSH
+	idx ip
+	NEXT
+
+BRANCH:
+	lac i ip
+	add ip
+	dac ip
+
+PLUS:
+	POP
+	add i sp
+	dac i sp
+	NEXT

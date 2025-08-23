@@ -33,13 +33,16 @@ variable >IN 6 cells allot
     dup file-position drop source-pos 2! read-line drop ;
 : REFILL ( -- flag )
     source-id 0< if false exit then
-    source-buffer source-id
-    ?dup if refill-file else refill-terminal then
+    source-buffer source-id                        ( buff len id )
+    ?dup if refill-file else refill-terminal then  ( len flag )
     swap source-addr ! 0 >in ! ;
+: RESET-SOURCE
+    source-pos 2@ source-id reposition-file drop ;
+: SAVE-SOURCE
+    source-id 0> if reset-source then ;
 : RESTORE-SOURCE ( -- )
     source-id 0> 0= if exit then
-    source-pos 2@ source-id reposition-file drop
-    source-buffer refill-file 2drop ;
+    reset-source source-buffer source-id refill-file 2drop ;
 
 256 chars here over allot	( #TIB TIB )
 256 chars here over allot	( #TIB TIB #filebuf filebuf )
@@ -56,9 +59,10 @@ here 4 cells - constant SOURCE-BUFFERS
     then ( x0 x1 addr ) 2! ;
 
 : WITH-INPUT-SOURCE ( c-addr u -1 xt | 0 xt | fileid xt -- i*x )
+    save-source
     [ >in 7 cells + ] literal >in ( source-end index-ptr )
-    begin 2dup > while dup @ >r cell+ repeat drop >r
+    begin 2dup > while dup @ >r cell+ repeat 2drop
     >r source-id! r> catch
-    >in r> ( >in index-ptr+1 )
+    >in [ >in 7 cells + ] literal ( source-begin index-ptr )
     begin 2dup < while 1 cells - r> over ! repeat 2drop
     restore-source throw ;

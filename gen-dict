@@ -57,7 +57,7 @@ build() {
 # option -t
 # test changes; diff generated output against current file
 changes() {
-    gen "$@" | diff - $FILE
+    gen "$@" | diff $FILE -
 }
 
 # option -n

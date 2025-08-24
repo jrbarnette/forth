@@ -71,15 +71,16 @@ previous
 
 METADICT-HOST-MODE
 : start-name
-    target-create 15 spaces ." // " current-name name>string type cr ;
+    target-create 15 spaces ." // " current-name name>string type cr
+    .start ;
 
 also METADICT-DEFINERS definitions
 : VARIABLE
-    start-name s" do_variable" { .exec }{ 0 .cell } emit-nl ;
+    start-name s" do_variable" { .exec }{ 0 .cell } .end ;
 : CONSTANT
-    start-name s" do_constant" { .exec }{ .cell } emit-nl ;
+    start-name s" do_constant" { .exec }{ .cell } .end ;
 : ] metadict-target-wordlist metadict-special-wordlist 2 set-order ] ;
-: : start-name s" do_colon" { .exec } emit-nl expr-buffer expr-ptr ! here ] ;
+: : start-name s" do_colon" { .exec } .end expr-buffer expr-ptr ! here ] ;
 
 
 \ Special words implemented for compiling meta-dictionary sources
@@ -107,5 +108,5 @@ also METADICT-SPECIAL
     postpone EXIT
     here over ( start end cur )
     begin 2dup > while
-	dup @ execute emit-nl cell+
+	.start dup @ execute .end cell+
     repeat drop - allot postpone [ ; compile-special

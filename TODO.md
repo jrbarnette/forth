@@ -80,11 +80,10 @@ approach needs several (3-4) separate vocabularies to keep it all
 straight.
 
 The dictionary still has some data that's laid out statically, not
-by the builder (see [bootstrap/dictionary.h](bootstrap/dictionary.h)).
-It would be nice to get rid of it.  The `lineno` and `input` fields
-are used only by primitives, and could just be global variables.
-Getting rid of the storage for `HERE` and `FORTH-WORDLIST` is a bit more
-work.
+by the builder.  It would be nice to get rid of it.  The file
+related stuff is used by command-line processing, and could just be
+global variables.  Getting rid of the storage for `HERE` and
+`FORTH-WORDLIST` is a bit more work.
 
 Command-line processing and related initialization are still all
 in C.  A lot of it could be Forth.  Ideally, we'd only depend on

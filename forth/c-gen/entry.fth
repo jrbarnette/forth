@@ -8,11 +8,3 @@
 ' .c-string     entry: .str id ( c-addr u -- )
 ' .c-cell       entry: .expr cell ( c-addr u -- )
 ' .c-hex        entry: .cell cell ( x -- )
-' .c-decimal    entry: .offset offset ( +n -- )
-
-:noname ." NULL" ;
-		entry: .NULL id ( -- )
-:noname ." &initialize_forth[" .c-decimal ." ]" ;
-		entry: .label ip ( +n -- )
-
-: .id ( c-addr -- ) ?dup if count .str else .NULL then ;

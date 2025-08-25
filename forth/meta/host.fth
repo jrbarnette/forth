@@ -11,20 +11,6 @@ variable offset      0 offset !
 : } ."  }," 1 offset +! ;
 : }{ } { ;
 
-variable emit-state  0 emit-state !
-
-: } } cr ;
-: start-instr ( new-state -- )
-    dup emit-state @ <> if
-	emit-state @ ?dup if .offset { 0 .cell } then
-	dup if
-	    dup 1- if s" META_COMPILE" else s" META_INTERPRET" then
-	    0 .offset { .meta }
-	then dup emit-state !
-    then .offset
-;
-
-
 wordlist constant TARGET-NAMES
 variable nreference  1 nreference !
 : create-reference
@@ -32,20 +18,37 @@ variable nreference  1 nreference !
     nreference @ constant 1 nreference +!
     set-current name>string
 ;
-
-
-: .ref ( name len -- )
-    2dup ." /* " type ."  */ " 8 over - spaces
+: get-reference ( c-addr u -- ref# )
     target-names wid-lookup
     dup 0= if cr -13 .error then
-    name>xt execute .cell
+    name>xt execute
 ;
 
-: meta-emit ( name len state -- ) start-instr { .ref } ;
+variable emit-state  0 emit-state !
+
+: start-instr ( new-state -- )
+    dup emit-state @ <> if
+	emit-state @ ?dup if .offset { 0 .cell } cr then
+	dup if
+	    dup 1- if s" META_COMPILE" else s" META_INTERPRET" then
+	    0 .offset { .meta } cr
+	then dup emit-state !
+    then .offset
+;
+
+: emit-reference ( name len -- nspace )
+    2dup get-reference { dup .cell }
+    $10 < negate 1+ spaces
+    ."  // " type cr
+;
+: .ref 2dup get-reference .cell ."   /* " type ."  */" ;
+
+: meta-emit ( name len state -- ) start-instr emit-reference ;
 : meta-interpret ( name len -- ) 1 meta-emit ;
 : meta-compile ( name len -- ) 2 meta-emit ;
 
 : { 0 start-instr { ;
+: } } cr ;
 
 : handler? ( c-addr u | 0 -- c-addr u ) ?dup 0= if parse-name then ;
 : do-name { .meta }{ create-reference .str }{ handler? .exec } ;

@@ -7,8 +7,8 @@ $c0 constant NF-COMPILE-SPECIAL
 $1f constant NF-LENGTH
 $e0 constant NF-FLAGS
 
-: IMMEDIATE? ( flags+len -- imm? ) nf-immediate and ;
-: COMPILE-ONLY? ( flags+len -- imm? ) nf-compile-only and ;
+: IMMEDIATE? ( flags+len -- imm? ) nf-immediate and 0<> ;
+: COMPILE-ONLY? ( flags+len -- imm? ) nf-compile-only and 0<> ;
 : >COUNT ( flags+len -- len ) nf-length and ;
 : >FLAGS ( flags+len -- flags ) nf-flags and ;
 

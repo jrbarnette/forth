@@ -1,6 +1,6 @@
 \  Copyright 2023, by J. Richard Barnette. All Rights Reserved.
 
-METADICT-HOST-MODE definitions
+METADICT-HOST-MODE
 
 variable offset          0 offset !
 

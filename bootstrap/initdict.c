@@ -20,31 +20,31 @@ vmcode_ft meta_dictionary[] = {
 /*    2 */ { .handler = do_literal },
 /*    3 */ { .handler = do_s_quote },
 /*    4 */ { .handler = do_c_quote },
-/*    5 */ { .handler = x_clear },
-/*    6 */ { .handler = x_rclear },
-/*    7 */ { .handler = do_skip },
-/*    8 */ { .handler = do_fskip },
-/*    9 */ { .handler = do_do },
-/*   10 */ { .handler = do_plus_loop },
-/*   11 */ { .handler = x_unloop },
-/*   12 */ { .handler = x_i },
-/*   13 */ { .handler = x_j },
+/*    5 */ { .handler = do_skip },
+/*    6 */ { .handler = do_fskip },
+/*    7 */ { .handler = do_do },
+/*    8 */ { .handler = do_plus_loop },
+/*    9 */ { .handler = x_unloop },
+/*   10 */ { .handler = x_i },
+/*   11 */ { .handler = x_j },
             /* ==== forth/c-gen/core/stackprim.fth ==== */
-/*   14 */ { .handler = x_to_r },
-/*   15 */ { .handler = x_question_dup },
-/*   16 */ { .handler = x_depth },
-/*   17 */ { .handler = x_drop },
-/*   18 */ { .handler = x_dup },
-/*   19 */ { .handler = x_over },
-/*   20 */ { .handler = x_r_from },
-/*   21 */ { .handler = x_r_fetch },
-/*   22 */ { .handler = x_rot },
-/*   23 */ { .handler = x_swap },
-/*   24 */ { .handler = x_two_to_r },
-/*   25 */ { .handler = x_two_r_from },
-/*   26 */ { .handler = x_two_r_fetch },
-/*   27 */ { .handler = x_pick },
-/*   28 */ { .handler = x_roll },
+/*   12 */ { .handler = x_to_r },
+/*   13 */ { .handler = x_question_dup },
+/*   14 */ { .handler = x_depth },
+/*   15 */ { .handler = x_drop },
+/*   16 */ { .handler = x_dup },
+/*   17 */ { .handler = x_over },
+/*   18 */ { .handler = x_r_from },
+/*   19 */ { .handler = x_r_fetch },
+/*   20 */ { .handler = x_rot },
+/*   21 */ { .handler = x_swap },
+/*   22 */ { .handler = x_two_to_r },
+/*   23 */ { .handler = x_two_r_from },
+/*   24 */ { .handler = x_two_r_fetch },
+/*   25 */ { .handler = x_pick },
+/*   26 */ { .handler = x_roll },
+/*   27 */ { .handler = x_clear },
+/*   28 */ { .handler = x_rclear },
             /* ==== forth/c-gen/core/arithprim.fth ==== */
 /*   29 */ { .handler = x_plus },
 /*   30 */ { .handler = x_minus },
@@ -113,20 +113,20 @@ vmcode_ft meta_dictionary[] = {
             /* ==== forth/c-gen/core/allot.fth ==== */
                // +!
 /*   89 */ { .handler = do_colon },
-/*   90 */ { .ip = &meta_dictionary[18] },
-/*   91 */ { .ip = &meta_dictionary[14] },
+/*   90 */ { .ip = &meta_dictionary[16] },
+/*   91 */ { .ip = &meta_dictionary[12] },
 /*   92 */ { .ip = &meta_dictionary[45] },
 /*   93 */ { .ip = &meta_dictionary[29] },
-/*   94 */ { .ip = &meta_dictionary[20] },
+/*   94 */ { .ip = &meta_dictionary[18] },
 /*   95 */ { .ip = &meta_dictionary[44] },
 /*   96 */ { .ip = &meta_dictionary[1] },
                // WITHIN
 /*   97 */ { .handler = do_colon },
-/*   98 */ { .ip = &meta_dictionary[19] },
+/*   98 */ { .ip = &meta_dictionary[17] },
 /*   99 */ { .ip = &meta_dictionary[30] },
-/*  100 */ { .ip = &meta_dictionary[14] },
+/*  100 */ { .ip = &meta_dictionary[12] },
 /*  101 */ { .ip = &meta_dictionary[30] },
-/*  102 */ { .ip = &meta_dictionary[20] },
+/*  102 */ { .ip = &meta_dictionary[18] },
 /*  103 */ { .ip = &meta_dictionary[42] },
 /*  104 */ { .ip = &meta_dictionary[1] },
                // HERE
@@ -145,13 +145,13 @@ vmcode_ft meta_dictionary[] = {
 /*  117 */ { .ip = &meta_dictionary[110] },
 /*  118 */ { .ip = &meta_dictionary[2] }, { .cell = 0x1 },
 /*  120 */ { .ip = &meta_dictionary[29] },
-/*  121 */ { .ip = &meta_dictionary[18] },
+/*  121 */ { .ip = &meta_dictionary[16] },
 /*  122 */ { .ip = &meta_dictionary[2] }, { .cell = (cell_ft) (DICTSPACE_SIZE+1) },
 /*  124 */ { .ip = &meta_dictionary[30] },
 /*  125 */ { .ip = &meta_dictionary[1] },
                // ALLOT
 /*  126 */ { .handler = do_colon },
-/*  127 */ { .ip = &meta_dictionary[18] },
+/*  127 */ { .ip = &meta_dictionary[16] },
 /*  128 */ { .ip = &meta_dictionary[116] },
 /*  129 */ { .ip = &meta_dictionary[97] },
 /*  130 */ { .ip = &meta_dictionary[2] }, { .cell = -0x8 },
@@ -188,39 +188,39 @@ vmcode_ft meta_dictionary[] = {
             /* ==== forth/common/core/stackops.fth ==== */
                // 2DROP
 /*  162 */ { .handler = do_colon },
-/*  163 */ { .ip = &meta_dictionary[17] },
-/*  164 */ { .ip = &meta_dictionary[17] },
+/*  163 */ { .ip = &meta_dictionary[15] },
+/*  164 */ { .ip = &meta_dictionary[15] },
 /*  165 */ { .ip = &meta_dictionary[1] },
                // 2DUP
 /*  166 */ { .handler = do_colon },
-/*  167 */ { .ip = &meta_dictionary[19] },
-/*  168 */ { .ip = &meta_dictionary[19] },
+/*  167 */ { .ip = &meta_dictionary[17] },
+/*  168 */ { .ip = &meta_dictionary[17] },
 /*  169 */ { .ip = &meta_dictionary[1] },
                // 2SWAP
 /*  170 */ { .handler = do_colon },
-/*  171 */ { .ip = &meta_dictionary[22] },
-/*  172 */ { .ip = &meta_dictionary[14] },
-/*  173 */ { .ip = &meta_dictionary[22] },
-/*  174 */ { .ip = &meta_dictionary[20] },
+/*  171 */ { .ip = &meta_dictionary[20] },
+/*  172 */ { .ip = &meta_dictionary[12] },
+/*  173 */ { .ip = &meta_dictionary[20] },
+/*  174 */ { .ip = &meta_dictionary[18] },
 /*  175 */ { .ip = &meta_dictionary[1] },
                // 2OVER
 /*  176 */ { .handler = do_colon },
-/*  177 */ { .ip = &meta_dictionary[14] },
-/*  178 */ { .ip = &meta_dictionary[14] },
+/*  177 */ { .ip = &meta_dictionary[12] },
+/*  178 */ { .ip = &meta_dictionary[12] },
 /*  179 */ { .ip = &meta_dictionary[166] },
-/*  180 */ { .ip = &meta_dictionary[20] },
-/*  181 */ { .ip = &meta_dictionary[20] },
+/*  180 */ { .ip = &meta_dictionary[18] },
+/*  181 */ { .ip = &meta_dictionary[18] },
 /*  182 */ { .ip = &meta_dictionary[170] },
 /*  183 */ { .ip = &meta_dictionary[1] },
                // NIP
 /*  184 */ { .handler = do_colon },
-/*  185 */ { .ip = &meta_dictionary[23] },
-/*  186 */ { .ip = &meta_dictionary[17] },
+/*  185 */ { .ip = &meta_dictionary[21] },
+/*  186 */ { .ip = &meta_dictionary[15] },
 /*  187 */ { .ip = &meta_dictionary[1] },
                // TUCK
 /*  188 */ { .handler = do_colon },
-/*  189 */ { .ip = &meta_dictionary[23] },
-/*  190 */ { .ip = &meta_dictionary[19] },
+/*  189 */ { .ip = &meta_dictionary[21] },
+/*  190 */ { .ip = &meta_dictionary[17] },
 /*  191 */ { .ip = &meta_dictionary[1] },
             /* ==== forth/common/core/arithops.fth ==== */
                // 0<
@@ -245,30 +245,30 @@ vmcode_ft meta_dictionary[] = {
 /*  211 */ { .ip = &meta_dictionary[1] },
                // ABS
 /*  212 */ { .handler = do_colon },
-/*  213 */ { .ip = &meta_dictionary[18] },
+/*  213 */ { .ip = &meta_dictionary[16] },
 /*  214 */ { .ip = &meta_dictionary[192] },
-/*  215 */ { .ip = &meta_dictionary[8] }, { .cell = 0x2 },
+/*  215 */ { .ip = &meta_dictionary[6] }, { .cell = 0x2 },
 /*  217 */ { .ip = &meta_dictionary[39] },
 /*  218 */ { .ip = &meta_dictionary[1] },
                // MAX
 /*  219 */ { .handler = do_colon },
 /*  220 */ { .ip = &meta_dictionary[166] },
 /*  221 */ { .ip = &meta_dictionary[33] },
-/*  222 */ { .ip = &meta_dictionary[8] }, { .cell = 0x2 },
-/*  224 */ { .ip = &meta_dictionary[23] },
-/*  225 */ { .ip = &meta_dictionary[17] },
+/*  222 */ { .ip = &meta_dictionary[6] }, { .cell = 0x2 },
+/*  224 */ { .ip = &meta_dictionary[21] },
+/*  225 */ { .ip = &meta_dictionary[15] },
 /*  226 */ { .ip = &meta_dictionary[1] },
                // MIN
 /*  227 */ { .handler = do_colon },
 /*  228 */ { .ip = &meta_dictionary[166] },
 /*  229 */ { .ip = &meta_dictionary[35] },
-/*  230 */ { .ip = &meta_dictionary[8] }, { .cell = 0x2 },
-/*  232 */ { .ip = &meta_dictionary[23] },
-/*  233 */ { .ip = &meta_dictionary[17] },
+/*  230 */ { .ip = &meta_dictionary[6] }, { .cell = 0x2 },
+/*  232 */ { .ip = &meta_dictionary[21] },
+/*  233 */ { .ip = &meta_dictionary[15] },
 /*  234 */ { .ip = &meta_dictionary[1] },
                // S>D
 /*  235 */ { .handler = do_colon },
-/*  236 */ { .ip = &meta_dictionary[18] },
+/*  236 */ { .ip = &meta_dictionary[16] },
 /*  237 */ { .ip = &meta_dictionary[192] },
 /*  238 */ { .ip = &meta_dictionary[1] },
                // <>
@@ -292,31 +292,31 @@ vmcode_ft meta_dictionary[] = {
 /*  255 */ { .handler = do_constant }, { .cell = -0x1 },
                // U>
 /*  257 */ { .handler = do_colon },
-/*  258 */ { .ip = &meta_dictionary[23] },
+/*  258 */ { .ip = &meta_dictionary[21] },
 /*  259 */ { .ip = &meta_dictionary[42] },
 /*  260 */ { .ip = &meta_dictionary[1] },
             /* ==== forth/common/core/memops.fth ==== */
                // 2!
 /*  261 */ { .handler = do_colon },
-/*  262 */ { .ip = &meta_dictionary[23] },
-/*  263 */ { .ip = &meta_dictionary[19] },
+/*  262 */ { .ip = &meta_dictionary[21] },
+/*  263 */ { .ip = &meta_dictionary[17] },
 /*  264 */ { .ip = &meta_dictionary[44] },
 /*  265 */ { .ip = &meta_dictionary[76] },
 /*  266 */ { .ip = &meta_dictionary[44] },
 /*  267 */ { .ip = &meta_dictionary[1] },
                // 2@
 /*  268 */ { .handler = do_colon },
-/*  269 */ { .ip = &meta_dictionary[18] },
+/*  269 */ { .ip = &meta_dictionary[16] },
 /*  270 */ { .ip = &meta_dictionary[76] },
 /*  271 */ { .ip = &meta_dictionary[45] },
-/*  272 */ { .ip = &meta_dictionary[23] },
+/*  272 */ { .ip = &meta_dictionary[21] },
 /*  273 */ { .ip = &meta_dictionary[45] },
 /*  274 */ { .ip = &meta_dictionary[1] },
                // COUNT
 /*  275 */ { .handler = do_colon },
-/*  276 */ { .ip = &meta_dictionary[18] },
+/*  276 */ { .ip = &meta_dictionary[16] },
 /*  277 */ { .ip = &meta_dictionary[66] },
-/*  278 */ { .ip = &meta_dictionary[23] },
+/*  278 */ { .ip = &meta_dictionary[21] },
 /*  279 */ { .ip = &meta_dictionary[47] },
 /*  280 */ { .ip = &meta_dictionary[1] },
                // ERASE
@@ -340,8 +340,8 @@ vmcode_ft meta_dictionary[] = {
 /*  300 */ { .ip = &meta_dictionary[1] },
                // CHANGECASE
 /*  301 */ { .handler = do_colon },
-/*  302 */ { .ip = &meta_dictionary[19] },
-/*  303 */ { .ip = &meta_dictionary[23] },
+/*  302 */ { .ip = &meta_dictionary[17] },
+/*  303 */ { .ip = &meta_dictionary[21] },
 /*  304 */ { .ip = &meta_dictionary[30] },
 /*  305 */ { .ip = &meta_dictionary[2] }, { .cell = 0x1A },
 /*  307 */ { .ip = &meta_dictionary[42] },
@@ -362,38 +362,38 @@ vmcode_ft meta_dictionary[] = {
                // STR-TOUPPER
 /*  323 */ { .handler = do_colon },
 /*  324 */ { .ip = &meta_dictionary[2] }, { .cell = 0x0 },
-/*  326 */ { .ip = &meta_dictionary[9] },
-/*  327 */ { .ip = &meta_dictionary[21] },
-/*  328 */ { .ip = &meta_dictionary[8] }, { .cell = 0xC },
-/*  330 */ { .ip = &meta_dictionary[18] },
+/*  326 */ { .ip = &meta_dictionary[7] },
+/*  327 */ { .ip = &meta_dictionary[19] },
+/*  328 */ { .ip = &meta_dictionary[6] }, { .cell = 0xC },
+/*  330 */ { .ip = &meta_dictionary[16] },
 /*  331 */ { .ip = &meta_dictionary[47] },
 /*  332 */ { .ip = &meta_dictionary[313] },
-/*  333 */ { .ip = &meta_dictionary[19] },
+/*  333 */ { .ip = &meta_dictionary[17] },
 /*  334 */ { .ip = &meta_dictionary[46] },
 /*  335 */ { .ip = &meta_dictionary[66] },
 /*  336 */ { .ip = &meta_dictionary[2] }, { .cell = 0x1 },
-/*  338 */ { .ip = &meta_dictionary[10] },
-/*  339 */ { .ip = &meta_dictionary[8] }, { .cell = -0xA },
-/*  341 */ { .ip = &meta_dictionary[11] },
-/*  342 */ { .ip = &meta_dictionary[17] },
+/*  338 */ { .ip = &meta_dictionary[8] },
+/*  339 */ { .ip = &meta_dictionary[6] }, { .cell = -0xA },
+/*  341 */ { .ip = &meta_dictionary[9] },
+/*  342 */ { .ip = &meta_dictionary[15] },
 /*  343 */ { .ip = &meta_dictionary[1] },
                // STR-TOLOWER
 /*  344 */ { .handler = do_colon },
 /*  345 */ { .ip = &meta_dictionary[2] }, { .cell = 0x0 },
-/*  347 */ { .ip = &meta_dictionary[9] },
-/*  348 */ { .ip = &meta_dictionary[21] },
-/*  349 */ { .ip = &meta_dictionary[8] }, { .cell = 0xC },
-/*  351 */ { .ip = &meta_dictionary[18] },
+/*  347 */ { .ip = &meta_dictionary[7] },
+/*  348 */ { .ip = &meta_dictionary[19] },
+/*  349 */ { .ip = &meta_dictionary[6] }, { .cell = 0xC },
+/*  351 */ { .ip = &meta_dictionary[16] },
 /*  352 */ { .ip = &meta_dictionary[47] },
 /*  353 */ { .ip = &meta_dictionary[318] },
-/*  354 */ { .ip = &meta_dictionary[19] },
+/*  354 */ { .ip = &meta_dictionary[17] },
 /*  355 */ { .ip = &meta_dictionary[46] },
 /*  356 */ { .ip = &meta_dictionary[66] },
 /*  357 */ { .ip = &meta_dictionary[2] }, { .cell = 0x1 },
-/*  359 */ { .ip = &meta_dictionary[10] },
-/*  360 */ { .ip = &meta_dictionary[8] }, { .cell = -0xA },
-/*  362 */ { .ip = &meta_dictionary[11] },
-/*  363 */ { .ip = &meta_dictionary[17] },
+/*  359 */ { .ip = &meta_dictionary[8] },
+/*  360 */ { .ip = &meta_dictionary[6] }, { .cell = -0xA },
+/*  362 */ { .ip = &meta_dictionary[9] },
+/*  363 */ { .ip = &meta_dictionary[15] },
 /*  364 */ { .ip = &meta_dictionary[1] },
             /* ==== forth/common/internal/namespace.fth ==== */
                // NF-COMPILE-ONLY
@@ -410,287 +410,289 @@ vmcode_ft meta_dictionary[] = {
 /*  375 */ { .handler = do_colon },
 /*  376 */ { .ip = &meta_dictionary[367] },
 /*  377 */ { .ip = &meta_dictionary[36] },
-/*  378 */ { .ip = &meta_dictionary[1] },
+/*  378 */ { .ip = &meta_dictionary[248] },
+/*  379 */ { .ip = &meta_dictionary[1] },
                // COMPILE-ONLY?
-/*  379 */ { .handler = do_colon },
-/*  380 */ { .ip = &meta_dictionary[365] },
-/*  381 */ { .ip = &meta_dictionary[36] },
-/*  382 */ { .ip = &meta_dictionary[1] },
+/*  380 */ { .handler = do_colon },
+/*  381 */ { .ip = &meta_dictionary[365] },
+/*  382 */ { .ip = &meta_dictionary[36] },
+/*  383 */ { .ip = &meta_dictionary[248] },
+/*  384 */ { .ip = &meta_dictionary[1] },
                // >COUNT
-/*  383 */ { .handler = do_colon },
-/*  384 */ { .ip = &meta_dictionary[371] },
-/*  385 */ { .ip = &meta_dictionary[36] },
-/*  386 */ { .ip = &meta_dictionary[1] },
+/*  385 */ { .handler = do_colon },
+/*  386 */ { .ip = &meta_dictionary[371] },
+/*  387 */ { .ip = &meta_dictionary[36] },
+/*  388 */ { .ip = &meta_dictionary[1] },
                // >FLAGS
-/*  387 */ { .handler = do_colon },
-/*  388 */ { .ip = &meta_dictionary[373] },
-/*  389 */ { .ip = &meta_dictionary[36] },
-/*  390 */ { .ip = &meta_dictionary[1] },
+/*  389 */ { .handler = do_colon },
+/*  390 */ { .ip = &meta_dictionary[373] },
+/*  391 */ { .ip = &meta_dictionary[36] },
+/*  392 */ { .ip = &meta_dictionary[1] },
                // NAME>PREV
-/*  391 */ { .handler = do_colon },
-/*  392 */ { .ip = &meta_dictionary[45] },
-/*  393 */ { .ip = &meta_dictionary[1] },
+/*  393 */ { .handler = do_colon },
+/*  394 */ { .ip = &meta_dictionary[45] },
+/*  395 */ { .ip = &meta_dictionary[1] },
                // NAME>STRING
-/*  394 */ { .handler = do_colon },
-/*  395 */ { .ip = &meta_dictionary[76] },
-/*  396 */ { .ip = &meta_dictionary[275] },
-/*  397 */ { .ip = &meta_dictionary[383] },
-/*  398 */ { .ip = &meta_dictionary[1] },
+/*  396 */ { .handler = do_colon },
+/*  397 */ { .ip = &meta_dictionary[76] },
+/*  398 */ { .ip = &meta_dictionary[275] },
+/*  399 */ { .ip = &meta_dictionary[385] },
+/*  400 */ { .ip = &meta_dictionary[1] },
                // NAME>XT
-/*  399 */ { .handler = do_colon },
-/*  400 */ { .ip = &meta_dictionary[394] },
-/*  401 */ { .ip = &meta_dictionary[64] },
-/*  402 */ { .ip = &meta_dictionary[29] },
-/*  403 */ { .ip = &meta_dictionary[81] },
-/*  404 */ { .ip = &meta_dictionary[1] },
+/*  401 */ { .handler = do_colon },
+/*  402 */ { .ip = &meta_dictionary[396] },
+/*  403 */ { .ip = &meta_dictionary[64] },
+/*  404 */ { .ip = &meta_dictionary[29] },
+/*  405 */ { .ip = &meta_dictionary[81] },
+/*  406 */ { .ip = &meta_dictionary[1] },
                // NAME>XT+FLAGS
-/*  405 */ { .handler = do_colon },
-/*  406 */ { .ip = &meta_dictionary[76] },
-/*  407 */ { .ip = &meta_dictionary[275] },
-/*  408 */ { .ip = &meta_dictionary[18] },
-/*  409 */ { .ip = &meta_dictionary[14] },
-/*  410 */ { .ip = &meta_dictionary[383] },
-/*  411 */ { .ip = &meta_dictionary[64] },
-/*  412 */ { .ip = &meta_dictionary[29] },
-/*  413 */ { .ip = &meta_dictionary[81] },
-/*  414 */ { .ip = &meta_dictionary[20] },
-/*  415 */ { .ip = &meta_dictionary[387] },
-/*  416 */ { .ip = &meta_dictionary[1] },
+/*  407 */ { .handler = do_colon },
+/*  408 */ { .ip = &meta_dictionary[76] },
+/*  409 */ { .ip = &meta_dictionary[275] },
+/*  410 */ { .ip = &meta_dictionary[16] },
+/*  411 */ { .ip = &meta_dictionary[12] },
+/*  412 */ { .ip = &meta_dictionary[385] },
+/*  413 */ { .ip = &meta_dictionary[64] },
+/*  414 */ { .ip = &meta_dictionary[29] },
+/*  415 */ { .ip = &meta_dictionary[81] },
+/*  416 */ { .ip = &meta_dictionary[18] },
+/*  417 */ { .ip = &meta_dictionary[389] },
+/*  418 */ { .ip = &meta_dictionary[1] },
                // NAME>INTERPRET
-/*  417 */ { .handler = do_colon },
-/*  418 */ { .ip = &meta_dictionary[405] },
-/*  419 */ { .ip = &meta_dictionary[379] },
-/*  420 */ { .ip = &meta_dictionary[8] }, { .cell = 0x4 },
-/*  422 */ { .ip = &meta_dictionary[17] },
-/*  423 */ { .ip = &meta_dictionary[2] }, { .cell = 0x0 },
-/*  425 */ { .ip = &meta_dictionary[1] },
+/*  419 */ { .handler = do_colon },
+/*  420 */ { .ip = &meta_dictionary[407] },
+/*  421 */ { .ip = &meta_dictionary[380] },
+/*  422 */ { .ip = &meta_dictionary[6] }, { .cell = 0x4 },
+/*  424 */ { .ip = &meta_dictionary[15] },
+/*  425 */ { .ip = &meta_dictionary[2] }, { .cell = 0x0 },
+/*  427 */ { .ip = &meta_dictionary[1] },
                // NAME>COMPILE
-/*  426 */ { .handler = do_colon },
-/*  427 */ { .ip = &meta_dictionary[405] },
-/*  428 */ { .ip = &meta_dictionary[375] },
-/*  429 */ { .ip = &meta_dictionary[8] }, { .cell = 0x5 },
-/*  431 */ { .ip = &meta_dictionary[2] }, { .ip = &meta_dictionary[0] },
-/*  433 */ { .ip = &meta_dictionary[7] }, { .cell = 0x3 },
-/*  435 */ { .ip = &meta_dictionary[2] }, { .ip = &meta_dictionary[159] },
-/*  437 */ { .ip = &meta_dictionary[1] },
+/*  428 */ { .handler = do_colon },
+/*  429 */ { .ip = &meta_dictionary[407] },
+/*  430 */ { .ip = &meta_dictionary[375] },
+/*  431 */ { .ip = &meta_dictionary[6] }, { .cell = 0x5 },
+/*  433 */ { .ip = &meta_dictionary[2] }, { .ip = &meta_dictionary[0] },
+/*  435 */ { .ip = &meta_dictionary[5] }, { .cell = 0x3 },
+/*  437 */ { .ip = &meta_dictionary[2] }, { .ip = &meta_dictionary[159] },
+/*  439 */ { .ip = &meta_dictionary[1] },
                // NAME>FIND
-/*  438 */ { .handler = do_colon },
-/*  439 */ { .ip = &meta_dictionary[18] },
-/*  440 */ { .ip = &meta_dictionary[8] }, { .cell = 0x7 },
-/*  442 */ { .ip = &meta_dictionary[405] },
-/*  443 */ { .ip = &meta_dictionary[375] },
-/*  444 */ { .ip = &meta_dictionary[197] },
-/*  445 */ { .ip = &meta_dictionary[2] }, { .cell = 0x1 },
-/*  447 */ { .ip = &meta_dictionary[40] },
-/*  448 */ { .ip = &meta_dictionary[1] },
+/*  440 */ { .handler = do_colon },
+/*  441 */ { .ip = &meta_dictionary[16] },
+/*  442 */ { .ip = &meta_dictionary[6] }, { .cell = 0x7 },
+/*  444 */ { .ip = &meta_dictionary[407] },
+/*  445 */ { .ip = &meta_dictionary[375] },
+/*  446 */ { .ip = &meta_dictionary[197] },
+/*  447 */ { .ip = &meta_dictionary[2] }, { .cell = 0x1 },
+/*  449 */ { .ip = &meta_dictionary[40] },
+/*  450 */ { .ip = &meta_dictionary[1] },
                // NAME-FLAGS!
-/*  449 */ { .handler = do_colon },
-/*  450 */ { .ip = &meta_dictionary[76] },
-/*  451 */ { .ip = &meta_dictionary[18] },
-/*  452 */ { .ip = &meta_dictionary[14] },
-/*  453 */ { .ip = &meta_dictionary[47] },
-/*  454 */ { .ip = &meta_dictionary[40] },
-/*  455 */ { .ip = &meta_dictionary[20] },
-/*  456 */ { .ip = &meta_dictionary[46] },
-/*  457 */ { .ip = &meta_dictionary[1] },
+/*  451 */ { .handler = do_colon },
+/*  452 */ { .ip = &meta_dictionary[76] },
+/*  453 */ { .ip = &meta_dictionary[16] },
+/*  454 */ { .ip = &meta_dictionary[12] },
+/*  455 */ { .ip = &meta_dictionary[47] },
+/*  456 */ { .ip = &meta_dictionary[40] },
+/*  457 */ { .ip = &meta_dictionary[18] },
+/*  458 */ { .ip = &meta_dictionary[46] },
+/*  459 */ { .ip = &meta_dictionary[1] },
             /* ==== forth/common/search/current.fth ==== */
                // CURRENT
-/*  458 */ { .handler = do_variable }, { .cell = 0x0 },
+/*  460 */ { .handler = do_variable }, { .cell = 0x0 },
                // GET-CURRENT
-/*  460 */ { .handler = do_colon },
-/*  461 */ { .ip = &meta_dictionary[458] },
-/*  462 */ { .ip = &meta_dictionary[45] },
-/*  463 */ { .ip = &meta_dictionary[1] },
+/*  462 */ { .handler = do_colon },
+/*  463 */ { .ip = &meta_dictionary[460] },
+/*  464 */ { .ip = &meta_dictionary[45] },
+/*  465 */ { .ip = &meta_dictionary[1] },
                // SET-CURRENT
-/*  464 */ { .handler = do_colon },
-/*  465 */ { .ip = &meta_dictionary[458] },
-/*  466 */ { .ip = &meta_dictionary[44] },
-/*  467 */ { .ip = &meta_dictionary[1] },
+/*  466 */ { .handler = do_colon },
+/*  467 */ { .ip = &meta_dictionary[460] },
+/*  468 */ { .ip = &meta_dictionary[44] },
+/*  469 */ { .ip = &meta_dictionary[1] },
             /* ==== forth/common/internal/dictionary.fth ==== */
                // CHARS,
-/*  468 */ { .handler = do_colon },
-/*  469 */ { .ip = &meta_dictionary[105] },
-/*  470 */ { .ip = &meta_dictionary[23] },
-/*  471 */ { .ip = &meta_dictionary[64] },
-/*  472 */ { .ip = &meta_dictionary[18] },
-/*  473 */ { .ip = &meta_dictionary[126] },
-/*  474 */ { .ip = &meta_dictionary[49] },
-/*  475 */ { .ip = &meta_dictionary[1] },
+/*  470 */ { .handler = do_colon },
+/*  471 */ { .ip = &meta_dictionary[105] },
+/*  472 */ { .ip = &meta_dictionary[21] },
+/*  473 */ { .ip = &meta_dictionary[64] },
+/*  474 */ { .ip = &meta_dictionary[16] },
+/*  475 */ { .ip = &meta_dictionary[126] },
+/*  476 */ { .ip = &meta_dictionary[49] },
+/*  477 */ { .ip = &meta_dictionary[1] },
                // COUNTED,
-/*  476 */ { .handler = do_colon },
-/*  477 */ { .ip = &meta_dictionary[18] },
-/*  478 */ { .ip = &meta_dictionary[152] },
-/*  479 */ { .ip = &meta_dictionary[468] },
-/*  480 */ { .ip = &meta_dictionary[1] },
+/*  478 */ { .handler = do_colon },
+/*  479 */ { .ip = &meta_dictionary[16] },
+/*  480 */ { .ip = &meta_dictionary[152] },
+/*  481 */ { .ip = &meta_dictionary[470] },
+/*  482 */ { .ip = &meta_dictionary[1] },
             /* ==== forth/common/internal/wordlists.fth ==== */
                // ID,
-/*  481 */ { .handler = do_colon },
-/*  482 */ { .ip = &meta_dictionary[105] },
-/*  483 */ { .ip = &meta_dictionary[14] },
-/*  484 */ { .ip = &meta_dictionary[476] },
-/*  485 */ { .ip = &meta_dictionary[20] },
-/*  486 */ { .ip = &meta_dictionary[275] },
-/*  487 */ { .ip = &meta_dictionary[323] },
-/*  488 */ { .ip = &meta_dictionary[1] },
+/*  483 */ { .handler = do_colon },
+/*  484 */ { .ip = &meta_dictionary[105] },
+/*  485 */ { .ip = &meta_dictionary[12] },
+/*  486 */ { .ip = &meta_dictionary[478] },
+/*  487 */ { .ip = &meta_dictionary[18] },
+/*  488 */ { .ip = &meta_dictionary[275] },
+/*  489 */ { .ip = &meta_dictionary[323] },
+/*  490 */ { .ip = &meta_dictionary[1] },
                // CURRENT-NAME
-/*  489 */ { .handler = do_colon },
-/*  490 */ { .ip = &meta_dictionary[460] },
-/*  491 */ { .ip = &meta_dictionary[45] },
-/*  492 */ { .ip = &meta_dictionary[1] },
+/*  491 */ { .handler = do_colon },
+/*  492 */ { .ip = &meta_dictionary[462] },
+/*  493 */ { .ip = &meta_dictionary[45] },
+/*  494 */ { .ip = &meta_dictionary[1] },
                // LINK-NAME
-/*  493 */ { .handler = do_colon },
-/*  494 */ { .ip = &meta_dictionary[460] },
-/*  495 */ { .ip = &meta_dictionary[44] },
-/*  496 */ { .ip = &meta_dictionary[1] },
+/*  495 */ { .handler = do_colon },
+/*  496 */ { .ip = &meta_dictionary[462] },
+/*  497 */ { .ip = &meta_dictionary[44] },
+/*  498 */ { .ip = &meta_dictionary[1] },
                // NAME,
-/*  497 */ { .handler = do_colon },
-/*  498 */ { .ip = &meta_dictionary[138] },
-/*  499 */ { .ip = &meta_dictionary[105] },
-/*  500 */ { .ip = &meta_dictionary[14] },
-/*  501 */ { .ip = &meta_dictionary[489] },
-/*  502 */ { .ip = &meta_dictionary[145] },
-/*  503 */ { .ip = &meta_dictionary[481] },
-/*  504 */ { .ip = &meta_dictionary[138] },
-/*  505 */ { .ip = &meta_dictionary[145] },
-/*  506 */ { .ip = &meta_dictionary[20] },
-/*  507 */ { .ip = &meta_dictionary[1] },
+/*  499 */ { .handler = do_colon },
+/*  500 */ { .ip = &meta_dictionary[138] },
+/*  501 */ { .ip = &meta_dictionary[105] },
+/*  502 */ { .ip = &meta_dictionary[12] },
+/*  503 */ { .ip = &meta_dictionary[491] },
+/*  504 */ { .ip = &meta_dictionary[145] },
+/*  505 */ { .ip = &meta_dictionary[483] },
+/*  506 */ { .ip = &meta_dictionary[138] },
+/*  507 */ { .ip = &meta_dictionary[145] },
+/*  508 */ { .ip = &meta_dictionary[18] },
+/*  509 */ { .ip = &meta_dictionary[1] },
             /* ==== forth/meta/meta.fth ==== */
                // REF-INDEX
-/*  508 */ { .handler = do_variable }, { .cell = 0x0 },
+/*  510 */ { .handler = do_variable }, { .cell = 0x0 },
                // REF-ADDR
-/*  510 */ { .handler = do_colon },
-/*  511 */ { .ip = &meta_dictionary[71] },
-/*  512 */ { .ip = &meta_dictionary[2] }, { .cell = (cell_ft) (&references[0]) },
-/*  514 */ { .ip = &meta_dictionary[29] },
-/*  515 */ { .ip = &meta_dictionary[1] },
+/*  512 */ { .handler = do_colon },
+/*  513 */ { .ip = &meta_dictionary[71] },
+/*  514 */ { .ip = &meta_dictionary[2] }, { .cell = (cell_ft) (&references[0]) },
+/*  516 */ { .ip = &meta_dictionary[29] },
+/*  517 */ { .ip = &meta_dictionary[1] },
                // REF@
-/*  516 */ { .handler = do_colon },
-/*  517 */ { .ip = &meta_dictionary[510] },
-/*  518 */ { .ip = &meta_dictionary[45] },
-/*  519 */ { .ip = &meta_dictionary[1] },
+/*  518 */ { .handler = do_colon },
+/*  519 */ { .ip = &meta_dictionary[512] },
+/*  520 */ { .ip = &meta_dictionary[45] },
+/*  521 */ { .ip = &meta_dictionary[1] },
                // REF!
-/*  520 */ { .handler = do_colon },
-/*  521 */ { .ip = &meta_dictionary[510] },
-/*  522 */ { .ip = &meta_dictionary[44] },
-/*  523 */ { .ip = &meta_dictionary[1] },
+/*  522 */ { .handler = do_colon },
+/*  523 */ { .ip = &meta_dictionary[512] },
+/*  524 */ { .ip = &meta_dictionary[44] },
+/*  525 */ { .ip = &meta_dictionary[1] },
                // NEXT-REF!
-/*  524 */ { .handler = do_colon },
-/*  525 */ { .ip = &meta_dictionary[399] },
-/*  526 */ { .ip = &meta_dictionary[508] },
-/*  527 */ { .ip = &meta_dictionary[45] },
-/*  528 */ { .ip = &meta_dictionary[188] },
-/*  529 */ { .ip = &meta_dictionary[520] },
-/*  530 */ { .ip = &meta_dictionary[202] },
-/*  531 */ { .ip = &meta_dictionary[508] },
-/*  532 */ { .ip = &meta_dictionary[44] },
-/*  533 */ { .ip = &meta_dictionary[1] },
+/*  526 */ { .handler = do_colon },
+/*  527 */ { .ip = &meta_dictionary[401] },
+/*  528 */ { .ip = &meta_dictionary[510] },
+/*  529 */ { .ip = &meta_dictionary[45] },
+/*  530 */ { .ip = &meta_dictionary[188] },
+/*  531 */ { .ip = &meta_dictionary[522] },
+/*  532 */ { .ip = &meta_dictionary[202] },
+/*  533 */ { .ip = &meta_dictionary[510] },
+/*  534 */ { .ip = &meta_dictionary[44] },
+/*  535 */ { .ip = &meta_dictionary[1] },
                // META-INITIALIZE
-/*  534 */ { .handler = do_colon },
-/*  535 */ { .ip = &meta_dictionary[2] }, { .cell = 0x1 },
-/*  537 */ { .ip = &meta_dictionary[508] },
-/*  538 */ { .ip = &meta_dictionary[44] },
-/*  539 */ { .ip = &meta_dictionary[2] }, { .cell = (cell_ft) (DICTSPACE_START + sizeof (DICT)) },
-/*  541 */ { .ip = &meta_dictionary[2] }, { .cell = (cell_ft) (&HERE) },
-/*  543 */ { .ip = &meta_dictionary[44] },
-/*  544 */ { .ip = &meta_dictionary[2] }, { .cell = (cell_ft) (&FORTH_WORDLIST) },
-/*  546 */ { .ip = &meta_dictionary[464] },
-/*  547 */ { .ip = &meta_dictionary[1] },
+/*  536 */ { .handler = do_colon },
+/*  537 */ { .ip = &meta_dictionary[2] }, { .cell = 0x1 },
+/*  539 */ { .ip = &meta_dictionary[510] },
+/*  540 */ { .ip = &meta_dictionary[44] },
+/*  541 */ { .ip = &meta_dictionary[2] }, { .cell = (cell_ft) (DICTSPACE_START + sizeof (DICT)) },
+/*  543 */ { .ip = &meta_dictionary[2] }, { .cell = (cell_ft) (&HERE) },
+/*  545 */ { .ip = &meta_dictionary[44] },
+/*  546 */ { .ip = &meta_dictionary[2] }, { .cell = (cell_ft) (&FORTH_WORDLIST) },
+/*  548 */ { .ip = &meta_dictionary[466] },
+/*  549 */ { .ip = &meta_dictionary[1] },
                // STRLEN
-/*  548 */ { .handler = do_colon },
-/*  549 */ { .ip = &meta_dictionary[18] },
-/*  550 */ { .ip = &meta_dictionary[18] },
-/*  551 */ { .ip = &meta_dictionary[47] },
-/*  552 */ { .ip = &meta_dictionary[8] }, { .cell = 0x4 },
-/*  554 */ { .ip = &meta_dictionary[66] },
-/*  555 */ { .ip = &meta_dictionary[7] }, { .cell = -0x6 },
-/*  557 */ { .ip = &meta_dictionary[23] },
-/*  558 */ { .ip = &meta_dictionary[30] },
-/*  559 */ { .ip = &meta_dictionary[1] },
+/*  550 */ { .handler = do_colon },
+/*  551 */ { .ip = &meta_dictionary[16] },
+/*  552 */ { .ip = &meta_dictionary[16] },
+/*  553 */ { .ip = &meta_dictionary[47] },
+/*  554 */ { .ip = &meta_dictionary[6] }, { .cell = 0x4 },
+/*  556 */ { .ip = &meta_dictionary[66] },
+/*  557 */ { .ip = &meta_dictionary[5] }, { .cell = -0x6 },
+/*  559 */ { .ip = &meta_dictionary[21] },
+/*  560 */ { .ip = &meta_dictionary[30] },
+/*  561 */ { .ip = &meta_dictionary[1] },
                // STARTNAME
-/*  560 */ { .handler = do_colon },
-/*  561 */ { .ip = &meta_dictionary[18] },
-/*  562 */ { .ip = &meta_dictionary[268] },
-/*  563 */ { .ip = &meta_dictionary[18] },
-/*  564 */ { .ip = &meta_dictionary[548] },
-/*  565 */ { .ip = &meta_dictionary[497] },
-/*  566 */ { .ip = &meta_dictionary[18] },
-/*  567 */ { .ip = &meta_dictionary[524] },
-/*  568 */ { .ip = &meta_dictionary[23] },
-/*  569 */ { .ip = &meta_dictionary[76] },
-/*  570 */ { .ip = &meta_dictionary[76] },
-/*  571 */ { .ip = &meta_dictionary[1] },
+/*  562 */ { .handler = do_colon },
+/*  563 */ { .ip = &meta_dictionary[16] },
+/*  564 */ { .ip = &meta_dictionary[268] },
+/*  565 */ { .ip = &meta_dictionary[16] },
+/*  566 */ { .ip = &meta_dictionary[550] },
+/*  567 */ { .ip = &meta_dictionary[499] },
+/*  568 */ { .ip = &meta_dictionary[16] },
+/*  569 */ { .ip = &meta_dictionary[526] },
+/*  570 */ { .ip = &meta_dictionary[21] },
+/*  571 */ { .ip = &meta_dictionary[76] },
+/*  572 */ { .ip = &meta_dictionary[76] },
+/*  573 */ { .ip = &meta_dictionary[1] },
                // META-STARTNAME
-/*  572 */ { .handler = do_colon },
-/*  573 */ { .ip = &meta_dictionary[20] },
-/*  574 */ { .ip = &meta_dictionary[560] },
-/*  575 */ { .ip = &meta_dictionary[14] },
-/*  576 */ { .ip = &meta_dictionary[1] },
+/*  574 */ { .handler = do_colon },
+/*  575 */ { .ip = &meta_dictionary[18] },
+/*  576 */ { .ip = &meta_dictionary[562] },
+/*  577 */ { .ip = &meta_dictionary[12] },
+/*  578 */ { .ip = &meta_dictionary[1] },
                // META-ADDNAME
-/*  577 */ { .handler = do_colon },
-/*  578 */ { .ip = &meta_dictionary[20] },
-/*  579 */ { .ip = &meta_dictionary[560] },
-/*  580 */ { .ip = &meta_dictionary[14] },
-/*  581 */ { .ip = &meta_dictionary[493] },
-/*  582 */ { .ip = &meta_dictionary[1] },
+/*  579 */ { .handler = do_colon },
+/*  580 */ { .ip = &meta_dictionary[18] },
+/*  581 */ { .ip = &meta_dictionary[562] },
+/*  582 */ { .ip = &meta_dictionary[12] },
+/*  583 */ { .ip = &meta_dictionary[495] },
+/*  584 */ { .ip = &meta_dictionary[1] },
                // META-SETFLAGS
-/*  583 */ { .handler = do_colon },
-/*  584 */ { .ip = &meta_dictionary[20] },
-/*  585 */ { .ip = &meta_dictionary[18] },
-/*  586 */ { .ip = &meta_dictionary[45] },
-/*  587 */ { .ip = &meta_dictionary[489] },
-/*  588 */ { .ip = &meta_dictionary[449] },
-/*  589 */ { .ip = &meta_dictionary[76] },
-/*  590 */ { .ip = &meta_dictionary[14] },
-/*  591 */ { .ip = &meta_dictionary[1] },
+/*  585 */ { .handler = do_colon },
+/*  586 */ { .ip = &meta_dictionary[18] },
+/*  587 */ { .ip = &meta_dictionary[16] },
+/*  588 */ { .ip = &meta_dictionary[45] },
+/*  589 */ { .ip = &meta_dictionary[491] },
+/*  590 */ { .ip = &meta_dictionary[451] },
+/*  591 */ { .ip = &meta_dictionary[76] },
+/*  592 */ { .ip = &meta_dictionary[12] },
+/*  593 */ { .ip = &meta_dictionary[1] },
                // META-INTERPRET
-/*  592 */ { .handler = do_colon },
-/*  593 */ { .ip = &meta_dictionary[20] },
-/*  594 */ { .ip = &meta_dictionary[18] },
-/*  595 */ { .ip = &meta_dictionary[76] },
-/*  596 */ { .ip = &meta_dictionary[14] },
-/*  597 */ { .ip = &meta_dictionary[45] },
-/*  598 */ { .ip = &meta_dictionary[15] },
-/*  599 */ { .ip = &meta_dictionary[8] }, { .cell = 0x5 },
-/*  601 */ { .ip = &meta_dictionary[516] },
-/*  602 */ { .ip = &meta_dictionary[0] },
-/*  603 */ { .ip = &meta_dictionary[7] }, { .cell = -0xB },
-/*  605 */ { .ip = &meta_dictionary[1] },
+/*  594 */ { .handler = do_colon },
+/*  595 */ { .ip = &meta_dictionary[18] },
+/*  596 */ { .ip = &meta_dictionary[16] },
+/*  597 */ { .ip = &meta_dictionary[76] },
+/*  598 */ { .ip = &meta_dictionary[12] },
+/*  599 */ { .ip = &meta_dictionary[45] },
+/*  600 */ { .ip = &meta_dictionary[13] },
+/*  601 */ { .ip = &meta_dictionary[6] }, { .cell = 0x5 },
+/*  603 */ { .ip = &meta_dictionary[518] },
+/*  604 */ { .ip = &meta_dictionary[0] },
+/*  605 */ { .ip = &meta_dictionary[5] }, { .cell = -0xB },
+/*  607 */ { .ip = &meta_dictionary[1] },
                // META-COMPILE
-/*  606 */ { .handler = do_colon },
-/*  607 */ { .ip = &meta_dictionary[20] },
-/*  608 */ { .ip = &meta_dictionary[18] },
-/*  609 */ { .ip = &meta_dictionary[76] },
-/*  610 */ { .ip = &meta_dictionary[23] },
-/*  611 */ { .ip = &meta_dictionary[45] },
-/*  612 */ { .ip = &meta_dictionary[15] },
-/*  613 */ { .ip = &meta_dictionary[8] }, { .cell = 0x5 },
-/*  615 */ { .ip = &meta_dictionary[516] },
-/*  616 */ { .ip = &meta_dictionary[159] },
-/*  617 */ { .ip = &meta_dictionary[7] }, { .cell = -0xA },
-/*  619 */ { .ip = &meta_dictionary[14] },
-/*  620 */ { .ip = &meta_dictionary[1] },
+/*  608 */ { .handler = do_colon },
+/*  609 */ { .ip = &meta_dictionary[18] },
+/*  610 */ { .ip = &meta_dictionary[16] },
+/*  611 */ { .ip = &meta_dictionary[76] },
+/*  612 */ { .ip = &meta_dictionary[21] },
+/*  613 */ { .ip = &meta_dictionary[45] },
+/*  614 */ { .ip = &meta_dictionary[13] },
+/*  615 */ { .ip = &meta_dictionary[6] }, { .cell = 0x5 },
+/*  617 */ { .ip = &meta_dictionary[518] },
+/*  618 */ { .ip = &meta_dictionary[159] },
+/*  619 */ { .ip = &meta_dictionary[5] }, { .cell = -0xA },
+/*  621 */ { .ip = &meta_dictionary[12] },
+/*  622 */ { .ip = &meta_dictionary[1] },
                // META-REFERENCE
-/*  621 */ { .handler = do_colon },
-/*  622 */ { .ip = &meta_dictionary[20] },
-/*  623 */ { .ip = &meta_dictionary[18] },
-/*  624 */ { .ip = &meta_dictionary[45] },
-/*  625 */ { .ip = &meta_dictionary[516] },
-/*  626 */ { .ip = &meta_dictionary[23] },
-/*  627 */ { .ip = &meta_dictionary[76] },
-/*  628 */ { .ip = &meta_dictionary[14] },
-/*  629 */ { .ip = &meta_dictionary[1] },
+/*  623 */ { .handler = do_colon },
+/*  624 */ { .ip = &meta_dictionary[18] },
+/*  625 */ { .ip = &meta_dictionary[16] },
+/*  626 */ { .ip = &meta_dictionary[45] },
+/*  627 */ { .ip = &meta_dictionary[518] },
+/*  628 */ { .ip = &meta_dictionary[21] },
+/*  629 */ { .ip = &meta_dictionary[76] },
+/*  630 */ { .ip = &meta_dictionary[12] },
+/*  631 */ { .ip = &meta_dictionary[1] },
 };
 
 #define EXIT                (&meta_dictionary[1])
 #define DO_LITERAL          (&meta_dictionary[2])
-#define META_INITIALIZE     (&meta_dictionary[534])
-#define META_LINKNAME       (&meta_dictionary[493])
-#define META_STARTNAME      (&meta_dictionary[572])
-#define META_ADDNAME        (&meta_dictionary[577])
-#define META_SETFLAGS       (&meta_dictionary[583])
-#define META_INTERPRET      (&meta_dictionary[592])
-#define META_COMPILE        (&meta_dictionary[606])
-#define META_REFERENCE      (&meta_dictionary[621])
+#define META_INITIALIZE     (&meta_dictionary[536])
+#define META_LINKNAME       (&meta_dictionary[495])
+#define META_STARTNAME      (&meta_dictionary[574])
+#define META_ADDNAME        (&meta_dictionary[579])
+#define META_SETFLAGS       (&meta_dictionary[585])
+#define META_INTERPRET      (&meta_dictionary[594])
+#define META_COMPILE        (&meta_dictionary[608])
+#define META_REFERENCE      (&meta_dictionary[623])
 
 
 vmcode_ft initialize_forth[] = {
@@ -717,53 +719,53 @@ vmcode_ft initialize_forth[] = {
 /*   51 */ { .ip = META_SETFLAGS }, { .cell = 0x40 },
 /*   53 */ { .ip = META_ADDNAME }, { .id = "PICK" }, { .handler = x_pick },
 /*   56 */ { .ip = META_ADDNAME }, { .id = "ROLL" }, { .handler = x_roll },
+/*   59 */ { .ip = META_ADDNAME }, { .id = "CLEAR" }, { .handler = x_clear },
+/*   62 */ { .ip = META_ADDNAME }, { .id = "RCLEAR" }, { .handler = x_rclear },
             /* ==== forth/c-gen/core/arithprim.fth ==== */
-/*   59 */ { .ip = META_ADDNAME }, { .id = "+" }, { .handler = x_plus },
-/*   62 */ { .ip = META_ADDNAME }, { .id = "-" }, { .handler = x_minus },
-/*   65 */ { .ip = META_ADDNAME }, { .id = "2*" }, { .handler = x_two_star },
-/*   68 */ { .ip = META_ADDNAME }, { .id = "2/" }, { .handler = x_two_slash },
-/*   71 */ { .ip = META_ADDNAME }, { .id = "<" }, { .handler = x_less_than },
-/*   74 */ { .ip = META_ADDNAME }, { .id = "=" }, { .handler = x_equals },
-/*   77 */ { .ip = META_ADDNAME }, { .id = ">" }, { .handler = x_greater_than },
-/*   80 */ { .ip = META_ADDNAME }, { .id = "AND" }, { .handler = x_and },
-/*   83 */ { .ip = META_ADDNAME }, { .id = "INVERT" }, { .handler = x_invert },
-/*   86 */ { .ip = META_ADDNAME }, { .id = "LSHIFT" }, { .handler = x_lshift },
-/*   89 */ { .ip = META_ADDNAME }, { .id = "NEGATE" }, { .handler = x_negate },
-/*   92 */ { .ip = META_ADDNAME }, { .id = "OR" }, { .handler = x_or },
-/*   95 */ { .ip = META_ADDNAME }, { .id = "RSHIFT" }, { .handler = x_rshift },
-/*   98 */ { .ip = META_ADDNAME }, { .id = "U<" }, { .handler = x_u_less },
-/*  101 */ { .ip = META_ADDNAME }, { .id = "XOR" }, { .handler = x_xor },
+/*   65 */ { .ip = META_ADDNAME }, { .id = "+" }, { .handler = x_plus },
+/*   68 */ { .ip = META_ADDNAME }, { .id = "-" }, { .handler = x_minus },
+/*   71 */ { .ip = META_ADDNAME }, { .id = "2*" }, { .handler = x_two_star },
+/*   74 */ { .ip = META_ADDNAME }, { .id = "2/" }, { .handler = x_two_slash },
+/*   77 */ { .ip = META_ADDNAME }, { .id = "<" }, { .handler = x_less_than },
+/*   80 */ { .ip = META_ADDNAME }, { .id = "=" }, { .handler = x_equals },
+/*   83 */ { .ip = META_ADDNAME }, { .id = ">" }, { .handler = x_greater_than },
+/*   86 */ { .ip = META_ADDNAME }, { .id = "AND" }, { .handler = x_and },
+/*   89 */ { .ip = META_ADDNAME }, { .id = "INVERT" }, { .handler = x_invert },
+/*   92 */ { .ip = META_ADDNAME }, { .id = "LSHIFT" }, { .handler = x_lshift },
+/*   95 */ { .ip = META_ADDNAME }, { .id = "NEGATE" }, { .handler = x_negate },
+/*   98 */ { .ip = META_ADDNAME }, { .id = "OR" }, { .handler = x_or },
+/*  101 */ { .ip = META_ADDNAME }, { .id = "RSHIFT" }, { .handler = x_rshift },
+/*  104 */ { .ip = META_ADDNAME }, { .id = "U<" }, { .handler = x_u_less },
+/*  107 */ { .ip = META_ADDNAME }, { .id = "XOR" }, { .handler = x_xor },
             /* ==== forth/c-gen/core/memprim.fth ==== */
-/*  104 */ { .ip = META_ADDNAME }, { .id = "!" }, { .handler = x_store },
-/*  107 */ { .ip = META_ADDNAME }, { .id = "@" }, { .handler = x_fetch },
-/*  110 */ { .ip = META_ADDNAME }, { .id = "C!" }, { .handler = x_c_store },
-/*  113 */ { .ip = META_ADDNAME }, { .id = "C@" }, { .handler = x_c_fetch },
-/*  116 */ { .ip = META_ADDNAME }, { .id = "FILL" }, { .handler = x_fill },
-/*  119 */ { .ip = META_ADDNAME }, { .id = "MOVE" }, { .handler = x_move },
+/*  110 */ { .ip = META_ADDNAME }, { .id = "!" }, { .handler = x_store },
+/*  113 */ { .ip = META_ADDNAME }, { .id = "@" }, { .handler = x_fetch },
+/*  116 */ { .ip = META_ADDNAME }, { .id = "C!" }, { .handler = x_c_store },
+/*  119 */ { .ip = META_ADDNAME }, { .id = "C@" }, { .handler = x_c_fetch },
+/*  122 */ { .ip = META_ADDNAME }, { .id = "FILL" }, { .handler = x_fill },
+/*  125 */ { .ip = META_ADDNAME }, { .id = "MOVE" }, { .handler = x_move },
             /* ==== forth/c-gen/core/multprim.fth ==== */
-/*  122 */ { .ip = META_ADDNAME }, { .id = "*" }, { .handler = x_star },
-/*  125 */ { .ip = META_ADDNAME }, { .id = "*/" }, { .handler = x_star_slash },
-/*  128 */ { .ip = META_ADDNAME }, { .id = "*/MOD" }, { .handler = x_star_slash_mod },
-/*  131 */ { .ip = META_ADDNAME }, { .id = "/" }, { .handler = x_slash },
-/*  134 */ { .ip = META_ADDNAME }, { .id = "/MOD" }, { .handler = x_slash_mod },
-/*  137 */ { .ip = META_ADDNAME }, { .id = "FM/MOD" }, { .handler = x_f_m_slash_mod },
-/*  140 */ { .ip = META_ADDNAME }, { .id = "M*" }, { .handler = x_m_star },
-/*  143 */ { .ip = META_ADDNAME }, { .id = "MOD" }, { .handler = x_mod },
-/*  146 */ { .ip = META_ADDNAME }, { .id = "SM/REM" }, { .handler = x_s_m_slash_rem },
-/*  149 */ { .ip = META_ADDNAME }, { .id = "UM*" }, { .handler = x_u_m_star },
-/*  152 */ { .ip = META_ADDNAME }, { .id = "UM/MOD" }, { .handler = x_u_m_slash_mod },
+/*  128 */ { .ip = META_ADDNAME }, { .id = "*" }, { .handler = x_star },
+/*  131 */ { .ip = META_ADDNAME }, { .id = "*/" }, { .handler = x_star_slash },
+/*  134 */ { .ip = META_ADDNAME }, { .id = "*/MOD" }, { .handler = x_star_slash_mod },
+/*  137 */ { .ip = META_ADDNAME }, { .id = "/" }, { .handler = x_slash },
+/*  140 */ { .ip = META_ADDNAME }, { .id = "/MOD" }, { .handler = x_slash_mod },
+/*  143 */ { .ip = META_ADDNAME }, { .id = "FM/MOD" }, { .handler = x_f_m_slash_mod },
+/*  146 */ { .ip = META_ADDNAME }, { .id = "M*" }, { .handler = x_m_star },
+/*  149 */ { .ip = META_ADDNAME }, { .id = "MOD" }, { .handler = x_mod },
+/*  152 */ { .ip = META_ADDNAME }, { .id = "SM/REM" }, { .handler = x_s_m_slash_rem },
+/*  155 */ { .ip = META_ADDNAME }, { .id = "UM*" }, { .handler = x_u_m_star },
+/*  158 */ { .ip = META_ADDNAME }, { .id = "UM/MOD" }, { .handler = x_u_m_slash_mod },
             /* ==== forth/c-gen/core/vmprim.fth ==== */
-/*  155 */ { .ip = META_ADDNAME }, { .id = "EXECUTE" }, { .handler = x_execute },
-/*  158 */ { .ip = META_ADDNAME }, { .id = "EXIT" }, { .handler = x_exit },
-/*  161 */ { .ip = META_SETFLAGS }, { .cell = 0x40 },
-/*  163 */ { .ip = META_ADDNAME }, { .id = "DO-LITERAL" }, { .handler = do_literal },
-/*  166 */ { .ip = META_SETFLAGS }, { .cell = 0x40 },
-/*  168 */ { .ip = META_ADDNAME }, { .id = "DO-S\"" }, { .handler = do_s_quote },
-/*  171 */ { .ip = META_SETFLAGS }, { .cell = 0x40 },
-/*  173 */ { .ip = META_ADDNAME }, { .id = "DO-C\"" }, { .handler = do_c_quote },
-/*  176 */ { .ip = META_SETFLAGS }, { .cell = 0x40 },
-/*  178 */ { .ip = META_ADDNAME }, { .id = "CLEAR" }, { .handler = x_clear },
-/*  181 */ { .ip = META_ADDNAME }, { .id = "RCLEAR" }, { .handler = x_rclear },
+/*  161 */ { .ip = META_ADDNAME }, { .id = "EXECUTE" }, { .handler = x_execute },
+/*  164 */ { .ip = META_ADDNAME }, { .id = "EXIT" }, { .handler = x_exit },
+/*  167 */ { .ip = META_SETFLAGS }, { .cell = 0x40 },
+/*  169 */ { .ip = META_ADDNAME }, { .id = "DO-LITERAL" }, { .handler = do_literal },
+/*  172 */ { .ip = META_SETFLAGS }, { .cell = 0x40 },
+/*  174 */ { .ip = META_ADDNAME }, { .id = "DO-S\"" }, { .handler = do_s_quote },
+/*  177 */ { .ip = META_SETFLAGS }, { .cell = 0x40 },
+/*  179 */ { .ip = META_ADDNAME }, { .id = "DO-C\"" }, { .handler = do_c_quote },
+/*  182 */ { .ip = META_SETFLAGS }, { .cell = 0x40 },
             /* ==== forth/c-gen/exception/throwprim.fth ==== */
 /*  184 */ { .ip = META_ADDNAME }, { .id = "DO-CATCH" }, { .handler = do_catch },
 /*  187 */ { .ip = META_ADDNAME }, { .id = "DROP-CATCH" }, { .handler = drop_catch },
@@ -773,22 +775,22 @@ vmcode_ft initialize_forth[] = {
 /*  196 */ { .ip = META_COMPILE },
 /*  197 */     { .cell = 0x5 },   // dup
 /*  198 */     { .cell = 0x1 },   // >r
-/*  199 */     { .cell = 0x20 },  // @
-/*  200 */     { .cell = 0x10 },  // +
+/*  199 */     { .cell = 0x22 },  // @
+/*  200 */     { .cell = 0x12 },  // +
 /*  201 */     { .cell = 0x7 },   // r>
-/*  202 */     { .cell = 0x1F },  // !
-/*  203 */     { .cell = 0x31 },  // EXIT
+/*  202 */     { .cell = 0x21 },  // !
+/*  203 */     { .cell = 0x33 },  // EXIT
 /*  204 */     { .cell = 0x0 },
 /*  205 */ { .ip = META_LINKNAME },
 /*  206 */ { .ip = META_STARTNAME }, { .id = "WITHIN" }, { .handler = do_colon },
 /*  209 */ { .ip = META_COMPILE },
 /*  210 */     { .cell = 0x6 },   // over
-/*  211 */     { .cell = 0x11 },  // -
+/*  211 */     { .cell = 0x13 },  // -
 /*  212 */     { .cell = 0x1 },   // >r
-/*  213 */     { .cell = 0x11 },  // -
+/*  213 */     { .cell = 0x13 },  // -
 /*  214 */     { .cell = 0x7 },   // r>
-/*  215 */     { .cell = 0x1D },  // u<
-/*  216 */     { .cell = 0x31 },  // EXIT
+/*  215 */     { .cell = 0x1F },  // u<
+/*  216 */     { .cell = 0x33 },  // EXIT
 /*  217 */     { .cell = 0x0 },
 /*  218 */ { .ip = META_LINKNAME },
 /*  219 */ { .ip = META_ADDNAME }, { .id = "HERE-ADDR" }, { .handler = do_constant },
@@ -797,27 +799,27 @@ vmcode_ft initialize_forth[] = {
 /*  226 */ { .ip = META_INTERPRET },
 /*  227 */     { .cell = 0x5 },   // dup
 /*  228 */     { .cell = 0x5 },   // dup
-/*  229 */     { .cell = 0x20 },  // @
-/*  230 */     { .cell = 0x1F },  // !
+/*  229 */     { .cell = 0x22 },  // @
+/*  230 */     { .cell = 0x21 },  // !
 /*  231 */     { .cell = 0x3A },  // +!
 /*  232 */     { .cell = 0x0 },
 /*  233 */ { .ip = META_STARTNAME }, { .id = "HERE" }, { .handler = do_colon },
 /*  236 */ { .ip = META_COMPILE },
 /*  237 */     { .cell = 0x3C },  // here-addr
-/*  238 */     { .cell = 0x20 },  // @
-/*  239 */     { .cell = 0x31 },  // EXIT
+/*  238 */     { .cell = 0x22 },  // @
+/*  239 */     { .cell = 0x33 },  // EXIT
 /*  240 */     { .cell = 0x0 },
 /*  241 */ { .ip = META_LINKNAME },
 /*  242 */ { .ip = META_STARTNAME }, { .id = "ALLOT-BOUNDS" }, { .handler = do_colon },
 /*  245 */ { .ip = META_COMPILE },
-/*  246 */     { .cell = 0x32 },  // do-literal
+/*  246 */     { .cell = 0x34 },  // do-literal
 /*  247 */     { .cell = 0x0 },
 /*  248 */ { .ip = DO_LITERAL }, { .cell = (cell_ft) (DICTSPACE_END) },
 /*  250 */ { .ip = DO_LITERAL }, { .cell = 0x1 },
 /*  252 */ { .ip = META_INTERPRET },
-/*  253 */     { .cell = 0x10 },  // +
+/*  253 */     { .cell = 0x12 },  // +
 /*  254 */     { .cell = 0x3D },  // here
-/*  255 */     { .cell = 0x1F },  // !
+/*  255 */     { .cell = 0x21 },  // !
 /*  256 */     { .cell = 0x0 },
 /*  257 */ { .ip = DO_LITERAL }, { .cell = (cell_ft) (CELL_SIZE) },
 /*  259 */ { .ip = META_INTERPRET },
@@ -826,16 +828,16 @@ vmcode_ft initialize_forth[] = {
 /*  262 */     { .cell = 0x0 },
 /*  263 */ { .ip = META_COMPILE },
 /*  264 */     { .cell = 0x3D },  // here
-/*  265 */     { .cell = 0x11 },  // -
+/*  265 */     { .cell = 0x13 },  // -
 /*  266 */     { .cell = 0x5 },   // dup
-/*  267 */     { .cell = 0x32 },  // do-literal
+/*  267 */     { .cell = 0x34 },  // do-literal
 /*  268 */     { .cell = 0x0 },
 /*  269 */ { .ip = DO_LITERAL }, { .cell = (cell_ft) (DICTSPACE_SIZE) },
 /*  271 */ { .ip = DO_LITERAL }, { .cell = 0x1 },
 /*  273 */ { .ip = META_INTERPRET },
-/*  274 */     { .cell = 0x10 },  // +
+/*  274 */     { .cell = 0x12 },  // +
 /*  275 */     { .cell = 0x3D },  // here
-/*  276 */     { .cell = 0x1F },  // !
+/*  276 */     { .cell = 0x21 },  // !
 /*  277 */     { .cell = 0x0 },
 /*  278 */ { .ip = DO_LITERAL }, { .cell = (cell_ft) (CELL_SIZE) },
 /*  280 */ { .ip = META_INTERPRET },
@@ -843,8 +845,8 @@ vmcode_ft initialize_forth[] = {
 /*  282 */     { .cell = 0x3A },  // +!
 /*  283 */     { .cell = 0x0 },
 /*  284 */ { .ip = META_COMPILE },
-/*  285 */     { .cell = 0x11 },  // -
-/*  286 */     { .cell = 0x31 },  // EXIT
+/*  285 */     { .cell = 0x13 },  // -
+/*  286 */     { .cell = 0x33 },  // EXIT
 /*  287 */     { .cell = 0x0 },
 /*  288 */ { .ip = META_LINKNAME },
 /*  289 */ { .ip = META_STARTNAME }, { .id = "ALLOT" }, { .handler = do_colon },
@@ -852,12 +854,12 @@ vmcode_ft initialize_forth[] = {
 /*  293 */     { .cell = 0x5 },   // dup
 /*  294 */     { .cell = 0x3E },  // allot-bounds
 /*  295 */     { .cell = 0x3B },  // within
-/*  296 */     { .cell = 0x32 },  // do-literal
+/*  296 */     { .cell = 0x34 },  // do-literal
 /*  297 */     { .cell = 0x0 },
 /*  298 */ { .ip = DO_LITERAL }, { .cell = -0x8 },
 /*  300 */ { .ip = META_INTERPRET },
 /*  301 */     { .cell = 0x3D },  // here
-/*  302 */     { .cell = 0x1F },  // !
+/*  302 */     { .cell = 0x21 },  // !
 /*  303 */     { .cell = 0x0 },
 /*  304 */ { .ip = DO_LITERAL }, { .cell = (cell_ft) (CELL_SIZE) },
 /*  306 */ { .ip = META_INTERPRET },
@@ -865,52 +867,52 @@ vmcode_ft initialize_forth[] = {
 /*  308 */     { .cell = 0x3A },  // +!
 /*  309 */     { .cell = 0x0 },
 /*  310 */ { .ip = META_COMPILE },
-/*  311 */     { .cell = 0x17 },  // and
+/*  311 */     { .cell = 0x19 },  // and
 /*  312 */     { .cell = 0x39 },  // throw
 /*  313 */     { .cell = 0x3C },  // here-addr
 /*  314 */     { .cell = 0x3A },  // +!
-/*  315 */     { .cell = 0x31 },  // EXIT
+/*  315 */     { .cell = 0x33 },  // EXIT
 /*  316 */     { .cell = 0x0 },
 /*  317 */ { .ip = META_LINKNAME },
 /*  318 */ { .ip = META_STARTNAME }, { .id = "," }, { .handler = do_colon },
 /*  321 */ { .ip = META_COMPILE },
 /*  322 */     { .cell = 0x3D },  // here
-/*  323 */     { .cell = 0x32 },  // do-literal
+/*  323 */     { .cell = 0x34 },  // do-literal
 /*  324 */     { .cell = 0x0 },
 /*  325 */ { .ip = DO_LITERAL }, { .cell = (cell_ft) (CELL_SIZE) },
 /*  327 */ { .ip = META_INTERPRET },
 /*  328 */     { .cell = 0x3D },  // here
 /*  329 */     { .cell = 0x6 },   // over
 /*  330 */     { .cell = 0x3F },  // allot
-/*  331 */     { .cell = 0x1F },  // !
+/*  331 */     { .cell = 0x21 },  // !
 /*  332 */     { .cell = 0x0 },
 /*  333 */ { .ip = META_COMPILE },
 /*  334 */     { .cell = 0x3F },  // allot
-/*  335 */     { .cell = 0x1F },  // !
-/*  336 */     { .cell = 0x31 },  // EXIT
+/*  335 */     { .cell = 0x21 },  // !
+/*  336 */     { .cell = 0x33 },  // EXIT
 /*  337 */     { .cell = 0x0 },
 /*  338 */ { .ip = META_LINKNAME },
 /*  339 */ { .ip = META_STARTNAME }, { .id = "COMPILE," }, { .handler = do_colon },
 /*  342 */ { .ip = META_COMPILE },
 /*  343 */     { .cell = 0x40 },  // ,
-/*  344 */     { .cell = 0x31 },  // EXIT
+/*  344 */     { .cell = 0x33 },  // EXIT
 /*  345 */     { .cell = 0x0 },
 /*  346 */ { .ip = META_LINKNAME },
 /*  347 */ { .ip = META_SETFLAGS }, { .cell = 0x40 },
 /*  349 */ { .ip = META_STARTNAME }, { .id = "LITERAL" }, { .handler = do_colon },
 /*  352 */ { .ip = META_COMPILE },
-/*  353 */     { .cell = 0x32 },  // do-literal
-/*  354 */     { .cell = 0x32 },  // do-literal
+/*  353 */     { .cell = 0x34 },  // do-literal
+/*  354 */     { .cell = 0x34 },  // do-literal
 /*  355 */     { .cell = 0x41 },  // compile,
 /*  356 */     { .cell = 0x40 },  // ,
-/*  357 */     { .cell = 0x31 },  // EXIT
+/*  357 */     { .cell = 0x33 },  // EXIT
 /*  358 */     { .cell = 0x0 },
 /*  359 */ { .ip = META_LINKNAME },
 /*  360 */ { .ip = META_SETFLAGS }, { .cell = 0xC0 },
             /* ==== forth/c-gen/core/memops.fth ==== */
 /*  362 */ { .ip = META_STARTNAME }, { .id = "CHARS" }, { .handler = do_colon },
 /*  365 */ { .ip = META_COMPILE },
-/*  366 */     { .cell = 0x31 },  // EXIT
+/*  366 */     { .cell = 0x33 },  // EXIT
 /*  367 */     { .cell = 0x0 },
 /*  368 */ { .ip = META_LINKNAME },
 /*  369 */ { .ip = META_STARTNAME }, { .id = "CHAR+" }, { .handler = do_colon },
@@ -919,8 +921,8 @@ vmcode_ft initialize_forth[] = {
 /*  375 */     { .cell = 0x42 },  // LITERAL
 /*  376 */     { .cell = 0x0 },
 /*  377 */ { .ip = META_COMPILE },
-/*  378 */     { .cell = 0x10 },  // +
-/*  379 */     { .cell = 0x31 },  // EXIT
+/*  378 */     { .cell = 0x12 },  // +
+/*  379 */     { .cell = 0x33 },  // EXIT
 /*  380 */     { .cell = 0x0 },
 /*  381 */ { .ip = META_LINKNAME },
 /*  382 */ { .ip = META_STARTNAME }, { .id = "CELLS" }, { .handler = do_colon },
@@ -929,8 +931,8 @@ vmcode_ft initialize_forth[] = {
 /*  388 */     { .cell = 0x42 },  // LITERAL
 /*  389 */     { .cell = 0x0 },
 /*  390 */ { .ip = META_COMPILE },
-/*  391 */     { .cell = 0x25 },  // *
-/*  392 */     { .cell = 0x31 },  // EXIT
+/*  391 */     { .cell = 0x27 },  // *
+/*  392 */     { .cell = 0x33 },  // EXIT
 /*  393 */     { .cell = 0x0 },
 /*  394 */ { .ip = META_LINKNAME },
 /*  395 */ { .ip = META_STARTNAME }, { .id = "CELL+" }, { .handler = do_colon },
@@ -939,8 +941,8 @@ vmcode_ft initialize_forth[] = {
 /*  401 */     { .cell = 0x42 },  // LITERAL
 /*  402 */     { .cell = 0x0 },
 /*  403 */ { .ip = META_COMPILE },
-/*  404 */     { .cell = 0x10 },  // +
-/*  405 */     { .cell = 0x31 },  // EXIT
+/*  404 */     { .cell = 0x12 },  // +
+/*  405 */     { .cell = 0x33 },  // EXIT
 /*  406 */     { .cell = 0x0 },
 /*  407 */ { .ip = META_LINKNAME },
 /*  408 */ { .ip = META_STARTNAME }, { .id = "ALIGNED" }, { .handler = do_colon },
@@ -949,15 +951,15 @@ vmcode_ft initialize_forth[] = {
 /*  414 */     { .cell = 0x42 },  // LITERAL
 /*  415 */     { .cell = 0x0 },
 /*  416 */ { .ip = META_COMPILE },
-/*  417 */     { .cell = 0x10 },  // +
+/*  417 */     { .cell = 0x12 },  // +
 /*  418 */     { .cell = 0x0 },
 /*  419 */ { .ip = DO_LITERAL }, { .cell = (cell_ft) (-CELL_SIZE) },
 /*  421 */ { .ip = META_INTERPRET },
 /*  422 */     { .cell = 0x42 },  // LITERAL
 /*  423 */     { .cell = 0x0 },
 /*  424 */ { .ip = META_COMPILE },
-/*  425 */     { .cell = 0x17 },  // and
-/*  426 */     { .cell = 0x31 },  // EXIT
+/*  425 */     { .cell = 0x19 },  // and
+/*  426 */     { .cell = 0x33 },  // EXIT
 /*  427 */     { .cell = 0x0 },
 /*  428 */ { .ip = META_LINKNAME },
             /* ==== forth/common/core/memops.fth ==== */
@@ -965,20 +967,20 @@ vmcode_ft initialize_forth[] = {
 /*  432 */ { .ip = META_COMPILE },
 /*  433 */     { .cell = 0xA },   // swap
 /*  434 */     { .cell = 0x6 },   // over
-/*  435 */     { .cell = 0x1F },  // !
+/*  435 */     { .cell = 0x21 },  // !
 /*  436 */     { .cell = 0x46 },  // cell+
-/*  437 */     { .cell = 0x1F },  // !
-/*  438 */     { .cell = 0x31 },  // EXIT
+/*  437 */     { .cell = 0x21 },  // !
+/*  438 */     { .cell = 0x33 },  // EXIT
 /*  439 */     { .cell = 0x0 },
 /*  440 */ { .ip = META_LINKNAME },
 /*  441 */ { .ip = META_STARTNAME }, { .id = "2@" }, { .handler = do_colon },
 /*  444 */ { .ip = META_COMPILE },
 /*  445 */     { .cell = 0x5 },   // dup
 /*  446 */     { .cell = 0x46 },  // cell+
-/*  447 */     { .cell = 0x20 },  // @
+/*  447 */     { .cell = 0x22 },  // @
 /*  448 */     { .cell = 0xA },   // swap
-/*  449 */     { .cell = 0x20 },  // @
-/*  450 */     { .cell = 0x31 },  // EXIT
+/*  449 */     { .cell = 0x22 },  // @
+/*  450 */     { .cell = 0x33 },  // EXIT
 /*  451 */     { .cell = 0x0 },
 /*  452 */ { .ip = META_LINKNAME },
 /*  453 */ { .ip = META_STARTNAME }, { .id = "COUNT" }, { .handler = do_colon },
@@ -986,8 +988,8 @@ vmcode_ft initialize_forth[] = {
 /*  457 */     { .cell = 0x5 },   // dup
 /*  458 */     { .cell = 0x44 },  // char+
 /*  459 */     { .cell = 0xA },   // swap
-/*  460 */     { .cell = 0x22 },  // c@
-/*  461 */     { .cell = 0x31 },  // EXIT
+/*  460 */     { .cell = 0x24 },  // c@
+/*  461 */     { .cell = 0x33 },  // EXIT
 /*  462 */     { .cell = 0x0 },
 /*  463 */ { .ip = META_LINKNAME },
 /*  464 */ { .ip = META_STARTNAME }, { .id = "ERASE" }, { .handler = do_colon },
@@ -999,8 +1001,8 @@ vmcode_ft initialize_forth[] = {
 /*  473 */     { .cell = 0x42 },  // LITERAL
 /*  474 */     { .cell = 0x0 },
 /*  475 */ { .ip = META_COMPILE },
-/*  476 */     { .cell = 0x23 },  // FILL
-/*  477 */     { .cell = 0x31 },  // EXIT
+/*  476 */     { .cell = 0x25 },  // FILL
+/*  477 */     { .cell = 0x33 },  // EXIT
 /*  478 */     { .cell = 0x0 },
 /*  479 */ { .ip = META_LINKNAME },
             /* ==== forth/c-gen/core/dictops.fth ==== */
@@ -1011,8 +1013,8 @@ vmcode_ft initialize_forth[] = {
 /*  487 */     { .cell = 0x0 },
 /*  488 */ { .ip = META_COMPILE },
 /*  489 */     { .cell = 0x3D },  // here
-/*  490 */     { .cell = 0x11 },  // -
-/*  491 */     { .cell = 0x31 },  // EXIT
+/*  490 */     { .cell = 0x13 },  // -
+/*  491 */     { .cell = 0x33 },  // EXIT
 /*  492 */     { .cell = 0x0 },
 /*  493 */ { .ip = META_LINKNAME },
             /* ==== forth/common/core/dictops.fth ==== */
@@ -1021,8 +1023,8 @@ vmcode_ft initialize_forth[] = {
 /*  498 */     { .cell = 0x3D },  // here
 /*  499 */     { .cell = 0x47 },  // aligned
 /*  500 */     { .cell = 0x3C },  // here-addr
-/*  501 */     { .cell = 0x1F },  // !
-/*  502 */     { .cell = 0x31 },  // EXIT
+/*  501 */     { .cell = 0x21 },  // !
+/*  502 */     { .cell = 0x33 },  // EXIT
 /*  503 */     { .cell = 0x0 },
 /*  504 */ { .ip = META_LINKNAME },
 /*  505 */ { .ip = META_STARTNAME }, { .id = "C," }, { .handler = do_colon },
@@ -1036,8 +1038,8 @@ vmcode_ft initialize_forth[] = {
 /*  516 */     { .cell = 0x0 },
 /*  517 */ { .ip = META_COMPILE },
 /*  518 */     { .cell = 0x3F },  // allot
-/*  519 */     { .cell = 0x21 },  // c!
-/*  520 */     { .cell = 0x31 },  // EXIT
+/*  519 */     { .cell = 0x23 },  // c!
+/*  520 */     { .cell = 0x33 },  // EXIT
 /*  521 */     { .cell = 0x0 },
 /*  522 */ { .ip = META_LINKNAME },
 /*  523 */ { .ip = META_STARTNAME }, { .id = "PAD" }, { .handler = do_colon },
@@ -1050,8 +1052,8 @@ vmcode_ft initialize_forth[] = {
 /*  533 */     { .cell = 0x42 },  // LITERAL
 /*  534 */     { .cell = 0x0 },
 /*  535 */ { .ip = META_COMPILE },
-/*  536 */     { .cell = 0x10 },  // +
-/*  537 */     { .cell = 0x31 },  // EXIT
+/*  536 */     { .cell = 0x12 },  // +
+/*  537 */     { .cell = 0x33 },  // EXIT
 /*  538 */     { .cell = 0x0 },
 /*  539 */ { .ip = META_LINKNAME },
             /* ==== forth/common/core/stackops.fth ==== */
@@ -1059,14 +1061,14 @@ vmcode_ft initialize_forth[] = {
 /*  543 */ { .ip = META_COMPILE },
 /*  544 */     { .cell = 0x4 },   // drop
 /*  545 */     { .cell = 0x4 },   // drop
-/*  546 */     { .cell = 0x31 },  // EXIT
+/*  546 */     { .cell = 0x33 },  // EXIT
 /*  547 */     { .cell = 0x0 },
 /*  548 */ { .ip = META_LINKNAME },
 /*  549 */ { .ip = META_STARTNAME }, { .id = "2DUP" }, { .handler = do_colon },
 /*  552 */ { .ip = META_COMPILE },
 /*  553 */     { .cell = 0x6 },   // over
 /*  554 */     { .cell = 0x6 },   // over
-/*  555 */     { .cell = 0x31 },  // EXIT
+/*  555 */     { .cell = 0x33 },  // EXIT
 /*  556 */     { .cell = 0x0 },
 /*  557 */ { .ip = META_LINKNAME },
 /*  558 */ { .ip = META_STARTNAME }, { .id = "2SWAP" }, { .handler = do_colon },
@@ -1075,7 +1077,7 @@ vmcode_ft initialize_forth[] = {
 /*  563 */     { .cell = 0x1 },   // >r
 /*  564 */     { .cell = 0x9 },   // rot
 /*  565 */     { .cell = 0x7 },   // r>
-/*  566 */     { .cell = 0x31 },  // EXIT
+/*  566 */     { .cell = 0x33 },  // EXIT
 /*  567 */     { .cell = 0x0 },
 /*  568 */ { .ip = META_LINKNAME },
 /*  569 */ { .ip = META_STARTNAME }, { .id = "2OVER" }, { .handler = do_colon },
@@ -1086,21 +1088,21 @@ vmcode_ft initialize_forth[] = {
 /*  576 */     { .cell = 0x7 },   // r>
 /*  577 */     { .cell = 0x7 },   // r>
 /*  578 */     { .cell = 0x52 },  // 2swap
-/*  579 */     { .cell = 0x31 },  // EXIT
+/*  579 */     { .cell = 0x33 },  // EXIT
 /*  580 */     { .cell = 0x0 },
 /*  581 */ { .ip = META_LINKNAME },
 /*  582 */ { .ip = META_STARTNAME }, { .id = "NIP" }, { .handler = do_colon },
 /*  585 */ { .ip = META_COMPILE },
 /*  586 */     { .cell = 0xA },   // swap
 /*  587 */     { .cell = 0x4 },   // drop
-/*  588 */     { .cell = 0x31 },  // EXIT
+/*  588 */     { .cell = 0x33 },  // EXIT
 /*  589 */     { .cell = 0x0 },
 /*  590 */ { .ip = META_LINKNAME },
 /*  591 */ { .ip = META_STARTNAME }, { .id = "TUCK" }, { .handler = do_colon },
 /*  594 */ { .ip = META_COMPILE },
 /*  595 */     { .cell = 0xA },   // swap
 /*  596 */     { .cell = 0x6 },   // over
-/*  597 */     { .cell = 0x31 },  // EXIT
+/*  597 */     { .cell = 0x33 },  // EXIT
 /*  598 */     { .cell = 0x0 },
 /*  599 */ { .ip = META_LINKNAME },
             /* ==== forth/c-gen/core/control.fth ==== */
@@ -1122,14 +1124,14 @@ vmcode_ft initialize_forth[] = {
 /*  635 */ { .ip = META_STARTNAME }, { .id = "<MARK" }, { .handler = do_colon },
 /*  638 */ { .ip = META_COMPILE },
 /*  639 */     { .cell = 0x3D },  // here
-/*  640 */     { .cell = 0x31 },  // EXIT
+/*  640 */     { .cell = 0x33 },  // EXIT
 /*  641 */     { .cell = 0x0 },
 /*  642 */ { .ip = META_LINKNAME },
 /*  643 */ { .ip = META_SETFLAGS }, { .cell = 0x40 },
 /*  645 */ { .ip = META_STARTNAME }, { .id = "<RESOLVE" }, { .handler = do_colon },
 /*  648 */ { .ip = META_COMPILE },
 /*  649 */     { .cell = 0x3D },  // here
-/*  650 */     { .cell = 0x11 },  // -
+/*  650 */     { .cell = 0x13 },  // -
 /*  651 */     { .cell = 0x0 },
 /*  652 */ { .ip = DO_LITERAL }, { .cell = 0x1 },
 /*  654 */ { .ip = META_INTERPRET },
@@ -1137,9 +1139,9 @@ vmcode_ft initialize_forth[] = {
 /*  656 */     { .cell = 0x42 },  // LITERAL
 /*  657 */     { .cell = 0x0 },
 /*  658 */ { .ip = META_COMPILE },
-/*  659 */     { .cell = 0x28 },  // /
+/*  659 */     { .cell = 0x2A },  // /
 /*  660 */     { .cell = 0x40 },  // ,
-/*  661 */     { .cell = 0x31 },  // EXIT
+/*  661 */     { .cell = 0x33 },  // EXIT
 /*  662 */     { .cell = 0x0 },
 /*  663 */ { .ip = META_LINKNAME },
 /*  664 */ { .ip = META_SETFLAGS }, { .cell = 0x40 },
@@ -1154,7 +1156,7 @@ vmcode_ft initialize_forth[] = {
 /*  677 */     { .cell = 0x0 },
 /*  678 */ { .ip = META_COMPILE },
 /*  679 */     { .cell = 0x3F },  // allot
-/*  680 */     { .cell = 0x31 },  // EXIT
+/*  680 */     { .cell = 0x33 },  // EXIT
 /*  681 */     { .cell = 0x0 },
 /*  682 */ { .ip = META_LINKNAME },
 /*  683 */ { .ip = META_SETFLAGS }, { .cell = 0x40 },
@@ -1162,7 +1164,7 @@ vmcode_ft initialize_forth[] = {
 /*  688 */ { .ip = META_COMPILE },
 /*  689 */     { .cell = 0x3D },  // here
 /*  690 */     { .cell = 0x6 },   // over
-/*  691 */     { .cell = 0x11 },  // -
+/*  691 */     { .cell = 0x13 },  // -
 /*  692 */     { .cell = 0x0 },
 /*  693 */ { .ip = DO_LITERAL }, { .cell = 0x1 },
 /*  695 */ { .ip = META_INTERPRET },
@@ -1170,10 +1172,10 @@ vmcode_ft initialize_forth[] = {
 /*  697 */     { .cell = 0x42 },  // LITERAL
 /*  698 */     { .cell = 0x0 },
 /*  699 */ { .ip = META_COMPILE },
-/*  700 */     { .cell = 0x28 },  // /
+/*  700 */     { .cell = 0x2A },  // /
 /*  701 */     { .cell = 0xA },   // swap
-/*  702 */     { .cell = 0x1F },  // !
-/*  703 */     { .cell = 0x31 },  // EXIT
+/*  702 */     { .cell = 0x21 },  // !
+/*  703 */     { .cell = 0x33 },  // EXIT
 /*  704 */     { .cell = 0x0 },
 /*  705 */ { .ip = META_LINKNAME },
 /*  706 */ { .ip = META_SETFLAGS }, { .cell = 0x40 },
@@ -1186,7 +1188,7 @@ vmcode_ft initialize_forth[] = {
 /*  716 */ { .ip = META_COMPILE },
 /*  717 */     { .cell = 0x40 },  // ,
 /*  718 */     { .cell = 0x5F },  // >mark
-/*  719 */     { .cell = 0x31 },  // EXIT
+/*  719 */     { .cell = 0x33 },  // EXIT
 /*  720 */     { .cell = 0x0 },
 /*  721 */ { .ip = META_LINKNAME },
 /*  722 */ { .ip = META_SETFLAGS }, { .cell = 0x40 },
@@ -1198,7 +1200,7 @@ vmcode_ft initialize_forth[] = {
 /*  732 */ { .ip = META_COMPILE },
 /*  733 */     { .cell = 0x40 },  // ,
 /*  734 */     { .cell = 0x5F },  // >mark
-/*  735 */     { .cell = 0x31 },  // EXIT
+/*  735 */     { .cell = 0x33 },  // EXIT
 /*  736 */     { .cell = 0x0 },
 /*  737 */ { .ip = META_LINKNAME },
 /*  738 */ { .ip = META_SETFLAGS }, { .cell = 0x40 },
@@ -1210,7 +1212,7 @@ vmcode_ft initialize_forth[] = {
 /*  748 */ { .ip = META_COMPILE },
 /*  749 */     { .cell = 0x40 },  // ,
 /*  750 */     { .cell = 0x5E },  // <resolve
-/*  751 */     { .cell = 0x31 },  // EXIT
+/*  751 */     { .cell = 0x33 },  // EXIT
 /*  752 */     { .cell = 0x0 },
 /*  753 */ { .ip = META_LINKNAME },
 /*  754 */ { .ip = META_SETFLAGS }, { .cell = 0x40 },
@@ -1222,7 +1224,7 @@ vmcode_ft initialize_forth[] = {
 /*  764 */ { .ip = META_COMPILE },
 /*  765 */     { .cell = 0x40 },  // ,
 /*  766 */     { .cell = 0x5E },  // <resolve
-/*  767 */     { .cell = 0x31 },  // EXIT
+/*  767 */     { .cell = 0x33 },  // EXIT
 /*  768 */     { .cell = 0x0 },
 /*  769 */ { .ip = META_LINKNAME },
 /*  770 */ { .ip = META_SETFLAGS }, { .cell = 0x40 },
@@ -1230,28 +1232,28 @@ vmcode_ft initialize_forth[] = {
 /*  772 */ { .ip = META_STARTNAME }, { .id = "BEGIN" }, { .handler = do_colon },
 /*  775 */ { .ip = META_COMPILE },
 /*  776 */     { .cell = 0x5D },  // <mark
-/*  777 */     { .cell = 0x31 },  // EXIT
+/*  777 */     { .cell = 0x33 },  // EXIT
 /*  778 */     { .cell = 0x0 },
 /*  779 */ { .ip = META_LINKNAME },
 /*  780 */ { .ip = META_SETFLAGS }, { .cell = 0xC0 },
 /*  782 */ { .ip = META_STARTNAME }, { .id = "THEN" }, { .handler = do_colon },
 /*  785 */ { .ip = META_COMPILE },
 /*  786 */     { .cell = 0x60 },  // >resolve
-/*  787 */     { .cell = 0x31 },  // EXIT
+/*  787 */     { .cell = 0x33 },  // EXIT
 /*  788 */     { .cell = 0x0 },
 /*  789 */ { .ip = META_LINKNAME },
 /*  790 */ { .ip = META_SETFLAGS }, { .cell = 0xC0 },
 /*  792 */ { .ip = META_STARTNAME }, { .id = "IF" }, { .handler = do_colon },
 /*  795 */ { .ip = META_COMPILE },
 /*  796 */     { .cell = 0x62 },  // >?branch
-/*  797 */     { .cell = 0x31 },  // EXIT
+/*  797 */     { .cell = 0x33 },  // EXIT
 /*  798 */     { .cell = 0x0 },
 /*  799 */ { .ip = META_LINKNAME },
 /*  800 */ { .ip = META_SETFLAGS }, { .cell = 0xC0 },
 /*  802 */ { .ip = META_STARTNAME }, { .id = "UNTIL" }, { .handler = do_colon },
 /*  805 */ { .ip = META_COMPILE },
 /*  806 */     { .cell = 0x64 },  // <?branch
-/*  807 */     { .cell = 0x31 },  // EXIT
+/*  807 */     { .cell = 0x33 },  // EXIT
 /*  808 */     { .cell = 0x0 },
 /*  809 */ { .ip = META_LINKNAME },
 /*  810 */ { .ip = META_SETFLAGS }, { .cell = 0xC0 },
@@ -1260,14 +1262,14 @@ vmcode_ft initialize_forth[] = {
 /*  816 */     { .cell = 0x61 },  // >branch
 /*  817 */     { .cell = 0xA },   // swap
 /*  818 */     { .cell = 0x66 },  // THEN
-/*  819 */     { .cell = 0x31 },  // EXIT
+/*  819 */     { .cell = 0x33 },  // EXIT
 /*  820 */     { .cell = 0x0 },
 /*  821 */ { .ip = META_LINKNAME },
 /*  822 */ { .ip = META_SETFLAGS }, { .cell = 0xC0 },
 /*  824 */ { .ip = META_STARTNAME }, { .id = "AGAIN" }, { .handler = do_colon },
 /*  827 */ { .ip = META_COMPILE },
 /*  828 */     { .cell = 0x63 },  // <branch
-/*  829 */     { .cell = 0x31 },  // EXIT
+/*  829 */     { .cell = 0x33 },  // EXIT
 /*  830 */     { .cell = 0x0 },
 /*  831 */ { .ip = META_LINKNAME },
 /*  832 */ { .ip = META_SETFLAGS }, { .cell = 0xC0 },
@@ -1275,7 +1277,7 @@ vmcode_ft initialize_forth[] = {
 /*  837 */ { .ip = META_COMPILE },
 /*  838 */     { .cell = 0x6A },  // AGAIN
 /*  839 */     { .cell = 0x66 },  // THEN
-/*  840 */     { .cell = 0x31 },  // EXIT
+/*  840 */     { .cell = 0x33 },  // EXIT
 /*  841 */     { .cell = 0x0 },
 /*  842 */ { .ip = META_LINKNAME },
 /*  843 */ { .ip = META_SETFLAGS }, { .cell = 0xC0 },
@@ -1283,7 +1285,7 @@ vmcode_ft initialize_forth[] = {
 /*  848 */ { .ip = META_COMPILE },
 /*  849 */     { .cell = 0x67 },  // IF
 /*  850 */     { .cell = 0xA },   // swap
-/*  851 */     { .cell = 0x31 },  // EXIT
+/*  851 */     { .cell = 0x33 },  // EXIT
 /*  852 */     { .cell = 0x0 },
 /*  853 */ { .ip = META_LINKNAME },
 /*  854 */ { .ip = META_SETFLAGS }, { .cell = 0xC0 },
@@ -1301,7 +1303,7 @@ vmcode_ft initialize_forth[] = {
 /*  869 */     { .cell = 0x42 },  // LITERAL
 /*  870 */     { .cell = 0x0 },
 /*  871 */ { .ip = META_COMPILE },
-/*  872 */     { .cell = 0x20 },  // @
+/*  872 */     { .cell = 0x22 },  // @
 /*  873 */     { .cell = 0xA },   // swap
 /*  874 */     { .cell = 0x0 },
 /*  875 */ { .ip = META_INTERPRET },
@@ -1309,8 +1311,8 @@ vmcode_ft initialize_forth[] = {
 /*  877 */     { .cell = 0x42 },  // LITERAL
 /*  878 */     { .cell = 0x0 },
 /*  879 */ { .ip = META_COMPILE },
-/*  880 */     { .cell = 0x1F },  // !
-/*  881 */     { .cell = 0x31 },  // EXIT
+/*  880 */     { .cell = 0x21 },  // !
+/*  881 */     { .cell = 0x33 },  // EXIT
 /*  882 */     { .cell = 0x0 },
 /*  883 */ { .ip = META_LINKNAME },
 /*  884 */ { .ip = META_STARTNAME }, { .id = "START-CHAIN" }, { .handler = do_colon },
@@ -1320,7 +1322,7 @@ vmcode_ft initialize_forth[] = {
 /*  891 */     { .cell = 0x0 },
 /*  892 */ { .ip = META_COMPILE },
 /*  893 */     { .cell = 0x6D },  // chain-swap
-/*  894 */     { .cell = 0x31 },  // EXIT
+/*  894 */     { .cell = 0x33 },  // EXIT
 /*  895 */     { .cell = 0x0 },
 /*  896 */ { .ip = META_LINKNAME },
 /*  897 */ { .ip = META_STARTNAME }, { .id = "MARK>CHAIN" }, { .handler = do_colon },
@@ -1328,8 +1330,8 @@ vmcode_ft initialize_forth[] = {
 /*  901 */     { .cell = 0x5 },   // dup
 /*  902 */     { .cell = 0x6D },  // chain-swap
 /*  903 */     { .cell = 0xA },   // swap
-/*  904 */     { .cell = 0x1F },  // !
-/*  905 */     { .cell = 0x31 },  // EXIT
+/*  904 */     { .cell = 0x21 },  // !
+/*  905 */     { .cell = 0x33 },  // EXIT
 /*  906 */     { .cell = 0x0 },
 /*  907 */ { .ip = META_LINKNAME },
 /*  908 */ { .ip = META_STARTNAME }, { .id = "RESOLVE-CHAIN" }, { .handler = do_colon },
@@ -1347,7 +1349,7 @@ vmcode_ft initialize_forth[] = {
 /*  922 */     { .cell = 0x0 },
 /*  923 */ { .ip = META_COMPILE },
 /*  924 */     { .cell = 0x5 },   // dup
-/*  925 */     { .cell = 0x20 },  // @
+/*  925 */     { .cell = 0x22 },  // @
 /*  926 */     { .cell = 0xA },   // swap
 /*  927 */     { .cell = 0x66 },  // THEN
 /*  928 */     { .cell = 0x0 },
@@ -1356,7 +1358,7 @@ vmcode_ft initialize_forth[] = {
 /*  931 */     { .cell = 0x0 },
 /*  932 */ { .ip = META_COMPILE },
 /*  933 */     { .cell = 0x4 },   // drop
-/*  934 */     { .cell = 0x31 },  // EXIT
+/*  934 */     { .cell = 0x33 },  // EXIT
 /*  935 */     { .cell = 0x0 },
 /*  936 */ { .ip = META_LINKNAME },
             /* ==== forth/common/internal/doprolog.fth ==== */
@@ -1364,7 +1366,7 @@ vmcode_ft initialize_forth[] = {
 /*  940 */ { .ip = META_COMPILE },
 /*  941 */     { .cell = 0x61 },  // >branch
 /*  942 */     { .cell = 0x6F },  // mark>chain
-/*  943 */     { .cell = 0x31 },  // EXIT
+/*  943 */     { .cell = 0x33 },  // EXIT
 /*  944 */     { .cell = 0x0 },
 /*  945 */ { .ip = META_LINKNAME },
 /*  946 */ { .ip = META_SETFLAGS }, { .cell = 0x40 },
@@ -1376,14 +1378,14 @@ vmcode_ft initialize_forth[] = {
 /*  956 */ { .ip = META_COMPILE },
 /*  957 */     { .cell = 0x40 },  // ,
 /*  958 */     { .cell = 0x6E },  // start-chain
-/*  959 */     { .cell = 0x31 },  // EXIT
+/*  959 */     { .cell = 0x33 },  // EXIT
 /*  960 */     { .cell = 0x0 },
 /*  961 */ { .ip = META_LINKNAME },
 /*  962 */ { .ip = META_SETFLAGS }, { .cell = 0x40 },
 /*  964 */ { .ip = META_STARTNAME }, { .id = "DO-EPILOG" }, { .handler = do_colon },
 /*  967 */ { .ip = META_COMPILE },
 /*  968 */     { .cell = 0x65 },  // BEGIN
-/*  969 */     { .cell = 0x31 },  // EXIT
+/*  969 */     { .cell = 0x33 },  // EXIT
 /*  970 */     { .cell = 0x0 },
 /*  971 */ { .ip = META_LINKNAME },
 /*  972 */ { .ip = META_SETFLAGS }, { .cell = 0x40 },
@@ -1392,7 +1394,7 @@ vmcode_ft initialize_forth[] = {
 /*  977 */ { .ip = META_COMPILE },
 /*  978 */     { .cell = 0x72 },  // do-prolog
 /*  979 */     { .cell = 0x73 },  // do-epilog
-/*  980 */     { .cell = 0x31 },  // EXIT
+/*  980 */     { .cell = 0x33 },  // EXIT
 /*  981 */     { .cell = 0x0 },
 /*  982 */ { .ip = META_LINKNAME },
 /*  983 */ { .ip = META_SETFLAGS }, { .cell = 0xC0 },
@@ -1409,14 +1411,14 @@ vmcode_ft initialize_forth[] = {
 /*  998 */     { .cell = 0x67 },  // IF
 /*  999 */     { .cell = 0x6F },  // mark>chain
 /* 1000 */     { .cell = 0x73 },  // do-epilog
-/* 1001 */     { .cell = 0x31 },  // EXIT
+/* 1001 */     { .cell = 0x33 },  // EXIT
 /* 1002 */     { .cell = 0x0 },
 /* 1003 */ { .ip = META_LINKNAME },
 /* 1004 */ { .ip = META_SETFLAGS }, { .cell = 0xC0 },
 /* 1006 */ { .ip = META_STARTNAME }, { .id = "LEAVE" }, { .handler = do_colon },
 /* 1009 */ { .ip = META_COMPILE },
 /* 1010 */     { .cell = 0x71 },  // branch>chain
-/* 1011 */     { .cell = 0x31 },  // EXIT
+/* 1011 */     { .cell = 0x33 },  // EXIT
 /* 1012 */     { .cell = 0x0 },
 /* 1013 */ { .ip = META_LINKNAME },
 /* 1014 */ { .ip = META_SETFLAGS }, { .cell = 0xC0 },
@@ -1436,7 +1438,7 @@ vmcode_ft initialize_forth[] = {
 /* 1033 */     { .cell = 0x0 },
 /* 1034 */ { .ip = META_COMPILE },
 /* 1035 */     { .cell = 0x40 },  // ,
-/* 1036 */     { .cell = 0x31 },  // EXIT
+/* 1036 */     { .cell = 0x33 },  // EXIT
 /* 1037 */     { .cell = 0x0 },
 /* 1038 */ { .ip = META_LINKNAME },
 /* 1039 */ { .ip = META_SETFLAGS }, { .cell = 0xC0 },
@@ -1448,14 +1450,14 @@ vmcode_ft initialize_forth[] = {
 /* 1049 */ { .ip = META_COMPILE },
 /* 1050 */     { .cell = 0x42 },  // LITERAL
 /* 1051 */     { .cell = 0x77 },  // +LOOP
-/* 1052 */     { .cell = 0x31 },  // EXIT
+/* 1052 */     { .cell = 0x33 },  // EXIT
 /* 1053 */     { .cell = 0x0 },
 /* 1054 */ { .ip = META_LINKNAME },
 /* 1055 */ { .ip = META_SETFLAGS }, { .cell = 0xC0 },
 /* 1057 */ { .ip = META_STARTNAME }, { .id = "CASE" }, { .handler = do_colon },
 /* 1060 */ { .ip = META_COMPILE },
 /* 1061 */     { .cell = 0x6E },  // start-chain
-/* 1062 */     { .cell = 0x31 },  // EXIT
+/* 1062 */     { .cell = 0x33 },  // EXIT
 /* 1063 */     { .cell = 0x0 },
 /* 1064 */ { .ip = META_LINKNAME },
 /* 1065 */ { .ip = META_SETFLAGS }, { .cell = 0xC0 },
@@ -1467,7 +1469,7 @@ vmcode_ft initialize_forth[] = {
 /* 1075 */ { .ip = META_COMPILE },
 /* 1076 */     { .cell = 0x40 },  // ,
 /* 1077 */     { .cell = 0x0 },
-/* 1078 */ { .ip = META_REFERENCE }, { .cell = 0x15  /* = */ },
+/* 1078 */ { .ip = META_REFERENCE }, { .cell = 0x17  /* = */ },
 /* 1080 */ { .ip = META_INTERPRET },
 /* 1081 */     { .cell = 0x42 },  // LITERAL
 /* 1082 */     { .cell = 0x0 },
@@ -1481,7 +1483,7 @@ vmcode_ft initialize_forth[] = {
 /* 1091 */     { .cell = 0x0 },
 /* 1092 */ { .ip = META_COMPILE },
 /* 1093 */     { .cell = 0x40 },  // ,
-/* 1094 */     { .cell = 0x31 },  // EXIT
+/* 1094 */     { .cell = 0x33 },  // EXIT
 /* 1095 */     { .cell = 0x0 },
 /* 1096 */ { .ip = META_LINKNAME },
 /* 1097 */ { .ip = META_SETFLAGS }, { .cell = 0xC0 },
@@ -1489,7 +1491,7 @@ vmcode_ft initialize_forth[] = {
 /* 1102 */ { .ip = META_COMPILE },
 /* 1103 */     { .cell = 0x71 },  // branch>chain
 /* 1104 */     { .cell = 0x66 },  // THEN
-/* 1105 */     { .cell = 0x31 },  // EXIT
+/* 1105 */     { .cell = 0x33 },  // EXIT
 /* 1106 */     { .cell = 0x0 },
 /* 1107 */ { .ip = META_LINKNAME },
 /* 1108 */ { .ip = META_SETFLAGS }, { .cell = 0xC0 },
@@ -1501,7 +1503,7 @@ vmcode_ft initialize_forth[] = {
 /* 1118 */ { .ip = META_COMPILE },
 /* 1119 */     { .cell = 0x40 },  // ,
 /* 1120 */     { .cell = 0x70 },  // resolve-chain
-/* 1121 */     { .cell = 0x31 },  // EXIT
+/* 1121 */     { .cell = 0x33 },  // EXIT
 /* 1122 */     { .cell = 0x0 },
 /* 1123 */ { .ip = META_LINKNAME },
 /* 1124 */ { .ip = META_SETFLAGS }, { .cell = 0xC0 },
@@ -1512,8 +1514,8 @@ vmcode_ft initialize_forth[] = {
 /* 1132 */     { .cell = 0x42 },  // LITERAL
 /* 1133 */     { .cell = 0x0 },
 /* 1134 */ { .ip = META_COMPILE },
-/* 1135 */     { .cell = 0x14 },  // <
-/* 1136 */     { .cell = 0x31 },  // EXIT
+/* 1135 */     { .cell = 0x16 },  // <
+/* 1136 */     { .cell = 0x33 },  // EXIT
 /* 1137 */     { .cell = 0x0 },
 /* 1138 */ { .ip = META_LINKNAME },
 /* 1139 */ { .ip = META_STARTNAME }, { .id = "0=" }, { .handler = do_colon },
@@ -1522,8 +1524,8 @@ vmcode_ft initialize_forth[] = {
 /* 1145 */     { .cell = 0x42 },  // LITERAL
 /* 1146 */     { .cell = 0x0 },
 /* 1147 */ { .ip = META_COMPILE },
-/* 1148 */     { .cell = 0x15 },  // =
-/* 1149 */     { .cell = 0x31 },  // EXIT
+/* 1148 */     { .cell = 0x17 },  // =
+/* 1149 */     { .cell = 0x33 },  // EXIT
 /* 1150 */     { .cell = 0x0 },
 /* 1151 */ { .ip = META_LINKNAME },
 /* 1152 */ { .ip = META_STARTNAME }, { .id = "1+" }, { .handler = do_colon },
@@ -1532,8 +1534,8 @@ vmcode_ft initialize_forth[] = {
 /* 1158 */     { .cell = 0x42 },  // LITERAL
 /* 1159 */     { .cell = 0x0 },
 /* 1160 */ { .ip = META_COMPILE },
-/* 1161 */     { .cell = 0x10 },  // +
-/* 1162 */     { .cell = 0x31 },  // EXIT
+/* 1161 */     { .cell = 0x12 },  // +
+/* 1162 */     { .cell = 0x33 },  // EXIT
 /* 1163 */     { .cell = 0x0 },
 /* 1164 */ { .ip = META_LINKNAME },
 /* 1165 */ { .ip = META_STARTNAME }, { .id = "1-" }, { .handler = do_colon },
@@ -1542,8 +1544,8 @@ vmcode_ft initialize_forth[] = {
 /* 1171 */     { .cell = 0x42 },  // LITERAL
 /* 1172 */     { .cell = 0x0 },
 /* 1173 */ { .ip = META_COMPILE },
-/* 1174 */     { .cell = 0x11 },  // -
-/* 1175 */     { .cell = 0x31 },  // EXIT
+/* 1174 */     { .cell = 0x13 },  // -
+/* 1175 */     { .cell = 0x33 },  // EXIT
 /* 1176 */     { .cell = 0x0 },
 /* 1177 */ { .ip = META_LINKNAME },
 /* 1178 */ { .ip = META_STARTNAME }, { .id = "ABS" }, { .handler = do_colon },
@@ -1555,19 +1557,19 @@ vmcode_ft initialize_forth[] = {
 /* 1186 */     { .cell = 0x67 },  // IF
 /* 1187 */     { .cell = 0x0 },
 /* 1188 */ { .ip = META_COMPILE },
-/* 1189 */     { .cell = 0x1A },  // negate
+/* 1189 */     { .cell = 0x1C },  // negate
 /* 1190 */     { .cell = 0x0 },
 /* 1191 */ { .ip = META_INTERPRET },
 /* 1192 */     { .cell = 0x66 },  // THEN
 /* 1193 */     { .cell = 0x0 },
 /* 1194 */ { .ip = META_COMPILE },
-/* 1195 */     { .cell = 0x31 },  // EXIT
+/* 1195 */     { .cell = 0x33 },  // EXIT
 /* 1196 */     { .cell = 0x0 },
 /* 1197 */ { .ip = META_LINKNAME },
 /* 1198 */ { .ip = META_STARTNAME }, { .id = "MAX" }, { .handler = do_colon },
 /* 1201 */ { .ip = META_COMPILE },
 /* 1202 */     { .cell = 0x51 },  // 2dup
-/* 1203 */     { .cell = 0x14 },  // <
+/* 1203 */     { .cell = 0x16 },  // <
 /* 1204 */     { .cell = 0x0 },
 /* 1205 */ { .ip = META_INTERPRET },
 /* 1206 */     { .cell = 0x67 },  // IF
@@ -1580,13 +1582,13 @@ vmcode_ft initialize_forth[] = {
 /* 1213 */     { .cell = 0x0 },
 /* 1214 */ { .ip = META_COMPILE },
 /* 1215 */     { .cell = 0x4 },   // drop
-/* 1216 */     { .cell = 0x31 },  // EXIT
+/* 1216 */     { .cell = 0x33 },  // EXIT
 /* 1217 */     { .cell = 0x0 },
 /* 1218 */ { .ip = META_LINKNAME },
 /* 1219 */ { .ip = META_STARTNAME }, { .id = "MIN" }, { .handler = do_colon },
 /* 1222 */ { .ip = META_COMPILE },
 /* 1223 */     { .cell = 0x51 },  // 2dup
-/* 1224 */     { .cell = 0x16 },  // >
+/* 1224 */     { .cell = 0x18 },  // >
 /* 1225 */     { .cell = 0x0 },
 /* 1226 */ { .ip = META_INTERPRET },
 /* 1227 */     { .cell = 0x67 },  // IF
@@ -1599,21 +1601,21 @@ vmcode_ft initialize_forth[] = {
 /* 1234 */     { .cell = 0x0 },
 /* 1235 */ { .ip = META_COMPILE },
 /* 1236 */     { .cell = 0x4 },   // drop
-/* 1237 */     { .cell = 0x31 },  // EXIT
+/* 1237 */     { .cell = 0x33 },  // EXIT
 /* 1238 */     { .cell = 0x0 },
 /* 1239 */ { .ip = META_LINKNAME },
 /* 1240 */ { .ip = META_STARTNAME }, { .id = "S>D" }, { .handler = do_colon },
 /* 1243 */ { .ip = META_COMPILE },
 /* 1244 */     { .cell = 0x5 },   // dup
 /* 1245 */     { .cell = 0x7D },  // 0<
-/* 1246 */     { .cell = 0x31 },  // EXIT
+/* 1246 */     { .cell = 0x33 },  // EXIT
 /* 1247 */     { .cell = 0x0 },
 /* 1248 */ { .ip = META_LINKNAME },
 /* 1249 */ { .ip = META_STARTNAME }, { .id = "<>" }, { .handler = do_colon },
 /* 1252 */ { .ip = META_COMPILE },
-/* 1253 */     { .cell = 0x15 },  // =
-/* 1254 */     { .cell = 0x18 },  // invert
-/* 1255 */     { .cell = 0x31 },  // EXIT
+/* 1253 */     { .cell = 0x17 },  // =
+/* 1254 */     { .cell = 0x1A },  // invert
+/* 1255 */     { .cell = 0x33 },  // EXIT
 /* 1256 */     { .cell = 0x0 },
 /* 1257 */ { .ip = META_LINKNAME },
 /* 1258 */ { .ip = META_STARTNAME }, { .id = "0>" }, { .handler = do_colon },
@@ -1622,8 +1624,8 @@ vmcode_ft initialize_forth[] = {
 /* 1264 */     { .cell = 0x42 },  // LITERAL
 /* 1265 */     { .cell = 0x0 },
 /* 1266 */ { .ip = META_COMPILE },
-/* 1267 */     { .cell = 0x16 },  // >
-/* 1268 */     { .cell = 0x31 },  // EXIT
+/* 1267 */     { .cell = 0x18 },  // >
+/* 1268 */     { .cell = 0x33 },  // EXIT
 /* 1269 */     { .cell = 0x0 },
 /* 1270 */ { .ip = META_LINKNAME },
 /* 1271 */ { .ip = META_STARTNAME }, { .id = "0<>" }, { .handler = do_colon },
@@ -1633,13 +1635,13 @@ vmcode_ft initialize_forth[] = {
 /* 1278 */     { .cell = 0x0 },
 /* 1279 */ { .ip = META_COMPILE },
 /* 1280 */     { .cell = 0x85 },  // <>
-/* 1281 */     { .cell = 0x31 },  // EXIT
+/* 1281 */     { .cell = 0x33 },  // EXIT
 /* 1282 */     { .cell = 0x0 },
 /* 1283 */ { .ip = META_LINKNAME },
 /* 1284 */ { .ip = DO_LITERAL }, { .cell = 0x1 },
 /* 1286 */ { .ip = DO_LITERAL }, { .cell = 0x0 },
 /* 1288 */ { .ip = META_INTERPRET },
-/* 1289 */     { .cell = 0x15 },  // =
+/* 1289 */     { .cell = 0x17 },  // =
 /* 1290 */     { .cell = 0x0 },
 /* 1291 */ { .ip = META_ADDNAME }, { .id = "FALSE" }, { .handler = do_constant },
 /* 1294 */ { .ip = META_INTERPRET },
@@ -1648,7 +1650,7 @@ vmcode_ft initialize_forth[] = {
 /* 1297 */ { .ip = DO_LITERAL }, { .cell = 0x0 },
 /* 1299 */ { .ip = DO_LITERAL }, { .cell = 0x0 },
 /* 1301 */ { .ip = META_INTERPRET },
-/* 1302 */     { .cell = 0x15 },  // =
+/* 1302 */     { .cell = 0x17 },  // =
 /* 1303 */     { .cell = 0x0 },
 /* 1304 */ { .ip = META_ADDNAME }, { .id = "TRUE" }, { .handler = do_constant },
 /* 1307 */ { .ip = META_INTERPRET },
@@ -1657,8 +1659,8 @@ vmcode_ft initialize_forth[] = {
 /* 1310 */ { .ip = META_STARTNAME }, { .id = "U>" }, { .handler = do_colon },
 /* 1313 */ { .ip = META_COMPILE },
 /* 1314 */     { .cell = 0xA },   // swap
-/* 1315 */     { .cell = 0x1D },  // u<
-/* 1316 */     { .cell = 0x31 },  // EXIT
+/* 1315 */     { .cell = 0x1F },  // u<
+/* 1316 */     { .cell = 0x33 },  // EXIT
 /* 1317 */     { .cell = 0x0 },
 /* 1318 */ { .ip = META_LINKNAME },
             /* ==== forth/common/internal/ascii.fth ==== */
@@ -1673,7 +1675,7 @@ vmcode_ft initialize_forth[] = {
 /* 1331 */     { .cell = 0x0 },
 /* 1332 */ { .ip = META_COMPILE },
 /* 1333 */     { .cell = 0x3B },  // within
-/* 1334 */     { .cell = 0x31 },  // EXIT
+/* 1334 */     { .cell = 0x33 },  // EXIT
 /* 1335 */     { .cell = 0x0 },
 /* 1336 */ { .ip = META_LINKNAME },
 /* 1337 */ { .ip = META_STARTNAME }, { .id = "PRINTABLE?" }, { .handler = do_colon },
@@ -1687,32 +1689,32 @@ vmcode_ft initialize_forth[] = {
 /* 1349 */     { .cell = 0x0 },
 /* 1350 */ { .ip = META_COMPILE },
 /* 1351 */     { .cell = 0x3B },  // within
-/* 1352 */     { .cell = 0x31 },  // EXIT
+/* 1352 */     { .cell = 0x33 },  // EXIT
 /* 1353 */     { .cell = 0x0 },
 /* 1354 */ { .ip = META_LINKNAME },
 /* 1355 */ { .ip = META_STARTNAME }, { .id = "CHANGECASE" }, { .handler = do_colon },
 /* 1358 */ { .ip = META_COMPILE },
 /* 1359 */     { .cell = 0x6 },   // over
 /* 1360 */     { .cell = 0xA },   // swap
-/* 1361 */     { .cell = 0x11 },  // -
+/* 1361 */     { .cell = 0x13 },  // -
 /* 1362 */     { .cell = 0x0 },
 /* 1363 */ { .ip = DO_LITERAL }, { .cell = 0x1A },
 /* 1365 */ { .ip = META_INTERPRET },
 /* 1366 */     { .cell = 0x42 },  // LITERAL
 /* 1367 */     { .cell = 0x0 },
 /* 1368 */ { .ip = META_COMPILE },
-/* 1369 */     { .cell = 0x1D },  // u<
+/* 1369 */     { .cell = 0x1F },  // u<
 /* 1370 */     { .cell = 0x0 },
 /* 1371 */ { .ip = DO_LITERAL }, { .cell = 0x41 },
 /* 1373 */ { .ip = DO_LITERAL }, { .cell = 0x61 },
 /* 1375 */ { .ip = META_INTERPRET },
-/* 1376 */     { .cell = 0x1E },  // xor
+/* 1376 */     { .cell = 0x20 },  // xor
 /* 1377 */     { .cell = 0x42 },  // LITERAL
 /* 1378 */     { .cell = 0x0 },
 /* 1379 */ { .ip = META_COMPILE },
-/* 1380 */     { .cell = 0x17 },  // and
-/* 1381 */     { .cell = 0x1E },  // xor
-/* 1382 */     { .cell = 0x31 },  // EXIT
+/* 1380 */     { .cell = 0x19 },  // and
+/* 1381 */     { .cell = 0x20 },  // xor
+/* 1382 */     { .cell = 0x33 },  // EXIT
 /* 1383 */     { .cell = 0x0 },
 /* 1384 */ { .ip = META_LINKNAME },
 /* 1385 */ { .ip = META_STARTNAME }, { .id = "TOUPPER" }, { .handler = do_colon },
@@ -1722,7 +1724,7 @@ vmcode_ft initialize_forth[] = {
 /* 1392 */     { .cell = 0x0 },
 /* 1393 */ { .ip = META_COMPILE },
 /* 1394 */     { .cell = 0x8D },  // changecase
-/* 1395 */     { .cell = 0x31 },  // EXIT
+/* 1395 */     { .cell = 0x33 },  // EXIT
 /* 1396 */     { .cell = 0x0 },
 /* 1397 */ { .ip = META_LINKNAME },
 /* 1398 */ { .ip = META_STARTNAME }, { .id = "TOLOWER" }, { .handler = do_colon },
@@ -1732,7 +1734,7 @@ vmcode_ft initialize_forth[] = {
 /* 1405 */     { .cell = 0x0 },
 /* 1406 */ { .ip = META_COMPILE },
 /* 1407 */     { .cell = 0x8D },  // changecase
-/* 1408 */     { .cell = 0x31 },  // EXIT
+/* 1408 */     { .cell = 0x33 },  // EXIT
 /* 1409 */     { .cell = 0x0 },
 /* 1410 */ { .ip = META_LINKNAME },
 /* 1411 */ { .ip = META_STARTNAME }, { .id = "STR-TOUPPER" }, { .handler = do_colon },
@@ -1743,10 +1745,10 @@ vmcode_ft initialize_forth[] = {
 /* 1419 */     { .cell = 0x0 },
 /* 1420 */ { .ip = META_COMPILE },
 /* 1421 */     { .cell = 0x5 },   // dup
-/* 1422 */     { .cell = 0x22 },  // c@
+/* 1422 */     { .cell = 0x24 },  // c@
 /* 1423 */     { .cell = 0x8E },  // toupper
 /* 1424 */     { .cell = 0x6 },   // over
-/* 1425 */     { .cell = 0x21 },  // c!
+/* 1425 */     { .cell = 0x23 },  // c!
 /* 1426 */     { .cell = 0x44 },  // char+
 /* 1427 */     { .cell = 0x0 },
 /* 1428 */ { .ip = META_INTERPRET },
@@ -1754,7 +1756,7 @@ vmcode_ft initialize_forth[] = {
 /* 1430 */     { .cell = 0x0 },
 /* 1431 */ { .ip = META_COMPILE },
 /* 1432 */     { .cell = 0x4 },   // drop
-/* 1433 */     { .cell = 0x31 },  // EXIT
+/* 1433 */     { .cell = 0x33 },  // EXIT
 /* 1434 */     { .cell = 0x0 },
 /* 1435 */ { .ip = META_LINKNAME },
 /* 1436 */ { .ip = META_STARTNAME }, { .id = "STR-TOLOWER" }, { .handler = do_colon },
@@ -1765,10 +1767,10 @@ vmcode_ft initialize_forth[] = {
 /* 1444 */     { .cell = 0x0 },
 /* 1445 */ { .ip = META_COMPILE },
 /* 1446 */     { .cell = 0x5 },   // dup
-/* 1447 */     { .cell = 0x22 },  // c@
+/* 1447 */     { .cell = 0x24 },  // c@
 /* 1448 */     { .cell = 0x8F },  // tolower
 /* 1449 */     { .cell = 0x6 },   // over
-/* 1450 */     { .cell = 0x21 },  // c!
+/* 1450 */     { .cell = 0x23 },  // c!
 /* 1451 */     { .cell = 0x44 },  // char+
 /* 1452 */     { .cell = 0x0 },
 /* 1453 */ { .ip = META_INTERPRET },
@@ -1776,7 +1778,7 @@ vmcode_ft initialize_forth[] = {
 /* 1455 */     { .cell = 0x0 },
 /* 1456 */ { .ip = META_COMPILE },
 /* 1457 */     { .cell = 0x4 },   // drop
-/* 1458 */     { .cell = 0x31 },  // EXIT
+/* 1458 */     { .cell = 0x33 },  // EXIT
 /* 1459 */     { .cell = 0x0 },
 /* 1460 */ { .ip = META_LINKNAME },
             /* ==== forth/common/internal/namespace.fth ==== */
@@ -1808,2269 +1810,2271 @@ vmcode_ft initialize_forth[] = {
 /* 1501 */ { .ip = META_STARTNAME }, { .id = "IMMEDIATE?" }, { .handler = do_colon },
 /* 1504 */ { .ip = META_COMPILE },
 /* 1505 */     { .cell = 0x93 },  // nf-immediate
-/* 1506 */     { .cell = 0x17 },  // and
-/* 1507 */     { .cell = 0x31 },  // EXIT
-/* 1508 */     { .cell = 0x0 },
-/* 1509 */ { .ip = META_LINKNAME },
-/* 1510 */ { .ip = META_STARTNAME }, { .id = "COMPILE-ONLY?" }, { .handler = do_colon },
-/* 1513 */ { .ip = META_COMPILE },
-/* 1514 */     { .cell = 0x92 },  // nf-compile-only
-/* 1515 */     { .cell = 0x17 },  // and
-/* 1516 */     { .cell = 0x31 },  // EXIT
-/* 1517 */     { .cell = 0x0 },
-/* 1518 */ { .ip = META_LINKNAME },
-/* 1519 */ { .ip = META_STARTNAME }, { .id = ">COUNT" }, { .handler = do_colon },
-/* 1522 */ { .ip = META_COMPILE },
-/* 1523 */     { .cell = 0x95 },  // nf-length
-/* 1524 */     { .cell = 0x17 },  // and
-/* 1525 */     { .cell = 0x31 },  // EXIT
-/* 1526 */     { .cell = 0x0 },
-/* 1527 */ { .ip = META_LINKNAME },
-/* 1528 */ { .ip = META_STARTNAME }, { .id = ">FLAGS" }, { .handler = do_colon },
-/* 1531 */ { .ip = META_COMPILE },
-/* 1532 */     { .cell = 0x96 },  // nf-flags
-/* 1533 */     { .cell = 0x17 },  // and
-/* 1534 */     { .cell = 0x31 },  // EXIT
-/* 1535 */     { .cell = 0x0 },
-/* 1536 */ { .ip = META_LINKNAME },
-/* 1537 */ { .ip = META_STARTNAME }, { .id = "NAME>PREV" }, { .handler = do_colon },
-/* 1540 */ { .ip = META_COMPILE },
-/* 1541 */     { .cell = 0x20 },  // @
-/* 1542 */     { .cell = 0x31 },  // EXIT
-/* 1543 */     { .cell = 0x0 },
-/* 1544 */ { .ip = META_LINKNAME },
-/* 1545 */ { .ip = META_STARTNAME }, { .id = "NAME>STRING" }, { .handler = do_colon },
-/* 1548 */ { .ip = META_COMPILE },
-/* 1549 */     { .cell = 0x46 },  // cell+
-/* 1550 */     { .cell = 0x4A },  // count
-/* 1551 */     { .cell = 0x99 },  // >count
-/* 1552 */     { .cell = 0x31 },  // EXIT
-/* 1553 */     { .cell = 0x0 },
-/* 1554 */ { .ip = META_LINKNAME },
-/* 1555 */ { .ip = META_STARTNAME }, { .id = "NAME>XT" }, { .handler = do_colon },
-/* 1558 */ { .ip = META_COMPILE },
-/* 1559 */     { .cell = 0x9C },  // name>string
-/* 1560 */     { .cell = 0x43 },  // chars
-/* 1561 */     { .cell = 0x10 },  // +
-/* 1562 */     { .cell = 0x47 },  // aligned
-/* 1563 */     { .cell = 0x31 },  // EXIT
-/* 1564 */     { .cell = 0x0 },
-/* 1565 */ { .ip = META_LINKNAME },
-/* 1566 */ { .ip = META_STARTNAME }, { .id = "NAME>XT+FLAGS" }, { .handler = do_colon },
-/* 1569 */ { .ip = META_COMPILE },
-/* 1570 */     { .cell = 0x46 },  // cell+
-/* 1571 */     { .cell = 0x4A },  // count
-/* 1572 */     { .cell = 0x5 },   // dup
-/* 1573 */     { .cell = 0x1 },   // >r
-/* 1574 */     { .cell = 0x99 },  // >count
-/* 1575 */     { .cell = 0x43 },  // chars
-/* 1576 */     { .cell = 0x10 },  // +
-/* 1577 */     { .cell = 0x47 },  // aligned
-/* 1578 */     { .cell = 0x7 },   // r>
-/* 1579 */     { .cell = 0x9A },  // >flags
-/* 1580 */     { .cell = 0x31 },  // EXIT
-/* 1581 */     { .cell = 0x0 },
-/* 1582 */ { .ip = META_LINKNAME },
-/* 1583 */ { .ip = META_STARTNAME }, { .id = "NAME>INTERPRET" }, { .handler = do_colon },
-/* 1586 */ { .ip = META_COMPILE },
-/* 1587 */     { .cell = 0x9E },  // name>xt+flags
-/* 1588 */     { .cell = 0x98 },  // compile-only?
-/* 1589 */     { .cell = 0x0 },
-/* 1590 */ { .ip = META_INTERPRET },
-/* 1591 */     { .cell = 0x67 },  // IF
-/* 1592 */     { .cell = 0x0 },
-/* 1593 */ { .ip = META_COMPILE },
-/* 1594 */     { .cell = 0x4 },   // drop
-/* 1595 */     { .cell = 0x0 },
-/* 1596 */ { .ip = DO_LITERAL }, { .cell = 0x0 },
-/* 1598 */ { .ip = META_INTERPRET },
-/* 1599 */     { .cell = 0x42 },  // LITERAL
-/* 1600 */     { .cell = 0x66 },  // THEN
-/* 1601 */     { .cell = 0x0 },
-/* 1602 */ { .ip = META_COMPILE },
-/* 1603 */     { .cell = 0x31 },  // EXIT
-/* 1604 */     { .cell = 0x0 },
-/* 1605 */ { .ip = META_LINKNAME },
-/* 1606 */ { .ip = META_STARTNAME }, { .id = "NAME>COMPILE" }, { .handler = do_colon },
-/* 1609 */ { .ip = META_COMPILE },
-/* 1610 */     { .cell = 0x9E },  // name>xt+flags
-/* 1611 */     { .cell = 0x97 },  // immediate?
-/* 1612 */     { .cell = 0x0 },
-/* 1613 */ { .ip = META_INTERPRET },
-/* 1614 */     { .cell = 0x67 },  // IF
-/* 1615 */     { .cell = 0x0 },
-/* 1616 */ { .ip = META_REFERENCE }, { .cell = 0x30  /* execute */ },
-/* 1618 */ { .ip = META_INTERPRET },
-/* 1619 */     { .cell = 0x42 },  // LITERAL
-/* 1620 */     { .cell = 0x69 },  // ELSE
-/* 1621 */     { .cell = 0x0 },
-/* 1622 */ { .ip = META_REFERENCE }, { .cell = 0x41  /* compile, */ },
-/* 1624 */ { .ip = META_INTERPRET },
-/* 1625 */     { .cell = 0x42 },  // LITERAL
-/* 1626 */     { .cell = 0x66 },  // THEN
-/* 1627 */     { .cell = 0x0 },
-/* 1628 */ { .ip = META_COMPILE },
-/* 1629 */     { .cell = 0x31 },  // EXIT
-/* 1630 */     { .cell = 0x0 },
-/* 1631 */ { .ip = META_LINKNAME },
-/* 1632 */ { .ip = META_STARTNAME }, { .id = "NAME>FIND" }, { .handler = do_colon },
-/* 1635 */ { .ip = META_COMPILE },
-/* 1636 */     { .cell = 0x5 },   // dup
-/* 1637 */     { .cell = 0x0 },
-/* 1638 */ { .ip = META_INTERPRET },
-/* 1639 */     { .cell = 0x67 },  // IF
-/* 1640 */     { .cell = 0x0 },
-/* 1641 */ { .ip = META_COMPILE },
-/* 1642 */     { .cell = 0x9E },  // name>xt+flags
-/* 1643 */     { .cell = 0x97 },  // immediate?
-/* 1644 */     { .cell = 0x7E },  // 0=
-/* 1645 */     { .cell = 0x0 },
-/* 1646 */ { .ip = DO_LITERAL }, { .cell = 0x1 },
-/* 1648 */ { .ip = META_INTERPRET },
-/* 1649 */     { .cell = 0x42 },  // LITERAL
-/* 1650 */     { .cell = 0x0 },
-/* 1651 */ { .ip = META_COMPILE },
-/* 1652 */     { .cell = 0x1B },  // or
-/* 1653 */     { .cell = 0x0 },
-/* 1654 */ { .ip = META_INTERPRET },
-/* 1655 */     { .cell = 0x66 },  // THEN
-/* 1656 */     { .cell = 0x0 },
-/* 1657 */ { .ip = META_COMPILE },
-/* 1658 */     { .cell = 0x31 },  // EXIT
-/* 1659 */     { .cell = 0x0 },
-/* 1660 */ { .ip = META_LINKNAME },
-/* 1661 */ { .ip = META_STARTNAME }, { .id = "NAME-FLAGS!" }, { .handler = do_colon },
-/* 1664 */ { .ip = META_COMPILE },
-/* 1665 */     { .cell = 0x46 },  // cell+
-/* 1666 */     { .cell = 0x5 },   // dup
-/* 1667 */     { .cell = 0x1 },   // >r
-/* 1668 */     { .cell = 0x22 },  // c@
-/* 1669 */     { .cell = 0x1B },  // or
-/* 1670 */     { .cell = 0x7 },   // r>
-/* 1671 */     { .cell = 0x21 },  // c!
-/* 1672 */     { .cell = 0x31 },  // EXIT
-/* 1673 */     { .cell = 0x0 },
-/* 1674 */ { .ip = META_LINKNAME },
+/* 1506 */     { .cell = 0x19 },  // and
+/* 1507 */     { .cell = 0x87 },  // 0<>
+/* 1508 */     { .cell = 0x33 },  // EXIT
+/* 1509 */     { .cell = 0x0 },
+/* 1510 */ { .ip = META_LINKNAME },
+/* 1511 */ { .ip = META_STARTNAME }, { .id = "COMPILE-ONLY?" }, { .handler = do_colon },
+/* 1514 */ { .ip = META_COMPILE },
+/* 1515 */     { .cell = 0x92 },  // nf-compile-only
+/* 1516 */     { .cell = 0x19 },  // and
+/* 1517 */     { .cell = 0x87 },  // 0<>
+/* 1518 */     { .cell = 0x33 },  // EXIT
+/* 1519 */     { .cell = 0x0 },
+/* 1520 */ { .ip = META_LINKNAME },
+/* 1521 */ { .ip = META_STARTNAME }, { .id = ">COUNT" }, { .handler = do_colon },
+/* 1524 */ { .ip = META_COMPILE },
+/* 1525 */     { .cell = 0x95 },  // nf-length
+/* 1526 */     { .cell = 0x19 },  // and
+/* 1527 */     { .cell = 0x33 },  // EXIT
+/* 1528 */     { .cell = 0x0 },
+/* 1529 */ { .ip = META_LINKNAME },
+/* 1530 */ { .ip = META_STARTNAME }, { .id = ">FLAGS" }, { .handler = do_colon },
+/* 1533 */ { .ip = META_COMPILE },
+/* 1534 */     { .cell = 0x96 },  // nf-flags
+/* 1535 */     { .cell = 0x19 },  // and
+/* 1536 */     { .cell = 0x33 },  // EXIT
+/* 1537 */     { .cell = 0x0 },
+/* 1538 */ { .ip = META_LINKNAME },
+/* 1539 */ { .ip = META_STARTNAME }, { .id = "NAME>PREV" }, { .handler = do_colon },
+/* 1542 */ { .ip = META_COMPILE },
+/* 1543 */     { .cell = 0x22 },  // @
+/* 1544 */     { .cell = 0x33 },  // EXIT
+/* 1545 */     { .cell = 0x0 },
+/* 1546 */ { .ip = META_LINKNAME },
+/* 1547 */ { .ip = META_STARTNAME }, { .id = "NAME>STRING" }, { .handler = do_colon },
+/* 1550 */ { .ip = META_COMPILE },
+/* 1551 */     { .cell = 0x46 },  // cell+
+/* 1552 */     { .cell = 0x4A },  // count
+/* 1553 */     { .cell = 0x99 },  // >count
+/* 1554 */     { .cell = 0x33 },  // EXIT
+/* 1555 */     { .cell = 0x0 },
+/* 1556 */ { .ip = META_LINKNAME },
+/* 1557 */ { .ip = META_STARTNAME }, { .id = "NAME>XT" }, { .handler = do_colon },
+/* 1560 */ { .ip = META_COMPILE },
+/* 1561 */     { .cell = 0x9C },  // name>string
+/* 1562 */     { .cell = 0x43 },  // chars
+/* 1563 */     { .cell = 0x12 },  // +
+/* 1564 */     { .cell = 0x47 },  // aligned
+/* 1565 */     { .cell = 0x33 },  // EXIT
+/* 1566 */     { .cell = 0x0 },
+/* 1567 */ { .ip = META_LINKNAME },
+/* 1568 */ { .ip = META_STARTNAME }, { .id = "NAME>XT+FLAGS" }, { .handler = do_colon },
+/* 1571 */ { .ip = META_COMPILE },
+/* 1572 */     { .cell = 0x46 },  // cell+
+/* 1573 */     { .cell = 0x4A },  // count
+/* 1574 */     { .cell = 0x5 },   // dup
+/* 1575 */     { .cell = 0x1 },   // >r
+/* 1576 */     { .cell = 0x99 },  // >count
+/* 1577 */     { .cell = 0x43 },  // chars
+/* 1578 */     { .cell = 0x12 },  // +
+/* 1579 */     { .cell = 0x47 },  // aligned
+/* 1580 */     { .cell = 0x7 },   // r>
+/* 1581 */     { .cell = 0x9A },  // >flags
+/* 1582 */     { .cell = 0x33 },  // EXIT
+/* 1583 */     { .cell = 0x0 },
+/* 1584 */ { .ip = META_LINKNAME },
+/* 1585 */ { .ip = META_STARTNAME }, { .id = "NAME>INTERPRET" }, { .handler = do_colon },
+/* 1588 */ { .ip = META_COMPILE },
+/* 1589 */     { .cell = 0x9E },  // name>xt+flags
+/* 1590 */     { .cell = 0x98 },  // compile-only?
+/* 1591 */     { .cell = 0x0 },
+/* 1592 */ { .ip = META_INTERPRET },
+/* 1593 */     { .cell = 0x67 },  // IF
+/* 1594 */     { .cell = 0x0 },
+/* 1595 */ { .ip = META_COMPILE },
+/* 1596 */     { .cell = 0x4 },   // drop
+/* 1597 */     { .cell = 0x0 },
+/* 1598 */ { .ip = DO_LITERAL }, { .cell = 0x0 },
+/* 1600 */ { .ip = META_INTERPRET },
+/* 1601 */     { .cell = 0x42 },  // LITERAL
+/* 1602 */     { .cell = 0x66 },  // THEN
+/* 1603 */     { .cell = 0x0 },
+/* 1604 */ { .ip = META_COMPILE },
+/* 1605 */     { .cell = 0x33 },  // EXIT
+/* 1606 */     { .cell = 0x0 },
+/* 1607 */ { .ip = META_LINKNAME },
+/* 1608 */ { .ip = META_STARTNAME }, { .id = "NAME>COMPILE" }, { .handler = do_colon },
+/* 1611 */ { .ip = META_COMPILE },
+/* 1612 */     { .cell = 0x9E },  // name>xt+flags
+/* 1613 */     { .cell = 0x97 },  // immediate?
+/* 1614 */     { .cell = 0x0 },
+/* 1615 */ { .ip = META_INTERPRET },
+/* 1616 */     { .cell = 0x67 },  // IF
+/* 1617 */     { .cell = 0x0 },
+/* 1618 */ { .ip = META_REFERENCE }, { .cell = 0x32  /* execute */ },
+/* 1620 */ { .ip = META_INTERPRET },
+/* 1621 */     { .cell = 0x42 },  // LITERAL
+/* 1622 */     { .cell = 0x69 },  // ELSE
+/* 1623 */     { .cell = 0x0 },
+/* 1624 */ { .ip = META_REFERENCE }, { .cell = 0x41  /* compile, */ },
+/* 1626 */ { .ip = META_INTERPRET },
+/* 1627 */     { .cell = 0x42 },  // LITERAL
+/* 1628 */     { .cell = 0x66 },  // THEN
+/* 1629 */     { .cell = 0x0 },
+/* 1630 */ { .ip = META_COMPILE },
+/* 1631 */     { .cell = 0x33 },  // EXIT
+/* 1632 */     { .cell = 0x0 },
+/* 1633 */ { .ip = META_LINKNAME },
+/* 1634 */ { .ip = META_STARTNAME }, { .id = "NAME>FIND" }, { .handler = do_colon },
+/* 1637 */ { .ip = META_COMPILE },
+/* 1638 */     { .cell = 0x5 },   // dup
+/* 1639 */     { .cell = 0x0 },
+/* 1640 */ { .ip = META_INTERPRET },
+/* 1641 */     { .cell = 0x67 },  // IF
+/* 1642 */     { .cell = 0x0 },
+/* 1643 */ { .ip = META_COMPILE },
+/* 1644 */     { .cell = 0x9E },  // name>xt+flags
+/* 1645 */     { .cell = 0x97 },  // immediate?
+/* 1646 */     { .cell = 0x7E },  // 0=
+/* 1647 */     { .cell = 0x0 },
+/* 1648 */ { .ip = DO_LITERAL }, { .cell = 0x1 },
+/* 1650 */ { .ip = META_INTERPRET },
+/* 1651 */     { .cell = 0x42 },  // LITERAL
+/* 1652 */     { .cell = 0x0 },
+/* 1653 */ { .ip = META_COMPILE },
+/* 1654 */     { .cell = 0x1D },  // or
+/* 1655 */     { .cell = 0x0 },
+/* 1656 */ { .ip = META_INTERPRET },
+/* 1657 */     { .cell = 0x66 },  // THEN
+/* 1658 */     { .cell = 0x0 },
+/* 1659 */ { .ip = META_COMPILE },
+/* 1660 */     { .cell = 0x33 },  // EXIT
+/* 1661 */     { .cell = 0x0 },
+/* 1662 */ { .ip = META_LINKNAME },
+/* 1663 */ { .ip = META_STARTNAME }, { .id = "NAME-FLAGS!" }, { .handler = do_colon },
+/* 1666 */ { .ip = META_COMPILE },
+/* 1667 */     { .cell = 0x46 },  // cell+
+/* 1668 */     { .cell = 0x5 },   // dup
+/* 1669 */     { .cell = 0x1 },   // >r
+/* 1670 */     { .cell = 0x24 },  // c@
+/* 1671 */     { .cell = 0x1D },  // or
+/* 1672 */     { .cell = 0x7 },   // r>
+/* 1673 */     { .cell = 0x23 },  // c!
+/* 1674 */     { .cell = 0x33 },  // EXIT
+/* 1675 */     { .cell = 0x0 },
+/* 1676 */ { .ip = META_LINKNAME },
             /* ==== forth/common/search/current.fth ==== */
-/* 1675 */ { .ip = META_ADDNAME }, { .id = "CURRENT" }, { .handler = do_variable },
-/* 1678 */ { .ip = DO_LITERAL }, { .cell = (cell_ft) (CELL_SIZE) },
-/* 1680 */ { .ip = META_INTERPRET },
-/* 1681 */     { .cell = 0x3F },  // ALLOT
-/* 1682 */     { .cell = 0x0 },
-/* 1683 */ { .ip = META_STARTNAME }, { .id = "GET-CURRENT" }, { .handler = do_colon },
-/* 1686 */ { .ip = META_COMPILE },
-/* 1687 */     { .cell = 0xA3 },  // current
-/* 1688 */     { .cell = 0x20 },  // @
-/* 1689 */     { .cell = 0x31 },  // EXIT
-/* 1690 */     { .cell = 0x0 },
-/* 1691 */ { .ip = META_LINKNAME },
-/* 1692 */ { .ip = META_STARTNAME }, { .id = "SET-CURRENT" }, { .handler = do_colon },
-/* 1695 */ { .ip = META_COMPILE },
-/* 1696 */     { .cell = 0xA3 },  // current
-/* 1697 */     { .cell = 0x1F },  // !
-/* 1698 */     { .cell = 0x31 },  // EXIT
-/* 1699 */     { .cell = 0x0 },
-/* 1700 */ { .ip = META_LINKNAME },
+/* 1677 */ { .ip = META_ADDNAME }, { .id = "CURRENT" }, { .handler = do_variable },
+/* 1680 */ { .ip = DO_LITERAL }, { .cell = (cell_ft) (CELL_SIZE) },
+/* 1682 */ { .ip = META_INTERPRET },
+/* 1683 */     { .cell = 0x3F },  // ALLOT
+/* 1684 */     { .cell = 0x0 },
+/* 1685 */ { .ip = META_STARTNAME }, { .id = "GET-CURRENT" }, { .handler = do_colon },
+/* 1688 */ { .ip = META_COMPILE },
+/* 1689 */     { .cell = 0xA3 },  // current
+/* 1690 */     { .cell = 0x22 },  // @
+/* 1691 */     { .cell = 0x33 },  // EXIT
+/* 1692 */     { .cell = 0x0 },
+/* 1693 */ { .ip = META_LINKNAME },
+/* 1694 */ { .ip = META_STARTNAME }, { .id = "SET-CURRENT" }, { .handler = do_colon },
+/* 1697 */ { .ip = META_COMPILE },
+/* 1698 */     { .cell = 0xA3 },  // current
+/* 1699 */     { .cell = 0x21 },  // !
+/* 1700 */     { .cell = 0x33 },  // EXIT
+/* 1701 */     { .cell = 0x0 },
+/* 1702 */ { .ip = META_LINKNAME },
             /* ==== forth/common/internal/dictionary.fth ==== */
-/* 1701 */ { .ip = META_STARTNAME }, { .id = "CHARS," }, { .handler = do_colon },
-/* 1704 */ { .ip = META_COMPILE },
-/* 1705 */     { .cell = 0x3D },  // here
-/* 1706 */     { .cell = 0xA },   // swap
-/* 1707 */     { .cell = 0x43 },  // chars
-/* 1708 */     { .cell = 0x5 },   // dup
-/* 1709 */     { .cell = 0x3F },  // allot
-/* 1710 */     { .cell = 0x24 },  // move
-/* 1711 */     { .cell = 0x31 },  // EXIT
-/* 1712 */     { .cell = 0x0 },
-/* 1713 */ { .ip = META_LINKNAME },
-/* 1714 */ { .ip = META_STARTNAME }, { .id = "COUNTED," }, { .handler = do_colon },
-/* 1717 */ { .ip = META_COMPILE },
-/* 1718 */     { .cell = 0x5 },   // dup
-/* 1719 */     { .cell = 0x4E },  // c,
-/* 1720 */     { .cell = 0xA6 },  // chars,
-/* 1721 */     { .cell = 0x31 },  // EXIT
-/* 1722 */     { .cell = 0x0 },
-/* 1723 */ { .ip = META_LINKNAME },
+/* 1703 */ { .ip = META_STARTNAME }, { .id = "CHARS," }, { .handler = do_colon },
+/* 1706 */ { .ip = META_COMPILE },
+/* 1707 */     { .cell = 0x3D },  // here
+/* 1708 */     { .cell = 0xA },   // swap
+/* 1709 */     { .cell = 0x43 },  // chars
+/* 1710 */     { .cell = 0x5 },   // dup
+/* 1711 */     { .cell = 0x3F },  // allot
+/* 1712 */     { .cell = 0x26 },  // move
+/* 1713 */     { .cell = 0x33 },  // EXIT
+/* 1714 */     { .cell = 0x0 },
+/* 1715 */ { .ip = META_LINKNAME },
+/* 1716 */ { .ip = META_STARTNAME }, { .id = "COUNTED," }, { .handler = do_colon },
+/* 1719 */ { .ip = META_COMPILE },
+/* 1720 */     { .cell = 0x5 },   // dup
+/* 1721 */     { .cell = 0x4E },  // c,
+/* 1722 */     { .cell = 0xA6 },  // chars,
+/* 1723 */     { .cell = 0x33 },  // EXIT
+/* 1724 */     { .cell = 0x0 },
+/* 1725 */ { .ip = META_LINKNAME },
             /* ==== forth/common/internal/wordlists.fth ==== */
-/* 1724 */ { .ip = META_STARTNAME }, { .id = "ID," }, { .handler = do_colon },
-/* 1727 */ { .ip = META_COMPILE },
-/* 1728 */     { .cell = 0x3D },  // here
-/* 1729 */     { .cell = 0x1 },   // >r
-/* 1730 */     { .cell = 0xA7 },  // counted,
-/* 1731 */     { .cell = 0x7 },   // r>
-/* 1732 */     { .cell = 0x4A },  // count
-/* 1733 */     { .cell = 0x90 },  // str-toupper
-/* 1734 */     { .cell = 0x31 },  // EXIT
-/* 1735 */     { .cell = 0x0 },
-/* 1736 */ { .ip = META_LINKNAME },
-/* 1737 */ { .ip = META_STARTNAME }, { .id = "CURRENT-NAME" }, { .handler = do_colon },
-/* 1740 */ { .ip = META_COMPILE },
-/* 1741 */     { .cell = 0xA4 },  // get-current
-/* 1742 */     { .cell = 0x20 },  // @
-/* 1743 */     { .cell = 0x31 },  // EXIT
-/* 1744 */     { .cell = 0x0 },
-/* 1745 */ { .ip = META_LINKNAME },
-/* 1746 */ { .ip = META_STARTNAME }, { .id = "LINK-NAME" }, { .handler = do_colon },
-/* 1749 */ { .ip = META_COMPILE },
-/* 1750 */     { .cell = 0xA4 },  // get-current
-/* 1751 */     { .cell = 0x1F },  // !
-/* 1752 */     { .cell = 0x31 },  // EXIT
-/* 1753 */     { .cell = 0x0 },
-/* 1754 */ { .ip = META_LINKNAME },
-/* 1755 */ { .ip = META_STARTNAME }, { .id = "NAME," }, { .handler = do_colon },
-/* 1758 */ { .ip = META_COMPILE },
-/* 1759 */     { .cell = 0x4D },  // align
-/* 1760 */     { .cell = 0x3D },  // here
-/* 1761 */     { .cell = 0x1 },   // >r
-/* 1762 */     { .cell = 0xA9 },  // current-name
-/* 1763 */     { .cell = 0x40 },  // ,
-/* 1764 */     { .cell = 0xA8 },  // id,
-/* 1765 */     { .cell = 0x4D },  // align
-/* 1766 */     { .cell = 0x40 },  // ,
-/* 1767 */     { .cell = 0x7 },   // r>
-/* 1768 */     { .cell = 0x31 },  // EXIT
-/* 1769 */     { .cell = 0x0 },
-/* 1770 */ { .ip = META_LINKNAME },
+/* 1726 */ { .ip = META_STARTNAME }, { .id = "ID," }, { .handler = do_colon },
+/* 1729 */ { .ip = META_COMPILE },
+/* 1730 */     { .cell = 0x3D },  // here
+/* 1731 */     { .cell = 0x1 },   // >r
+/* 1732 */     { .cell = 0xA7 },  // counted,
+/* 1733 */     { .cell = 0x7 },   // r>
+/* 1734 */     { .cell = 0x4A },  // count
+/* 1735 */     { .cell = 0x90 },  // str-toupper
+/* 1736 */     { .cell = 0x33 },  // EXIT
+/* 1737 */     { .cell = 0x0 },
+/* 1738 */ { .ip = META_LINKNAME },
+/* 1739 */ { .ip = META_STARTNAME }, { .id = "CURRENT-NAME" }, { .handler = do_colon },
+/* 1742 */ { .ip = META_COMPILE },
+/* 1743 */     { .cell = 0xA4 },  // get-current
+/* 1744 */     { .cell = 0x22 },  // @
+/* 1745 */     { .cell = 0x33 },  // EXIT
+/* 1746 */     { .cell = 0x0 },
+/* 1747 */ { .ip = META_LINKNAME },
+/* 1748 */ { .ip = META_STARTNAME }, { .id = "LINK-NAME" }, { .handler = do_colon },
+/* 1751 */ { .ip = META_COMPILE },
+/* 1752 */     { .cell = 0xA4 },  // get-current
+/* 1753 */     { .cell = 0x21 },  // !
+/* 1754 */     { .cell = 0x33 },  // EXIT
+/* 1755 */     { .cell = 0x0 },
+/* 1756 */ { .ip = META_LINKNAME },
+/* 1757 */ { .ip = META_STARTNAME }, { .id = "NAME," }, { .handler = do_colon },
+/* 1760 */ { .ip = META_COMPILE },
+/* 1761 */     { .cell = 0x4D },  // align
+/* 1762 */     { .cell = 0x3D },  // here
+/* 1763 */     { .cell = 0x1 },   // >r
+/* 1764 */     { .cell = 0xA9 },  // current-name
+/* 1765 */     { .cell = 0x40 },  // ,
+/* 1766 */     { .cell = 0xA8 },  // id,
+/* 1767 */     { .cell = 0x4D },  // align
+/* 1768 */     { .cell = 0x40 },  // ,
+/* 1769 */     { .cell = 0x7 },   // r>
+/* 1770 */     { .cell = 0x33 },  // EXIT
+/* 1771 */     { .cell = 0x0 },
+/* 1772 */ { .ip = META_LINKNAME },
             /* ==== forth/common/exception/catch.fth ==== */
-/* 1771 */ { .ip = META_STARTNAME }, { .id = "CATCH" }, { .handler = do_colon },
-/* 1774 */ { .ip = META_COMPILE },
-/* 1775 */     { .cell = 0x37 },  // do-catch
-/* 1776 */     { .cell = 0x2 },   // ?dup
-/* 1777 */     { .cell = 0x7E },  // 0=
-/* 1778 */     { .cell = 0x0 },
-/* 1779 */ { .ip = META_INTERPRET },
-/* 1780 */     { .cell = 0x67 },  // IF
-/* 1781 */     { .cell = 0x0 },
-/* 1782 */ { .ip = META_COMPILE },
-/* 1783 */     { .cell = 0x30 },  // execute
-/* 1784 */     { .cell = 0x38 },  // drop-catch
-/* 1785 */     { .cell = 0x0 },
-/* 1786 */ { .ip = DO_LITERAL }, { .cell = 0x0 },
-/* 1788 */ { .ip = META_INTERPRET },
-/* 1789 */     { .cell = 0x42 },  // LITERAL
-/* 1790 */     { .cell = 0x66 },  // THEN
-/* 1791 */     { .cell = 0x0 },
-/* 1792 */ { .ip = META_COMPILE },
-/* 1793 */     { .cell = 0x31 },  // EXIT
-/* 1794 */     { .cell = 0x0 },
-/* 1795 */ { .ip = META_LINKNAME },
+/* 1773 */ { .ip = META_STARTNAME }, { .id = "CATCH" }, { .handler = do_colon },
+/* 1776 */ { .ip = META_COMPILE },
+/* 1777 */     { .cell = 0x37 },  // do-catch
+/* 1778 */     { .cell = 0x2 },   // ?dup
+/* 1779 */     { .cell = 0x7E },  // 0=
+/* 1780 */     { .cell = 0x0 },
+/* 1781 */ { .ip = META_INTERPRET },
+/* 1782 */     { .cell = 0x67 },  // IF
+/* 1783 */     { .cell = 0x0 },
+/* 1784 */ { .ip = META_COMPILE },
+/* 1785 */     { .cell = 0x32 },  // execute
+/* 1786 */     { .cell = 0x38 },  // drop-catch
+/* 1787 */     { .cell = 0x0 },
+/* 1788 */ { .ip = DO_LITERAL }, { .cell = 0x0 },
+/* 1790 */ { .ip = META_INTERPRET },
+/* 1791 */     { .cell = 0x42 },  // LITERAL
+/* 1792 */     { .cell = 0x66 },  // THEN
+/* 1793 */     { .cell = 0x0 },
+/* 1794 */ { .ip = META_COMPILE },
+/* 1795 */     { .cell = 0x33 },  // EXIT
+/* 1796 */     { .cell = 0x0 },
+/* 1797 */ { .ip = META_LINKNAME },
             /* ==== forth/c-gen/core/terminal.fth ==== */
-/* 1796 */ { .ip = META_ADDNAME }, { .id = "EMIT" }, { .handler = x_emit },
-/* 1799 */ { .ip = META_ADDNAME }, { .id = "PROMPT-ACCEPT" }, { .handler = x_prompt_accept },
+/* 1798 */ { .ip = META_ADDNAME }, { .id = "EMIT" }, { .handler = x_emit },
+/* 1801 */ { .ip = META_ADDNAME }, { .id = "PROMPT-ACCEPT" }, { .handler = x_prompt_accept },
             /* ==== forth/common/core/terminal.fth ==== */
-/* 1802 */ { .ip = DO_LITERAL }, { .cell = 0x20 },
-/* 1804 */ { .ip = META_ADDNAME }, { .id = "BL" }, { .handler = do_constant },
-/* 1807 */ { .ip = META_INTERPRET },
-/* 1808 */     { .cell = 0x40 },  // ,
-/* 1809 */     { .cell = 0x0 },
-/* 1810 */ { .ip = DO_LITERAL }, { .cell = 0x50 },
-/* 1812 */ { .ip = META_INTERPRET },
-/* 1813 */     { .cell = 0x3D },  // here
-/* 1814 */     { .cell = 0x6 },   // over
-/* 1815 */     { .cell = 0x7F },  // 1+
-/* 1816 */     { .cell = 0x43 },  // chars
-/* 1817 */     { .cell = 0x3F },  // allot
-/* 1818 */     { .cell = 0x0 },
-/* 1819 */ { .ip = META_ADDNAME }, { .id = "PROMPT" }, { .handler = do_constant },
-/* 1822 */ { .ip = META_INTERPRET },
-/* 1823 */     { .cell = 0x40 },  // ,
-/* 1824 */     { .cell = 0x0 },
-/* 1825 */ { .ip = DO_LITERAL }, { .cell = 0x0 },
-/* 1827 */ { .ip = META_INTERPRET },
-/* 1828 */     { .cell = 0xB0 },  // prompt
-/* 1829 */     { .cell = 0x21 },  // c!
-/* 1830 */     { .cell = 0x0 },
-/* 1831 */ { .ip = META_STARTNAME }, { .id = "PROMPT!" }, { .handler = do_colon },
-/* 1834 */ { .ip = META_COMPILE },
-/* 1835 */     { .cell = 0xB0 },  // prompt
-/* 1836 */     { .cell = 0xA },   // swap
-/* 1837 */     { .cell = 0x0 },
-/* 1838 */ { .ip = META_INTERPRET },
-/* 1839 */     { .cell = 0xA },   // swap
-/* 1840 */     { .cell = 0x42 },  // LITERAL
-/* 1841 */     { .cell = 0x0 },
-/* 1842 */ { .ip = META_COMPILE },
-/* 1843 */     { .cell = 0x83 },  // min
-/* 1844 */     { .cell = 0x43 },  // chars
-/* 1845 */     { .cell = 0x51 },  // 2dup
-/* 1846 */     { .cell = 0x10 },  // +
-/* 1847 */     { .cell = 0x1 },   // >r
-/* 1848 */     { .cell = 0x24 },  // move
-/* 1849 */     { .cell = 0x0 },
-/* 1850 */ { .ip = DO_LITERAL }, { .cell = 0x0 },
-/* 1852 */ { .ip = META_INTERPRET },
-/* 1853 */     { .cell = 0x42 },  // LITERAL
-/* 1854 */     { .cell = 0x0 },
-/* 1855 */ { .ip = META_COMPILE },
-/* 1856 */     { .cell = 0x7 },   // r>
-/* 1857 */     { .cell = 0x21 },  // c!
-/* 1858 */     { .cell = 0x31 },  // EXIT
-/* 1859 */     { .cell = 0x0 },
-/* 1860 */ { .ip = META_LINKNAME },
-/* 1861 */ { .ip = META_STARTNAME }, { .id = "REFILL-TERMINAL" }, { .handler = do_colon },
-/* 1864 */ { .ip = META_COMPILE },
-/* 1865 */     { .cell = 0xB0 },  // prompt
-/* 1866 */     { .cell = 0xAE },  // prompt-accept
-/* 1867 */     { .cell = 0x0 },
-/* 1868 */ { .ip = DO_LITERAL }, { .cell = 0x0 },
-/* 1870 */ { .ip = META_INTERPRET },
-/* 1871 */     { .cell = 0x42 },  // LITERAL
-/* 1872 */     { .cell = 0x0 },
-/* 1873 */ { .ip = META_COMPILE },
-/* 1874 */     { .cell = 0xB0 },  // prompt
-/* 1875 */     { .cell = 0x21 },  // c!
-/* 1876 */     { .cell = 0x31 },  // EXIT
-/* 1877 */     { .cell = 0x0 },
-/* 1878 */ { .ip = META_LINKNAME },
-/* 1879 */ { .ip = META_STARTNAME }, { .id = "ACCEPT" }, { .handler = do_colon },
-/* 1882 */ { .ip = META_COMPILE },
-/* 1883 */     { .cell = 0xB2 },  // refill-terminal
-/* 1884 */     { .cell = 0x4 },   // drop
-/* 1885 */     { .cell = 0x31 },  // EXIT
-/* 1886 */     { .cell = 0x0 },
-/* 1887 */ { .ip = META_LINKNAME },
-/* 1888 */ { .ip = META_STARTNAME }, { .id = "TYPE" }, { .handler = do_colon },
-/* 1891 */ { .ip = DO_LITERAL }, { .cell = 0x0 },
-/* 1893 */ { .ip = META_INTERPRET },
-/* 1894 */     { .cell = 0x42 },  // LITERAL
-/* 1895 */     { .cell = 0x75 },  // ?DO
-/* 1896 */     { .cell = 0x0 },
-/* 1897 */ { .ip = META_COMPILE },
-/* 1898 */     { .cell = 0x5 },   // dup
-/* 1899 */     { .cell = 0x22 },  // c@
-/* 1900 */     { .cell = 0xAD },  // emit
-/* 1901 */     { .cell = 0x44 },  // char+
-/* 1902 */     { .cell = 0x0 },
-/* 1903 */ { .ip = META_INTERPRET },
-/* 1904 */     { .cell = 0x78 },  // LOOP
-/* 1905 */     { .cell = 0x0 },
-/* 1906 */ { .ip = META_COMPILE },
-/* 1907 */     { .cell = 0x4 },   // drop
-/* 1908 */     { .cell = 0x31 },  // EXIT
-/* 1909 */     { .cell = 0x0 },
-/* 1910 */ { .ip = META_LINKNAME },
-/* 1911 */ { .ip = META_STARTNAME }, { .id = "CR" }, { .handler = do_colon },
-/* 1914 */ { .ip = DO_LITERAL }, { .cell = 0xA },
-/* 1916 */ { .ip = META_INTERPRET },
-/* 1917 */     { .cell = 0x42 },  // LITERAL
-/* 1918 */     { .cell = 0x0 },
-/* 1919 */ { .ip = META_COMPILE },
-/* 1920 */     { .cell = 0xAD },  // emit
-/* 1921 */     { .cell = 0x31 },  // EXIT
-/* 1922 */     { .cell = 0x0 },
-/* 1923 */ { .ip = META_LINKNAME },
-/* 1924 */ { .ip = META_STARTNAME }, { .id = "SPACE" }, { .handler = do_colon },
-/* 1927 */ { .ip = META_COMPILE },
-/* 1928 */     { .cell = 0xAF },  // bl
-/* 1929 */     { .cell = 0xAD },  // emit
-/* 1930 */     { .cell = 0x31 },  // EXIT
-/* 1931 */     { .cell = 0x0 },
-/* 1932 */ { .ip = META_LINKNAME },
-/* 1933 */ { .ip = META_STARTNAME }, { .id = "SPACES" }, { .handler = do_colon },
-/* 1936 */ { .ip = META_COMPILE },
-/* 1937 */     { .cell = 0x5 },   // dup
-/* 1938 */     { .cell = 0x86 },  // 0>
-/* 1939 */     { .cell = 0x0 },
-/* 1940 */ { .ip = META_INTERPRET },
-/* 1941 */     { .cell = 0x67 },  // IF
-/* 1942 */     { .cell = 0x0 },
-/* 1943 */ { .ip = DO_LITERAL }, { .cell = 0x0 },
-/* 1945 */ { .ip = META_INTERPRET },
-/* 1946 */     { .cell = 0x42 },  // LITERAL
-/* 1947 */     { .cell = 0x74 },  // DO
-/* 1948 */     { .cell = 0x0 },
-/* 1949 */ { .ip = META_COMPILE },
-/* 1950 */     { .cell = 0xB6 },  // space
-/* 1951 */     { .cell = 0x0 },
-/* 1952 */ { .ip = META_INTERPRET },
-/* 1953 */     { .cell = 0x78 },  // LOOP
-/* 1954 */     { .cell = 0x69 },  // ELSE
-/* 1955 */     { .cell = 0x0 },
-/* 1956 */ { .ip = META_COMPILE },
-/* 1957 */     { .cell = 0x4 },   // drop
-/* 1958 */     { .cell = 0x0 },
-/* 1959 */ { .ip = META_INTERPRET },
-/* 1960 */     { .cell = 0x66 },  // THEN
-/* 1961 */     { .cell = 0x0 },
-/* 1962 */ { .ip = META_COMPILE },
-/* 1963 */     { .cell = 0x31 },  // EXIT
-/* 1964 */     { .cell = 0x0 },
-/* 1965 */ { .ip = META_LINKNAME },
+/* 1804 */ { .ip = DO_LITERAL }, { .cell = 0x20 },
+/* 1806 */ { .ip = META_ADDNAME }, { .id = "BL" }, { .handler = do_constant },
+/* 1809 */ { .ip = META_INTERPRET },
+/* 1810 */     { .cell = 0x40 },  // ,
+/* 1811 */     { .cell = 0x0 },
+/* 1812 */ { .ip = DO_LITERAL }, { .cell = 0x50 },
+/* 1814 */ { .ip = META_INTERPRET },
+/* 1815 */     { .cell = 0x3D },  // here
+/* 1816 */     { .cell = 0x6 },   // over
+/* 1817 */     { .cell = 0x7F },  // 1+
+/* 1818 */     { .cell = 0x43 },  // chars
+/* 1819 */     { .cell = 0x3F },  // allot
+/* 1820 */     { .cell = 0x0 },
+/* 1821 */ { .ip = META_ADDNAME }, { .id = "PROMPT" }, { .handler = do_constant },
+/* 1824 */ { .ip = META_INTERPRET },
+/* 1825 */     { .cell = 0x40 },  // ,
+/* 1826 */     { .cell = 0x0 },
+/* 1827 */ { .ip = DO_LITERAL }, { .cell = 0x0 },
+/* 1829 */ { .ip = META_INTERPRET },
+/* 1830 */     { .cell = 0xB0 },  // prompt
+/* 1831 */     { .cell = 0x23 },  // c!
+/* 1832 */     { .cell = 0x0 },
+/* 1833 */ { .ip = META_STARTNAME }, { .id = "PROMPT!" }, { .handler = do_colon },
+/* 1836 */ { .ip = META_COMPILE },
+/* 1837 */     { .cell = 0xB0 },  // prompt
+/* 1838 */     { .cell = 0xA },   // swap
+/* 1839 */     { .cell = 0x0 },
+/* 1840 */ { .ip = META_INTERPRET },
+/* 1841 */     { .cell = 0xA },   // swap
+/* 1842 */     { .cell = 0x42 },  // LITERAL
+/* 1843 */     { .cell = 0x0 },
+/* 1844 */ { .ip = META_COMPILE },
+/* 1845 */     { .cell = 0x83 },  // min
+/* 1846 */     { .cell = 0x43 },  // chars
+/* 1847 */     { .cell = 0x51 },  // 2dup
+/* 1848 */     { .cell = 0x12 },  // +
+/* 1849 */     { .cell = 0x1 },   // >r
+/* 1850 */     { .cell = 0x26 },  // move
+/* 1851 */     { .cell = 0x0 },
+/* 1852 */ { .ip = DO_LITERAL }, { .cell = 0x0 },
+/* 1854 */ { .ip = META_INTERPRET },
+/* 1855 */     { .cell = 0x42 },  // LITERAL
+/* 1856 */     { .cell = 0x0 },
+/* 1857 */ { .ip = META_COMPILE },
+/* 1858 */     { .cell = 0x7 },   // r>
+/* 1859 */     { .cell = 0x23 },  // c!
+/* 1860 */     { .cell = 0x33 },  // EXIT
+/* 1861 */     { .cell = 0x0 },
+/* 1862 */ { .ip = META_LINKNAME },
+/* 1863 */ { .ip = META_STARTNAME }, { .id = "REFILL-TERMINAL" }, { .handler = do_colon },
+/* 1866 */ { .ip = META_COMPILE },
+/* 1867 */     { .cell = 0xB0 },  // prompt
+/* 1868 */     { .cell = 0xAE },  // prompt-accept
+/* 1869 */     { .cell = 0x0 },
+/* 1870 */ { .ip = DO_LITERAL }, { .cell = 0x0 },
+/* 1872 */ { .ip = META_INTERPRET },
+/* 1873 */     { .cell = 0x42 },  // LITERAL
+/* 1874 */     { .cell = 0x0 },
+/* 1875 */ { .ip = META_COMPILE },
+/* 1876 */     { .cell = 0xB0 },  // prompt
+/* 1877 */     { .cell = 0x23 },  // c!
+/* 1878 */     { .cell = 0x33 },  // EXIT
+/* 1879 */     { .cell = 0x0 },
+/* 1880 */ { .ip = META_LINKNAME },
+/* 1881 */ { .ip = META_STARTNAME }, { .id = "ACCEPT" }, { .handler = do_colon },
+/* 1884 */ { .ip = META_COMPILE },
+/* 1885 */     { .cell = 0xB2 },  // refill-terminal
+/* 1886 */     { .cell = 0x4 },   // drop
+/* 1887 */     { .cell = 0x33 },  // EXIT
+/* 1888 */     { .cell = 0x0 },
+/* 1889 */ { .ip = META_LINKNAME },
+/* 1890 */ { .ip = META_STARTNAME }, { .id = "TYPE" }, { .handler = do_colon },
+/* 1893 */ { .ip = DO_LITERAL }, { .cell = 0x0 },
+/* 1895 */ { .ip = META_INTERPRET },
+/* 1896 */     { .cell = 0x42 },  // LITERAL
+/* 1897 */     { .cell = 0x75 },  // ?DO
+/* 1898 */     { .cell = 0x0 },
+/* 1899 */ { .ip = META_COMPILE },
+/* 1900 */     { .cell = 0x5 },   // dup
+/* 1901 */     { .cell = 0x24 },  // c@
+/* 1902 */     { .cell = 0xAD },  // emit
+/* 1903 */     { .cell = 0x44 },  // char+
+/* 1904 */     { .cell = 0x0 },
+/* 1905 */ { .ip = META_INTERPRET },
+/* 1906 */     { .cell = 0x78 },  // LOOP
+/* 1907 */     { .cell = 0x0 },
+/* 1908 */ { .ip = META_COMPILE },
+/* 1909 */     { .cell = 0x4 },   // drop
+/* 1910 */     { .cell = 0x33 },  // EXIT
+/* 1911 */     { .cell = 0x0 },
+/* 1912 */ { .ip = META_LINKNAME },
+/* 1913 */ { .ip = META_STARTNAME }, { .id = "CR" }, { .handler = do_colon },
+/* 1916 */ { .ip = DO_LITERAL }, { .cell = 0xA },
+/* 1918 */ { .ip = META_INTERPRET },
+/* 1919 */     { .cell = 0x42 },  // LITERAL
+/* 1920 */     { .cell = 0x0 },
+/* 1921 */ { .ip = META_COMPILE },
+/* 1922 */     { .cell = 0xAD },  // emit
+/* 1923 */     { .cell = 0x33 },  // EXIT
+/* 1924 */     { .cell = 0x0 },
+/* 1925 */ { .ip = META_LINKNAME },
+/* 1926 */ { .ip = META_STARTNAME }, { .id = "SPACE" }, { .handler = do_colon },
+/* 1929 */ { .ip = META_COMPILE },
+/* 1930 */     { .cell = 0xAF },  // bl
+/* 1931 */     { .cell = 0xAD },  // emit
+/* 1932 */     { .cell = 0x33 },  // EXIT
+/* 1933 */     { .cell = 0x0 },
+/* 1934 */ { .ip = META_LINKNAME },
+/* 1935 */ { .ip = META_STARTNAME }, { .id = "SPACES" }, { .handler = do_colon },
+/* 1938 */ { .ip = META_COMPILE },
+/* 1939 */     { .cell = 0x5 },   // dup
+/* 1940 */     { .cell = 0x86 },  // 0>
+/* 1941 */     { .cell = 0x0 },
+/* 1942 */ { .ip = META_INTERPRET },
+/* 1943 */     { .cell = 0x67 },  // IF
+/* 1944 */     { .cell = 0x0 },
+/* 1945 */ { .ip = DO_LITERAL }, { .cell = 0x0 },
+/* 1947 */ { .ip = META_INTERPRET },
+/* 1948 */     { .cell = 0x42 },  // LITERAL
+/* 1949 */     { .cell = 0x74 },  // DO
+/* 1950 */     { .cell = 0x0 },
+/* 1951 */ { .ip = META_COMPILE },
+/* 1952 */     { .cell = 0xB6 },  // space
+/* 1953 */     { .cell = 0x0 },
+/* 1954 */ { .ip = META_INTERPRET },
+/* 1955 */     { .cell = 0x78 },  // LOOP
+/* 1956 */     { .cell = 0x69 },  // ELSE
+/* 1957 */     { .cell = 0x0 },
+/* 1958 */ { .ip = META_COMPILE },
+/* 1959 */     { .cell = 0x4 },   // drop
+/* 1960 */     { .cell = 0x0 },
+/* 1961 */ { .ip = META_INTERPRET },
+/* 1962 */     { .cell = 0x66 },  // THEN
+/* 1963 */     { .cell = 0x0 },
+/* 1964 */ { .ip = META_COMPILE },
+/* 1965 */     { .cell = 0x33 },  // EXIT
+/* 1966 */     { .cell = 0x0 },
+/* 1967 */ { .ip = META_LINKNAME },
             /* ==== forth/c-gen/file/fileprim.fth ==== */
-/* 1966 */ { .ip = META_ADDNAME }, { .id = "CLOSE-FILE" }, { .handler = x_close_file },
-/* 1969 */ { .ip = META_ADDNAME }, { .id = "CREATE-FILE" }, { .handler = x_create_file },
-/* 1972 */ { .ip = META_ADDNAME }, { .id = "FILE-POSITION" }, { .handler = x_file_position },
-/* 1975 */ { .ip = META_ADDNAME }, { .id = "FILE-SIZE" }, { .handler = x_file_size },
-/* 1978 */ { .ip = META_ADDNAME }, { .id = "OPEN-FILE" }, { .handler = x_open_file },
-/* 1981 */ { .ip = META_ADDNAME }, { .id = "READ-FILE" }, { .handler = x_read_file },
-/* 1984 */ { .ip = META_ADDNAME }, { .id = "READ-LINE" }, { .handler = x_read_line },
-/* 1987 */ { .ip = META_ADDNAME }, { .id = "REPOSITION-FILE" }, { .handler = x_reposition_file },
-/* 1990 */ { .ip = META_ADDNAME }, { .id = "WRITE-FILE" }, { .handler = x_write_file },
-/* 1993 */ { .ip = META_ADDNAME }, { .id = "WRITE-LINE" }, { .handler = x_write_line },
+/* 1968 */ { .ip = META_ADDNAME }, { .id = "CLOSE-FILE" }, { .handler = x_close_file },
+/* 1971 */ { .ip = META_ADDNAME }, { .id = "CREATE-FILE" }, { .handler = x_create_file },
+/* 1974 */ { .ip = META_ADDNAME }, { .id = "FILE-POSITION" }, { .handler = x_file_position },
+/* 1977 */ { .ip = META_ADDNAME }, { .id = "FILE-SIZE" }, { .handler = x_file_size },
+/* 1980 */ { .ip = META_ADDNAME }, { .id = "OPEN-FILE" }, { .handler = x_open_file },
+/* 1983 */ { .ip = META_ADDNAME }, { .id = "READ-FILE" }, { .handler = x_read_file },
+/* 1986 */ { .ip = META_ADDNAME }, { .id = "READ-LINE" }, { .handler = x_read_line },
+/* 1989 */ { .ip = META_ADDNAME }, { .id = "REPOSITION-FILE" }, { .handler = x_reposition_file },
+/* 1992 */ { .ip = META_ADDNAME }, { .id = "WRITE-FILE" }, { .handler = x_write_file },
+/* 1995 */ { .ip = META_ADDNAME }, { .id = "WRITE-LINE" }, { .handler = x_write_line },
             /* ==== forth/c-gen/file/modes.fth ==== */
-/* 1996 */ { .ip = DO_LITERAL }, { .cell = (cell_ft) (FILE_MODE_R_O) },
-/* 1998 */ { .ip = META_ADDNAME }, { .id = "R/O" }, { .handler = do_constant },
-/* 2001 */ { .ip = META_INTERPRET },
-/* 2002 */     { .cell = 0x40 },  // ,
-/* 2003 */     { .cell = 0x0 },
-/* 2004 */ { .ip = DO_LITERAL }, { .cell = (cell_ft) (FILE_MODE_R_W) },
-/* 2006 */ { .ip = META_ADDNAME }, { .id = "R/W" }, { .handler = do_constant },
-/* 2009 */ { .ip = META_INTERPRET },
-/* 2010 */     { .cell = 0x40 },  // ,
-/* 2011 */     { .cell = 0x0 },
-/* 2012 */ { .ip = DO_LITERAL }, { .cell = (cell_ft) (FILE_MODE_W_O) },
-/* 2014 */ { .ip = META_ADDNAME }, { .id = "W/O" }, { .handler = do_constant },
-/* 2017 */ { .ip = META_INTERPRET },
-/* 2018 */     { .cell = 0x40 },  // ,
-/* 2019 */     { .cell = 0x0 },
-/* 2020 */ { .ip = META_STARTNAME }, { .id = "BIN" }, { .handler = do_colon },
-/* 2023 */ { .ip = DO_LITERAL }, { .cell = (cell_ft) (FILE_MODE_BIN) },
-/* 2025 */ { .ip = META_INTERPRET },
-/* 2026 */     { .cell = 0x42 },  // LITERAL
-/* 2027 */     { .cell = 0x0 },
-/* 2028 */ { .ip = META_COMPILE },
-/* 2029 */     { .cell = 0x1B },  // or
-/* 2030 */     { .cell = 0x31 },  // EXIT
-/* 2031 */     { .cell = 0x0 },
-/* 2032 */ { .ip = META_LINKNAME },
+/* 1998 */ { .ip = DO_LITERAL }, { .cell = (cell_ft) (FILE_MODE_R_O) },
+/* 2000 */ { .ip = META_ADDNAME }, { .id = "R/O" }, { .handler = do_constant },
+/* 2003 */ { .ip = META_INTERPRET },
+/* 2004 */     { .cell = 0x40 },  // ,
+/* 2005 */     { .cell = 0x0 },
+/* 2006 */ { .ip = DO_LITERAL }, { .cell = (cell_ft) (FILE_MODE_R_W) },
+/* 2008 */ { .ip = META_ADDNAME }, { .id = "R/W" }, { .handler = do_constant },
+/* 2011 */ { .ip = META_INTERPRET },
+/* 2012 */     { .cell = 0x40 },  // ,
+/* 2013 */     { .cell = 0x0 },
+/* 2014 */ { .ip = DO_LITERAL }, { .cell = (cell_ft) (FILE_MODE_W_O) },
+/* 2016 */ { .ip = META_ADDNAME }, { .id = "W/O" }, { .handler = do_constant },
+/* 2019 */ { .ip = META_INTERPRET },
+/* 2020 */     { .cell = 0x40 },  // ,
+/* 2021 */     { .cell = 0x0 },
+/* 2022 */ { .ip = META_STARTNAME }, { .id = "BIN" }, { .handler = do_colon },
+/* 2025 */ { .ip = DO_LITERAL }, { .cell = (cell_ft) (FILE_MODE_BIN) },
+/* 2027 */ { .ip = META_INTERPRET },
+/* 2028 */     { .cell = 0x42 },  // LITERAL
+/* 2029 */     { .cell = 0x0 },
+/* 2030 */ { .ip = META_COMPILE },
+/* 2031 */     { .cell = 0x1D },  // or
+/* 2032 */     { .cell = 0x33 },  // EXIT
+/* 2033 */     { .cell = 0x0 },
+/* 2034 */ { .ip = META_LINKNAME },
             /* ==== forth/common/core/source.fth ==== */
-/* 2033 */ { .ip = META_ADDNAME }, { .id = ">IN" }, { .handler = do_variable },
-/* 2036 */ { .ip = DO_LITERAL }, { .cell = (cell_ft) (CELL_SIZE) },
-/* 2038 */ { .ip = META_INTERPRET },
-/* 2039 */     { .cell = 0x3F },  // ALLOT
-/* 2040 */     { .cell = 0x0 },
-/* 2041 */ { .ip = DO_LITERAL }, { .cell = 0x6 },
-/* 2043 */ { .ip = META_INTERPRET },
-/* 2044 */     { .cell = 0x45 },  // cells
-/* 2045 */     { .cell = 0x3F },  // allot
-/* 2046 */     { .cell = 0xC6 },  // >in
-/* 2047 */     { .cell = 0x0 },
-/* 2048 */ { .ip = DO_LITERAL }, { .cell = 0x2 },
-/* 2050 */ { .ip = META_INTERPRET },
-/* 2051 */     { .cell = 0x45 },  // cells
-/* 2052 */     { .cell = 0x10 },  // +
-/* 2053 */     { .cell = 0x0 },
-/* 2054 */ { .ip = META_ADDNAME }, { .id = "SOURCE-ADDR" }, { .handler = do_constant },
-/* 2057 */ { .ip = META_INTERPRET },
-/* 2058 */     { .cell = 0x40 },  // ,
-/* 2059 */     { .cell = 0xC6 },  // >in
-/* 2060 */     { .cell = 0x0 },
-/* 2061 */ { .ip = DO_LITERAL }, { .cell = 0x5 },
-/* 2063 */ { .ip = META_INTERPRET },
-/* 2064 */     { .cell = 0x45 },  // cells
-/* 2065 */     { .cell = 0x10 },  // +
-/* 2066 */     { .cell = 0x0 },
-/* 2067 */ { .ip = META_ADDNAME }, { .id = "SOURCE-POS" }, { .handler = do_constant },
-/* 2070 */ { .ip = META_INTERPRET },
-/* 2071 */     { .cell = 0x40 },  // ,
-/* 2072 */     { .cell = 0x0 },
-/* 2073 */ { .ip = META_STARTNAME }, { .id = "SOURCE-ID" }, { .handler = do_colon },
-/* 2076 */ { .ip = META_INTERPRET },
-/* 2077 */     { .cell = 0xC6 },  // >in
-/* 2078 */     { .cell = 0x46 },  // cell+
-/* 2079 */     { .cell = 0x42 },  // LITERAL
-/* 2080 */     { .cell = 0x0 },
-/* 2081 */ { .ip = META_COMPILE },
-/* 2082 */     { .cell = 0x20 },  // @
-/* 2083 */     { .cell = 0x31 },  // EXIT
-/* 2084 */     { .cell = 0x0 },
-/* 2085 */ { .ip = META_LINKNAME },
-/* 2086 */ { .ip = META_STARTNAME }, { .id = "SOURCE" }, { .handler = do_colon },
-/* 2089 */ { .ip = META_COMPILE },
-/* 2090 */     { .cell = 0xC7 },  // source-addr
-/* 2091 */     { .cell = 0x49 },  // 2@
-/* 2092 */     { .cell = 0x31 },  // EXIT
-/* 2093 */     { .cell = 0x0 },
-/* 2094 */ { .ip = META_LINKNAME },
-/* 2095 */ { .ip = META_STARTNAME }, { .id = "SOURCE-BUFFER" }, { .handler = do_colon },
-/* 2098 */ { .ip = META_INTERPRET },
-/* 2099 */     { .cell = 0xC6 },  // >in
-/* 2100 */     { .cell = 0x0 },
-/* 2101 */ { .ip = DO_LITERAL }, { .cell = 0x3 },
-/* 2103 */ { .ip = META_INTERPRET },
-/* 2104 */     { .cell = 0x45 },  // cells
-/* 2105 */     { .cell = 0x10 },  // +
-/* 2106 */     { .cell = 0x42 },  // LITERAL
-/* 2107 */     { .cell = 0x0 },
-/* 2108 */ { .ip = META_COMPILE },
-/* 2109 */     { .cell = 0x49 },  // 2@
-/* 2110 */     { .cell = 0xA },   // swap
-/* 2111 */     { .cell = 0x31 },  // EXIT
-/* 2112 */     { .cell = 0x0 },
-/* 2113 */ { .ip = META_LINKNAME },
-/* 2114 */ { .ip = META_STARTNAME }, { .id = "REFILL-FILE" }, { .handler = do_colon },
-/* 2117 */ { .ip = META_COMPILE },
-/* 2118 */     { .cell = 0x5 },   // dup
-/* 2119 */     { .cell = 0xBA },  // file-position
-/* 2120 */     { .cell = 0x4 },   // drop
-/* 2121 */     { .cell = 0xC8 },  // source-pos
-/* 2122 */     { .cell = 0x48 },  // 2!
-/* 2123 */     { .cell = 0xBE },  // read-line
-/* 2124 */     { .cell = 0x4 },   // drop
-/* 2125 */     { .cell = 0x31 },  // EXIT
-/* 2126 */     { .cell = 0x0 },
-/* 2127 */ { .ip = META_LINKNAME },
-/* 2128 */ { .ip = META_STARTNAME }, { .id = "REFILL" }, { .handler = do_colon },
-/* 2131 */ { .ip = META_COMPILE },
-/* 2132 */     { .cell = 0xC9 },  // source-id
-/* 2133 */     { .cell = 0x7D },  // 0<
-/* 2134 */     { .cell = 0x0 },
-/* 2135 */ { .ip = META_INTERPRET },
-/* 2136 */     { .cell = 0x67 },  // IF
-/* 2137 */     { .cell = 0x0 },
-/* 2138 */ { .ip = META_COMPILE },
-/* 2139 */     { .cell = 0x88 },  // false
-/* 2140 */     { .cell = 0x31 },  // exit
-/* 2141 */     { .cell = 0x0 },
-/* 2142 */ { .ip = META_INTERPRET },
-/* 2143 */     { .cell = 0x66 },  // THEN
-/* 2144 */     { .cell = 0x0 },
-/* 2145 */ { .ip = META_COMPILE },
-/* 2146 */     { .cell = 0xCB },  // source-buffer
-/* 2147 */     { .cell = 0xC9 },  // source-id
-/* 2148 */     { .cell = 0x2 },   // ?dup
-/* 2149 */     { .cell = 0x0 },
-/* 2150 */ { .ip = META_INTERPRET },
-/* 2151 */     { .cell = 0x67 },  // IF
-/* 2152 */     { .cell = 0x0 },
-/* 2153 */ { .ip = META_COMPILE },
-/* 2154 */     { .cell = 0xCC },  // refill-file
-/* 2155 */     { .cell = 0x0 },
-/* 2156 */ { .ip = META_INTERPRET },
-/* 2157 */     { .cell = 0x69 },  // ELSE
-/* 2158 */     { .cell = 0x0 },
-/* 2159 */ { .ip = META_COMPILE },
-/* 2160 */     { .cell = 0xB2 },  // refill-terminal
-/* 2161 */     { .cell = 0x0 },
-/* 2162 */ { .ip = META_INTERPRET },
-/* 2163 */     { .cell = 0x66 },  // THEN
-/* 2164 */     { .cell = 0x0 },
-/* 2165 */ { .ip = META_COMPILE },
-/* 2166 */     { .cell = 0xA },   // swap
-/* 2167 */     { .cell = 0xC7 },  // source-addr
-/* 2168 */     { .cell = 0x1F },  // !
-/* 2169 */     { .cell = 0x0 },
-/* 2170 */ { .ip = DO_LITERAL }, { .cell = 0x0 },
-/* 2172 */ { .ip = META_INTERPRET },
-/* 2173 */     { .cell = 0x42 },  // LITERAL
-/* 2174 */     { .cell = 0x0 },
-/* 2175 */ { .ip = META_COMPILE },
-/* 2176 */     { .cell = 0xC6 },  // >in
-/* 2177 */     { .cell = 0x1F },  // !
-/* 2178 */     { .cell = 0x31 },  // EXIT
-/* 2179 */     { .cell = 0x0 },
-/* 2180 */ { .ip = META_LINKNAME },
-/* 2181 */ { .ip = META_STARTNAME }, { .id = "RESET-SOURCE" }, { .handler = do_colon },
-/* 2184 */ { .ip = META_COMPILE },
-/* 2185 */     { .cell = 0xC8 },  // source-pos
-/* 2186 */     { .cell = 0x49 },  // 2@
-/* 2187 */     { .cell = 0xC9 },  // source-id
-/* 2188 */     { .cell = 0xBF },  // reposition-file
-/* 2189 */     { .cell = 0x4 },   // drop
-/* 2190 */     { .cell = 0x31 },  // EXIT
-/* 2191 */     { .cell = 0x0 },
-/* 2192 */ { .ip = META_LINKNAME },
-/* 2193 */ { .ip = META_STARTNAME }, { .id = "SAVE-SOURCE" }, { .handler = do_colon },
-/* 2196 */ { .ip = META_COMPILE },
-/* 2197 */     { .cell = 0xC9 },  // source-id
-/* 2198 */     { .cell = 0x86 },  // 0>
-/* 2199 */     { .cell = 0x0 },
-/* 2200 */ { .ip = META_INTERPRET },
-/* 2201 */     { .cell = 0x67 },  // IF
-/* 2202 */     { .cell = 0x0 },
-/* 2203 */ { .ip = META_COMPILE },
-/* 2204 */     { .cell = 0xCE },  // reset-source
-/* 2205 */     { .cell = 0x0 },
-/* 2206 */ { .ip = META_INTERPRET },
-/* 2207 */     { .cell = 0x66 },  // THEN
-/* 2208 */     { .cell = 0x0 },
-/* 2209 */ { .ip = META_COMPILE },
-/* 2210 */     { .cell = 0x31 },  // EXIT
-/* 2211 */     { .cell = 0x0 },
-/* 2212 */ { .ip = META_LINKNAME },
-/* 2213 */ { .ip = META_STARTNAME }, { .id = "RESTORE-SOURCE" }, { .handler = do_colon },
-/* 2216 */ { .ip = META_COMPILE },
-/* 2217 */     { .cell = 0xC9 },  // source-id
-/* 2218 */     { .cell = 0x86 },  // 0>
-/* 2219 */     { .cell = 0x7E },  // 0=
-/* 2220 */     { .cell = 0x0 },
-/* 2221 */ { .ip = META_INTERPRET },
-/* 2222 */     { .cell = 0x67 },  // IF
-/* 2223 */     { .cell = 0x0 },
-/* 2224 */ { .ip = META_COMPILE },
-/* 2225 */     { .cell = 0x31 },  // exit
-/* 2226 */     { .cell = 0x0 },
-/* 2227 */ { .ip = META_INTERPRET },
-/* 2228 */     { .cell = 0x66 },  // THEN
-/* 2229 */     { .cell = 0x0 },
-/* 2230 */ { .ip = META_COMPILE },
-/* 2231 */     { .cell = 0xCE },  // reset-source
-/* 2232 */     { .cell = 0xCB },  // source-buffer
-/* 2233 */     { .cell = 0xC9 },  // source-id
-/* 2234 */     { .cell = 0xCC },  // refill-file
-/* 2235 */     { .cell = 0x50 },  // 2drop
-/* 2236 */     { .cell = 0x31 },  // EXIT
-/* 2237 */     { .cell = 0x0 },
-/* 2238 */ { .ip = META_LINKNAME },
-/* 2239 */ { .ip = DO_LITERAL }, { .cell = 0x100 },
-/* 2241 */ { .ip = META_INTERPRET },
-/* 2242 */     { .cell = 0x43 },  // chars
-/* 2243 */     { .cell = 0x3D },  // here
-/* 2244 */     { .cell = 0x6 },   // over
-/* 2245 */     { .cell = 0x3F },  // allot
-/* 2246 */     { .cell = 0x0 },
-/* 2247 */ { .ip = DO_LITERAL }, { .cell = 0x100 },
-/* 2249 */ { .ip = META_INTERPRET },
-/* 2250 */     { .cell = 0x43 },  // chars
-/* 2251 */     { .cell = 0x3D },  // here
-/* 2252 */     { .cell = 0x6 },   // over
-/* 2253 */     { .cell = 0x3F },  // allot
-/* 2254 */     { .cell = 0x40 },  // ,
-/* 2255 */     { .cell = 0x40 },  // ,
+/* 2035 */ { .ip = META_ADDNAME }, { .id = ">IN" }, { .handler = do_variable },
+/* 2038 */ { .ip = DO_LITERAL }, { .cell = (cell_ft) (CELL_SIZE) },
+/* 2040 */ { .ip = META_INTERPRET },
+/* 2041 */     { .cell = 0x3F },  // ALLOT
+/* 2042 */     { .cell = 0x0 },
+/* 2043 */ { .ip = DO_LITERAL }, { .cell = 0x6 },
+/* 2045 */ { .ip = META_INTERPRET },
+/* 2046 */     { .cell = 0x45 },  // cells
+/* 2047 */     { .cell = 0x3F },  // allot
+/* 2048 */     { .cell = 0xC6 },  // >in
+/* 2049 */     { .cell = 0x0 },
+/* 2050 */ { .ip = DO_LITERAL }, { .cell = 0x2 },
+/* 2052 */ { .ip = META_INTERPRET },
+/* 2053 */     { .cell = 0x45 },  // cells
+/* 2054 */     { .cell = 0x12 },  // +
+/* 2055 */     { .cell = 0x0 },
+/* 2056 */ { .ip = META_ADDNAME }, { .id = "SOURCE-ADDR" }, { .handler = do_constant },
+/* 2059 */ { .ip = META_INTERPRET },
+/* 2060 */     { .cell = 0x40 },  // ,
+/* 2061 */     { .cell = 0xC6 },  // >in
+/* 2062 */     { .cell = 0x0 },
+/* 2063 */ { .ip = DO_LITERAL }, { .cell = 0x5 },
+/* 2065 */ { .ip = META_INTERPRET },
+/* 2066 */     { .cell = 0x45 },  // cells
+/* 2067 */     { .cell = 0x12 },  // +
+/* 2068 */     { .cell = 0x0 },
+/* 2069 */ { .ip = META_ADDNAME }, { .id = "SOURCE-POS" }, { .handler = do_constant },
+/* 2072 */ { .ip = META_INTERPRET },
+/* 2073 */     { .cell = 0x40 },  // ,
+/* 2074 */     { .cell = 0x0 },
+/* 2075 */ { .ip = META_STARTNAME }, { .id = "SOURCE-ID" }, { .handler = do_colon },
+/* 2078 */ { .ip = META_INTERPRET },
+/* 2079 */     { .cell = 0xC6 },  // >in
+/* 2080 */     { .cell = 0x46 },  // cell+
+/* 2081 */     { .cell = 0x42 },  // LITERAL
+/* 2082 */     { .cell = 0x0 },
+/* 2083 */ { .ip = META_COMPILE },
+/* 2084 */     { .cell = 0x22 },  // @
+/* 2085 */     { .cell = 0x33 },  // EXIT
+/* 2086 */     { .cell = 0x0 },
+/* 2087 */ { .ip = META_LINKNAME },
+/* 2088 */ { .ip = META_STARTNAME }, { .id = "SOURCE" }, { .handler = do_colon },
+/* 2091 */ { .ip = META_COMPILE },
+/* 2092 */     { .cell = 0xC7 },  // source-addr
+/* 2093 */     { .cell = 0x49 },  // 2@
+/* 2094 */     { .cell = 0x33 },  // EXIT
+/* 2095 */     { .cell = 0x0 },
+/* 2096 */ { .ip = META_LINKNAME },
+/* 2097 */ { .ip = META_STARTNAME }, { .id = "SOURCE-BUFFER" }, { .handler = do_colon },
+/* 2100 */ { .ip = META_INTERPRET },
+/* 2101 */     { .cell = 0xC6 },  // >in
+/* 2102 */     { .cell = 0x0 },
+/* 2103 */ { .ip = DO_LITERAL }, { .cell = 0x3 },
+/* 2105 */ { .ip = META_INTERPRET },
+/* 2106 */     { .cell = 0x45 },  // cells
+/* 2107 */     { .cell = 0x12 },  // +
+/* 2108 */     { .cell = 0x42 },  // LITERAL
+/* 2109 */     { .cell = 0x0 },
+/* 2110 */ { .ip = META_COMPILE },
+/* 2111 */     { .cell = 0x49 },  // 2@
+/* 2112 */     { .cell = 0xA },   // swap
+/* 2113 */     { .cell = 0x33 },  // EXIT
+/* 2114 */     { .cell = 0x0 },
+/* 2115 */ { .ip = META_LINKNAME },
+/* 2116 */ { .ip = META_STARTNAME }, { .id = "REFILL-FILE" }, { .handler = do_colon },
+/* 2119 */ { .ip = META_COMPILE },
+/* 2120 */     { .cell = 0x5 },   // dup
+/* 2121 */     { .cell = 0xBA },  // file-position
+/* 2122 */     { .cell = 0x4 },   // drop
+/* 2123 */     { .cell = 0xC8 },  // source-pos
+/* 2124 */     { .cell = 0x48 },  // 2!
+/* 2125 */     { .cell = 0xBE },  // read-line
+/* 2126 */     { .cell = 0x4 },   // drop
+/* 2127 */     { .cell = 0x33 },  // EXIT
+/* 2128 */     { .cell = 0x0 },
+/* 2129 */ { .ip = META_LINKNAME },
+/* 2130 */ { .ip = META_STARTNAME }, { .id = "REFILL" }, { .handler = do_colon },
+/* 2133 */ { .ip = META_COMPILE },
+/* 2134 */     { .cell = 0xC9 },  // source-id
+/* 2135 */     { .cell = 0x7D },  // 0<
+/* 2136 */     { .cell = 0x0 },
+/* 2137 */ { .ip = META_INTERPRET },
+/* 2138 */     { .cell = 0x67 },  // IF
+/* 2139 */     { .cell = 0x0 },
+/* 2140 */ { .ip = META_COMPILE },
+/* 2141 */     { .cell = 0x88 },  // false
+/* 2142 */     { .cell = 0x33 },  // exit
+/* 2143 */     { .cell = 0x0 },
+/* 2144 */ { .ip = META_INTERPRET },
+/* 2145 */     { .cell = 0x66 },  // THEN
+/* 2146 */     { .cell = 0x0 },
+/* 2147 */ { .ip = META_COMPILE },
+/* 2148 */     { .cell = 0xCB },  // source-buffer
+/* 2149 */     { .cell = 0xC9 },  // source-id
+/* 2150 */     { .cell = 0x2 },   // ?dup
+/* 2151 */     { .cell = 0x0 },
+/* 2152 */ { .ip = META_INTERPRET },
+/* 2153 */     { .cell = 0x67 },  // IF
+/* 2154 */     { .cell = 0x0 },
+/* 2155 */ { .ip = META_COMPILE },
+/* 2156 */     { .cell = 0xCC },  // refill-file
+/* 2157 */     { .cell = 0x0 },
+/* 2158 */ { .ip = META_INTERPRET },
+/* 2159 */     { .cell = 0x69 },  // ELSE
+/* 2160 */     { .cell = 0x0 },
+/* 2161 */ { .ip = META_COMPILE },
+/* 2162 */     { .cell = 0xB2 },  // refill-terminal
+/* 2163 */     { .cell = 0x0 },
+/* 2164 */ { .ip = META_INTERPRET },
+/* 2165 */     { .cell = 0x66 },  // THEN
+/* 2166 */     { .cell = 0x0 },
+/* 2167 */ { .ip = META_COMPILE },
+/* 2168 */     { .cell = 0xA },   // swap
+/* 2169 */     { .cell = 0xC7 },  // source-addr
+/* 2170 */     { .cell = 0x21 },  // !
+/* 2171 */     { .cell = 0x0 },
+/* 2172 */ { .ip = DO_LITERAL }, { .cell = 0x0 },
+/* 2174 */ { .ip = META_INTERPRET },
+/* 2175 */     { .cell = 0x42 },  // LITERAL
+/* 2176 */     { .cell = 0x0 },
+/* 2177 */ { .ip = META_COMPILE },
+/* 2178 */     { .cell = 0xC6 },  // >in
+/* 2179 */     { .cell = 0x21 },  // !
+/* 2180 */     { .cell = 0x33 },  // EXIT
+/* 2181 */     { .cell = 0x0 },
+/* 2182 */ { .ip = META_LINKNAME },
+/* 2183 */ { .ip = META_STARTNAME }, { .id = "RESET-SOURCE" }, { .handler = do_colon },
+/* 2186 */ { .ip = META_COMPILE },
+/* 2187 */     { .cell = 0xC8 },  // source-pos
+/* 2188 */     { .cell = 0x49 },  // 2@
+/* 2189 */     { .cell = 0xC9 },  // source-id
+/* 2190 */     { .cell = 0xBF },  // reposition-file
+/* 2191 */     { .cell = 0x4 },   // drop
+/* 2192 */     { .cell = 0x33 },  // EXIT
+/* 2193 */     { .cell = 0x0 },
+/* 2194 */ { .ip = META_LINKNAME },
+/* 2195 */ { .ip = META_STARTNAME }, { .id = "SAVE-SOURCE" }, { .handler = do_colon },
+/* 2198 */ { .ip = META_COMPILE },
+/* 2199 */     { .cell = 0xC9 },  // source-id
+/* 2200 */     { .cell = 0x86 },  // 0>
+/* 2201 */     { .cell = 0x0 },
+/* 2202 */ { .ip = META_INTERPRET },
+/* 2203 */     { .cell = 0x67 },  // IF
+/* 2204 */     { .cell = 0x0 },
+/* 2205 */ { .ip = META_COMPILE },
+/* 2206 */     { .cell = 0xCE },  // reset-source
+/* 2207 */     { .cell = 0x0 },
+/* 2208 */ { .ip = META_INTERPRET },
+/* 2209 */     { .cell = 0x66 },  // THEN
+/* 2210 */     { .cell = 0x0 },
+/* 2211 */ { .ip = META_COMPILE },
+/* 2212 */     { .cell = 0x33 },  // EXIT
+/* 2213 */     { .cell = 0x0 },
+/* 2214 */ { .ip = META_LINKNAME },
+/* 2215 */ { .ip = META_STARTNAME }, { .id = "RESTORE-SOURCE" }, { .handler = do_colon },
+/* 2218 */ { .ip = META_COMPILE },
+/* 2219 */     { .cell = 0xC9 },  // source-id
+/* 2220 */     { .cell = 0x86 },  // 0>
+/* 2221 */     { .cell = 0x7E },  // 0=
+/* 2222 */     { .cell = 0x0 },
+/* 2223 */ { .ip = META_INTERPRET },
+/* 2224 */     { .cell = 0x67 },  // IF
+/* 2225 */     { .cell = 0x0 },
+/* 2226 */ { .ip = META_COMPILE },
+/* 2227 */     { .cell = 0x33 },  // exit
+/* 2228 */     { .cell = 0x0 },
+/* 2229 */ { .ip = META_INTERPRET },
+/* 2230 */     { .cell = 0x66 },  // THEN
+/* 2231 */     { .cell = 0x0 },
+/* 2232 */ { .ip = META_COMPILE },
+/* 2233 */     { .cell = 0xCE },  // reset-source
+/* 2234 */     { .cell = 0xCB },  // source-buffer
+/* 2235 */     { .cell = 0xC9 },  // source-id
+/* 2236 */     { .cell = 0xCC },  // refill-file
+/* 2237 */     { .cell = 0x50 },  // 2drop
+/* 2238 */     { .cell = 0x33 },  // EXIT
+/* 2239 */     { .cell = 0x0 },
+/* 2240 */ { .ip = META_LINKNAME },
+/* 2241 */ { .ip = DO_LITERAL }, { .cell = 0x100 },
+/* 2243 */ { .ip = META_INTERPRET },
+/* 2244 */     { .cell = 0x43 },  // chars
+/* 2245 */     { .cell = 0x3D },  // here
+/* 2246 */     { .cell = 0x6 },   // over
+/* 2247 */     { .cell = 0x3F },  // allot
+/* 2248 */     { .cell = 0x0 },
+/* 2249 */ { .ip = DO_LITERAL }, { .cell = 0x100 },
+/* 2251 */ { .ip = META_INTERPRET },
+/* 2252 */     { .cell = 0x43 },  // chars
+/* 2253 */     { .cell = 0x3D },  // here
+/* 2254 */     { .cell = 0x6 },   // over
+/* 2255 */     { .cell = 0x3F },  // allot
 /* 2256 */     { .cell = 0x40 },  // ,
 /* 2257 */     { .cell = 0x40 },  // ,
-/* 2258 */     { .cell = 0x3D },  // here
-/* 2259 */     { .cell = 0x0 },
-/* 2260 */ { .ip = DO_LITERAL }, { .cell = 0x4 },
-/* 2262 */ { .ip = META_INTERPRET },
-/* 2263 */     { .cell = 0x45 },  // cells
-/* 2264 */     { .cell = 0x11 },  // -
-/* 2265 */     { .cell = 0x0 },
-/* 2266 */ { .ip = META_ADDNAME }, { .id = "SOURCE-BUFFERS" }, { .handler = do_constant },
-/* 2269 */ { .ip = META_INTERPRET },
-/* 2270 */     { .cell = 0x40 },  // ,
-/* 2271 */     { .cell = 0x0 },
-/* 2272 */ { .ip = META_STARTNAME }, { .id = "SOURCE-ID!" }, { .handler = do_colon },
-/* 2275 */ { .ip = META_COMPILE },
-/* 2276 */     { .cell = 0x5 },   // dup
-/* 2277 */     { .cell = 0x0 },
-/* 2278 */ { .ip = DO_LITERAL }, { .cell = 0x0 },
-/* 2280 */ { .ip = META_INTERPRET },
-/* 2281 */     { .cell = 0x42 },  // LITERAL
-/* 2282 */     { .cell = 0x0 },
-/* 2283 */ { .ip = META_COMPILE },
-/* 2284 */     { .cell = 0xC6 },  // >in
-/* 2285 */     { .cell = 0x48 },  // 2!
-/* 2286 */     { .cell = 0x5 },   // dup
-/* 2287 */     { .cell = 0x7D },  // 0<
-/* 2288 */     { .cell = 0x0 },
-/* 2289 */ { .ip = META_INTERPRET },
-/* 2290 */     { .cell = 0x67 },  // IF
-/* 2291 */     { .cell = 0x0 },
-/* 2292 */ { .ip = META_COMPILE },
-/* 2293 */     { .cell = 0x4 },   // drop
-/* 2294 */     { .cell = 0xC7 },  // source-addr
-/* 2295 */     { .cell = 0x0 },
-/* 2296 */ { .ip = META_INTERPRET },
-/* 2297 */     { .cell = 0x69 },  // ELSE
-/* 2298 */     { .cell = 0x0 },
-/* 2299 */ { .ip = META_COMPILE },
-/* 2300 */     { .cell = 0x7E },  // 0=
-/* 2301 */     { .cell = 0x1A },  // negate
-/* 2302 */     { .cell = 0x12 },  // 2*
-/* 2303 */     { .cell = 0x45 },  // cells
-/* 2304 */     { .cell = 0xD1 },  // source-buffers
-/* 2305 */     { .cell = 0x10 },  // +
-/* 2306 */     { .cell = 0x49 },  // 2@
-/* 2307 */     { .cell = 0x0 },
-/* 2308 */ { .ip = META_INTERPRET },
-/* 2309 */     { .cell = 0xC6 },  // >in
-/* 2310 */     { .cell = 0x0 },
-/* 2311 */ { .ip = DO_LITERAL }, { .cell = 0x3 },
-/* 2313 */ { .ip = META_INTERPRET },
-/* 2314 */     { .cell = 0x45 },  // cells
-/* 2315 */     { .cell = 0x10 },  // +
-/* 2316 */     { .cell = 0x42 },  // LITERAL
-/* 2317 */     { .cell = 0x66 },  // THEN
-/* 2318 */     { .cell = 0x0 },
-/* 2319 */ { .ip = META_COMPILE },
-/* 2320 */     { .cell = 0x48 },  // 2!
-/* 2321 */     { .cell = 0x31 },  // EXIT
-/* 2322 */     { .cell = 0x0 },
-/* 2323 */ { .ip = META_LINKNAME },
-/* 2324 */ { .ip = META_STARTNAME }, { .id = "WITH-INPUT-SOURCE" }, { .handler = do_colon },
-/* 2327 */ { .ip = META_COMPILE },
-/* 2328 */     { .cell = 0xCF },  // save-source
-/* 2329 */     { .cell = 0x0 },
-/* 2330 */ { .ip = META_INTERPRET },
-/* 2331 */     { .cell = 0xC6 },  // >in
-/* 2332 */     { .cell = 0x0 },
-/* 2333 */ { .ip = DO_LITERAL }, { .cell = 0x7 },
-/* 2335 */ { .ip = META_INTERPRET },
-/* 2336 */     { .cell = 0x45 },  // cells
-/* 2337 */     { .cell = 0x10 },  // +
-/* 2338 */     { .cell = 0x42 },  // LITERAL
-/* 2339 */     { .cell = 0x0 },
-/* 2340 */ { .ip = META_COMPILE },
-/* 2341 */     { .cell = 0xC6 },  // >in
-/* 2342 */     { .cell = 0x0 },
-/* 2343 */ { .ip = META_INTERPRET },
-/* 2344 */     { .cell = 0x65 },  // BEGIN
-/* 2345 */     { .cell = 0x0 },
-/* 2346 */ { .ip = META_COMPILE },
-/* 2347 */     { .cell = 0x51 },  // 2dup
-/* 2348 */     { .cell = 0x16 },  // >
-/* 2349 */     { .cell = 0x0 },
-/* 2350 */ { .ip = META_INTERPRET },
-/* 2351 */     { .cell = 0x6C },  // WHILE
-/* 2352 */     { .cell = 0x0 },
-/* 2353 */ { .ip = META_COMPILE },
-/* 2354 */     { .cell = 0x5 },   // dup
-/* 2355 */     { .cell = 0x20 },  // @
-/* 2356 */     { .cell = 0x1 },   // >r
-/* 2357 */     { .cell = 0x46 },  // cell+
-/* 2358 */     { .cell = 0x0 },
-/* 2359 */ { .ip = META_INTERPRET },
-/* 2360 */     { .cell = 0x6B },  // REPEAT
-/* 2361 */     { .cell = 0x0 },
-/* 2362 */ { .ip = META_COMPILE },
-/* 2363 */     { .cell = 0x50 },  // 2drop
-/* 2364 */     { .cell = 0x1 },   // >r
-/* 2365 */     { .cell = 0xD2 },  // source-id!
-/* 2366 */     { .cell = 0x7 },   // r>
-/* 2367 */     { .cell = 0xAC },  // catch
-/* 2368 */     { .cell = 0xC6 },  // >in
-/* 2369 */     { .cell = 0x0 },
-/* 2370 */ { .ip = META_INTERPRET },
-/* 2371 */     { .cell = 0xC6 },  // >in
-/* 2372 */     { .cell = 0x0 },
-/* 2373 */ { .ip = DO_LITERAL }, { .cell = 0x7 },
-/* 2375 */ { .ip = META_INTERPRET },
-/* 2376 */     { .cell = 0x45 },  // cells
-/* 2377 */     { .cell = 0x10 },  // +
-/* 2378 */     { .cell = 0x42 },  // LITERAL
-/* 2379 */     { .cell = 0x65 },  // BEGIN
-/* 2380 */     { .cell = 0x0 },
-/* 2381 */ { .ip = META_COMPILE },
-/* 2382 */     { .cell = 0x51 },  // 2dup
-/* 2383 */     { .cell = 0x14 },  // <
-/* 2384 */     { .cell = 0x0 },
-/* 2385 */ { .ip = META_INTERPRET },
-/* 2386 */     { .cell = 0x6C },  // WHILE
-/* 2387 */     { .cell = 0x0 },
-/* 2388 */ { .ip = DO_LITERAL }, { .cell = 0x1 },
-/* 2390 */ { .ip = META_INTERPRET },
-/* 2391 */     { .cell = 0x42 },  // LITERAL
-/* 2392 */     { .cell = 0x0 },
-/* 2393 */ { .ip = META_COMPILE },
-/* 2394 */     { .cell = 0x45 },  // cells
-/* 2395 */     { .cell = 0x11 },  // -
-/* 2396 */     { .cell = 0x7 },   // r>
-/* 2397 */     { .cell = 0x6 },   // over
-/* 2398 */     { .cell = 0x1F },  // !
-/* 2399 */     { .cell = 0x0 },
-/* 2400 */ { .ip = META_INTERPRET },
-/* 2401 */     { .cell = 0x6B },  // REPEAT
-/* 2402 */     { .cell = 0x0 },
-/* 2403 */ { .ip = META_COMPILE },
-/* 2404 */     { .cell = 0x50 },  // 2drop
-/* 2405 */     { .cell = 0xD0 },  // restore-source
-/* 2406 */     { .cell = 0x39 },  // throw
-/* 2407 */     { .cell = 0x31 },  // EXIT
-/* 2408 */     { .cell = 0x0 },
-/* 2409 */ { .ip = META_LINKNAME },
+/* 2258 */     { .cell = 0x40 },  // ,
+/* 2259 */     { .cell = 0x40 },  // ,
+/* 2260 */     { .cell = 0x3D },  // here
+/* 2261 */     { .cell = 0x0 },
+/* 2262 */ { .ip = DO_LITERAL }, { .cell = 0x4 },
+/* 2264 */ { .ip = META_INTERPRET },
+/* 2265 */     { .cell = 0x45 },  // cells
+/* 2266 */     { .cell = 0x13 },  // -
+/* 2267 */     { .cell = 0x0 },
+/* 2268 */ { .ip = META_ADDNAME }, { .id = "SOURCE-BUFFERS" }, { .handler = do_constant },
+/* 2271 */ { .ip = META_INTERPRET },
+/* 2272 */     { .cell = 0x40 },  // ,
+/* 2273 */     { .cell = 0x0 },
+/* 2274 */ { .ip = META_STARTNAME }, { .id = "SOURCE-ID!" }, { .handler = do_colon },
+/* 2277 */ { .ip = META_COMPILE },
+/* 2278 */     { .cell = 0x5 },   // dup
+/* 2279 */     { .cell = 0x0 },
+/* 2280 */ { .ip = DO_LITERAL }, { .cell = 0x0 },
+/* 2282 */ { .ip = META_INTERPRET },
+/* 2283 */     { .cell = 0x42 },  // LITERAL
+/* 2284 */     { .cell = 0x0 },
+/* 2285 */ { .ip = META_COMPILE },
+/* 2286 */     { .cell = 0xC6 },  // >in
+/* 2287 */     { .cell = 0x48 },  // 2!
+/* 2288 */     { .cell = 0x5 },   // dup
+/* 2289 */     { .cell = 0x7D },  // 0<
+/* 2290 */     { .cell = 0x0 },
+/* 2291 */ { .ip = META_INTERPRET },
+/* 2292 */     { .cell = 0x67 },  // IF
+/* 2293 */     { .cell = 0x0 },
+/* 2294 */ { .ip = META_COMPILE },
+/* 2295 */     { .cell = 0x4 },   // drop
+/* 2296 */     { .cell = 0xC7 },  // source-addr
+/* 2297 */     { .cell = 0x0 },
+/* 2298 */ { .ip = META_INTERPRET },
+/* 2299 */     { .cell = 0x69 },  // ELSE
+/* 2300 */     { .cell = 0x0 },
+/* 2301 */ { .ip = META_COMPILE },
+/* 2302 */     { .cell = 0x7E },  // 0=
+/* 2303 */     { .cell = 0x1C },  // negate
+/* 2304 */     { .cell = 0x14 },  // 2*
+/* 2305 */     { .cell = 0x45 },  // cells
+/* 2306 */     { .cell = 0xD1 },  // source-buffers
+/* 2307 */     { .cell = 0x12 },  // +
+/* 2308 */     { .cell = 0x49 },  // 2@
+/* 2309 */     { .cell = 0x0 },
+/* 2310 */ { .ip = META_INTERPRET },
+/* 2311 */     { .cell = 0xC6 },  // >in
+/* 2312 */     { .cell = 0x0 },
+/* 2313 */ { .ip = DO_LITERAL }, { .cell = 0x3 },
+/* 2315 */ { .ip = META_INTERPRET },
+/* 2316 */     { .cell = 0x45 },  // cells
+/* 2317 */     { .cell = 0x12 },  // +
+/* 2318 */     { .cell = 0x42 },  // LITERAL
+/* 2319 */     { .cell = 0x66 },  // THEN
+/* 2320 */     { .cell = 0x0 },
+/* 2321 */ { .ip = META_COMPILE },
+/* 2322 */     { .cell = 0x48 },  // 2!
+/* 2323 */     { .cell = 0x33 },  // EXIT
+/* 2324 */     { .cell = 0x0 },
+/* 2325 */ { .ip = META_LINKNAME },
+/* 2326 */ { .ip = META_STARTNAME }, { .id = "WITH-INPUT-SOURCE" }, { .handler = do_colon },
+/* 2329 */ { .ip = META_COMPILE },
+/* 2330 */     { .cell = 0xCF },  // save-source
+/* 2331 */     { .cell = 0x0 },
+/* 2332 */ { .ip = META_INTERPRET },
+/* 2333 */     { .cell = 0xC6 },  // >in
+/* 2334 */     { .cell = 0x0 },
+/* 2335 */ { .ip = DO_LITERAL }, { .cell = 0x7 },
+/* 2337 */ { .ip = META_INTERPRET },
+/* 2338 */     { .cell = 0x45 },  // cells
+/* 2339 */     { .cell = 0x12 },  // +
+/* 2340 */     { .cell = 0x42 },  // LITERAL
+/* 2341 */     { .cell = 0x0 },
+/* 2342 */ { .ip = META_COMPILE },
+/* 2343 */     { .cell = 0xC6 },  // >in
+/* 2344 */     { .cell = 0x0 },
+/* 2345 */ { .ip = META_INTERPRET },
+/* 2346 */     { .cell = 0x65 },  // BEGIN
+/* 2347 */     { .cell = 0x0 },
+/* 2348 */ { .ip = META_COMPILE },
+/* 2349 */     { .cell = 0x51 },  // 2dup
+/* 2350 */     { .cell = 0x18 },  // >
+/* 2351 */     { .cell = 0x0 },
+/* 2352 */ { .ip = META_INTERPRET },
+/* 2353 */     { .cell = 0x6C },  // WHILE
+/* 2354 */     { .cell = 0x0 },
+/* 2355 */ { .ip = META_COMPILE },
+/* 2356 */     { .cell = 0x5 },   // dup
+/* 2357 */     { .cell = 0x22 },  // @
+/* 2358 */     { .cell = 0x1 },   // >r
+/* 2359 */     { .cell = 0x46 },  // cell+
+/* 2360 */     { .cell = 0x0 },
+/* 2361 */ { .ip = META_INTERPRET },
+/* 2362 */     { .cell = 0x6B },  // REPEAT
+/* 2363 */     { .cell = 0x0 },
+/* 2364 */ { .ip = META_COMPILE },
+/* 2365 */     { .cell = 0x50 },  // 2drop
+/* 2366 */     { .cell = 0x1 },   // >r
+/* 2367 */     { .cell = 0xD2 },  // source-id!
+/* 2368 */     { .cell = 0x7 },   // r>
+/* 2369 */     { .cell = 0xAC },  // catch
+/* 2370 */     { .cell = 0xC6 },  // >in
+/* 2371 */     { .cell = 0x0 },
+/* 2372 */ { .ip = META_INTERPRET },
+/* 2373 */     { .cell = 0xC6 },  // >in
+/* 2374 */     { .cell = 0x0 },
+/* 2375 */ { .ip = DO_LITERAL }, { .cell = 0x7 },
+/* 2377 */ { .ip = META_INTERPRET },
+/* 2378 */     { .cell = 0x45 },  // cells
+/* 2379 */     { .cell = 0x12 },  // +
+/* 2380 */     { .cell = 0x42 },  // LITERAL
+/* 2381 */     { .cell = 0x65 },  // BEGIN
+/* 2382 */     { .cell = 0x0 },
+/* 2383 */ { .ip = META_COMPILE },
+/* 2384 */     { .cell = 0x51 },  // 2dup
+/* 2385 */     { .cell = 0x16 },  // <
+/* 2386 */     { .cell = 0x0 },
+/* 2387 */ { .ip = META_INTERPRET },
+/* 2388 */     { .cell = 0x6C },  // WHILE
+/* 2389 */     { .cell = 0x0 },
+/* 2390 */ { .ip = DO_LITERAL }, { .cell = 0x1 },
+/* 2392 */ { .ip = META_INTERPRET },
+/* 2393 */     { .cell = 0x42 },  // LITERAL
+/* 2394 */     { .cell = 0x0 },
+/* 2395 */ { .ip = META_COMPILE },
+/* 2396 */     { .cell = 0x45 },  // cells
+/* 2397 */     { .cell = 0x13 },  // -
+/* 2398 */     { .cell = 0x7 },   // r>
+/* 2399 */     { .cell = 0x6 },   // over
+/* 2400 */     { .cell = 0x21 },  // !
+/* 2401 */     { .cell = 0x0 },
+/* 2402 */ { .ip = META_INTERPRET },
+/* 2403 */     { .cell = 0x6B },  // REPEAT
+/* 2404 */     { .cell = 0x0 },
+/* 2405 */ { .ip = META_COMPILE },
+/* 2406 */     { .cell = 0x50 },  // 2drop
+/* 2407 */     { .cell = 0xD0 },  // restore-source
+/* 2408 */     { .cell = 0x39 },  // throw
+/* 2409 */     { .cell = 0x33 },  // EXIT
+/* 2410 */     { .cell = 0x0 },
+/* 2411 */ { .ip = META_LINKNAME },
             /* ==== forth/common/core/parse.fth ==== */
-/* 2410 */ { .ip = META_ADDNAME }, { .id = ">IN-START" }, { .handler = do_variable },
-/* 2413 */ { .ip = DO_LITERAL }, { .cell = (cell_ft) (CELL_SIZE) },
-/* 2415 */ { .ip = META_INTERPRET },
-/* 2416 */     { .cell = 0x3F },  // ALLOT
-/* 2417 */     { .cell = 0x0 },
-/* 2418 */ { .ip = META_STARTNAME }, { .id = "PARSE" }, { .handler = do_colon },
-/* 2421 */ { .ip = META_COMPILE },
-/* 2422 */     { .cell = 0xC6 },  // >in
-/* 2423 */     { .cell = 0x20 },  // @
-/* 2424 */     { .cell = 0xD4 },  // >in-start
-/* 2425 */     { .cell = 0x1F },  // !
-/* 2426 */     { .cell = 0x1 },   // >r
-/* 2427 */     { .cell = 0xCA },  // source
-/* 2428 */     { .cell = 0xA },   // swap
-/* 2429 */     { .cell = 0xC6 },  // >in
-/* 2430 */     { .cell = 0x20 },  // @
-/* 2431 */     { .cell = 0x43 },  // chars
-/* 2432 */     { .cell = 0x10 },  // +
-/* 2433 */     { .cell = 0x1 },   // >r
-/* 2434 */     { .cell = 0xC6 },  // >in
-/* 2435 */     { .cell = 0x20 },  // @
-/* 2436 */     { .cell = 0x11 },  // -
-/* 2437 */     { .cell = 0x0 },
-/* 2438 */ { .ip = DO_LITERAL }, { .cell = -0x1 },
-/* 2440 */ { .ip = META_INTERPRET },
-/* 2441 */     { .cell = 0x42 },  // LITERAL
-/* 2442 */     { .cell = 0x65 },  // BEGIN
-/* 2443 */     { .cell = 0x0 },
-/* 2444 */ { .ip = META_COMPILE },
-/* 2445 */     { .cell = 0x7F },  // 1+
-/* 2446 */     { .cell = 0x51 },  // 2dup
-/* 2447 */     { .cell = 0x16 },  // >
-/* 2448 */     { .cell = 0x0 },
-/* 2449 */ { .ip = META_INTERPRET },
-/* 2450 */     { .cell = 0x6C },  // WHILE
-/* 2451 */     { .cell = 0x0 },
-/* 2452 */ { .ip = META_COMPILE },
-/* 2453 */     { .cell = 0x5 },   // dup
-/* 2454 */     { .cell = 0xD },   // 2r@
-/* 2455 */     { .cell = 0x9 },   // rot
-/* 2456 */     { .cell = 0x43 },  // chars
-/* 2457 */     { .cell = 0x10 },  // +
-/* 2458 */     { .cell = 0x22 },  // c@
-/* 2459 */     { .cell = 0x6 },   // over
-/* 2460 */     { .cell = 0xAF },  // bl
-/* 2461 */     { .cell = 0x15 },  // =
-/* 2462 */     { .cell = 0x0 },
-/* 2463 */ { .ip = META_INTERPRET },
-/* 2464 */     { .cell = 0x67 },  // IF
-/* 2465 */     { .cell = 0x0 },
-/* 2466 */ { .ip = META_COMPILE },
-/* 2467 */     { .cell = 0x54 },  // nip
-/* 2468 */     { .cell = 0x8B },  // graphic?
-/* 2469 */     { .cell = 0x7E },  // 0=
-/* 2470 */     { .cell = 0x0 },
-/* 2471 */ { .ip = META_INTERPRET },
-/* 2472 */     { .cell = 0x69 },  // ELSE
-/* 2473 */     { .cell = 0x0 },
-/* 2474 */ { .ip = META_COMPILE },
-/* 2475 */     { .cell = 0x15 },  // =
-/* 2476 */     { .cell = 0x0 },
-/* 2477 */ { .ip = META_INTERPRET },
-/* 2478 */     { .cell = 0x66 },  // THEN
-/* 2479 */     { .cell = 0x68 },  // UNTIL
-/* 2480 */     { .cell = 0x0 },
-/* 2481 */ { .ip = META_COMPILE },
-/* 2482 */     { .cell = 0x54 },  // nip
-/* 2483 */     { .cell = 0x5 },   // dup
-/* 2484 */     { .cell = 0x7F },  // 1+
-/* 2485 */     { .cell = 0x0 },
-/* 2486 */ { .ip = META_INTERPRET },
-/* 2487 */     { .cell = 0x66 },  // THEN
-/* 2488 */     { .cell = 0x0 },
-/* 2489 */ { .ip = META_COMPILE },
-/* 2490 */     { .cell = 0xC6 },  // >in
-/* 2491 */     { .cell = 0x3A },  // +!
-/* 2492 */     { .cell = 0x7 },   // r>
-/* 2493 */     { .cell = 0xA },   // swap
+/* 2412 */ { .ip = META_ADDNAME }, { .id = ">IN-START" }, { .handler = do_variable },
+/* 2415 */ { .ip = DO_LITERAL }, { .cell = (cell_ft) (CELL_SIZE) },
+/* 2417 */ { .ip = META_INTERPRET },
+/* 2418 */     { .cell = 0x3F },  // ALLOT
+/* 2419 */     { .cell = 0x0 },
+/* 2420 */ { .ip = META_STARTNAME }, { .id = "PARSE" }, { .handler = do_colon },
+/* 2423 */ { .ip = META_COMPILE },
+/* 2424 */     { .cell = 0xC6 },  // >in
+/* 2425 */     { .cell = 0x22 },  // @
+/* 2426 */     { .cell = 0xD4 },  // >in-start
+/* 2427 */     { .cell = 0x21 },  // !
+/* 2428 */     { .cell = 0x1 },   // >r
+/* 2429 */     { .cell = 0xCA },  // source
+/* 2430 */     { .cell = 0xA },   // swap
+/* 2431 */     { .cell = 0xC6 },  // >in
+/* 2432 */     { .cell = 0x22 },  // @
+/* 2433 */     { .cell = 0x43 },  // chars
+/* 2434 */     { .cell = 0x12 },  // +
+/* 2435 */     { .cell = 0x1 },   // >r
+/* 2436 */     { .cell = 0xC6 },  // >in
+/* 2437 */     { .cell = 0x22 },  // @
+/* 2438 */     { .cell = 0x13 },  // -
+/* 2439 */     { .cell = 0x0 },
+/* 2440 */ { .ip = DO_LITERAL }, { .cell = -0x1 },
+/* 2442 */ { .ip = META_INTERPRET },
+/* 2443 */     { .cell = 0x42 },  // LITERAL
+/* 2444 */     { .cell = 0x65 },  // BEGIN
+/* 2445 */     { .cell = 0x0 },
+/* 2446 */ { .ip = META_COMPILE },
+/* 2447 */     { .cell = 0x7F },  // 1+
+/* 2448 */     { .cell = 0x51 },  // 2dup
+/* 2449 */     { .cell = 0x18 },  // >
+/* 2450 */     { .cell = 0x0 },
+/* 2451 */ { .ip = META_INTERPRET },
+/* 2452 */     { .cell = 0x6C },  // WHILE
+/* 2453 */     { .cell = 0x0 },
+/* 2454 */ { .ip = META_COMPILE },
+/* 2455 */     { .cell = 0x5 },   // dup
+/* 2456 */     { .cell = 0xD },   // 2r@
+/* 2457 */     { .cell = 0x9 },   // rot
+/* 2458 */     { .cell = 0x43 },  // chars
+/* 2459 */     { .cell = 0x12 },  // +
+/* 2460 */     { .cell = 0x24 },  // c@
+/* 2461 */     { .cell = 0x6 },   // over
+/* 2462 */     { .cell = 0xAF },  // bl
+/* 2463 */     { .cell = 0x17 },  // =
+/* 2464 */     { .cell = 0x0 },
+/* 2465 */ { .ip = META_INTERPRET },
+/* 2466 */     { .cell = 0x67 },  // IF
+/* 2467 */     { .cell = 0x0 },
+/* 2468 */ { .ip = META_COMPILE },
+/* 2469 */     { .cell = 0x54 },  // nip
+/* 2470 */     { .cell = 0x8B },  // graphic?
+/* 2471 */     { .cell = 0x7E },  // 0=
+/* 2472 */     { .cell = 0x0 },
+/* 2473 */ { .ip = META_INTERPRET },
+/* 2474 */     { .cell = 0x69 },  // ELSE
+/* 2475 */     { .cell = 0x0 },
+/* 2476 */ { .ip = META_COMPILE },
+/* 2477 */     { .cell = 0x17 },  // =
+/* 2478 */     { .cell = 0x0 },
+/* 2479 */ { .ip = META_INTERPRET },
+/* 2480 */     { .cell = 0x66 },  // THEN
+/* 2481 */     { .cell = 0x68 },  // UNTIL
+/* 2482 */     { .cell = 0x0 },
+/* 2483 */ { .ip = META_COMPILE },
+/* 2484 */     { .cell = 0x54 },  // nip
+/* 2485 */     { .cell = 0x5 },   // dup
+/* 2486 */     { .cell = 0x7F },  // 1+
+/* 2487 */     { .cell = 0x0 },
+/* 2488 */ { .ip = META_INTERPRET },
+/* 2489 */     { .cell = 0x66 },  // THEN
+/* 2490 */     { .cell = 0x0 },
+/* 2491 */ { .ip = META_COMPILE },
+/* 2492 */     { .cell = 0xC6 },  // >in
+/* 2493 */     { .cell = 0x3A },  // +!
 /* 2494 */     { .cell = 0x7 },   // r>
-/* 2495 */     { .cell = 0x4 },   // drop
-/* 2496 */     { .cell = 0x31 },  // EXIT
-/* 2497 */     { .cell = 0x0 },
-/* 2498 */ { .ip = META_LINKNAME },
-/* 2499 */ { .ip = META_STARTNAME }, { .id = "WORD" }, { .handler = do_colon },
-/* 2502 */ { .ip = META_COMPILE },
-/* 2503 */     { .cell = 0x3D },  // here
-/* 2504 */     { .cell = 0x5 },   // dup
-/* 2505 */     { .cell = 0x9 },   // rot
-/* 2506 */     { .cell = 0xD5 },  // parse
-/* 2507 */     { .cell = 0xA7 },  // counted,
-/* 2508 */     { .cell = 0xAF },  // bl
-/* 2509 */     { .cell = 0x4E },  // c,
-/* 2510 */     { .cell = 0x3D },  // here
-/* 2511 */     { .cell = 0x11 },  // -
-/* 2512 */     { .cell = 0x3F },  // allot
-/* 2513 */     { .cell = 0x31 },  // EXIT
-/* 2514 */     { .cell = 0x0 },
-/* 2515 */ { .ip = META_LINKNAME },
-/* 2516 */ { .ip = META_STARTNAME }, { .id = "PARSE-NAME" }, { .handler = do_colon },
-/* 2519 */ { .ip = META_COMPILE },
-/* 2520 */     { .cell = 0xCA },  // source
-/* 2521 */     { .cell = 0xA },   // swap
-/* 2522 */     { .cell = 0x1 },   // >r
-/* 2523 */     { .cell = 0xC6 },  // >in
-/* 2524 */     { .cell = 0x20 },  // @
-/* 2525 */     { .cell = 0x80 },  // 1-
-/* 2526 */     { .cell = 0x0 },
-/* 2527 */ { .ip = META_INTERPRET },
-/* 2528 */     { .cell = 0x65 },  // BEGIN
-/* 2529 */     { .cell = 0x0 },
-/* 2530 */ { .ip = META_COMPILE },
-/* 2531 */     { .cell = 0x7F },  // 1+
-/* 2532 */     { .cell = 0x51 },  // 2dup
-/* 2533 */     { .cell = 0x16 },  // >
-/* 2534 */     { .cell = 0x0 },
-/* 2535 */ { .ip = META_INTERPRET },
-/* 2536 */     { .cell = 0x6C },  // WHILE
-/* 2537 */     { .cell = 0x0 },
-/* 2538 */ { .ip = META_COMPILE },
-/* 2539 */     { .cell = 0x8 },   // r@
-/* 2540 */     { .cell = 0x6 },   // over
-/* 2541 */     { .cell = 0x43 },  // chars
-/* 2542 */     { .cell = 0x10 },  // +
-/* 2543 */     { .cell = 0x22 },  // c@
-/* 2544 */     { .cell = 0x8B },  // graphic?
-/* 2545 */     { .cell = 0x0 },
-/* 2546 */ { .ip = META_INTERPRET },
-/* 2547 */     { .cell = 0x68 },  // UNTIL
-/* 2548 */     { .cell = 0x66 },  // THEN
-/* 2549 */     { .cell = 0x0 },
-/* 2550 */ { .ip = META_COMPILE },
-/* 2551 */     { .cell = 0xC6 },  // >in
-/* 2552 */     { .cell = 0x1F },  // !
-/* 2553 */     { .cell = 0x4 },   // drop
-/* 2554 */     { .cell = 0x7 },   // r>
+/* 2495 */     { .cell = 0xA },   // swap
+/* 2496 */     { .cell = 0x7 },   // r>
+/* 2497 */     { .cell = 0x4 },   // drop
+/* 2498 */     { .cell = 0x33 },  // EXIT
+/* 2499 */     { .cell = 0x0 },
+/* 2500 */ { .ip = META_LINKNAME },
+/* 2501 */ { .ip = META_STARTNAME }, { .id = "WORD" }, { .handler = do_colon },
+/* 2504 */ { .ip = META_COMPILE },
+/* 2505 */     { .cell = 0x3D },  // here
+/* 2506 */     { .cell = 0x5 },   // dup
+/* 2507 */     { .cell = 0x9 },   // rot
+/* 2508 */     { .cell = 0xD5 },  // parse
+/* 2509 */     { .cell = 0xA7 },  // counted,
+/* 2510 */     { .cell = 0xAF },  // bl
+/* 2511 */     { .cell = 0x4E },  // c,
+/* 2512 */     { .cell = 0x3D },  // here
+/* 2513 */     { .cell = 0x13 },  // -
+/* 2514 */     { .cell = 0x3F },  // allot
+/* 2515 */     { .cell = 0x33 },  // EXIT
+/* 2516 */     { .cell = 0x0 },
+/* 2517 */ { .ip = META_LINKNAME },
+/* 2518 */ { .ip = META_STARTNAME }, { .id = "PARSE-NAME" }, { .handler = do_colon },
+/* 2521 */ { .ip = META_COMPILE },
+/* 2522 */     { .cell = 0xCA },  // source
+/* 2523 */     { .cell = 0xA },   // swap
+/* 2524 */     { .cell = 0x1 },   // >r
+/* 2525 */     { .cell = 0xC6 },  // >in
+/* 2526 */     { .cell = 0x22 },  // @
+/* 2527 */     { .cell = 0x80 },  // 1-
+/* 2528 */     { .cell = 0x0 },
+/* 2529 */ { .ip = META_INTERPRET },
+/* 2530 */     { .cell = 0x65 },  // BEGIN
+/* 2531 */     { .cell = 0x0 },
+/* 2532 */ { .ip = META_COMPILE },
+/* 2533 */     { .cell = 0x7F },  // 1+
+/* 2534 */     { .cell = 0x51 },  // 2dup
+/* 2535 */     { .cell = 0x18 },  // >
+/* 2536 */     { .cell = 0x0 },
+/* 2537 */ { .ip = META_INTERPRET },
+/* 2538 */     { .cell = 0x6C },  // WHILE
+/* 2539 */     { .cell = 0x0 },
+/* 2540 */ { .ip = META_COMPILE },
+/* 2541 */     { .cell = 0x8 },   // r@
+/* 2542 */     { .cell = 0x6 },   // over
+/* 2543 */     { .cell = 0x43 },  // chars
+/* 2544 */     { .cell = 0x12 },  // +
+/* 2545 */     { .cell = 0x24 },  // c@
+/* 2546 */     { .cell = 0x8B },  // graphic?
+/* 2547 */     { .cell = 0x0 },
+/* 2548 */ { .ip = META_INTERPRET },
+/* 2549 */     { .cell = 0x68 },  // UNTIL
+/* 2550 */     { .cell = 0x66 },  // THEN
+/* 2551 */     { .cell = 0x0 },
+/* 2552 */ { .ip = META_COMPILE },
+/* 2553 */     { .cell = 0xC6 },  // >in
+/* 2554 */     { .cell = 0x21 },  // !
 /* 2555 */     { .cell = 0x4 },   // drop
-/* 2556 */     { .cell = 0xAF },  // bl
-/* 2557 */     { .cell = 0xD5 },  // parse
-/* 2558 */     { .cell = 0x31 },  // EXIT
-/* 2559 */     { .cell = 0x0 },
-/* 2560 */ { .ip = META_LINKNAME },
+/* 2556 */     { .cell = 0x7 },   // r>
+/* 2557 */     { .cell = 0x4 },   // drop
+/* 2558 */     { .cell = 0xAF },  // bl
+/* 2559 */     { .cell = 0xD5 },  // parse
+/* 2560 */     { .cell = 0x33 },  // EXIT
+/* 2561 */     { .cell = 0x0 },
+/* 2562 */ { .ip = META_LINKNAME },
             /* ==== forth/common/internal/error.fth ==== */
-/* 2561 */ { .ip = META_STARTNAME }, { .id = ".ERROR" }, { .handler = do_colon },
-/* 2564 */ { .ip = META_COMPILE },
-/* 2565 */     { .cell = 0xCA },  // source
-/* 2566 */     { .cell = 0x6 },   // over
-/* 2567 */     { .cell = 0xA },   // swap
-/* 2568 */     { .cell = 0xB4 },  // type
-/* 2569 */     { .cell = 0xB5 },  // cr
-/* 2570 */     { .cell = 0xD4 },  // >in-start
-/* 2571 */     { .cell = 0x20 },  // @
-/* 2572 */     { .cell = 0x43 },  // chars
-/* 2573 */     { .cell = 0x6 },   // over
-/* 2574 */     { .cell = 0x10 },  // +
-/* 2575 */     { .cell = 0xA },   // swap
-/* 2576 */     { .cell = 0x0 },
-/* 2577 */ { .ip = META_INTERPRET },
-/* 2578 */     { .cell = 0x75 },  // ?DO
-/* 2579 */     { .cell = 0x0 },
-/* 2580 */ { .ip = META_COMPILE },
-/* 2581 */     { .cell = 0x5B },  // i
-/* 2582 */     { .cell = 0x22 },  // c@
-/* 2583 */     { .cell = 0x0 },
-/* 2584 */ { .ip = DO_LITERAL }, { .cell = 0x9 },
-/* 2586 */ { .ip = META_INTERPRET },
-/* 2587 */     { .cell = 0x42 },  // LITERAL
-/* 2588 */     { .cell = 0x0 },
-/* 2589 */ { .ip = META_COMPILE },
-/* 2590 */     { .cell = 0x15 },  // =
-/* 2591 */     { .cell = 0x0 },
-/* 2592 */ { .ip = META_INTERPRET },
-/* 2593 */     { .cell = 0x67 },  // IF
-/* 2594 */     { .cell = 0x0 },
-/* 2595 */ { .ip = DO_LITERAL }, { .cell = 0x9 },
-/* 2597 */ { .ip = META_INTERPRET },
-/* 2598 */     { .cell = 0x42 },  // LITERAL
-/* 2599 */     { .cell = 0x0 },
-/* 2600 */ { .ip = META_COMPILE },
-/* 2601 */     { .cell = 0xAD },  // emit
-/* 2602 */     { .cell = 0x0 },
-/* 2603 */ { .ip = META_INTERPRET },
-/* 2604 */     { .cell = 0x69 },  // ELSE
-/* 2605 */     { .cell = 0x0 },
-/* 2606 */ { .ip = META_COMPILE },
-/* 2607 */     { .cell = 0xB6 },  // space
-/* 2608 */     { .cell = 0x0 },
-/* 2609 */ { .ip = META_INTERPRET },
-/* 2610 */     { .cell = 0x66 },  // THEN
-/* 2611 */     { .cell = 0x0 },
-/* 2612 */ { .ip = DO_LITERAL }, { .cell = 0x1 },
-/* 2614 */ { .ip = META_INTERPRET },
-/* 2615 */     { .cell = 0x43 },  // chars
-/* 2616 */     { .cell = 0x42 },  // LITERAL
-/* 2617 */     { .cell = 0x77 },  // +LOOP
-/* 2618 */     { .cell = 0x0 },
-/* 2619 */ { .ip = META_COMPILE },
-/* 2620 */     { .cell = 0xC6 },  // >in
-/* 2621 */     { .cell = 0x20 },  // @
-/* 2622 */     { .cell = 0xD4 },  // >in-start
-/* 2623 */     { .cell = 0x20 },  // @
-/* 2624 */     { .cell = 0x0 },
-/* 2625 */ { .ip = META_INTERPRET },
-/* 2626 */     { .cell = 0x75 },  // ?DO
-/* 2627 */     { .cell = 0x0 },
-/* 2628 */ { .ip = DO_LITERAL }, { .cell = 0x5E },
-/* 2630 */ { .ip = META_INTERPRET },
-/* 2631 */     { .cell = 0x42 },  // LITERAL
-/* 2632 */     { .cell = 0x0 },
-/* 2633 */ { .ip = META_COMPILE },
-/* 2634 */     { .cell = 0xAD },  // emit
-/* 2635 */     { .cell = 0x0 },
-/* 2636 */ { .ip = META_INTERPRET },
-/* 2637 */     { .cell = 0x78 },  // LOOP
-/* 2638 */     { .cell = 0x0 },
-/* 2639 */ { .ip = META_COMPILE },
-/* 2640 */     { .cell = 0xB5 },  // cr
-/* 2641 */     { .cell = 0x39 },  // throw
-/* 2642 */     { .cell = 0x31 },  // EXIT
-/* 2643 */     { .cell = 0x0 },
-/* 2644 */ { .ip = META_LINKNAME },
+/* 2563 */ { .ip = META_STARTNAME }, { .id = ".ERROR" }, { .handler = do_colon },
+/* 2566 */ { .ip = META_COMPILE },
+/* 2567 */     { .cell = 0xCA },  // source
+/* 2568 */     { .cell = 0x6 },   // over
+/* 2569 */     { .cell = 0xA },   // swap
+/* 2570 */     { .cell = 0xB4 },  // type
+/* 2571 */     { .cell = 0xB5 },  // cr
+/* 2572 */     { .cell = 0xD4 },  // >in-start
+/* 2573 */     { .cell = 0x22 },  // @
+/* 2574 */     { .cell = 0x43 },  // chars
+/* 2575 */     { .cell = 0x6 },   // over
+/* 2576 */     { .cell = 0x12 },  // +
+/* 2577 */     { .cell = 0xA },   // swap
+/* 2578 */     { .cell = 0x0 },
+/* 2579 */ { .ip = META_INTERPRET },
+/* 2580 */     { .cell = 0x75 },  // ?DO
+/* 2581 */     { .cell = 0x0 },
+/* 2582 */ { .ip = META_COMPILE },
+/* 2583 */     { .cell = 0x5B },  // i
+/* 2584 */     { .cell = 0x24 },  // c@
+/* 2585 */     { .cell = 0x0 },
+/* 2586 */ { .ip = DO_LITERAL }, { .cell = 0x9 },
+/* 2588 */ { .ip = META_INTERPRET },
+/* 2589 */     { .cell = 0x42 },  // LITERAL
+/* 2590 */     { .cell = 0x0 },
+/* 2591 */ { .ip = META_COMPILE },
+/* 2592 */     { .cell = 0x17 },  // =
+/* 2593 */     { .cell = 0x0 },
+/* 2594 */ { .ip = META_INTERPRET },
+/* 2595 */     { .cell = 0x67 },  // IF
+/* 2596 */     { .cell = 0x0 },
+/* 2597 */ { .ip = DO_LITERAL }, { .cell = 0x9 },
+/* 2599 */ { .ip = META_INTERPRET },
+/* 2600 */     { .cell = 0x42 },  // LITERAL
+/* 2601 */     { .cell = 0x0 },
+/* 2602 */ { .ip = META_COMPILE },
+/* 2603 */     { .cell = 0xAD },  // emit
+/* 2604 */     { .cell = 0x0 },
+/* 2605 */ { .ip = META_INTERPRET },
+/* 2606 */     { .cell = 0x69 },  // ELSE
+/* 2607 */     { .cell = 0x0 },
+/* 2608 */ { .ip = META_COMPILE },
+/* 2609 */     { .cell = 0xB6 },  // space
+/* 2610 */     { .cell = 0x0 },
+/* 2611 */ { .ip = META_INTERPRET },
+/* 2612 */     { .cell = 0x66 },  // THEN
+/* 2613 */     { .cell = 0x0 },
+/* 2614 */ { .ip = DO_LITERAL }, { .cell = 0x1 },
+/* 2616 */ { .ip = META_INTERPRET },
+/* 2617 */     { .cell = 0x43 },  // chars
+/* 2618 */     { .cell = 0x42 },  // LITERAL
+/* 2619 */     { .cell = 0x77 },  // +LOOP
+/* 2620 */     { .cell = 0x0 },
+/* 2621 */ { .ip = META_COMPILE },
+/* 2622 */     { .cell = 0xC6 },  // >in
+/* 2623 */     { .cell = 0x22 },  // @
+/* 2624 */     { .cell = 0xD4 },  // >in-start
+/* 2625 */     { .cell = 0x22 },  // @
+/* 2626 */     { .cell = 0x0 },
+/* 2627 */ { .ip = META_INTERPRET },
+/* 2628 */     { .cell = 0x75 },  // ?DO
+/* 2629 */     { .cell = 0x0 },
+/* 2630 */ { .ip = DO_LITERAL }, { .cell = 0x5E },
+/* 2632 */ { .ip = META_INTERPRET },
+/* 2633 */     { .cell = 0x42 },  // LITERAL
+/* 2634 */     { .cell = 0x0 },
+/* 2635 */ { .ip = META_COMPILE },
+/* 2636 */     { .cell = 0xAD },  // emit
+/* 2637 */     { .cell = 0x0 },
+/* 2638 */ { .ip = META_INTERPRET },
+/* 2639 */     { .cell = 0x78 },  // LOOP
+/* 2640 */     { .cell = 0x0 },
+/* 2641 */ { .ip = META_COMPILE },
+/* 2642 */     { .cell = 0xB5 },  // cr
+/* 2643 */     { .cell = 0x39 },  // throw
+/* 2644 */     { .cell = 0x33 },  // EXIT
+/* 2645 */     { .cell = 0x0 },
+/* 2646 */ { .ip = META_LINKNAME },
             /* ==== forth/c-gen/search/base.fth ==== */
-/* 2645 */ { .ip = DO_LITERAL }, { .cell = (cell_ft) (&FORTH_WORDLIST) },
-/* 2647 */ { .ip = META_ADDNAME }, { .id = "FORTH-WORDLIST" }, { .handler = do_constant },
-/* 2650 */ { .ip = META_INTERPRET },
-/* 2651 */     { .cell = 0x40 },  // ,
+/* 2647 */ { .ip = DO_LITERAL }, { .cell = (cell_ft) (&FORTH_WORDLIST) },
+/* 2649 */ { .ip = META_ADDNAME }, { .id = "FORTH-WORDLIST" }, { .handler = do_constant },
+/* 2652 */ { .ip = META_INTERPRET },
+/* 2653 */     { .cell = 0x40 },  // ,
             /* ==== forth/common/search/base.fth ==== */
-/* 2652 */     { .cell = 0x0 },
-/* 2653 */ { .ip = META_ADDNAME }, { .id = "SEARCH-ORDER" }, { .handler = do_variable },
-/* 2656 */ { .ip = DO_LITERAL }, { .cell = (cell_ft) (CELL_SIZE) },
-/* 2658 */ { .ip = META_INTERPRET },
-/* 2659 */     { .cell = 0x3F },  // ALLOT
-/* 2660 */     { .cell = 0x0 },
-/* 2661 */ { .ip = DO_LITERAL }, { .cell = 0x8 },
-/* 2663 */ { .ip = META_INTERPRET },
-/* 2664 */     { .cell = 0x45 },  // cells
-/* 2665 */     { .cell = 0x3F },  // allot
-/* 2666 */     { .cell = 0x0 },
-/* 2667 */ { .ip = META_STARTNAME }, { .id = "GET-ORDER" }, { .handler = do_colon },
-/* 2670 */ { .ip = META_COMPILE },
-/* 2671 */     { .cell = 0xDA },  // search-order
-/* 2672 */     { .cell = 0x5 },   // dup
-/* 2673 */     { .cell = 0x20 },  // @
+/* 2654 */     { .cell = 0x0 },
+/* 2655 */ { .ip = META_ADDNAME }, { .id = "SEARCH-ORDER" }, { .handler = do_variable },
+/* 2658 */ { .ip = DO_LITERAL }, { .cell = (cell_ft) (CELL_SIZE) },
+/* 2660 */ { .ip = META_INTERPRET },
+/* 2661 */     { .cell = 0x3F },  // ALLOT
+/* 2662 */     { .cell = 0x0 },
+/* 2663 */ { .ip = DO_LITERAL }, { .cell = 0x8 },
+/* 2665 */ { .ip = META_INTERPRET },
+/* 2666 */     { .cell = 0x45 },  // cells
+/* 2667 */     { .cell = 0x3F },  // allot
+/* 2668 */     { .cell = 0x0 },
+/* 2669 */ { .ip = META_STARTNAME }, { .id = "GET-ORDER" }, { .handler = do_colon },
+/* 2672 */ { .ip = META_COMPILE },
+/* 2673 */     { .cell = 0xDA },  // search-order
 /* 2674 */     { .cell = 0x5 },   // dup
-/* 2675 */     { .cell = 0x1 },   // >r
-/* 2676 */     { .cell = 0x45 },  // cells
-/* 2677 */     { .cell = 0x10 },  // +
-/* 2678 */     { .cell = 0x7 },   // r>
-/* 2679 */     { .cell = 0x0 },
-/* 2680 */ { .ip = META_INTERPRET },
-/* 2681 */     { .cell = 0x65 },  // BEGIN
-/* 2682 */     { .cell = 0x0 },
-/* 2683 */ { .ip = META_COMPILE },
-/* 2684 */     { .cell = 0x5 },   // dup
-/* 2685 */     { .cell = 0x0 },
-/* 2686 */ { .ip = META_INTERPRET },
-/* 2687 */     { .cell = 0x6C },  // WHILE
-/* 2688 */     { .cell = 0x0 },
-/* 2689 */ { .ip = META_COMPILE },
-/* 2690 */     { .cell = 0x1 },   // >r
-/* 2691 */     { .cell = 0x5 },   // dup
-/* 2692 */     { .cell = 0x20 },  // @
-/* 2693 */     { .cell = 0xA },   // swap
-/* 2694 */     { .cell = 0x0 },
-/* 2695 */ { .ip = DO_LITERAL }, { .cell = 0x1 },
-/* 2697 */ { .ip = META_INTERPRET },
-/* 2698 */     { .cell = 0x45 },  // cells
-/* 2699 */     { .cell = 0x42 },  // LITERAL
-/* 2700 */     { .cell = 0x0 },
-/* 2701 */ { .ip = META_COMPILE },
-/* 2702 */     { .cell = 0x11 },  // -
-/* 2703 */     { .cell = 0x7 },   // r>
-/* 2704 */     { .cell = 0x80 },  // 1-
-/* 2705 */     { .cell = 0x0 },
-/* 2706 */ { .ip = META_INTERPRET },
-/* 2707 */     { .cell = 0x6B },  // REPEAT
-/* 2708 */     { .cell = 0x0 },
-/* 2709 */ { .ip = META_COMPILE },
-/* 2710 */     { .cell = 0x4 },   // drop
-/* 2711 */     { .cell = 0x20 },  // @
-/* 2712 */     { .cell = 0x31 },  // EXIT
-/* 2713 */     { .cell = 0x0 },
-/* 2714 */ { .ip = META_LINKNAME },
-/* 2715 */ { .ip = META_STARTNAME }, { .id = "SET-ORDER" }, { .handler = do_colon },
-/* 2718 */ { .ip = META_COMPILE },
-/* 2719 */     { .cell = 0x5 },   // dup
-/* 2720 */     { .cell = 0x0 },
-/* 2721 */ { .ip = DO_LITERAL }, { .cell = 0x8 },
-/* 2723 */ { .ip = META_INTERPRET },
-/* 2724 */     { .cell = 0x42 },  // LITERAL
-/* 2725 */     { .cell = 0x0 },
-/* 2726 */ { .ip = META_COMPILE },
-/* 2727 */     { .cell = 0x16 },  // >
-/* 2728 */     { .cell = 0x0 },
-/* 2729 */ { .ip = META_INTERPRET },
-/* 2730 */     { .cell = 0x67 },  // IF
-/* 2731 */     { .cell = 0x0 },
-/* 2732 */ { .ip = DO_LITERAL }, { .cell = -0x31 },
-/* 2734 */ { .ip = META_INTERPRET },
-/* 2735 */     { .cell = 0x42 },  // LITERAL
-/* 2736 */     { .cell = 0x0 },
-/* 2737 */ { .ip = META_COMPILE },
-/* 2738 */     { .cell = 0x39 },  // throw
-/* 2739 */     { .cell = 0x0 },
-/* 2740 */ { .ip = META_INTERPRET },
-/* 2741 */     { .cell = 0x66 },  // THEN
-/* 2742 */     { .cell = 0x0 },
-/* 2743 */ { .ip = META_COMPILE },
-/* 2744 */     { .cell = 0x5 },   // dup
-/* 2745 */     { .cell = 0x0 },
-/* 2746 */ { .ip = DO_LITERAL }, { .cell = -0x1 },
-/* 2748 */ { .ip = META_INTERPRET },
-/* 2749 */     { .cell = 0x42 },  // LITERAL
-/* 2750 */     { .cell = 0x0 },
-/* 2751 */ { .ip = META_COMPILE },
-/* 2752 */     { .cell = 0x15 },  // =
-/* 2753 */     { .cell = 0x0 },
-/* 2754 */ { .ip = META_INTERPRET },
-/* 2755 */     { .cell = 0x67 },  // IF
-/* 2756 */     { .cell = 0x0 },
-/* 2757 */ { .ip = META_COMPILE },
-/* 2758 */     { .cell = 0x4 },   // drop
-/* 2759 */     { .cell = 0xD9 },  // forth-wordlist
-/* 2760 */     { .cell = 0x0 },
-/* 2761 */ { .ip = DO_LITERAL }, { .cell = 0x1 },
-/* 2763 */ { .ip = META_INTERPRET },
-/* 2764 */     { .cell = 0x42 },  // LITERAL
-/* 2765 */     { .cell = 0x66 },  // THEN
-/* 2766 */     { .cell = 0x0 },
-/* 2767 */ { .ip = META_COMPILE },
-/* 2768 */     { .cell = 0xDA },  // search-order
-/* 2769 */     { .cell = 0x51 },  // 2dup
-/* 2770 */     { .cell = 0x1F },  // !
-/* 2771 */     { .cell = 0xA },   // swap
-/* 2772 */     { .cell = 0x0 },
-/* 2773 */ { .ip = META_INTERPRET },
-/* 2774 */     { .cell = 0x65 },  // BEGIN
-/* 2775 */     { .cell = 0x0 },
-/* 2776 */ { .ip = META_COMPILE },
-/* 2777 */     { .cell = 0x5 },   // dup
-/* 2778 */     { .cell = 0x0 },
-/* 2779 */ { .ip = META_INTERPRET },
-/* 2780 */     { .cell = 0x6C },  // WHILE
-/* 2781 */     { .cell = 0x0 },
-/* 2782 */ { .ip = META_COMPILE },
-/* 2783 */     { .cell = 0x1 },   // >r
-/* 2784 */     { .cell = 0x46 },  // cell+
-/* 2785 */     { .cell = 0xA },   // swap
-/* 2786 */     { .cell = 0x6 },   // over
-/* 2787 */     { .cell = 0x1F },  // !
-/* 2788 */     { .cell = 0x7 },   // r>
-/* 2789 */     { .cell = 0x80 },  // 1-
-/* 2790 */     { .cell = 0x0 },
-/* 2791 */ { .ip = META_INTERPRET },
-/* 2792 */     { .cell = 0x6B },  // REPEAT
-/* 2793 */     { .cell = 0x0 },
-/* 2794 */ { .ip = META_COMPILE },
-/* 2795 */     { .cell = 0x50 },  // 2drop
-/* 2796 */     { .cell = 0x31 },  // EXIT
-/* 2797 */     { .cell = 0x0 },
-/* 2798 */ { .ip = META_LINKNAME },
-/* 2799 */ { .ip = META_STARTNAME }, { .id = "CONTEXT" }, { .handler = do_colon },
-/* 2802 */ { .ip = META_COMPILE },
-/* 2803 */     { .cell = 0xDA },  // search-order
-/* 2804 */     { .cell = 0x5 },   // dup
-/* 2805 */     { .cell = 0x20 },  // @
-/* 2806 */     { .cell = 0x0 },
-/* 2807 */ { .ip = META_INTERPRET },
-/* 2808 */     { .cell = 0x67 },  // IF
-/* 2809 */     { .cell = 0x0 },
-/* 2810 */ { .ip = META_COMPILE },
-/* 2811 */     { .cell = 0x46 },  // cell+
-/* 2812 */     { .cell = 0x0 },
-/* 2813 */ { .ip = META_INTERPRET },
-/* 2814 */     { .cell = 0x69 },  // ELSE
-/* 2815 */     { .cell = 0x0 },
-/* 2816 */ { .ip = DO_LITERAL }, { .cell = -0x32 },
-/* 2818 */ { .ip = META_INTERPRET },
-/* 2819 */     { .cell = 0x42 },  // LITERAL
-/* 2820 */     { .cell = 0x0 },
-/* 2821 */ { .ip = META_COMPILE },
-/* 2822 */     { .cell = 0x39 },  // throw
-/* 2823 */     { .cell = 0x0 },
-/* 2824 */ { .ip = META_INTERPRET },
-/* 2825 */     { .cell = 0x66 },  // THEN
-/* 2826 */     { .cell = 0x0 },
-/* 2827 */ { .ip = META_COMPILE },
-/* 2828 */     { .cell = 0x31 },  // EXIT
-/* 2829 */     { .cell = 0x0 },
-/* 2830 */ { .ip = META_LINKNAME },
-/* 2831 */ { .ip = META_STARTNAME }, { .id = "DEFINITIONS" }, { .handler = do_colon },
-/* 2834 */ { .ip = META_COMPILE },
-/* 2835 */     { .cell = 0xDD },  // context
-/* 2836 */     { .cell = 0x20 },  // @
-/* 2837 */     { .cell = 0xA5 },  // set-current
-/* 2838 */     { .cell = 0x31 },  // EXIT
-/* 2839 */     { .cell = 0x0 },
-/* 2840 */ { .ip = META_LINKNAME },
-/* 2841 */ { .ip = META_INTERPRET },
-/* 2842 */     { .cell = 0xD9 },  // forth-wordlist
-/* 2843 */     { .cell = 0x0 },
-/* 2844 */ { .ip = DO_LITERAL }, { .cell = 0x1 },
-/* 2846 */ { .ip = META_INTERPRET },
-/* 2847 */     { .cell = 0xDC },  // set-order
-/* 2848 */     { .cell = 0xDE },  // definitions
+/* 2675 */     { .cell = 0x22 },  // @
+/* 2676 */     { .cell = 0x5 },   // dup
+/* 2677 */     { .cell = 0x1 },   // >r
+/* 2678 */     { .cell = 0x45 },  // cells
+/* 2679 */     { .cell = 0x12 },  // +
+/* 2680 */     { .cell = 0x7 },   // r>
+/* 2681 */     { .cell = 0x0 },
+/* 2682 */ { .ip = META_INTERPRET },
+/* 2683 */     { .cell = 0x65 },  // BEGIN
+/* 2684 */     { .cell = 0x0 },
+/* 2685 */ { .ip = META_COMPILE },
+/* 2686 */     { .cell = 0x5 },   // dup
+/* 2687 */     { .cell = 0x0 },
+/* 2688 */ { .ip = META_INTERPRET },
+/* 2689 */     { .cell = 0x6C },  // WHILE
+/* 2690 */     { .cell = 0x0 },
+/* 2691 */ { .ip = META_COMPILE },
+/* 2692 */     { .cell = 0x1 },   // >r
+/* 2693 */     { .cell = 0x5 },   // dup
+/* 2694 */     { .cell = 0x22 },  // @
+/* 2695 */     { .cell = 0xA },   // swap
+/* 2696 */     { .cell = 0x0 },
+/* 2697 */ { .ip = DO_LITERAL }, { .cell = 0x1 },
+/* 2699 */ { .ip = META_INTERPRET },
+/* 2700 */     { .cell = 0x45 },  // cells
+/* 2701 */     { .cell = 0x42 },  // LITERAL
+/* 2702 */     { .cell = 0x0 },
+/* 2703 */ { .ip = META_COMPILE },
+/* 2704 */     { .cell = 0x13 },  // -
+/* 2705 */     { .cell = 0x7 },   // r>
+/* 2706 */     { .cell = 0x80 },  // 1-
+/* 2707 */     { .cell = 0x0 },
+/* 2708 */ { .ip = META_INTERPRET },
+/* 2709 */     { .cell = 0x6B },  // REPEAT
+/* 2710 */     { .cell = 0x0 },
+/* 2711 */ { .ip = META_COMPILE },
+/* 2712 */     { .cell = 0x4 },   // drop
+/* 2713 */     { .cell = 0x22 },  // @
+/* 2714 */     { .cell = 0x33 },  // EXIT
+/* 2715 */     { .cell = 0x0 },
+/* 2716 */ { .ip = META_LINKNAME },
+/* 2717 */ { .ip = META_STARTNAME }, { .id = "SET-ORDER" }, { .handler = do_colon },
+/* 2720 */ { .ip = META_COMPILE },
+/* 2721 */     { .cell = 0x5 },   // dup
+/* 2722 */     { .cell = 0x0 },
+/* 2723 */ { .ip = DO_LITERAL }, { .cell = 0x8 },
+/* 2725 */ { .ip = META_INTERPRET },
+/* 2726 */     { .cell = 0x42 },  // LITERAL
+/* 2727 */     { .cell = 0x0 },
+/* 2728 */ { .ip = META_COMPILE },
+/* 2729 */     { .cell = 0x18 },  // >
+/* 2730 */     { .cell = 0x0 },
+/* 2731 */ { .ip = META_INTERPRET },
+/* 2732 */     { .cell = 0x67 },  // IF
+/* 2733 */     { .cell = 0x0 },
+/* 2734 */ { .ip = DO_LITERAL }, { .cell = -0x31 },
+/* 2736 */ { .ip = META_INTERPRET },
+/* 2737 */     { .cell = 0x42 },  // LITERAL
+/* 2738 */     { .cell = 0x0 },
+/* 2739 */ { .ip = META_COMPILE },
+/* 2740 */     { .cell = 0x39 },  // throw
+/* 2741 */     { .cell = 0x0 },
+/* 2742 */ { .ip = META_INTERPRET },
+/* 2743 */     { .cell = 0x66 },  // THEN
+/* 2744 */     { .cell = 0x0 },
+/* 2745 */ { .ip = META_COMPILE },
+/* 2746 */     { .cell = 0x5 },   // dup
+/* 2747 */     { .cell = 0x0 },
+/* 2748 */ { .ip = DO_LITERAL }, { .cell = -0x1 },
+/* 2750 */ { .ip = META_INTERPRET },
+/* 2751 */     { .cell = 0x42 },  // LITERAL
+/* 2752 */     { .cell = 0x0 },
+/* 2753 */ { .ip = META_COMPILE },
+/* 2754 */     { .cell = 0x17 },  // =
+/* 2755 */     { .cell = 0x0 },
+/* 2756 */ { .ip = META_INTERPRET },
+/* 2757 */     { .cell = 0x67 },  // IF
+/* 2758 */     { .cell = 0x0 },
+/* 2759 */ { .ip = META_COMPILE },
+/* 2760 */     { .cell = 0x4 },   // drop
+/* 2761 */     { .cell = 0xD9 },  // forth-wordlist
+/* 2762 */     { .cell = 0x0 },
+/* 2763 */ { .ip = DO_LITERAL }, { .cell = 0x1 },
+/* 2765 */ { .ip = META_INTERPRET },
+/* 2766 */     { .cell = 0x42 },  // LITERAL
+/* 2767 */     { .cell = 0x66 },  // THEN
+/* 2768 */     { .cell = 0x0 },
+/* 2769 */ { .ip = META_COMPILE },
+/* 2770 */     { .cell = 0xDA },  // search-order
+/* 2771 */     { .cell = 0x51 },  // 2dup
+/* 2772 */     { .cell = 0x21 },  // !
+/* 2773 */     { .cell = 0xA },   // swap
+/* 2774 */     { .cell = 0x0 },
+/* 2775 */ { .ip = META_INTERPRET },
+/* 2776 */     { .cell = 0x65 },  // BEGIN
+/* 2777 */     { .cell = 0x0 },
+/* 2778 */ { .ip = META_COMPILE },
+/* 2779 */     { .cell = 0x5 },   // dup
+/* 2780 */     { .cell = 0x0 },
+/* 2781 */ { .ip = META_INTERPRET },
+/* 2782 */     { .cell = 0x6C },  // WHILE
+/* 2783 */     { .cell = 0x0 },
+/* 2784 */ { .ip = META_COMPILE },
+/* 2785 */     { .cell = 0x1 },   // >r
+/* 2786 */     { .cell = 0x46 },  // cell+
+/* 2787 */     { .cell = 0xA },   // swap
+/* 2788 */     { .cell = 0x6 },   // over
+/* 2789 */     { .cell = 0x21 },  // !
+/* 2790 */     { .cell = 0x7 },   // r>
+/* 2791 */     { .cell = 0x80 },  // 1-
+/* 2792 */     { .cell = 0x0 },
+/* 2793 */ { .ip = META_INTERPRET },
+/* 2794 */     { .cell = 0x6B },  // REPEAT
+/* 2795 */     { .cell = 0x0 },
+/* 2796 */ { .ip = META_COMPILE },
+/* 2797 */     { .cell = 0x50 },  // 2drop
+/* 2798 */     { .cell = 0x33 },  // EXIT
+/* 2799 */     { .cell = 0x0 },
+/* 2800 */ { .ip = META_LINKNAME },
+/* 2801 */ { .ip = META_STARTNAME }, { .id = "CONTEXT" }, { .handler = do_colon },
+/* 2804 */ { .ip = META_COMPILE },
+/* 2805 */     { .cell = 0xDA },  // search-order
+/* 2806 */     { .cell = 0x5 },   // dup
+/* 2807 */     { .cell = 0x22 },  // @
+/* 2808 */     { .cell = 0x0 },
+/* 2809 */ { .ip = META_INTERPRET },
+/* 2810 */     { .cell = 0x67 },  // IF
+/* 2811 */     { .cell = 0x0 },
+/* 2812 */ { .ip = META_COMPILE },
+/* 2813 */     { .cell = 0x46 },  // cell+
+/* 2814 */     { .cell = 0x0 },
+/* 2815 */ { .ip = META_INTERPRET },
+/* 2816 */     { .cell = 0x69 },  // ELSE
+/* 2817 */     { .cell = 0x0 },
+/* 2818 */ { .ip = DO_LITERAL }, { .cell = -0x32 },
+/* 2820 */ { .ip = META_INTERPRET },
+/* 2821 */     { .cell = 0x42 },  // LITERAL
+/* 2822 */     { .cell = 0x0 },
+/* 2823 */ { .ip = META_COMPILE },
+/* 2824 */     { .cell = 0x39 },  // throw
+/* 2825 */     { .cell = 0x0 },
+/* 2826 */ { .ip = META_INTERPRET },
+/* 2827 */     { .cell = 0x66 },  // THEN
+/* 2828 */     { .cell = 0x0 },
+/* 2829 */ { .ip = META_COMPILE },
+/* 2830 */     { .cell = 0x33 },  // EXIT
+/* 2831 */     { .cell = 0x0 },
+/* 2832 */ { .ip = META_LINKNAME },
+/* 2833 */ { .ip = META_STARTNAME }, { .id = "DEFINITIONS" }, { .handler = do_colon },
+/* 2836 */ { .ip = META_COMPILE },
+/* 2837 */     { .cell = 0xDD },  // context
+/* 2838 */     { .cell = 0x22 },  // @
+/* 2839 */     { .cell = 0xA5 },  // set-current
+/* 2840 */     { .cell = 0x33 },  // EXIT
+/* 2841 */     { .cell = 0x0 },
+/* 2842 */ { .ip = META_LINKNAME },
+/* 2843 */ { .ip = META_INTERPRET },
+/* 2844 */     { .cell = 0xD9 },  // forth-wordlist
+/* 2845 */     { .cell = 0x0 },
+/* 2846 */ { .ip = DO_LITERAL }, { .cell = 0x1 },
+/* 2848 */ { .ip = META_INTERPRET },
+/* 2849 */     { .cell = 0xDC },  // set-order
+/* 2850 */     { .cell = 0xDE },  // definitions
             /* ==== forth/common/internal/lookup.fth ==== */
-/* 2849 */     { .cell = 0x0 },
-/* 2850 */ { .ip = META_STARTNAME }, { .id = "ID=" }, { .handler = do_colon },
-/* 2853 */ { .ip = META_COMPILE },
-/* 2854 */     { .cell = 0x9 },   // rot
-/* 2855 */     { .cell = 0x6 },   // over
-/* 2856 */     { .cell = 0x85 },  // <>
-/* 2857 */     { .cell = 0x0 },
-/* 2858 */ { .ip = META_INTERPRET },
-/* 2859 */     { .cell = 0x67 },  // IF
-/* 2860 */     { .cell = 0x0 },
-/* 2861 */ { .ip = META_COMPILE },
-/* 2862 */     { .cell = 0x4 },   // drop
-/* 2863 */     { .cell = 0x50 },  // 2drop
-/* 2864 */     { .cell = 0x88 },  // false
-/* 2865 */     { .cell = 0x31 },  // exit
-/* 2866 */     { .cell = 0x0 },
-/* 2867 */ { .ip = META_INTERPRET },
-/* 2868 */     { .cell = 0x66 },  // THEN
-/* 2869 */     { .cell = 0x0 },
-/* 2870 */ { .ip = DO_LITERAL }, { .cell = 0x0 },
-/* 2872 */ { .ip = META_INTERPRET },
-/* 2873 */     { .cell = 0x42 },  // LITERAL
-/* 2874 */     { .cell = 0x74 },  // DO
-/* 2875 */     { .cell = 0x0 },
-/* 2876 */ { .ip = META_COMPILE },
-/* 2877 */     { .cell = 0x6 },   // over
-/* 2878 */     { .cell = 0x5B },  // i
-/* 2879 */     { .cell = 0x10 },  // +
-/* 2880 */     { .cell = 0x22 },  // c@
-/* 2881 */     { .cell = 0x8E },  // toupper
-/* 2882 */     { .cell = 0x6 },   // over
-/* 2883 */     { .cell = 0x5B },  // i
-/* 2884 */     { .cell = 0x10 },  // +
-/* 2885 */     { .cell = 0x22 },  // c@
-/* 2886 */     { .cell = 0x8E },  // toupper
-/* 2887 */     { .cell = 0x85 },  // <>
-/* 2888 */     { .cell = 0x0 },
-/* 2889 */ { .ip = META_INTERPRET },
-/* 2890 */     { .cell = 0x67 },  // IF
-/* 2891 */     { .cell = 0x0 },
-/* 2892 */ { .ip = META_COMPILE },
-/* 2893 */     { .cell = 0x50 },  // 2drop
-/* 2894 */     { .cell = 0x88 },  // false
-/* 2895 */     { .cell = 0x5A },  // unloop
-/* 2896 */     { .cell = 0x31 },  // exit
-/* 2897 */     { .cell = 0x0 },
-/* 2898 */ { .ip = META_INTERPRET },
-/* 2899 */     { .cell = 0x66 },  // THEN
-/* 2900 */     { .cell = 0x0 },
-/* 2901 */ { .ip = DO_LITERAL }, { .cell = 0x1 },
-/* 2903 */ { .ip = META_INTERPRET },
-/* 2904 */     { .cell = 0x43 },  // chars
-/* 2905 */     { .cell = 0x42 },  // LITERAL
-/* 2906 */     { .cell = 0x77 },  // +LOOP
-/* 2907 */     { .cell = 0x0 },
-/* 2908 */ { .ip = META_COMPILE },
-/* 2909 */     { .cell = 0x50 },  // 2drop
-/* 2910 */     { .cell = 0x89 },  // true
-/* 2911 */     { .cell = 0x31 },  // EXIT
-/* 2912 */     { .cell = 0x0 },
-/* 2913 */ { .ip = META_LINKNAME },
-/* 2914 */ { .ip = META_STARTNAME }, { .id = "WID-LOOKUP" }, { .handler = do_colon },
-/* 2917 */ { .ip = META_COMPILE },
-/* 2918 */     { .cell = 0x20 },  // @
-/* 2919 */     { .cell = 0x0 },
-/* 2920 */ { .ip = META_INTERPRET },
-/* 2921 */     { .cell = 0x65 },  // BEGIN
-/* 2922 */     { .cell = 0x0 },
-/* 2923 */ { .ip = META_COMPILE },
-/* 2924 */     { .cell = 0x5 },   // dup
-/* 2925 */     { .cell = 0x0 },
-/* 2926 */ { .ip = META_INTERPRET },
-/* 2927 */     { .cell = 0x6C },  // WHILE
-/* 2928 */     { .cell = 0x0 },
-/* 2929 */ { .ip = META_COMPILE },
-/* 2930 */     { .cell = 0x1 },   // >r
-/* 2931 */     { .cell = 0x51 },  // 2dup
-/* 2932 */     { .cell = 0x8 },   // r@
-/* 2933 */     { .cell = 0x9C },  // name>string
-/* 2934 */     { .cell = 0xDF },  // id=
-/* 2935 */     { .cell = 0x0 },
-/* 2936 */ { .ip = META_INTERPRET },
-/* 2937 */     { .cell = 0x67 },  // IF
-/* 2938 */     { .cell = 0x0 },
-/* 2939 */ { .ip = META_COMPILE },
-/* 2940 */     { .cell = 0x50 },  // 2drop
-/* 2941 */     { .cell = 0x7 },   // r>
-/* 2942 */     { .cell = 0x31 },  // exit
-/* 2943 */     { .cell = 0x0 },
-/* 2944 */ { .ip = META_INTERPRET },
-/* 2945 */     { .cell = 0x66 },  // THEN
-/* 2946 */     { .cell = 0x0 },
-/* 2947 */ { .ip = META_COMPILE },
-/* 2948 */     { .cell = 0x7 },   // r>
-/* 2949 */     { .cell = 0x9B },  // name>prev
-/* 2950 */     { .cell = 0x0 },
-/* 2951 */ { .ip = META_INTERPRET },
-/* 2952 */     { .cell = 0x6B },  // REPEAT
-/* 2953 */     { .cell = 0x0 },
-/* 2954 */ { .ip = META_COMPILE },
-/* 2955 */     { .cell = 0x4 },   // drop
-/* 2956 */     { .cell = 0x50 },  // 2drop
-/* 2957 */     { .cell = 0x0 },
-/* 2958 */ { .ip = DO_LITERAL }, { .cell = 0x0 },
-/* 2960 */ { .ip = META_INTERPRET },
-/* 2961 */     { .cell = 0x42 },  // LITERAL
-/* 2962 */     { .cell = 0x0 },
-/* 2963 */ { .ip = META_COMPILE },
-/* 2964 */     { .cell = 0x31 },  // EXIT
-/* 2965 */     { .cell = 0x0 },
-/* 2966 */ { .ip = META_LINKNAME },
-/* 2967 */ { .ip = META_STARTNAME }, { .id = "LOOKUP" }, { .handler = do_colon },
-/* 2970 */ { .ip = META_COMPILE },
-/* 2971 */     { .cell = 0xB },   // 2>r
-/* 2972 */     { .cell = 0xDB },  // get-order
-/* 2973 */     { .cell = 0x0 },
-/* 2974 */ { .ip = META_INTERPRET },
-/* 2975 */     { .cell = 0x65 },  // BEGIN
-/* 2976 */     { .cell = 0x0 },
-/* 2977 */ { .ip = META_COMPILE },
-/* 2978 */     { .cell = 0x5 },   // dup
-/* 2979 */     { .cell = 0x0 },
-/* 2980 */ { .ip = META_INTERPRET },
-/* 2981 */     { .cell = 0x6C },  // WHILE
-/* 2982 */     { .cell = 0x0 },
-/* 2983 */ { .ip = META_COMPILE },
-/* 2984 */     { .cell = 0x80 },  // 1-
-/* 2985 */     { .cell = 0xA },   // swap
-/* 2986 */     { .cell = 0xD },   // 2r@
-/* 2987 */     { .cell = 0x9 },   // rot
-/* 2988 */     { .cell = 0xE0 },  // wid-lookup
-/* 2989 */     { .cell = 0x2 },   // ?dup
-/* 2990 */     { .cell = 0x0 },
-/* 2991 */ { .ip = META_INTERPRET },
-/* 2992 */     { .cell = 0x67 },  // IF
-/* 2993 */     { .cell = 0x0 },
-/* 2994 */ { .ip = META_COMPILE },
-/* 2995 */     { .cell = 0x1 },   // >r
-/* 2996 */     { .cell = 0x0 },
-/* 2997 */ { .ip = META_INTERPRET },
-/* 2998 */     { .cell = 0x65 },  // BEGIN
-/* 2999 */     { .cell = 0x0 },
-/* 3000 */ { .ip = META_COMPILE },
-/* 3001 */     { .cell = 0x5 },   // dup
-/* 3002 */     { .cell = 0x0 },
-/* 3003 */ { .ip = META_INTERPRET },
-/* 3004 */     { .cell = 0x6C },  // WHILE
-/* 3005 */     { .cell = 0x0 },
-/* 3006 */ { .ip = META_COMPILE },
-/* 3007 */     { .cell = 0x80 },  // 1-
-/* 3008 */     { .cell = 0xA },   // swap
-/* 3009 */     { .cell = 0x4 },   // drop
-/* 3010 */     { .cell = 0x0 },
-/* 3011 */ { .ip = META_INTERPRET },
-/* 3012 */     { .cell = 0x6B },  // REPEAT
-/* 3013 */     { .cell = 0x0 },
-/* 3014 */ { .ip = META_COMPILE },
-/* 3015 */     { .cell = 0x4 },   // drop
-/* 3016 */     { .cell = 0x7 },   // r>
-/* 3017 */     { .cell = 0xC },   // 2r>
-/* 3018 */     { .cell = 0x50 },  // 2drop
-/* 3019 */     { .cell = 0x31 },  // exit
-/* 3020 */     { .cell = 0x0 },
-/* 3021 */ { .ip = META_INTERPRET },
-/* 3022 */     { .cell = 0x66 },  // THEN
-/* 3023 */     { .cell = 0x6B },  // REPEAT
-/* 3024 */     { .cell = 0x0 },
-/* 3025 */ { .ip = META_COMPILE },
-/* 3026 */     { .cell = 0xC },   // 2r>
-/* 3027 */     { .cell = 0x50 },  // 2drop
-/* 3028 */     { .cell = 0x31 },  // EXIT
-/* 3029 */     { .cell = 0x0 },
-/* 3030 */ { .ip = META_LINKNAME },
+/* 2851 */     { .cell = 0x0 },
+/* 2852 */ { .ip = META_STARTNAME }, { .id = "ID=" }, { .handler = do_colon },
+/* 2855 */ { .ip = META_COMPILE },
+/* 2856 */     { .cell = 0x9 },   // rot
+/* 2857 */     { .cell = 0x6 },   // over
+/* 2858 */     { .cell = 0x85 },  // <>
+/* 2859 */     { .cell = 0x0 },
+/* 2860 */ { .ip = META_INTERPRET },
+/* 2861 */     { .cell = 0x67 },  // IF
+/* 2862 */     { .cell = 0x0 },
+/* 2863 */ { .ip = META_COMPILE },
+/* 2864 */     { .cell = 0x4 },   // drop
+/* 2865 */     { .cell = 0x50 },  // 2drop
+/* 2866 */     { .cell = 0x88 },  // false
+/* 2867 */     { .cell = 0x33 },  // exit
+/* 2868 */     { .cell = 0x0 },
+/* 2869 */ { .ip = META_INTERPRET },
+/* 2870 */     { .cell = 0x66 },  // THEN
+/* 2871 */     { .cell = 0x0 },
+/* 2872 */ { .ip = DO_LITERAL }, { .cell = 0x0 },
+/* 2874 */ { .ip = META_INTERPRET },
+/* 2875 */     { .cell = 0x42 },  // LITERAL
+/* 2876 */     { .cell = 0x74 },  // DO
+/* 2877 */     { .cell = 0x0 },
+/* 2878 */ { .ip = META_COMPILE },
+/* 2879 */     { .cell = 0x6 },   // over
+/* 2880 */     { .cell = 0x5B },  // i
+/* 2881 */     { .cell = 0x12 },  // +
+/* 2882 */     { .cell = 0x24 },  // c@
+/* 2883 */     { .cell = 0x8E },  // toupper
+/* 2884 */     { .cell = 0x6 },   // over
+/* 2885 */     { .cell = 0x5B },  // i
+/* 2886 */     { .cell = 0x12 },  // +
+/* 2887 */     { .cell = 0x24 },  // c@
+/* 2888 */     { .cell = 0x8E },  // toupper
+/* 2889 */     { .cell = 0x85 },  // <>
+/* 2890 */     { .cell = 0x0 },
+/* 2891 */ { .ip = META_INTERPRET },
+/* 2892 */     { .cell = 0x67 },  // IF
+/* 2893 */     { .cell = 0x0 },
+/* 2894 */ { .ip = META_COMPILE },
+/* 2895 */     { .cell = 0x50 },  // 2drop
+/* 2896 */     { .cell = 0x88 },  // false
+/* 2897 */     { .cell = 0x5A },  // unloop
+/* 2898 */     { .cell = 0x33 },  // exit
+/* 2899 */     { .cell = 0x0 },
+/* 2900 */ { .ip = META_INTERPRET },
+/* 2901 */     { .cell = 0x66 },  // THEN
+/* 2902 */     { .cell = 0x0 },
+/* 2903 */ { .ip = DO_LITERAL }, { .cell = 0x1 },
+/* 2905 */ { .ip = META_INTERPRET },
+/* 2906 */     { .cell = 0x43 },  // chars
+/* 2907 */     { .cell = 0x42 },  // LITERAL
+/* 2908 */     { .cell = 0x77 },  // +LOOP
+/* 2909 */     { .cell = 0x0 },
+/* 2910 */ { .ip = META_COMPILE },
+/* 2911 */     { .cell = 0x50 },  // 2drop
+/* 2912 */     { .cell = 0x89 },  // true
+/* 2913 */     { .cell = 0x33 },  // EXIT
+/* 2914 */     { .cell = 0x0 },
+/* 2915 */ { .ip = META_LINKNAME },
+/* 2916 */ { .ip = META_STARTNAME }, { .id = "WID-LOOKUP" }, { .handler = do_colon },
+/* 2919 */ { .ip = META_COMPILE },
+/* 2920 */     { .cell = 0x22 },  // @
+/* 2921 */     { .cell = 0x0 },
+/* 2922 */ { .ip = META_INTERPRET },
+/* 2923 */     { .cell = 0x65 },  // BEGIN
+/* 2924 */     { .cell = 0x0 },
+/* 2925 */ { .ip = META_COMPILE },
+/* 2926 */     { .cell = 0x5 },   // dup
+/* 2927 */     { .cell = 0x0 },
+/* 2928 */ { .ip = META_INTERPRET },
+/* 2929 */     { .cell = 0x6C },  // WHILE
+/* 2930 */     { .cell = 0x0 },
+/* 2931 */ { .ip = META_COMPILE },
+/* 2932 */     { .cell = 0x1 },   // >r
+/* 2933 */     { .cell = 0x51 },  // 2dup
+/* 2934 */     { .cell = 0x8 },   // r@
+/* 2935 */     { .cell = 0x9C },  // name>string
+/* 2936 */     { .cell = 0xDF },  // id=
+/* 2937 */     { .cell = 0x0 },
+/* 2938 */ { .ip = META_INTERPRET },
+/* 2939 */     { .cell = 0x67 },  // IF
+/* 2940 */     { .cell = 0x0 },
+/* 2941 */ { .ip = META_COMPILE },
+/* 2942 */     { .cell = 0x50 },  // 2drop
+/* 2943 */     { .cell = 0x7 },   // r>
+/* 2944 */     { .cell = 0x33 },  // exit
+/* 2945 */     { .cell = 0x0 },
+/* 2946 */ { .ip = META_INTERPRET },
+/* 2947 */     { .cell = 0x66 },  // THEN
+/* 2948 */     { .cell = 0x0 },
+/* 2949 */ { .ip = META_COMPILE },
+/* 2950 */     { .cell = 0x7 },   // r>
+/* 2951 */     { .cell = 0x9B },  // name>prev
+/* 2952 */     { .cell = 0x0 },
+/* 2953 */ { .ip = META_INTERPRET },
+/* 2954 */     { .cell = 0x6B },  // REPEAT
+/* 2955 */     { .cell = 0x0 },
+/* 2956 */ { .ip = META_COMPILE },
+/* 2957 */     { .cell = 0x4 },   // drop
+/* 2958 */     { .cell = 0x50 },  // 2drop
+/* 2959 */     { .cell = 0x0 },
+/* 2960 */ { .ip = DO_LITERAL }, { .cell = 0x0 },
+/* 2962 */ { .ip = META_INTERPRET },
+/* 2963 */     { .cell = 0x42 },  // LITERAL
+/* 2964 */     { .cell = 0x0 },
+/* 2965 */ { .ip = META_COMPILE },
+/* 2966 */     { .cell = 0x33 },  // EXIT
+/* 2967 */     { .cell = 0x0 },
+/* 2968 */ { .ip = META_LINKNAME },
+/* 2969 */ { .ip = META_STARTNAME }, { .id = "LOOKUP" }, { .handler = do_colon },
+/* 2972 */ { .ip = META_COMPILE },
+/* 2973 */     { .cell = 0xB },   // 2>r
+/* 2974 */     { .cell = 0xDB },  // get-order
+/* 2975 */     { .cell = 0x0 },
+/* 2976 */ { .ip = META_INTERPRET },
+/* 2977 */     { .cell = 0x65 },  // BEGIN
+/* 2978 */     { .cell = 0x0 },
+/* 2979 */ { .ip = META_COMPILE },
+/* 2980 */     { .cell = 0x5 },   // dup
+/* 2981 */     { .cell = 0x0 },
+/* 2982 */ { .ip = META_INTERPRET },
+/* 2983 */     { .cell = 0x6C },  // WHILE
+/* 2984 */     { .cell = 0x0 },
+/* 2985 */ { .ip = META_COMPILE },
+/* 2986 */     { .cell = 0x80 },  // 1-
+/* 2987 */     { .cell = 0xA },   // swap
+/* 2988 */     { .cell = 0xD },   // 2r@
+/* 2989 */     { .cell = 0x9 },   // rot
+/* 2990 */     { .cell = 0xE0 },  // wid-lookup
+/* 2991 */     { .cell = 0x2 },   // ?dup
+/* 2992 */     { .cell = 0x0 },
+/* 2993 */ { .ip = META_INTERPRET },
+/* 2994 */     { .cell = 0x67 },  // IF
+/* 2995 */     { .cell = 0x0 },
+/* 2996 */ { .ip = META_COMPILE },
+/* 2997 */     { .cell = 0x1 },   // >r
+/* 2998 */     { .cell = 0x0 },
+/* 2999 */ { .ip = META_INTERPRET },
+/* 3000 */     { .cell = 0x65 },  // BEGIN
+/* 3001 */     { .cell = 0x0 },
+/* 3002 */ { .ip = META_COMPILE },
+/* 3003 */     { .cell = 0x5 },   // dup
+/* 3004 */     { .cell = 0x0 },
+/* 3005 */ { .ip = META_INTERPRET },
+/* 3006 */     { .cell = 0x6C },  // WHILE
+/* 3007 */     { .cell = 0x0 },
+/* 3008 */ { .ip = META_COMPILE },
+/* 3009 */     { .cell = 0x80 },  // 1-
+/* 3010 */     { .cell = 0xA },   // swap
+/* 3011 */     { .cell = 0x4 },   // drop
+/* 3012 */     { .cell = 0x0 },
+/* 3013 */ { .ip = META_INTERPRET },
+/* 3014 */     { .cell = 0x6B },  // REPEAT
+/* 3015 */     { .cell = 0x0 },
+/* 3016 */ { .ip = META_COMPILE },
+/* 3017 */     { .cell = 0x4 },   // drop
+/* 3018 */     { .cell = 0x7 },   // r>
+/* 3019 */     { .cell = 0xC },   // 2r>
+/* 3020 */     { .cell = 0x50 },  // 2drop
+/* 3021 */     { .cell = 0x33 },  // exit
+/* 3022 */     { .cell = 0x0 },
+/* 3023 */ { .ip = META_INTERPRET },
+/* 3024 */     { .cell = 0x66 },  // THEN
+/* 3025 */     { .cell = 0x6B },  // REPEAT
+/* 3026 */     { .cell = 0x0 },
+/* 3027 */ { .ip = META_COMPILE },
+/* 3028 */     { .cell = 0xC },   // 2r>
+/* 3029 */     { .cell = 0x50 },  // 2drop
+/* 3030 */     { .cell = 0x33 },  // EXIT
+/* 3031 */     { .cell = 0x0 },
+/* 3032 */ { .ip = META_LINKNAME },
             /* ==== forth/common/core/number.fth ==== */
-/* 3031 */ { .ip = META_ADDNAME }, { .id = "BASE" }, { .handler = do_variable },
-/* 3034 */ { .ip = DO_LITERAL }, { .cell = (cell_ft) (CELL_SIZE) },
-/* 3036 */ { .ip = META_INTERPRET },
-/* 3037 */     { .cell = 0x3F },  // ALLOT
-/* 3038 */     { .cell = 0x0 },
-/* 3039 */ { .ip = META_STARTNAME }, { .id = "DECIMAL" }, { .handler = do_colon },
-/* 3042 */ { .ip = DO_LITERAL }, { .cell = 0xA },
-/* 3044 */ { .ip = META_INTERPRET },
-/* 3045 */     { .cell = 0x42 },  // LITERAL
-/* 3046 */     { .cell = 0x0 },
-/* 3047 */ { .ip = META_COMPILE },
-/* 3048 */     { .cell = 0xE2 },  // base
-/* 3049 */     { .cell = 0x1F },  // !
-/* 3050 */     { .cell = 0x31 },  // EXIT
-/* 3051 */     { .cell = 0x0 },
-/* 3052 */ { .ip = META_LINKNAME },
-/* 3053 */ { .ip = META_INTERPRET },
-/* 3054 */     { .cell = 0xE3 },  // decimal
-/* 3055 */     { .cell = 0x0 },
-/* 3056 */ { .ip = META_STARTNAME }, { .id = ">DIGIT" }, { .handler = do_colon },
-/* 3059 */ { .ip = DO_LITERAL }, { .cell = 0x30 },
-/* 3061 */ { .ip = META_INTERPRET },
-/* 3062 */     { .cell = 0x42 },  // LITERAL
-/* 3063 */     { .cell = 0x0 },
-/* 3064 */ { .ip = META_COMPILE },
-/* 3065 */     { .cell = 0x11 },  // -
-/* 3066 */     { .cell = 0x0 },
-/* 3067 */ { .ip = DO_LITERAL }, { .cell = 0x9 },
-/* 3069 */ { .ip = META_INTERPRET },
-/* 3070 */     { .cell = 0x42 },  // LITERAL
-/* 3071 */     { .cell = 0x0 },
-/* 3072 */ { .ip = META_COMPILE },
-/* 3073 */     { .cell = 0x6 },   // over
-/* 3074 */     { .cell = 0x1D },  // u<
-/* 3075 */     { .cell = 0x0 },
-/* 3076 */ { .ip = META_INTERPRET },
-/* 3077 */     { .cell = 0x67 },  // IF
-/* 3078 */     { .cell = 0x0 },
-/* 3079 */ { .ip = DO_LITERAL }, { .cell = 0x11 },
-/* 3081 */ { .ip = META_INTERPRET },
-/* 3082 */     { .cell = 0x42 },  // LITERAL
-/* 3083 */     { .cell = 0x0 },
-/* 3084 */ { .ip = META_COMPILE },
-/* 3085 */     { .cell = 0x11 },  // -
-/* 3086 */     { .cell = 0x0 },
-/* 3087 */ { .ip = DO_LITERAL }, { .cell = 0x19 },
-/* 3089 */ { .ip = META_INTERPRET },
-/* 3090 */     { .cell = 0x42 },  // LITERAL
-/* 3091 */     { .cell = 0x0 },
-/* 3092 */ { .ip = META_COMPILE },
-/* 3093 */     { .cell = 0x6 },   // over
-/* 3094 */     { .cell = 0x1D },  // u<
-/* 3095 */     { .cell = 0x0 },
-/* 3096 */ { .ip = META_INTERPRET },
-/* 3097 */     { .cell = 0x67 },  // IF
-/* 3098 */     { .cell = 0x0 },
-/* 3099 */ { .ip = DO_LITERAL }, { .cell = 0x20 },
-/* 3101 */ { .ip = META_INTERPRET },
-/* 3102 */     { .cell = 0x42 },  // LITERAL
-/* 3103 */     { .cell = 0x0 },
-/* 3104 */ { .ip = META_COMPILE },
-/* 3105 */     { .cell = 0x11 },  // -
-/* 3106 */     { .cell = 0x0 },
-/* 3107 */ { .ip = DO_LITERAL }, { .cell = 0x19 },
-/* 3109 */ { .ip = META_INTERPRET },
-/* 3110 */     { .cell = 0x42 },  // LITERAL
-/* 3111 */     { .cell = 0x0 },
-/* 3112 */ { .ip = META_COMPILE },
-/* 3113 */     { .cell = 0x6 },   // over
-/* 3114 */     { .cell = 0x1D },  // u<
-/* 3115 */     { .cell = 0x0 },
-/* 3116 */ { .ip = META_INTERPRET },
-/* 3117 */     { .cell = 0x67 },  // IF
-/* 3118 */     { .cell = 0x0 },
-/* 3119 */ { .ip = META_COMPILE },
-/* 3120 */     { .cell = 0x4 },   // drop
-/* 3121 */     { .cell = 0x0 },
-/* 3122 */ { .ip = DO_LITERAL }, { .cell = -0x1 },
-/* 3124 */ { .ip = META_INTERPRET },
-/* 3125 */     { .cell = 0x42 },  // LITERAL
-/* 3126 */     { .cell = 0x0 },
-/* 3127 */ { .ip = META_COMPILE },
-/* 3128 */     { .cell = 0x31 },  // exit
-/* 3129 */     { .cell = 0x0 },
-/* 3130 */ { .ip = META_INTERPRET },
-/* 3131 */     { .cell = 0x66 },  // THEN
-/* 3132 */     { .cell = 0x66 },  // THEN
-/* 3133 */     { .cell = 0x0 },
-/* 3134 */ { .ip = DO_LITERAL }, { .cell = 0xA },
-/* 3136 */ { .ip = META_INTERPRET },
-/* 3137 */     { .cell = 0x42 },  // LITERAL
-/* 3138 */     { .cell = 0x0 },
-/* 3139 */ { .ip = META_COMPILE },
-/* 3140 */     { .cell = 0x10 },  // +
-/* 3141 */     { .cell = 0x0 },
-/* 3142 */ { .ip = META_INTERPRET },
-/* 3143 */     { .cell = 0x66 },  // THEN
-/* 3144 */     { .cell = 0x0 },
-/* 3145 */ { .ip = META_COMPILE },
-/* 3146 */     { .cell = 0x31 },  // EXIT
-/* 3147 */     { .cell = 0x0 },
-/* 3148 */ { .ip = META_LINKNAME },
-/* 3149 */ { .ip = META_STARTNAME }, { .id = ">NUMBER" }, { .handler = do_colon },
-/* 3152 */ { .ip = META_INTERPRET },
-/* 3153 */     { .cell = 0x65 },  // BEGIN
-/* 3154 */     { .cell = 0x0 },
-/* 3155 */ { .ip = META_COMPILE },
-/* 3156 */     { .cell = 0x5 },   // dup
-/* 3157 */     { .cell = 0x0 },
-/* 3158 */ { .ip = META_INTERPRET },
-/* 3159 */     { .cell = 0x6C },  // WHILE
-/* 3160 */     { .cell = 0x0 },
-/* 3161 */ { .ip = META_COMPILE },
-/* 3162 */     { .cell = 0x1 },   // >r
-/* 3163 */     { .cell = 0x5 },   // dup
+/* 3033 */ { .ip = META_ADDNAME }, { .id = "BASE" }, { .handler = do_variable },
+/* 3036 */ { .ip = DO_LITERAL }, { .cell = (cell_ft) (CELL_SIZE) },
+/* 3038 */ { .ip = META_INTERPRET },
+/* 3039 */     { .cell = 0x3F },  // ALLOT
+/* 3040 */     { .cell = 0x0 },
+/* 3041 */ { .ip = META_STARTNAME }, { .id = "DECIMAL" }, { .handler = do_colon },
+/* 3044 */ { .ip = DO_LITERAL }, { .cell = 0xA },
+/* 3046 */ { .ip = META_INTERPRET },
+/* 3047 */     { .cell = 0x42 },  // LITERAL
+/* 3048 */     { .cell = 0x0 },
+/* 3049 */ { .ip = META_COMPILE },
+/* 3050 */     { .cell = 0xE2 },  // base
+/* 3051 */     { .cell = 0x21 },  // !
+/* 3052 */     { .cell = 0x33 },  // EXIT
+/* 3053 */     { .cell = 0x0 },
+/* 3054 */ { .ip = META_LINKNAME },
+/* 3055 */ { .ip = META_INTERPRET },
+/* 3056 */     { .cell = 0xE3 },  // decimal
+/* 3057 */     { .cell = 0x0 },
+/* 3058 */ { .ip = META_STARTNAME }, { .id = ">DIGIT" }, { .handler = do_colon },
+/* 3061 */ { .ip = DO_LITERAL }, { .cell = 0x30 },
+/* 3063 */ { .ip = META_INTERPRET },
+/* 3064 */     { .cell = 0x42 },  // LITERAL
+/* 3065 */     { .cell = 0x0 },
+/* 3066 */ { .ip = META_COMPILE },
+/* 3067 */     { .cell = 0x13 },  // -
+/* 3068 */     { .cell = 0x0 },
+/* 3069 */ { .ip = DO_LITERAL }, { .cell = 0x9 },
+/* 3071 */ { .ip = META_INTERPRET },
+/* 3072 */     { .cell = 0x42 },  // LITERAL
+/* 3073 */     { .cell = 0x0 },
+/* 3074 */ { .ip = META_COMPILE },
+/* 3075 */     { .cell = 0x6 },   // over
+/* 3076 */     { .cell = 0x1F },  // u<
+/* 3077 */     { .cell = 0x0 },
+/* 3078 */ { .ip = META_INTERPRET },
+/* 3079 */     { .cell = 0x67 },  // IF
+/* 3080 */     { .cell = 0x0 },
+/* 3081 */ { .ip = DO_LITERAL }, { .cell = 0x11 },
+/* 3083 */ { .ip = META_INTERPRET },
+/* 3084 */     { .cell = 0x42 },  // LITERAL
+/* 3085 */     { .cell = 0x0 },
+/* 3086 */ { .ip = META_COMPILE },
+/* 3087 */     { .cell = 0x13 },  // -
+/* 3088 */     { .cell = 0x0 },
+/* 3089 */ { .ip = DO_LITERAL }, { .cell = 0x19 },
+/* 3091 */ { .ip = META_INTERPRET },
+/* 3092 */     { .cell = 0x42 },  // LITERAL
+/* 3093 */     { .cell = 0x0 },
+/* 3094 */ { .ip = META_COMPILE },
+/* 3095 */     { .cell = 0x6 },   // over
+/* 3096 */     { .cell = 0x1F },  // u<
+/* 3097 */     { .cell = 0x0 },
+/* 3098 */ { .ip = META_INTERPRET },
+/* 3099 */     { .cell = 0x67 },  // IF
+/* 3100 */     { .cell = 0x0 },
+/* 3101 */ { .ip = DO_LITERAL }, { .cell = 0x20 },
+/* 3103 */ { .ip = META_INTERPRET },
+/* 3104 */     { .cell = 0x42 },  // LITERAL
+/* 3105 */     { .cell = 0x0 },
+/* 3106 */ { .ip = META_COMPILE },
+/* 3107 */     { .cell = 0x13 },  // -
+/* 3108 */     { .cell = 0x0 },
+/* 3109 */ { .ip = DO_LITERAL }, { .cell = 0x19 },
+/* 3111 */ { .ip = META_INTERPRET },
+/* 3112 */     { .cell = 0x42 },  // LITERAL
+/* 3113 */     { .cell = 0x0 },
+/* 3114 */ { .ip = META_COMPILE },
+/* 3115 */     { .cell = 0x6 },   // over
+/* 3116 */     { .cell = 0x1F },  // u<
+/* 3117 */     { .cell = 0x0 },
+/* 3118 */ { .ip = META_INTERPRET },
+/* 3119 */     { .cell = 0x67 },  // IF
+/* 3120 */     { .cell = 0x0 },
+/* 3121 */ { .ip = META_COMPILE },
+/* 3122 */     { .cell = 0x4 },   // drop
+/* 3123 */     { .cell = 0x0 },
+/* 3124 */ { .ip = DO_LITERAL }, { .cell = -0x1 },
+/* 3126 */ { .ip = META_INTERPRET },
+/* 3127 */     { .cell = 0x42 },  // LITERAL
+/* 3128 */     { .cell = 0x0 },
+/* 3129 */ { .ip = META_COMPILE },
+/* 3130 */     { .cell = 0x33 },  // exit
+/* 3131 */     { .cell = 0x0 },
+/* 3132 */ { .ip = META_INTERPRET },
+/* 3133 */     { .cell = 0x66 },  // THEN
+/* 3134 */     { .cell = 0x66 },  // THEN
+/* 3135 */     { .cell = 0x0 },
+/* 3136 */ { .ip = DO_LITERAL }, { .cell = 0xA },
+/* 3138 */ { .ip = META_INTERPRET },
+/* 3139 */     { .cell = 0x42 },  // LITERAL
+/* 3140 */     { .cell = 0x0 },
+/* 3141 */ { .ip = META_COMPILE },
+/* 3142 */     { .cell = 0x12 },  // +
+/* 3143 */     { .cell = 0x0 },
+/* 3144 */ { .ip = META_INTERPRET },
+/* 3145 */     { .cell = 0x66 },  // THEN
+/* 3146 */     { .cell = 0x0 },
+/* 3147 */ { .ip = META_COMPILE },
+/* 3148 */     { .cell = 0x33 },  // EXIT
+/* 3149 */     { .cell = 0x0 },
+/* 3150 */ { .ip = META_LINKNAME },
+/* 3151 */ { .ip = META_STARTNAME }, { .id = ">NUMBER" }, { .handler = do_colon },
+/* 3154 */ { .ip = META_INTERPRET },
+/* 3155 */     { .cell = 0x65 },  // BEGIN
+/* 3156 */     { .cell = 0x0 },
+/* 3157 */ { .ip = META_COMPILE },
+/* 3158 */     { .cell = 0x5 },   // dup
+/* 3159 */     { .cell = 0x0 },
+/* 3160 */ { .ip = META_INTERPRET },
+/* 3161 */     { .cell = 0x6C },  // WHILE
+/* 3162 */     { .cell = 0x0 },
+/* 3163 */ { .ip = META_COMPILE },
 /* 3164 */     { .cell = 0x1 },   // >r
-/* 3165 */     { .cell = 0x22 },  // c@
-/* 3166 */     { .cell = 0xE4 },  // >digit
-/* 3167 */     { .cell = 0x5 },   // dup
-/* 3168 */     { .cell = 0xE2 },  // base
-/* 3169 */     { .cell = 0x20 },  // @
-/* 3170 */     { .cell = 0x1D },  // u<
-/* 3171 */     { .cell = 0x18 },  // invert
-/* 3172 */     { .cell = 0x0 },
-/* 3173 */ { .ip = META_INTERPRET },
-/* 3174 */     { .cell = 0x67 },  // IF
-/* 3175 */     { .cell = 0x0 },
-/* 3176 */ { .ip = META_COMPILE },
-/* 3177 */     { .cell = 0x4 },   // drop
-/* 3178 */     { .cell = 0x7 },   // r>
-/* 3179 */     { .cell = 0x7 },   // r>
-/* 3180 */     { .cell = 0x31 },  // exit
-/* 3181 */     { .cell = 0x0 },
-/* 3182 */ { .ip = META_INTERPRET },
-/* 3183 */     { .cell = 0x66 },  // THEN
-/* 3184 */     { .cell = 0x0 },
-/* 3185 */ { .ip = META_COMPILE },
-/* 3186 */     { .cell = 0x1 },   // >r
-/* 3187 */     { .cell = 0xE2 },  // base
-/* 3188 */     { .cell = 0x20 },  // @
-/* 3189 */     { .cell = 0x25 },  // *
-/* 3190 */     { .cell = 0x1 },   // >r
-/* 3191 */     { .cell = 0xE2 },  // base
-/* 3192 */     { .cell = 0x20 },  // @
-/* 3193 */     { .cell = 0x2E },  // um*
-/* 3194 */     { .cell = 0x7 },   // r>
-/* 3195 */     { .cell = 0x10 },  // +
+/* 3165 */     { .cell = 0x5 },   // dup
+/* 3166 */     { .cell = 0x1 },   // >r
+/* 3167 */     { .cell = 0x24 },  // c@
+/* 3168 */     { .cell = 0xE4 },  // >digit
+/* 3169 */     { .cell = 0x5 },   // dup
+/* 3170 */     { .cell = 0xE2 },  // base
+/* 3171 */     { .cell = 0x22 },  // @
+/* 3172 */     { .cell = 0x1F },  // u<
+/* 3173 */     { .cell = 0x1A },  // invert
+/* 3174 */     { .cell = 0x0 },
+/* 3175 */ { .ip = META_INTERPRET },
+/* 3176 */     { .cell = 0x67 },  // IF
+/* 3177 */     { .cell = 0x0 },
+/* 3178 */ { .ip = META_COMPILE },
+/* 3179 */     { .cell = 0x4 },   // drop
+/* 3180 */     { .cell = 0x7 },   // r>
+/* 3181 */     { .cell = 0x7 },   // r>
+/* 3182 */     { .cell = 0x33 },  // exit
+/* 3183 */     { .cell = 0x0 },
+/* 3184 */ { .ip = META_INTERPRET },
+/* 3185 */     { .cell = 0x66 },  // THEN
+/* 3186 */     { .cell = 0x0 },
+/* 3187 */ { .ip = META_COMPILE },
+/* 3188 */     { .cell = 0x1 },   // >r
+/* 3189 */     { .cell = 0xE2 },  // base
+/* 3190 */     { .cell = 0x22 },  // @
+/* 3191 */     { .cell = 0x27 },  // *
+/* 3192 */     { .cell = 0x1 },   // >r
+/* 3193 */     { .cell = 0xE2 },  // base
+/* 3194 */     { .cell = 0x22 },  // @
+/* 3195 */     { .cell = 0x30 },  // um*
 /* 3196 */     { .cell = 0x7 },   // r>
-/* 3197 */     { .cell = 0x9 },   // rot
-/* 3198 */     { .cell = 0x5 },   // dup
-/* 3199 */     { .cell = 0x1 },   // >r
-/* 3200 */     { .cell = 0x10 },  // +
-/* 3201 */     { .cell = 0x5 },   // dup
-/* 3202 */     { .cell = 0x7 },   // r>
-/* 3203 */     { .cell = 0x1D },  // u<
-/* 3204 */     { .cell = 0x1A },  // negate
-/* 3205 */     { .cell = 0x9 },   // rot
-/* 3206 */     { .cell = 0x10 },  // +
-/* 3207 */     { .cell = 0x7 },   // r>
-/* 3208 */     { .cell = 0x44 },  // char+
+/* 3197 */     { .cell = 0x12 },  // +
+/* 3198 */     { .cell = 0x7 },   // r>
+/* 3199 */     { .cell = 0x9 },   // rot
+/* 3200 */     { .cell = 0x5 },   // dup
+/* 3201 */     { .cell = 0x1 },   // >r
+/* 3202 */     { .cell = 0x12 },  // +
+/* 3203 */     { .cell = 0x5 },   // dup
+/* 3204 */     { .cell = 0x7 },   // r>
+/* 3205 */     { .cell = 0x1F },  // u<
+/* 3206 */     { .cell = 0x1C },  // negate
+/* 3207 */     { .cell = 0x9 },   // rot
+/* 3208 */     { .cell = 0x12 },  // +
 /* 3209 */     { .cell = 0x7 },   // r>
-/* 3210 */     { .cell = 0x80 },  // 1-
-/* 3211 */     { .cell = 0x0 },
-/* 3212 */ { .ip = META_INTERPRET },
-/* 3213 */     { .cell = 0x6B },  // REPEAT
-/* 3214 */     { .cell = 0x0 },
-/* 3215 */ { .ip = META_COMPILE },
-/* 3216 */     { .cell = 0x31 },  // EXIT
-/* 3217 */     { .cell = 0x0 },
-/* 3218 */ { .ip = META_LINKNAME },
-/* 3219 */ { .ip = META_STARTNAME }, { .id = "HEX" }, { .handler = do_colon },
-/* 3222 */ { .ip = DO_LITERAL }, { .cell = 0x10 },
-/* 3224 */ { .ip = META_INTERPRET },
-/* 3225 */     { .cell = 0x42 },  // LITERAL
-/* 3226 */     { .cell = 0x0 },
-/* 3227 */ { .ip = META_COMPILE },
-/* 3228 */     { .cell = 0xE2 },  // base
-/* 3229 */     { .cell = 0x1F },  // !
-/* 3230 */     { .cell = 0x31 },  // EXIT
-/* 3231 */     { .cell = 0x0 },
-/* 3232 */ { .ip = META_LINKNAME },
+/* 3210 */     { .cell = 0x44 },  // char+
+/* 3211 */     { .cell = 0x7 },   // r>
+/* 3212 */     { .cell = 0x80 },  // 1-
+/* 3213 */     { .cell = 0x0 },
+/* 3214 */ { .ip = META_INTERPRET },
+/* 3215 */     { .cell = 0x6B },  // REPEAT
+/* 3216 */     { .cell = 0x0 },
+/* 3217 */ { .ip = META_COMPILE },
+/* 3218 */     { .cell = 0x33 },  // EXIT
+/* 3219 */     { .cell = 0x0 },
+/* 3220 */ { .ip = META_LINKNAME },
+/* 3221 */ { .ip = META_STARTNAME }, { .id = "HEX" }, { .handler = do_colon },
+/* 3224 */ { .ip = DO_LITERAL }, { .cell = 0x10 },
+/* 3226 */ { .ip = META_INTERPRET },
+/* 3227 */     { .cell = 0x42 },  // LITERAL
+/* 3228 */     { .cell = 0x0 },
+/* 3229 */ { .ip = META_COMPILE },
+/* 3230 */     { .cell = 0xE2 },  // base
+/* 3231 */     { .cell = 0x21 },  // !
+/* 3232 */     { .cell = 0x33 },  // EXIT
+/* 3233 */     { .cell = 0x0 },
+/* 3234 */ { .ip = META_LINKNAME },
             /* ==== forth/common/core/state.fth ==== */
-/* 3233 */ { .ip = META_ADDNAME }, { .id = "STATE" }, { .handler = do_variable },
-/* 3236 */ { .ip = DO_LITERAL }, { .cell = (cell_ft) (CELL_SIZE) },
-/* 3238 */ { .ip = META_INTERPRET },
-/* 3239 */     { .cell = 0x3F },  // ALLOT
-/* 3240 */     { .cell = 0x0 },
-/* 3241 */ { .ip = DO_LITERAL }, { .cell = 0x0 },
-/* 3243 */ { .ip = META_INTERPRET },
-/* 3244 */     { .cell = 0xE7 },  // state
-/* 3245 */     { .cell = 0x1F },  // !
-/* 3246 */     { .cell = 0x0 },
-/* 3247 */ { .ip = META_STARTNAME }, { .id = "[" }, { .handler = do_colon },
-/* 3250 */ { .ip = DO_LITERAL }, { .cell = 0x0 },
-/* 3252 */ { .ip = META_INTERPRET },
-/* 3253 */     { .cell = 0x42 },  // LITERAL
-/* 3254 */     { .cell = 0x0 },
-/* 3255 */ { .ip = META_COMPILE },
-/* 3256 */     { .cell = 0xE7 },  // state
-/* 3257 */     { .cell = 0x1F },  // !
-/* 3258 */     { .cell = 0x31 },  // EXIT
-/* 3259 */     { .cell = 0x0 },
-/* 3260 */ { .ip = META_LINKNAME },
-/* 3261 */ { .ip = META_SETFLAGS }, { .cell = 0x80 },
-/* 3263 */ { .ip = META_STARTNAME }, { .id = "]" }, { .handler = do_colon },
-/* 3266 */ { .ip = DO_LITERAL }, { .cell = -0x1 },
-/* 3268 */ { .ip = META_INTERPRET },
-/* 3269 */     { .cell = 0x42 },  // LITERAL
-/* 3270 */     { .cell = 0x0 },
-/* 3271 */ { .ip = META_COMPILE },
-/* 3272 */     { .cell = 0xE7 },  // state
-/* 3273 */     { .cell = 0x1F },  // !
-/* 3274 */     { .cell = 0x31 },  // EXIT
-/* 3275 */     { .cell = 0x0 },
-/* 3276 */ { .ip = META_LINKNAME },
+/* 3235 */ { .ip = META_ADDNAME }, { .id = "STATE" }, { .handler = do_variable },
+/* 3238 */ { .ip = DO_LITERAL }, { .cell = (cell_ft) (CELL_SIZE) },
+/* 3240 */ { .ip = META_INTERPRET },
+/* 3241 */     { .cell = 0x3F },  // ALLOT
+/* 3242 */     { .cell = 0x0 },
+/* 3243 */ { .ip = DO_LITERAL }, { .cell = 0x0 },
+/* 3245 */ { .ip = META_INTERPRET },
+/* 3246 */     { .cell = 0xE7 },  // state
+/* 3247 */     { .cell = 0x21 },  // !
+/* 3248 */     { .cell = 0x0 },
+/* 3249 */ { .ip = META_STARTNAME }, { .id = "[" }, { .handler = do_colon },
+/* 3252 */ { .ip = DO_LITERAL }, { .cell = 0x0 },
+/* 3254 */ { .ip = META_INTERPRET },
+/* 3255 */     { .cell = 0x42 },  // LITERAL
+/* 3256 */     { .cell = 0x0 },
+/* 3257 */ { .ip = META_COMPILE },
+/* 3258 */     { .cell = 0xE7 },  // state
+/* 3259 */     { .cell = 0x21 },  // !
+/* 3260 */     { .cell = 0x33 },  // EXIT
+/* 3261 */     { .cell = 0x0 },
+/* 3262 */ { .ip = META_LINKNAME },
+/* 3263 */ { .ip = META_SETFLAGS }, { .cell = 0x80 },
+/* 3265 */ { .ip = META_STARTNAME }, { .id = "]" }, { .handler = do_colon },
+/* 3268 */ { .ip = DO_LITERAL }, { .cell = -0x1 },
+/* 3270 */ { .ip = META_INTERPRET },
+/* 3271 */     { .cell = 0x42 },  // LITERAL
+/* 3272 */     { .cell = 0x0 },
+/* 3273 */ { .ip = META_COMPILE },
+/* 3274 */     { .cell = 0xE7 },  // state
+/* 3275 */     { .cell = 0x21 },  // !
+/* 3276 */     { .cell = 0x33 },  // EXIT
+/* 3277 */     { .cell = 0x0 },
+/* 3278 */ { .ip = META_LINKNAME },
             /* ==== forth/common/internal/numparse.fth ==== */
-/* 3277 */ { .ip = META_STARTNAME }, { .id = "'CHAR'" }, { .handler = do_colon },
-/* 3280 */ { .ip = DO_LITERAL }, { .cell = 0x3 },
-/* 3282 */ { .ip = META_INTERPRET },
-/* 3283 */     { .cell = 0x42 },  // LITERAL
-/* 3284 */     { .cell = 0x0 },
-/* 3285 */ { .ip = META_COMPILE },
-/* 3286 */     { .cell = 0x85 },  // <>
-/* 3287 */     { .cell = 0x0 },
-/* 3288 */ { .ip = META_INTERPRET },
-/* 3289 */     { .cell = 0x67 },  // IF
-/* 3290 */     { .cell = 0x0 },
-/* 3291 */ { .ip = META_COMPILE },
-/* 3292 */     { .cell = 0x4 },   // drop
-/* 3293 */     { .cell = 0x88 },  // false
-/* 3294 */     { .cell = 0x31 },  // exit
-/* 3295 */     { .cell = 0x0 },
-/* 3296 */ { .ip = META_INTERPRET },
-/* 3297 */     { .cell = 0x66 },  // THEN
-/* 3298 */     { .cell = 0x0 },
-/* 3299 */ { .ip = META_COMPILE },
-/* 3300 */     { .cell = 0x44 },  // char+
-/* 3301 */     { .cell = 0x5 },   // dup
-/* 3302 */     { .cell = 0x22 },  // c@
-/* 3303 */     { .cell = 0xA },   // swap
-/* 3304 */     { .cell = 0x44 },  // char+
-/* 3305 */     { .cell = 0x22 },  // c@
-/* 3306 */     { .cell = 0x0 },
-/* 3307 */ { .ip = DO_LITERAL }, { .cell = 0x27 },
-/* 3309 */ { .ip = META_INTERPRET },
-/* 3310 */     { .cell = 0x42 },  // LITERAL
-/* 3311 */     { .cell = 0x0 },
-/* 3312 */ { .ip = META_COMPILE },
-/* 3313 */     { .cell = 0x15 },  // =
-/* 3314 */     { .cell = 0x0 },
-/* 3315 */ { .ip = META_INTERPRET },
-/* 3316 */     { .cell = 0x67 },  // IF
-/* 3317 */     { .cell = 0x0 },
-/* 3318 */ { .ip = META_COMPILE },
-/* 3319 */     { .cell = 0x89 },  // true
-/* 3320 */     { .cell = 0x0 },
-/* 3321 */ { .ip = META_INTERPRET },
-/* 3322 */     { .cell = 0x69 },  // ELSE
-/* 3323 */     { .cell = 0x0 },
-/* 3324 */ { .ip = META_COMPILE },
-/* 3325 */     { .cell = 0x4 },   // drop
-/* 3326 */     { .cell = 0x88 },  // false
-/* 3327 */     { .cell = 0x0 },
-/* 3328 */ { .ip = META_INTERPRET },
-/* 3329 */     { .cell = 0x66 },  // THEN
-/* 3330 */     { .cell = 0x0 },
-/* 3331 */ { .ip = META_COMPILE },
-/* 3332 */     { .cell = 0x31 },  // EXIT
-/* 3333 */     { .cell = 0x0 },
-/* 3334 */ { .ip = META_LINKNAME },
-/* 3335 */ { .ip = META_STARTNAME }, { .id = "SIGNED-NUMBER" }, { .handler = do_colon },
-/* 3338 */ { .ip = DO_LITERAL }, { .cell = 0x2D },
-/* 3340 */ { .ip = META_INTERPRET },
-/* 3341 */     { .cell = 0x42 },  // LITERAL
-/* 3342 */     { .cell = 0x0 },
-/* 3343 */ { .ip = META_COMPILE },
-/* 3344 */     { .cell = 0x15 },  // =
-/* 3345 */     { .cell = 0x55 },  // tuck
-/* 3346 */     { .cell = 0x10 },  // +
-/* 3347 */     { .cell = 0x2 },   // ?dup
-/* 3348 */     { .cell = 0x7E },  // 0=
-/* 3349 */     { .cell = 0x0 },
-/* 3350 */ { .ip = META_INTERPRET },
-/* 3351 */     { .cell = 0x67 },  // IF
-/* 3352 */     { .cell = 0x0 },
-/* 3353 */ { .ip = META_COMPILE },
-/* 3354 */     { .cell = 0x50 },  // 2drop
-/* 3355 */     { .cell = 0x88 },  // false
-/* 3356 */     { .cell = 0x31 },  // exit
-/* 3357 */     { .cell = 0x0 },
-/* 3358 */ { .ip = META_INTERPRET },
-/* 3359 */     { .cell = 0x66 },  // THEN
-/* 3360 */     { .cell = 0x0 },
-/* 3361 */ { .ip = META_COMPILE },
-/* 3362 */     { .cell = 0x1 },   // >r
-/* 3363 */     { .cell = 0x55 },  // tuck
-/* 3364 */     { .cell = 0x43 },  // chars
-/* 3365 */     { .cell = 0x11 },  // -
-/* 3366 */     { .cell = 0x1 },   // >r
-/* 3367 */     { .cell = 0x0 },
-/* 3368 */ { .ip = DO_LITERAL }, { .cell = 0x0 },
-/* 3370 */ { .ip = META_INTERPRET },
-/* 3371 */     { .cell = 0x42 },  // LITERAL
-/* 3372 */     { .cell = 0x0 },
-/* 3373 */ { .ip = META_COMPILE },
-/* 3374 */     { .cell = 0x5 },   // dup
-/* 3375 */     { .cell = 0x7 },   // r>
-/* 3376 */     { .cell = 0x7 },   // r>
-/* 3377 */     { .cell = 0xE5 },  // >number
-/* 3378 */     { .cell = 0x0 },
-/* 3379 */ { .ip = META_INTERPRET },
-/* 3380 */     { .cell = 0x67 },  // IF
-/* 3381 */     { .cell = 0x0 },
-/* 3382 */ { .ip = META_COMPILE },
-/* 3383 */     { .cell = 0x50 },  // 2drop
-/* 3384 */     { .cell = 0x50 },  // 2drop
-/* 3385 */     { .cell = 0x88 },  // false
-/* 3386 */     { .cell = 0x31 },  // exit
-/* 3387 */     { .cell = 0x0 },
-/* 3388 */ { .ip = META_INTERPRET },
-/* 3389 */     { .cell = 0x66 },  // THEN
-/* 3390 */     { .cell = 0x0 },
-/* 3391 */ { .ip = META_COMPILE },
-/* 3392 */     { .cell = 0x50 },  // 2drop
-/* 3393 */     { .cell = 0xA },   // swap
-/* 3394 */     { .cell = 0x0 },
-/* 3395 */ { .ip = META_INTERPRET },
-/* 3396 */     { .cell = 0x67 },  // IF
-/* 3397 */     { .cell = 0x0 },
-/* 3398 */ { .ip = META_COMPILE },
-/* 3399 */     { .cell = 0x1A },  // negate
-/* 3400 */     { .cell = 0x0 },
-/* 3401 */ { .ip = META_INTERPRET },
-/* 3402 */     { .cell = 0x66 },  // THEN
-/* 3403 */     { .cell = 0x0 },
-/* 3404 */ { .ip = META_COMPILE },
-/* 3405 */     { .cell = 0x89 },  // true
-/* 3406 */     { .cell = 0x31 },  // EXIT
-/* 3407 */     { .cell = 0x0 },
-/* 3408 */ { .ip = META_LINKNAME },
-/* 3409 */ { .ip = META_STARTNAME }, { .id = "BASE-SIGNED-NUMBER" }, { .handler = do_colon },
-/* 3412 */ { .ip = META_COMPILE },
-/* 3413 */     { .cell = 0xA },   // swap
-/* 3414 */     { .cell = 0x80 },  // 1-
-/* 3415 */     { .cell = 0x2 },   // ?dup
-/* 3416 */     { .cell = 0x7E },  // 0=
-/* 3417 */     { .cell = 0x0 },
-/* 3418 */ { .ip = META_INTERPRET },
-/* 3419 */     { .cell = 0x67 },  // IF
-/* 3420 */     { .cell = 0x0 },
-/* 3421 */ { .ip = META_COMPILE },
-/* 3422 */     { .cell = 0x50 },  // 2drop
-/* 3423 */     { .cell = 0x88 },  // false
-/* 3424 */     { .cell = 0x31 },  // exit
-/* 3425 */     { .cell = 0x0 },
-/* 3426 */ { .ip = META_INTERPRET },
-/* 3427 */     { .cell = 0x66 },  // THEN
-/* 3428 */     { .cell = 0x0 },
-/* 3429 */ { .ip = META_COMPILE },
-/* 3430 */     { .cell = 0xE2 },  // base
-/* 3431 */     { .cell = 0x20 },  // @
-/* 3432 */     { .cell = 0x1 },   // >r
-/* 3433 */     { .cell = 0x1 },   // >r
-/* 3434 */     { .cell = 0xE2 },  // base
-/* 3435 */     { .cell = 0x1F },  // !
-/* 3436 */     { .cell = 0x44 },  // char+
-/* 3437 */     { .cell = 0x7 },   // r>
-/* 3438 */     { .cell = 0x6 },   // over
-/* 3439 */     { .cell = 0x22 },  // c@
-/* 3440 */     { .cell = 0xEB },  // signed-number
-/* 3441 */     { .cell = 0x7 },   // r>
-/* 3442 */     { .cell = 0xE2 },  // base
-/* 3443 */     { .cell = 0x1F },  // !
-/* 3444 */     { .cell = 0x31 },  // EXIT
-/* 3445 */     { .cell = 0x0 },
-/* 3446 */ { .ip = META_LINKNAME },
-/* 3447 */ { .ip = META_STARTNAME }, { .id = "NUMBER-TOKEN?" }, { .handler = do_colon },
-/* 3450 */ { .ip = META_COMPILE },
-/* 3451 */     { .cell = 0x6 },   // over
-/* 3452 */     { .cell = 0x22 },  // c@
-/* 3453 */     { .cell = 0x5 },   // dup
-/* 3454 */     { .cell = 0x0 },
-/* 3455 */ { .ip = DO_LITERAL }, { .cell = 0x23 },
-/* 3457 */ { .ip = META_INTERPRET },
-/* 3458 */     { .cell = 0x42 },  // LITERAL
-/* 3459 */     { .cell = 0x0 },
-/* 3460 */ { .ip = META_COMPILE },
-/* 3461 */     { .cell = 0x15 },  // =
-/* 3462 */     { .cell = 0x0 },
-/* 3463 */ { .ip = META_INTERPRET },
-/* 3464 */     { .cell = 0x67 },  // IF
-/* 3465 */     { .cell = 0x0 },
-/* 3466 */ { .ip = META_COMPILE },
-/* 3467 */     { .cell = 0x4 },   // drop
-/* 3468 */     { .cell = 0x0 },
-/* 3469 */ { .ip = DO_LITERAL }, { .cell = 0xA },
-/* 3471 */ { .ip = META_INTERPRET },
-/* 3472 */     { .cell = 0x42 },  // LITERAL
-/* 3473 */     { .cell = 0x0 },
-/* 3474 */ { .ip = META_COMPILE },
-/* 3475 */     { .cell = 0xEC },  // base-signed-number
-/* 3476 */     { .cell = 0x31 },  // exit
-/* 3477 */     { .cell = 0x0 },
-/* 3478 */ { .ip = META_INTERPRET },
-/* 3479 */     { .cell = 0x66 },  // THEN
-/* 3480 */     { .cell = 0x0 },
-/* 3481 */ { .ip = META_COMPILE },
-/* 3482 */     { .cell = 0x5 },   // dup
-/* 3483 */     { .cell = 0x0 },
-/* 3484 */ { .ip = DO_LITERAL }, { .cell = 0x24 },
-/* 3486 */ { .ip = META_INTERPRET },
-/* 3487 */     { .cell = 0x42 },  // LITERAL
-/* 3488 */     { .cell = 0x0 },
-/* 3489 */ { .ip = META_COMPILE },
-/* 3490 */     { .cell = 0x15 },  // =
-/* 3491 */     { .cell = 0x0 },
-/* 3492 */ { .ip = META_INTERPRET },
-/* 3493 */     { .cell = 0x67 },  // IF
-/* 3494 */     { .cell = 0x0 },
-/* 3495 */ { .ip = META_COMPILE },
-/* 3496 */     { .cell = 0x4 },   // drop
-/* 3497 */     { .cell = 0x0 },
-/* 3498 */ { .ip = DO_LITERAL }, { .cell = 0x10 },
-/* 3500 */ { .ip = META_INTERPRET },
-/* 3501 */     { .cell = 0x42 },  // LITERAL
-/* 3502 */     { .cell = 0x0 },
-/* 3503 */ { .ip = META_COMPILE },
-/* 3504 */     { .cell = 0xEC },  // base-signed-number
-/* 3505 */     { .cell = 0x31 },  // exit
-/* 3506 */     { .cell = 0x0 },
-/* 3507 */ { .ip = META_INTERPRET },
-/* 3508 */     { .cell = 0x66 },  // THEN
-/* 3509 */     { .cell = 0x0 },
-/* 3510 */ { .ip = META_COMPILE },
-/* 3511 */     { .cell = 0x5 },   // dup
-/* 3512 */     { .cell = 0x0 },
-/* 3513 */ { .ip = DO_LITERAL }, { .cell = 0x25 },
-/* 3515 */ { .ip = META_INTERPRET },
-/* 3516 */     { .cell = 0x42 },  // LITERAL
-/* 3517 */     { .cell = 0x0 },
-/* 3518 */ { .ip = META_COMPILE },
-/* 3519 */     { .cell = 0x15 },  // =
-/* 3520 */     { .cell = 0x0 },
-/* 3521 */ { .ip = META_INTERPRET },
-/* 3522 */     { .cell = 0x67 },  // IF
-/* 3523 */     { .cell = 0x0 },
-/* 3524 */ { .ip = META_COMPILE },
-/* 3525 */     { .cell = 0x4 },   // drop
-/* 3526 */     { .cell = 0x0 },
-/* 3527 */ { .ip = DO_LITERAL }, { .cell = 0x2 },
-/* 3529 */ { .ip = META_INTERPRET },
-/* 3530 */     { .cell = 0x42 },  // LITERAL
-/* 3531 */     { .cell = 0x0 },
-/* 3532 */ { .ip = META_COMPILE },
-/* 3533 */     { .cell = 0xEC },  // base-signed-number
-/* 3534 */     { .cell = 0x31 },  // exit
-/* 3535 */     { .cell = 0x0 },
-/* 3536 */ { .ip = META_INTERPRET },
-/* 3537 */     { .cell = 0x66 },  // THEN
-/* 3538 */     { .cell = 0x0 },
-/* 3539 */ { .ip = META_COMPILE },
-/* 3540 */     { .cell = 0x5 },   // dup
-/* 3541 */     { .cell = 0x0 },
-/* 3542 */ { .ip = DO_LITERAL }, { .cell = 0x27 },
-/* 3544 */ { .ip = META_INTERPRET },
-/* 3545 */     { .cell = 0x42 },  // LITERAL
-/* 3546 */     { .cell = 0x0 },
-/* 3547 */ { .ip = META_COMPILE },
-/* 3548 */     { .cell = 0x15 },  // =
-/* 3549 */     { .cell = 0x0 },
-/* 3550 */ { .ip = META_INTERPRET },
-/* 3551 */     { .cell = 0x67 },  // IF
-/* 3552 */     { .cell = 0x0 },
-/* 3553 */ { .ip = META_COMPILE },
-/* 3554 */     { .cell = 0x4 },   // drop
-/* 3555 */     { .cell = 0xEA },  // 'char'
-/* 3556 */     { .cell = 0x31 },  // exit
-/* 3557 */     { .cell = 0x0 },
-/* 3558 */ { .ip = META_INTERPRET },
-/* 3559 */     { .cell = 0x66 },  // THEN
-/* 3560 */     { .cell = 0x0 },
-/* 3561 */ { .ip = META_COMPILE },
-/* 3562 */     { .cell = 0xEB },  // signed-number
-/* 3563 */     { .cell = 0x31 },  // EXIT
-/* 3564 */     { .cell = 0x0 },
-/* 3565 */ { .ip = META_LINKNAME },
+/* 3279 */ { .ip = META_STARTNAME }, { .id = "'CHAR'" }, { .handler = do_colon },
+/* 3282 */ { .ip = DO_LITERAL }, { .cell = 0x3 },
+/* 3284 */ { .ip = META_INTERPRET },
+/* 3285 */     { .cell = 0x42 },  // LITERAL
+/* 3286 */     { .cell = 0x0 },
+/* 3287 */ { .ip = META_COMPILE },
+/* 3288 */     { .cell = 0x85 },  // <>
+/* 3289 */     { .cell = 0x0 },
+/* 3290 */ { .ip = META_INTERPRET },
+/* 3291 */     { .cell = 0x67 },  // IF
+/* 3292 */     { .cell = 0x0 },
+/* 3293 */ { .ip = META_COMPILE },
+/* 3294 */     { .cell = 0x4 },   // drop
+/* 3295 */     { .cell = 0x88 },  // false
+/* 3296 */     { .cell = 0x33 },  // exit
+/* 3297 */     { .cell = 0x0 },
+/* 3298 */ { .ip = META_INTERPRET },
+/* 3299 */     { .cell = 0x66 },  // THEN
+/* 3300 */     { .cell = 0x0 },
+/* 3301 */ { .ip = META_COMPILE },
+/* 3302 */     { .cell = 0x44 },  // char+
+/* 3303 */     { .cell = 0x5 },   // dup
+/* 3304 */     { .cell = 0x24 },  // c@
+/* 3305 */     { .cell = 0xA },   // swap
+/* 3306 */     { .cell = 0x44 },  // char+
+/* 3307 */     { .cell = 0x24 },  // c@
+/* 3308 */     { .cell = 0x0 },
+/* 3309 */ { .ip = DO_LITERAL }, { .cell = 0x27 },
+/* 3311 */ { .ip = META_INTERPRET },
+/* 3312 */     { .cell = 0x42 },  // LITERAL
+/* 3313 */     { .cell = 0x0 },
+/* 3314 */ { .ip = META_COMPILE },
+/* 3315 */     { .cell = 0x17 },  // =
+/* 3316 */     { .cell = 0x0 },
+/* 3317 */ { .ip = META_INTERPRET },
+/* 3318 */     { .cell = 0x67 },  // IF
+/* 3319 */     { .cell = 0x0 },
+/* 3320 */ { .ip = META_COMPILE },
+/* 3321 */     { .cell = 0x89 },  // true
+/* 3322 */     { .cell = 0x0 },
+/* 3323 */ { .ip = META_INTERPRET },
+/* 3324 */     { .cell = 0x69 },  // ELSE
+/* 3325 */     { .cell = 0x0 },
+/* 3326 */ { .ip = META_COMPILE },
+/* 3327 */     { .cell = 0x4 },   // drop
+/* 3328 */     { .cell = 0x88 },  // false
+/* 3329 */     { .cell = 0x0 },
+/* 3330 */ { .ip = META_INTERPRET },
+/* 3331 */     { .cell = 0x66 },  // THEN
+/* 3332 */     { .cell = 0x0 },
+/* 3333 */ { .ip = META_COMPILE },
+/* 3334 */     { .cell = 0x33 },  // EXIT
+/* 3335 */     { .cell = 0x0 },
+/* 3336 */ { .ip = META_LINKNAME },
+/* 3337 */ { .ip = META_STARTNAME }, { .id = "SIGNED-NUMBER" }, { .handler = do_colon },
+/* 3340 */ { .ip = DO_LITERAL }, { .cell = 0x2D },
+/* 3342 */ { .ip = META_INTERPRET },
+/* 3343 */     { .cell = 0x42 },  // LITERAL
+/* 3344 */     { .cell = 0x0 },
+/* 3345 */ { .ip = META_COMPILE },
+/* 3346 */     { .cell = 0x17 },  // =
+/* 3347 */     { .cell = 0x55 },  // tuck
+/* 3348 */     { .cell = 0x12 },  // +
+/* 3349 */     { .cell = 0x2 },   // ?dup
+/* 3350 */     { .cell = 0x7E },  // 0=
+/* 3351 */     { .cell = 0x0 },
+/* 3352 */ { .ip = META_INTERPRET },
+/* 3353 */     { .cell = 0x67 },  // IF
+/* 3354 */     { .cell = 0x0 },
+/* 3355 */ { .ip = META_COMPILE },
+/* 3356 */     { .cell = 0x50 },  // 2drop
+/* 3357 */     { .cell = 0x88 },  // false
+/* 3358 */     { .cell = 0x33 },  // exit
+/* 3359 */     { .cell = 0x0 },
+/* 3360 */ { .ip = META_INTERPRET },
+/* 3361 */     { .cell = 0x66 },  // THEN
+/* 3362 */     { .cell = 0x0 },
+/* 3363 */ { .ip = META_COMPILE },
+/* 3364 */     { .cell = 0x1 },   // >r
+/* 3365 */     { .cell = 0x55 },  // tuck
+/* 3366 */     { .cell = 0x43 },  // chars
+/* 3367 */     { .cell = 0x13 },  // -
+/* 3368 */     { .cell = 0x1 },   // >r
+/* 3369 */     { .cell = 0x0 },
+/* 3370 */ { .ip = DO_LITERAL }, { .cell = 0x0 },
+/* 3372 */ { .ip = META_INTERPRET },
+/* 3373 */     { .cell = 0x42 },  // LITERAL
+/* 3374 */     { .cell = 0x0 },
+/* 3375 */ { .ip = META_COMPILE },
+/* 3376 */     { .cell = 0x5 },   // dup
+/* 3377 */     { .cell = 0x7 },   // r>
+/* 3378 */     { .cell = 0x7 },   // r>
+/* 3379 */     { .cell = 0xE5 },  // >number
+/* 3380 */     { .cell = 0x0 },
+/* 3381 */ { .ip = META_INTERPRET },
+/* 3382 */     { .cell = 0x67 },  // IF
+/* 3383 */     { .cell = 0x0 },
+/* 3384 */ { .ip = META_COMPILE },
+/* 3385 */     { .cell = 0x50 },  // 2drop
+/* 3386 */     { .cell = 0x50 },  // 2drop
+/* 3387 */     { .cell = 0x88 },  // false
+/* 3388 */     { .cell = 0x33 },  // exit
+/* 3389 */     { .cell = 0x0 },
+/* 3390 */ { .ip = META_INTERPRET },
+/* 3391 */     { .cell = 0x66 },  // THEN
+/* 3392 */     { .cell = 0x0 },
+/* 3393 */ { .ip = META_COMPILE },
+/* 3394 */     { .cell = 0x50 },  // 2drop
+/* 3395 */     { .cell = 0xA },   // swap
+/* 3396 */     { .cell = 0x0 },
+/* 3397 */ { .ip = META_INTERPRET },
+/* 3398 */     { .cell = 0x67 },  // IF
+/* 3399 */     { .cell = 0x0 },
+/* 3400 */ { .ip = META_COMPILE },
+/* 3401 */     { .cell = 0x1C },  // negate
+/* 3402 */     { .cell = 0x0 },
+/* 3403 */ { .ip = META_INTERPRET },
+/* 3404 */     { .cell = 0x66 },  // THEN
+/* 3405 */     { .cell = 0x0 },
+/* 3406 */ { .ip = META_COMPILE },
+/* 3407 */     { .cell = 0x89 },  // true
+/* 3408 */     { .cell = 0x33 },  // EXIT
+/* 3409 */     { .cell = 0x0 },
+/* 3410 */ { .ip = META_LINKNAME },
+/* 3411 */ { .ip = META_STARTNAME }, { .id = "BASE-SIGNED-NUMBER" }, { .handler = do_colon },
+/* 3414 */ { .ip = META_COMPILE },
+/* 3415 */     { .cell = 0xA },   // swap
+/* 3416 */     { .cell = 0x80 },  // 1-
+/* 3417 */     { .cell = 0x2 },   // ?dup
+/* 3418 */     { .cell = 0x7E },  // 0=
+/* 3419 */     { .cell = 0x0 },
+/* 3420 */ { .ip = META_INTERPRET },
+/* 3421 */     { .cell = 0x67 },  // IF
+/* 3422 */     { .cell = 0x0 },
+/* 3423 */ { .ip = META_COMPILE },
+/* 3424 */     { .cell = 0x50 },  // 2drop
+/* 3425 */     { .cell = 0x88 },  // false
+/* 3426 */     { .cell = 0x33 },  // exit
+/* 3427 */     { .cell = 0x0 },
+/* 3428 */ { .ip = META_INTERPRET },
+/* 3429 */     { .cell = 0x66 },  // THEN
+/* 3430 */     { .cell = 0x0 },
+/* 3431 */ { .ip = META_COMPILE },
+/* 3432 */     { .cell = 0xE2 },  // base
+/* 3433 */     { .cell = 0x22 },  // @
+/* 3434 */     { .cell = 0x1 },   // >r
+/* 3435 */     { .cell = 0x1 },   // >r
+/* 3436 */     { .cell = 0xE2 },  // base
+/* 3437 */     { .cell = 0x21 },  // !
+/* 3438 */     { .cell = 0x44 },  // char+
+/* 3439 */     { .cell = 0x7 },   // r>
+/* 3440 */     { .cell = 0x6 },   // over
+/* 3441 */     { .cell = 0x24 },  // c@
+/* 3442 */     { .cell = 0xEB },  // signed-number
+/* 3443 */     { .cell = 0x7 },   // r>
+/* 3444 */     { .cell = 0xE2 },  // base
+/* 3445 */     { .cell = 0x21 },  // !
+/* 3446 */     { .cell = 0x33 },  // EXIT
+/* 3447 */     { .cell = 0x0 },
+/* 3448 */ { .ip = META_LINKNAME },
+/* 3449 */ { .ip = META_STARTNAME }, { .id = "NUMBER-TOKEN?" }, { .handler = do_colon },
+/* 3452 */ { .ip = META_COMPILE },
+/* 3453 */     { .cell = 0x6 },   // over
+/* 3454 */     { .cell = 0x24 },  // c@
+/* 3455 */     { .cell = 0x5 },   // dup
+/* 3456 */     { .cell = 0x0 },
+/* 3457 */ { .ip = DO_LITERAL }, { .cell = 0x23 },
+/* 3459 */ { .ip = META_INTERPRET },
+/* 3460 */     { .cell = 0x42 },  // LITERAL
+/* 3461 */     { .cell = 0x0 },
+/* 3462 */ { .ip = META_COMPILE },
+/* 3463 */     { .cell = 0x17 },  // =
+/* 3464 */     { .cell = 0x0 },
+/* 3465 */ { .ip = META_INTERPRET },
+/* 3466 */     { .cell = 0x67 },  // IF
+/* 3467 */     { .cell = 0x0 },
+/* 3468 */ { .ip = META_COMPILE },
+/* 3469 */     { .cell = 0x4 },   // drop
+/* 3470 */     { .cell = 0x0 },
+/* 3471 */ { .ip = DO_LITERAL }, { .cell = 0xA },
+/* 3473 */ { .ip = META_INTERPRET },
+/* 3474 */     { .cell = 0x42 },  // LITERAL
+/* 3475 */     { .cell = 0x0 },
+/* 3476 */ { .ip = META_COMPILE },
+/* 3477 */     { .cell = 0xEC },  // base-signed-number
+/* 3478 */     { .cell = 0x33 },  // exit
+/* 3479 */     { .cell = 0x0 },
+/* 3480 */ { .ip = META_INTERPRET },
+/* 3481 */     { .cell = 0x66 },  // THEN
+/* 3482 */     { .cell = 0x0 },
+/* 3483 */ { .ip = META_COMPILE },
+/* 3484 */     { .cell = 0x5 },   // dup
+/* 3485 */     { .cell = 0x0 },
+/* 3486 */ { .ip = DO_LITERAL }, { .cell = 0x24 },
+/* 3488 */ { .ip = META_INTERPRET },
+/* 3489 */     { .cell = 0x42 },  // LITERAL
+/* 3490 */     { .cell = 0x0 },
+/* 3491 */ { .ip = META_COMPILE },
+/* 3492 */     { .cell = 0x17 },  // =
+/* 3493 */     { .cell = 0x0 },
+/* 3494 */ { .ip = META_INTERPRET },
+/* 3495 */     { .cell = 0x67 },  // IF
+/* 3496 */     { .cell = 0x0 },
+/* 3497 */ { .ip = META_COMPILE },
+/* 3498 */     { .cell = 0x4 },   // drop
+/* 3499 */     { .cell = 0x0 },
+/* 3500 */ { .ip = DO_LITERAL }, { .cell = 0x10 },
+/* 3502 */ { .ip = META_INTERPRET },
+/* 3503 */     { .cell = 0x42 },  // LITERAL
+/* 3504 */     { .cell = 0x0 },
+/* 3505 */ { .ip = META_COMPILE },
+/* 3506 */     { .cell = 0xEC },  // base-signed-number
+/* 3507 */     { .cell = 0x33 },  // exit
+/* 3508 */     { .cell = 0x0 },
+/* 3509 */ { .ip = META_INTERPRET },
+/* 3510 */     { .cell = 0x66 },  // THEN
+/* 3511 */     { .cell = 0x0 },
+/* 3512 */ { .ip = META_COMPILE },
+/* 3513 */     { .cell = 0x5 },   // dup
+/* 3514 */     { .cell = 0x0 },
+/* 3515 */ { .ip = DO_LITERAL }, { .cell = 0x25 },
+/* 3517 */ { .ip = META_INTERPRET },
+/* 3518 */     { .cell = 0x42 },  // LITERAL
+/* 3519 */     { .cell = 0x0 },
+/* 3520 */ { .ip = META_COMPILE },
+/* 3521 */     { .cell = 0x17 },  // =
+/* 3522 */     { .cell = 0x0 },
+/* 3523 */ { .ip = META_INTERPRET },
+/* 3524 */     { .cell = 0x67 },  // IF
+/* 3525 */     { .cell = 0x0 },
+/* 3526 */ { .ip = META_COMPILE },
+/* 3527 */     { .cell = 0x4 },   // drop
+/* 3528 */     { .cell = 0x0 },
+/* 3529 */ { .ip = DO_LITERAL }, { .cell = 0x2 },
+/* 3531 */ { .ip = META_INTERPRET },
+/* 3532 */     { .cell = 0x42 },  // LITERAL
+/* 3533 */     { .cell = 0x0 },
+/* 3534 */ { .ip = META_COMPILE },
+/* 3535 */     { .cell = 0xEC },  // base-signed-number
+/* 3536 */     { .cell = 0x33 },  // exit
+/* 3537 */     { .cell = 0x0 },
+/* 3538 */ { .ip = META_INTERPRET },
+/* 3539 */     { .cell = 0x66 },  // THEN
+/* 3540 */     { .cell = 0x0 },
+/* 3541 */ { .ip = META_COMPILE },
+/* 3542 */     { .cell = 0x5 },   // dup
+/* 3543 */     { .cell = 0x0 },
+/* 3544 */ { .ip = DO_LITERAL }, { .cell = 0x27 },
+/* 3546 */ { .ip = META_INTERPRET },
+/* 3547 */     { .cell = 0x42 },  // LITERAL
+/* 3548 */     { .cell = 0x0 },
+/* 3549 */ { .ip = META_COMPILE },
+/* 3550 */     { .cell = 0x17 },  // =
+/* 3551 */     { .cell = 0x0 },
+/* 3552 */ { .ip = META_INTERPRET },
+/* 3553 */     { .cell = 0x67 },  // IF
+/* 3554 */     { .cell = 0x0 },
+/* 3555 */ { .ip = META_COMPILE },
+/* 3556 */     { .cell = 0x4 },   // drop
+/* 3557 */     { .cell = 0xEA },  // 'char'
+/* 3558 */     { .cell = 0x33 },  // exit
+/* 3559 */     { .cell = 0x0 },
+/* 3560 */ { .ip = META_INTERPRET },
+/* 3561 */     { .cell = 0x66 },  // THEN
+/* 3562 */     { .cell = 0x0 },
+/* 3563 */ { .ip = META_COMPILE },
+/* 3564 */     { .cell = 0xEB },  // signed-number
+/* 3565 */     { .cell = 0x33 },  // EXIT
+/* 3566 */     { .cell = 0x0 },
+/* 3567 */ { .ip = META_LINKNAME },
             /* ==== forth/common/internal/tokens.fth ==== */
-/* 3566 */ { .ip = META_STARTNAME }, { .id = "INTERPRET-NAME" }, { .handler = do_colon },
-/* 3569 */ { .ip = META_COMPILE },
-/* 3570 */     { .cell = 0xE7 },  // state
-/* 3571 */     { .cell = 0x20 },  // @
-/* 3572 */     { .cell = 0x0 },
-/* 3573 */ { .ip = META_INTERPRET },
-/* 3574 */     { .cell = 0x67 },  // IF
-/* 3575 */     { .cell = 0x0 },
-/* 3576 */ { .ip = META_COMPILE },
-/* 3577 */     { .cell = 0xA0 },  // name>compile
-/* 3578 */     { .cell = 0x30 },  // execute
-/* 3579 */     { .cell = 0x0 },
-/* 3580 */ { .ip = META_INTERPRET },
-/* 3581 */     { .cell = 0x69 },  // ELSE
-/* 3582 */     { .cell = 0x0 },
-/* 3583 */ { .ip = META_COMPILE },
-/* 3584 */     { .cell = 0x9F },  // name>interpret
-/* 3585 */     { .cell = 0x2 },   // ?dup
-/* 3586 */     { .cell = 0x0 },
-/* 3587 */ { .ip = META_INTERPRET },
-/* 3588 */     { .cell = 0x67 },  // IF
-/* 3589 */     { .cell = 0x0 },
-/* 3590 */ { .ip = META_COMPILE },
-/* 3591 */     { .cell = 0x30 },  // execute
-/* 3592 */     { .cell = 0x0 },
-/* 3593 */ { .ip = META_INTERPRET },
-/* 3594 */     { .cell = 0x69 },  // ELSE
-/* 3595 */     { .cell = 0x0 },
-/* 3596 */ { .ip = DO_LITERAL }, { .cell = -0xE },
-/* 3598 */ { .ip = META_INTERPRET },
-/* 3599 */     { .cell = 0x42 },  // LITERAL
-/* 3600 */     { .cell = 0x0 },
-/* 3601 */ { .ip = META_COMPILE },
-/* 3602 */     { .cell = 0xD8 },  // .error
-/* 3603 */     { .cell = 0x0 },
-/* 3604 */ { .ip = META_INTERPRET },
-/* 3605 */     { .cell = 0x66 },  // THEN
-/* 3606 */     { .cell = 0x66 },  // THEN
-/* 3607 */     { .cell = 0x0 },
-/* 3608 */ { .ip = META_COMPILE },
-/* 3609 */     { .cell = 0x31 },  // EXIT
-/* 3610 */     { .cell = 0x0 },
-/* 3611 */ { .ip = META_LINKNAME },
-/* 3612 */ { .ip = META_STARTNAME }, { .id = "INTERPRET-NUMBER" }, { .handler = do_colon },
-/* 3615 */ { .ip = META_COMPILE },
-/* 3616 */     { .cell = 0xE7 },  // state
-/* 3617 */     { .cell = 0x20 },  // @
-/* 3618 */     { .cell = 0x0 },
-/* 3619 */ { .ip = META_INTERPRET },
-/* 3620 */     { .cell = 0x67 },  // IF
-/* 3621 */     { .cell = 0x0 },
-/* 3622 */ { .ip = META_COMPILE },
-/* 3623 */     { .cell = 0x42 },  // LITERAL
-/* 3624 */     { .cell = 0x0 },
-/* 3625 */ { .ip = META_INTERPRET },
-/* 3626 */     { .cell = 0x66 },  // THEN
-/* 3627 */     { .cell = 0x0 },
-/* 3628 */ { .ip = META_COMPILE },
-/* 3629 */     { .cell = 0x31 },  // EXIT
-/* 3630 */     { .cell = 0x0 },
-/* 3631 */ { .ip = META_LINKNAME },
-/* 3632 */ { .ip = META_STARTNAME }, { .id = "INTERPRET-UNKNOWN" }, { .handler = do_colon },
-/* 3635 */ { .ip = META_COMPILE },
-/* 3636 */     { .cell = 0x88 },  // false
-/* 3637 */     { .cell = 0x31 },  // EXIT
-/* 3638 */     { .cell = 0x0 },
-/* 3639 */ { .ip = META_LINKNAME },
+/* 3568 */ { .ip = META_STARTNAME }, { .id = "INTERPRET-NAME" }, { .handler = do_colon },
+/* 3571 */ { .ip = META_COMPILE },
+/* 3572 */     { .cell = 0xE7 },  // state
+/* 3573 */     { .cell = 0x22 },  // @
+/* 3574 */     { .cell = 0x0 },
+/* 3575 */ { .ip = META_INTERPRET },
+/* 3576 */     { .cell = 0x67 },  // IF
+/* 3577 */     { .cell = 0x0 },
+/* 3578 */ { .ip = META_COMPILE },
+/* 3579 */     { .cell = 0xA0 },  // name>compile
+/* 3580 */     { .cell = 0x32 },  // execute
+/* 3581 */     { .cell = 0x0 },
+/* 3582 */ { .ip = META_INTERPRET },
+/* 3583 */     { .cell = 0x69 },  // ELSE
+/* 3584 */     { .cell = 0x0 },
+/* 3585 */ { .ip = META_COMPILE },
+/* 3586 */     { .cell = 0x9F },  // name>interpret
+/* 3587 */     { .cell = 0x2 },   // ?dup
+/* 3588 */     { .cell = 0x0 },
+/* 3589 */ { .ip = META_INTERPRET },
+/* 3590 */     { .cell = 0x67 },  // IF
+/* 3591 */     { .cell = 0x0 },
+/* 3592 */ { .ip = META_COMPILE },
+/* 3593 */     { .cell = 0x32 },  // execute
+/* 3594 */     { .cell = 0x0 },
+/* 3595 */ { .ip = META_INTERPRET },
+/* 3596 */     { .cell = 0x69 },  // ELSE
+/* 3597 */     { .cell = 0x0 },
+/* 3598 */ { .ip = DO_LITERAL }, { .cell = -0xE },
+/* 3600 */ { .ip = META_INTERPRET },
+/* 3601 */     { .cell = 0x42 },  // LITERAL
+/* 3602 */     { .cell = 0x0 },
+/* 3603 */ { .ip = META_COMPILE },
+/* 3604 */     { .cell = 0xD8 },  // .error
+/* 3605 */     { .cell = 0x0 },
+/* 3606 */ { .ip = META_INTERPRET },
+/* 3607 */     { .cell = 0x66 },  // THEN
+/* 3608 */     { .cell = 0x66 },  // THEN
+/* 3609 */     { .cell = 0x0 },
+/* 3610 */ { .ip = META_COMPILE },
+/* 3611 */     { .cell = 0x33 },  // EXIT
+/* 3612 */     { .cell = 0x0 },
+/* 3613 */ { .ip = META_LINKNAME },
+/* 3614 */ { .ip = META_STARTNAME }, { .id = "INTERPRET-NUMBER" }, { .handler = do_colon },
+/* 3617 */ { .ip = META_COMPILE },
+/* 3618 */     { .cell = 0xE7 },  // state
+/* 3619 */     { .cell = 0x22 },  // @
+/* 3620 */     { .cell = 0x0 },
+/* 3621 */ { .ip = META_INTERPRET },
+/* 3622 */     { .cell = 0x67 },  // IF
+/* 3623 */     { .cell = 0x0 },
+/* 3624 */ { .ip = META_COMPILE },
+/* 3625 */     { .cell = 0x42 },  // LITERAL
+/* 3626 */     { .cell = 0x0 },
+/* 3627 */ { .ip = META_INTERPRET },
+/* 3628 */     { .cell = 0x66 },  // THEN
+/* 3629 */     { .cell = 0x0 },
+/* 3630 */ { .ip = META_COMPILE },
+/* 3631 */     { .cell = 0x33 },  // EXIT
+/* 3632 */     { .cell = 0x0 },
+/* 3633 */ { .ip = META_LINKNAME },
+/* 3634 */ { .ip = META_STARTNAME }, { .id = "INTERPRET-UNKNOWN" }, { .handler = do_colon },
+/* 3637 */ { .ip = META_COMPILE },
+/* 3638 */     { .cell = 0x88 },  // false
+/* 3639 */     { .cell = 0x33 },  // EXIT
+/* 3640 */     { .cell = 0x0 },
+/* 3641 */ { .ip = META_LINKNAME },
             /* ==== forth/common/internal/interpret.fth ==== */
-/* 3640 */ { .ip = META_STARTNAME }, { .id = "INTERPRET-TOKEN" }, { .handler = do_colon },
-/* 3643 */ { .ip = META_COMPILE },
-/* 3644 */     { .cell = 0x51 },  // 2dup
-/* 3645 */     { .cell = 0xE1 },  // lookup
-/* 3646 */     { .cell = 0x2 },   // ?dup
-/* 3647 */     { .cell = 0x0 },
-/* 3648 */ { .ip = META_INTERPRET },
-/* 3649 */     { .cell = 0x67 },  // IF
-/* 3650 */     { .cell = 0x0 },
-/* 3651 */ { .ip = META_COMPILE },
-/* 3652 */     { .cell = 0x1 },   // >r
-/* 3653 */     { .cell = 0x50 },  // 2drop
-/* 3654 */     { .cell = 0x7 },   // r>
-/* 3655 */     { .cell = 0xEE },  // interpret-name
-/* 3656 */     { .cell = 0x31 },  // exit
-/* 3657 */     { .cell = 0x0 },
-/* 3658 */ { .ip = META_INTERPRET },
-/* 3659 */     { .cell = 0x66 },  // THEN
-/* 3660 */     { .cell = 0x0 },
-/* 3661 */ { .ip = META_COMPILE },
-/* 3662 */     { .cell = 0x51 },  // 2dup
-/* 3663 */     { .cell = 0xED },  // number-token?
-/* 3664 */     { .cell = 0x0 },
-/* 3665 */ { .ip = META_INTERPRET },
-/* 3666 */     { .cell = 0x67 },  // IF
-/* 3667 */     { .cell = 0x0 },
-/* 3668 */ { .ip = META_COMPILE },
-/* 3669 */     { .cell = 0x1 },   // >r
-/* 3670 */     { .cell = 0x50 },  // 2drop
-/* 3671 */     { .cell = 0x7 },   // r>
-/* 3672 */     { .cell = 0xEF },  // interpret-number
-/* 3673 */     { .cell = 0x31 },  // exit
-/* 3674 */     { .cell = 0x0 },
-/* 3675 */ { .ip = META_INTERPRET },
-/* 3676 */     { .cell = 0x66 },  // THEN
-/* 3677 */     { .cell = 0x0 },
-/* 3678 */ { .ip = META_COMPILE },
-/* 3679 */     { .cell = 0xF0 },  // interpret-unknown
-/* 3680 */     { .cell = 0x0 },
-/* 3681 */ { .ip = META_INTERPRET },
-/* 3682 */     { .cell = 0x67 },  // IF
-/* 3683 */     { .cell = 0x0 },
-/* 3684 */ { .ip = META_COMPILE },
-/* 3685 */     { .cell = 0x31 },  // exit
-/* 3686 */     { .cell = 0x0 },
-/* 3687 */ { .ip = META_INTERPRET },
-/* 3688 */     { .cell = 0x66 },  // THEN
-/* 3689 */     { .cell = 0x0 },
-/* 3690 */ { .ip = DO_LITERAL }, { .cell = -0xD },
-/* 3692 */ { .ip = META_INTERPRET },
-/* 3693 */     { .cell = 0x42 },  // LITERAL
-/* 3694 */     { .cell = 0x0 },
-/* 3695 */ { .ip = META_COMPILE },
-/* 3696 */     { .cell = 0xD8 },  // .error
-/* 3697 */     { .cell = 0x31 },  // EXIT
-/* 3698 */     { .cell = 0x0 },
-/* 3699 */ { .ip = META_LINKNAME },
-/* 3700 */ { .ip = META_STARTNAME }, { .id = "INTERPRET" }, { .handler = do_colon },
-/* 3703 */ { .ip = META_INTERPRET },
-/* 3704 */     { .cell = 0x65 },  // BEGIN
-/* 3705 */     { .cell = 0x0 },
-/* 3706 */ { .ip = META_COMPILE },
-/* 3707 */     { .cell = 0xD7 },  // parse-name
-/* 3708 */     { .cell = 0x5 },   // dup
-/* 3709 */     { .cell = 0x0 },
-/* 3710 */ { .ip = META_INTERPRET },
-/* 3711 */     { .cell = 0x6C },  // WHILE
-/* 3712 */     { .cell = 0x0 },
-/* 3713 */ { .ip = META_COMPILE },
-/* 3714 */     { .cell = 0xF1 },  // interpret-token
-/* 3715 */     { .cell = 0x0 },
-/* 3716 */ { .ip = META_INTERPRET },
-/* 3717 */     { .cell = 0x6B },  // REPEAT
-/* 3718 */     { .cell = 0x0 },
-/* 3719 */ { .ip = META_COMPILE },
-/* 3720 */     { .cell = 0x50 },  // 2drop
-/* 3721 */     { .cell = 0x31 },  // EXIT
-/* 3722 */     { .cell = 0x0 },
-/* 3723 */ { .ip = META_LINKNAME },
+/* 3642 */ { .ip = META_STARTNAME }, { .id = "INTERPRET-TOKEN" }, { .handler = do_colon },
+/* 3645 */ { .ip = META_COMPILE },
+/* 3646 */     { .cell = 0x51 },  // 2dup
+/* 3647 */     { .cell = 0xE1 },  // lookup
+/* 3648 */     { .cell = 0x2 },   // ?dup
+/* 3649 */     { .cell = 0x0 },
+/* 3650 */ { .ip = META_INTERPRET },
+/* 3651 */     { .cell = 0x67 },  // IF
+/* 3652 */     { .cell = 0x0 },
+/* 3653 */ { .ip = META_COMPILE },
+/* 3654 */     { .cell = 0x1 },   // >r
+/* 3655 */     { .cell = 0x50 },  // 2drop
+/* 3656 */     { .cell = 0x7 },   // r>
+/* 3657 */     { .cell = 0xEE },  // interpret-name
+/* 3658 */     { .cell = 0x33 },  // exit
+/* 3659 */     { .cell = 0x0 },
+/* 3660 */ { .ip = META_INTERPRET },
+/* 3661 */     { .cell = 0x66 },  // THEN
+/* 3662 */     { .cell = 0x0 },
+/* 3663 */ { .ip = META_COMPILE },
+/* 3664 */     { .cell = 0x51 },  // 2dup
+/* 3665 */     { .cell = 0xED },  // number-token?
+/* 3666 */     { .cell = 0x0 },
+/* 3667 */ { .ip = META_INTERPRET },
+/* 3668 */     { .cell = 0x67 },  // IF
+/* 3669 */     { .cell = 0x0 },
+/* 3670 */ { .ip = META_COMPILE },
+/* 3671 */     { .cell = 0x1 },   // >r
+/* 3672 */     { .cell = 0x50 },  // 2drop
+/* 3673 */     { .cell = 0x7 },   // r>
+/* 3674 */     { .cell = 0xEF },  // interpret-number
+/* 3675 */     { .cell = 0x33 },  // exit
+/* 3676 */     { .cell = 0x0 },
+/* 3677 */ { .ip = META_INTERPRET },
+/* 3678 */     { .cell = 0x66 },  // THEN
+/* 3679 */     { .cell = 0x0 },
+/* 3680 */ { .ip = META_COMPILE },
+/* 3681 */     { .cell = 0xF0 },  // interpret-unknown
+/* 3682 */     { .cell = 0x0 },
+/* 3683 */ { .ip = META_INTERPRET },
+/* 3684 */     { .cell = 0x67 },  // IF
+/* 3685 */     { .cell = 0x0 },
+/* 3686 */ { .ip = META_COMPILE },
+/* 3687 */     { .cell = 0x33 },  // exit
+/* 3688 */     { .cell = 0x0 },
+/* 3689 */ { .ip = META_INTERPRET },
+/* 3690 */     { .cell = 0x66 },  // THEN
+/* 3691 */     { .cell = 0x0 },
+/* 3692 */ { .ip = DO_LITERAL }, { .cell = -0xD },
+/* 3694 */ { .ip = META_INTERPRET },
+/* 3695 */     { .cell = 0x42 },  // LITERAL
+/* 3696 */     { .cell = 0x0 },
+/* 3697 */ { .ip = META_COMPILE },
+/* 3698 */     { .cell = 0xD8 },  // .error
+/* 3699 */     { .cell = 0x33 },  // EXIT
+/* 3700 */     { .cell = 0x0 },
+/* 3701 */ { .ip = META_LINKNAME },
+/* 3702 */ { .ip = META_STARTNAME }, { .id = "INTERPRET" }, { .handler = do_colon },
+/* 3705 */ { .ip = META_INTERPRET },
+/* 3706 */     { .cell = 0x65 },  // BEGIN
+/* 3707 */     { .cell = 0x0 },
+/* 3708 */ { .ip = META_COMPILE },
+/* 3709 */     { .cell = 0xD7 },  // parse-name
+/* 3710 */     { .cell = 0x5 },   // dup
+/* 3711 */     { .cell = 0x0 },
+/* 3712 */ { .ip = META_INTERPRET },
+/* 3713 */     { .cell = 0x6C },  // WHILE
+/* 3714 */     { .cell = 0x0 },
+/* 3715 */ { .ip = META_COMPILE },
+/* 3716 */     { .cell = 0xF1 },  // interpret-token
+/* 3717 */     { .cell = 0x0 },
+/* 3718 */ { .ip = META_INTERPRET },
+/* 3719 */     { .cell = 0x6B },  // REPEAT
+/* 3720 */     { .cell = 0x0 },
+/* 3721 */ { .ip = META_COMPILE },
+/* 3722 */     { .cell = 0x50 },  // 2drop
+/* 3723 */     { .cell = 0x33 },  // EXIT
+/* 3724 */     { .cell = 0x0 },
+/* 3725 */ { .ip = META_LINKNAME },
             /* ==== forth/common/core/definers.fth ==== */
-/* 3724 */ { .ip = META_STARTNAME }, { .id = "CHECK-NAME-LENGTH" }, { .handler = do_colon },
-/* 3727 */ { .ip = META_COMPILE },
-/* 3728 */     { .cell = 0x5 },   // dup
-/* 3729 */     { .cell = 0x7E },  // 0=
-/* 3730 */     { .cell = 0x0 },
-/* 3731 */ { .ip = META_INTERPRET },
-/* 3732 */     { .cell = 0x67 },  // IF
-/* 3733 */     { .cell = 0x0 },
-/* 3734 */ { .ip = DO_LITERAL }, { .cell = -0x10 },
-/* 3736 */ { .ip = META_INTERPRET },
-/* 3737 */     { .cell = 0x42 },  // LITERAL
-/* 3738 */     { .cell = 0x0 },
-/* 3739 */ { .ip = META_COMPILE },
-/* 3740 */     { .cell = 0xD8 },  // .error
-/* 3741 */     { .cell = 0x0 },
-/* 3742 */ { .ip = META_INTERPRET },
-/* 3743 */     { .cell = 0x66 },  // THEN
-/* 3744 */     { .cell = 0x0 },
-/* 3745 */ { .ip = META_COMPILE },
-/* 3746 */     { .cell = 0x5 },   // dup
-/* 3747 */     { .cell = 0x95 },  // nf-length
-/* 3748 */     { .cell = 0x8A },  // u>
-/* 3749 */     { .cell = 0x0 },
-/* 3750 */ { .ip = META_INTERPRET },
-/* 3751 */     { .cell = 0x67 },  // IF
-/* 3752 */     { .cell = 0x0 },
-/* 3753 */ { .ip = DO_LITERAL }, { .cell = -0x13 },
-/* 3755 */ { .ip = META_INTERPRET },
-/* 3756 */     { .cell = 0x42 },  // LITERAL
-/* 3757 */     { .cell = 0x0 },
-/* 3758 */ { .ip = META_COMPILE },
-/* 3759 */     { .cell = 0xD8 },  // .error
-/* 3760 */     { .cell = 0x0 },
-/* 3761 */ { .ip = META_INTERPRET },
-/* 3762 */     { .cell = 0x66 },  // THEN
-/* 3763 */     { .cell = 0x0 },
-/* 3764 */ { .ip = META_COMPILE },
-/* 3765 */     { .cell = 0x31 },  // EXIT
-/* 3766 */     { .cell = 0x0 },
-/* 3767 */ { .ip = META_LINKNAME },
-/* 3768 */ { .ip = META_STARTNAME }, { .id = "START-NAME" }, { .handler = do_colon },
-/* 3771 */ { .ip = META_COMPILE },
-/* 3772 */     { .cell = 0xD7 },  // parse-name
-/* 3773 */     { .cell = 0xF3 },  // check-name-length
-/* 3774 */     { .cell = 0xAB },  // name,
-/* 3775 */     { .cell = 0x31 },  // EXIT
-/* 3776 */     { .cell = 0x0 },
-/* 3777 */ { .ip = META_LINKNAME },
-/* 3778 */ { .ip = META_STARTNAME }, { .id = "CREATE-NAME" }, { .handler = do_colon },
-/* 3781 */ { .ip = META_COMPILE },
-/* 3782 */     { .cell = 0xF4 },  // start-name
-/* 3783 */     { .cell = 0xAA },  // link-name
-/* 3784 */     { .cell = 0x31 },  // EXIT
-/* 3785 */     { .cell = 0x0 },
-/* 3786 */ { .ip = META_LINKNAME },
-/* 3787 */ { .ip = META_STARTNAME }, { .id = ":" }, { .handler = do_colon },
-/* 3790 */ { .ip = DO_LITERAL }, { .handler = do_colon },
-/* 3792 */ { .ip = META_INTERPRET },
-/* 3793 */     { .cell = 0x42 },  // LITERAL
-/* 3794 */     { .cell = 0x0 },
-/* 3795 */ { .ip = META_COMPILE },
-/* 3796 */     { .cell = 0xF4 },  // start-name
-/* 3797 */     { .cell = 0xE9 },  // ]
-/* 3798 */     { .cell = 0x31 },  // EXIT
-/* 3799 */     { .cell = 0x0 },
-/* 3800 */ { .ip = META_LINKNAME },
-/* 3801 */ { .ip = META_STARTNAME }, { .id = ";" }, { .handler = do_colon },
-/* 3804 */ { .ip = META_REFERENCE }, { .cell = 0x31  /* EXIT */ },
-/* 3806 */ { .ip = META_INTERPRET },
-/* 3807 */     { .cell = 0x42 },  // LITERAL
-/* 3808 */     { .cell = 0x0 },
-/* 3809 */ { .ip = META_COMPILE },
-/* 3810 */     { .cell = 0x40 },  // ,
-/* 3811 */     { .cell = 0x2 },   // ?dup
-/* 3812 */     { .cell = 0x0 },
-/* 3813 */ { .ip = META_INTERPRET },
-/* 3814 */     { .cell = 0x67 },  // IF
-/* 3815 */     { .cell = 0x0 },
-/* 3816 */ { .ip = META_COMPILE },
-/* 3817 */     { .cell = 0xAA },  // link-name
-/* 3818 */     { .cell = 0x0 },
-/* 3819 */ { .ip = META_INTERPRET },
-/* 3820 */     { .cell = 0x66 },  // THEN
-/* 3821 */     { .cell = 0x0 },
-/* 3822 */ { .ip = META_COMPILE },
-/* 3823 */     { .cell = 0xE8 },  // [
-/* 3824 */     { .cell = 0x31 },  // EXIT
-/* 3825 */     { .cell = 0x0 },
-/* 3826 */ { .ip = META_LINKNAME },
-/* 3827 */ { .ip = META_SETFLAGS }, { .cell = 0xC0 },
-/* 3829 */ { .ip = META_STARTNAME }, { .id = "CREATED?" }, { .handler = do_colon },
-/* 3832 */ { .ip = META_COMPILE },
-/* 3833 */     { .cell = 0x5 },   // dup
-/* 3834 */     { .cell = 0x20 },  // @
-/* 3835 */     { .cell = 0x0 },
-/* 3836 */ { .ip = DO_LITERAL }, { .handler = do_create },
-/* 3838 */ { .ip = META_INTERPRET },
-/* 3839 */     { .cell = 0x42 },  // LITERAL
-/* 3840 */     { .cell = 0x0 },
-/* 3841 */ { .ip = META_COMPILE },
-/* 3842 */     { .cell = 0x15 },  // =
-/* 3843 */     { .cell = 0x18 },  // invert
-/* 3844 */     { .cell = 0x0 },
-/* 3845 */ { .ip = META_INTERPRET },
-/* 3846 */     { .cell = 0x67 },  // IF
-/* 3847 */     { .cell = 0x0 },
-/* 3848 */ { .ip = DO_LITERAL }, { .cell = -0x1F },
-/* 3850 */ { .ip = META_INTERPRET },
-/* 3851 */     { .cell = 0x42 },  // LITERAL
-/* 3852 */     { .cell = 0x0 },
-/* 3853 */ { .ip = META_COMPILE },
-/* 3854 */     { .cell = 0xD8 },  // .error
-/* 3855 */     { .cell = 0x0 },
-/* 3856 */ { .ip = META_INTERPRET },
-/* 3857 */     { .cell = 0x66 },  // THEN
-/* 3858 */     { .cell = 0x0 },
-/* 3859 */ { .ip = META_COMPILE },
-/* 3860 */     { .cell = 0x31 },  // EXIT
-/* 3861 */     { .cell = 0x0 },
-/* 3862 */ { .ip = META_LINKNAME },
-/* 3863 */ { .ip = META_STARTNAME }, { .id = ">BODY" }, { .handler = do_colon },
-/* 3866 */ { .ip = META_COMPILE },
-/* 3867 */     { .cell = 0xF8 },  // created?
-/* 3868 */     { .cell = 0x0 },
-/* 3869 */ { .ip = DO_LITERAL }, { .cell = 0x2 },
-/* 3871 */ { .ip = META_INTERPRET },
-/* 3872 */     { .cell = 0x45 },  // cells
-/* 3873 */     { .cell = 0x42 },  // LITERAL
-/* 3874 */     { .cell = 0x0 },
-/* 3875 */ { .ip = META_COMPILE },
-/* 3876 */     { .cell = 0x10 },  // +
-/* 3877 */     { .cell = 0x31 },  // EXIT
-/* 3878 */     { .cell = 0x0 },
-/* 3879 */ { .ip = META_LINKNAME },
-/* 3880 */ { .ip = META_STARTNAME }, { .id = "CONSTANT" }, { .handler = do_colon },
-/* 3883 */ { .ip = DO_LITERAL }, { .handler = do_constant },
-/* 3885 */ { .ip = META_INTERPRET },
-/* 3886 */     { .cell = 0x42 },  // LITERAL
-/* 3887 */     { .cell = 0x0 },
-/* 3888 */ { .ip = META_COMPILE },
-/* 3889 */     { .cell = 0xF5 },  // create-name
-/* 3890 */     { .cell = 0x40 },  // ,
-/* 3891 */     { .cell = 0x31 },  // EXIT
-/* 3892 */     { .cell = 0x0 },
-/* 3893 */ { .ip = META_LINKNAME },
-/* 3894 */ { .ip = META_STARTNAME }, { .id = "DOES>" }, { .handler = do_colon },
-/* 3897 */ { .ip = META_COMPILE },
-/* 3898 */     { .cell = 0x7 },   // r>
-/* 3899 */     { .cell = 0xA9 },  // current-name
-/* 3900 */     { .cell = 0x9D },  // name>xt
-/* 3901 */     { .cell = 0xF8 },  // created?
-/* 3902 */     { .cell = 0x46 },  // cell+
-/* 3903 */     { .cell = 0x1F },  // !
-/* 3904 */     { .cell = 0x31 },  // EXIT
-/* 3905 */     { .cell = 0x0 },
-/* 3906 */ { .ip = META_LINKNAME },
-/* 3907 */ { .ip = META_SETFLAGS }, { .cell = 0x40 },
-/* 3909 */ { .ip = META_STARTNAME }, { .id = "CREATE" }, { .handler = do_colon },
-/* 3912 */ { .ip = DO_LITERAL }, { .handler = do_create },
-/* 3914 */ { .ip = META_INTERPRET },
-/* 3915 */     { .cell = 0x42 },  // LITERAL
-/* 3916 */     { .cell = 0x0 },
-/* 3917 */ { .ip = META_COMPILE },
-/* 3918 */     { .cell = 0xF5 },  // create-name
-/* 3919 */     { .cell = 0x0 },
-/* 3920 */ { .ip = DO_LITERAL }, { .cell = 0x0 },
-/* 3922 */ { .ip = META_INTERPRET },
-/* 3923 */     { .cell = 0x42 },  // LITERAL
-/* 3924 */     { .cell = 0x0 },
-/* 3925 */ { .ip = META_COMPILE },
-/* 3926 */     { .cell = 0x40 },  // ,
-/* 3927 */     { .cell = 0xFB },  // DOES>
-/* 3928 */     { .cell = 0x31 },  // EXIT
-/* 3929 */     { .cell = 0x0 },
-/* 3930 */ { .ip = META_LINKNAME },
-/* 3931 */ { .ip = META_STARTNAME }, { .id = "IMMEDIATE" }, { .handler = do_colon },
-/* 3934 */ { .ip = META_COMPILE },
-/* 3935 */     { .cell = 0x93 },  // nf-immediate
-/* 3936 */     { .cell = 0xA9 },  // current-name
-/* 3937 */     { .cell = 0xA2 },  // name-flags!
-/* 3938 */     { .cell = 0x31 },  // EXIT
-/* 3939 */     { .cell = 0x0 },
-/* 3940 */ { .ip = META_LINKNAME },
-/* 3941 */ { .ip = META_STARTNAME }, { .id = "COMPILE-ONLY" }, { .handler = do_colon },
-/* 3944 */ { .ip = META_COMPILE },
-/* 3945 */     { .cell = 0x92 },  // nf-compile-only
-/* 3946 */     { .cell = 0xA9 },  // current-name
-/* 3947 */     { .cell = 0xA2 },  // name-flags!
-/* 3948 */     { .cell = 0x31 },  // EXIT
-/* 3949 */     { .cell = 0x0 },
-/* 3950 */ { .ip = META_LINKNAME },
-/* 3951 */ { .ip = META_STARTNAME }, { .id = "COMPILE-SPECIAL" }, { .handler = do_colon },
-/* 3954 */ { .ip = META_COMPILE },
-/* 3955 */     { .cell = 0x94 },  // nf-compile-special
-/* 3956 */     { .cell = 0xA9 },  // current-name
-/* 3957 */     { .cell = 0xA2 },  // name-flags!
-/* 3958 */     { .cell = 0x31 },  // EXIT
-/* 3959 */     { .cell = 0x0 },
-/* 3960 */ { .ip = META_LINKNAME },
-/* 3961 */ { .ip = META_STARTNAME }, { .id = "VARIABLE" }, { .handler = do_colon },
-/* 3964 */ { .ip = DO_LITERAL }, { .handler = do_variable },
-/* 3966 */ { .ip = META_INTERPRET },
-/* 3967 */     { .cell = 0x42 },  // LITERAL
-/* 3968 */     { .cell = 0x0 },
-/* 3969 */ { .ip = META_COMPILE },
-/* 3970 */     { .cell = 0xF5 },  // create-name
-/* 3971 */     { .cell = 0x0 },
-/* 3972 */ { .ip = DO_LITERAL }, { .cell = 0x0 },
-/* 3974 */ { .ip = META_INTERPRET },
-/* 3975 */     { .cell = 0x42 },  // LITERAL
-/* 3976 */     { .cell = 0x0 },
-/* 3977 */ { .ip = META_COMPILE },
-/* 3978 */     { .cell = 0x40 },  // ,
-/* 3979 */     { .cell = 0x31 },  // EXIT
-/* 3980 */     { .cell = 0x0 },
-/* 3981 */ { .ip = META_LINKNAME },
-/* 3982 */ { .ip = META_STARTNAME }, { .id = ":NONAME" }, { .handler = do_colon },
-/* 3985 */ { .ip = META_COMPILE },
-/* 3986 */     { .cell = 0x4D },  // align
-/* 3987 */     { .cell = 0x3D },  // here
-/* 3988 */     { .cell = 0x0 },
-/* 3989 */ { .ip = DO_LITERAL }, { .cell = 0x0 },
-/* 3991 */ { .ip = META_INTERPRET },
-/* 3992 */     { .cell = 0x42 },  // LITERAL
-/* 3993 */     { .cell = 0x0 },
-/* 3994 */ { .ip = DO_LITERAL }, { .handler = do_colon },
-/* 3996 */ { .ip = META_INTERPRET },
-/* 3997 */     { .cell = 0x42 },  // LITERAL
-/* 3998 */     { .cell = 0x0 },
-/* 3999 */ { .ip = META_COMPILE },
-/* 4000 */     { .cell = 0x40 },  // ,
-/* 4001 */     { .cell = 0xE9 },  // ]
-/* 4002 */     { .cell = 0x31 },  // EXIT
-/* 4003 */     { .cell = 0x0 },
-/* 4004 */ { .ip = META_LINKNAME },
+/* 3726 */ { .ip = META_STARTNAME }, { .id = "CHECK-NAME-LENGTH" }, { .handler = do_colon },
+/* 3729 */ { .ip = META_COMPILE },
+/* 3730 */     { .cell = 0x5 },   // dup
+/* 3731 */     { .cell = 0x7E },  // 0=
+/* 3732 */     { .cell = 0x0 },
+/* 3733 */ { .ip = META_INTERPRET },
+/* 3734 */     { .cell = 0x67 },  // IF
+/* 3735 */     { .cell = 0x0 },
+/* 3736 */ { .ip = DO_LITERAL }, { .cell = -0x10 },
+/* 3738 */ { .ip = META_INTERPRET },
+/* 3739 */     { .cell = 0x42 },  // LITERAL
+/* 3740 */     { .cell = 0x0 },
+/* 3741 */ { .ip = META_COMPILE },
+/* 3742 */     { .cell = 0xD8 },  // .error
+/* 3743 */     { .cell = 0x0 },
+/* 3744 */ { .ip = META_INTERPRET },
+/* 3745 */     { .cell = 0x66 },  // THEN
+/* 3746 */     { .cell = 0x0 },
+/* 3747 */ { .ip = META_COMPILE },
+/* 3748 */     { .cell = 0x5 },   // dup
+/* 3749 */     { .cell = 0x95 },  // nf-length
+/* 3750 */     { .cell = 0x8A },  // u>
+/* 3751 */     { .cell = 0x0 },
+/* 3752 */ { .ip = META_INTERPRET },
+/* 3753 */     { .cell = 0x67 },  // IF
+/* 3754 */     { .cell = 0x0 },
+/* 3755 */ { .ip = DO_LITERAL }, { .cell = -0x13 },
+/* 3757 */ { .ip = META_INTERPRET },
+/* 3758 */     { .cell = 0x42 },  // LITERAL
+/* 3759 */     { .cell = 0x0 },
+/* 3760 */ { .ip = META_COMPILE },
+/* 3761 */     { .cell = 0xD8 },  // .error
+/* 3762 */     { .cell = 0x0 },
+/* 3763 */ { .ip = META_INTERPRET },
+/* 3764 */     { .cell = 0x66 },  // THEN
+/* 3765 */     { .cell = 0x0 },
+/* 3766 */ { .ip = META_COMPILE },
+/* 3767 */     { .cell = 0x33 },  // EXIT
+/* 3768 */     { .cell = 0x0 },
+/* 3769 */ { .ip = META_LINKNAME },
+/* 3770 */ { .ip = META_STARTNAME }, { .id = "START-NAME" }, { .handler = do_colon },
+/* 3773 */ { .ip = META_COMPILE },
+/* 3774 */     { .cell = 0xD7 },  // parse-name
+/* 3775 */     { .cell = 0xF3 },  // check-name-length
+/* 3776 */     { .cell = 0xAB },  // name,
+/* 3777 */     { .cell = 0x33 },  // EXIT
+/* 3778 */     { .cell = 0x0 },
+/* 3779 */ { .ip = META_LINKNAME },
+/* 3780 */ { .ip = META_STARTNAME }, { .id = "CREATE-NAME" }, { .handler = do_colon },
+/* 3783 */ { .ip = META_COMPILE },
+/* 3784 */     { .cell = 0xF4 },  // start-name
+/* 3785 */     { .cell = 0xAA },  // link-name
+/* 3786 */     { .cell = 0x33 },  // EXIT
+/* 3787 */     { .cell = 0x0 },
+/* 3788 */ { .ip = META_LINKNAME },
+/* 3789 */ { .ip = META_STARTNAME }, { .id = ":" }, { .handler = do_colon },
+/* 3792 */ { .ip = DO_LITERAL }, { .handler = do_colon },
+/* 3794 */ { .ip = META_INTERPRET },
+/* 3795 */     { .cell = 0x42 },  // LITERAL
+/* 3796 */     { .cell = 0x0 },
+/* 3797 */ { .ip = META_COMPILE },
+/* 3798 */     { .cell = 0xF4 },  // start-name
+/* 3799 */     { .cell = 0xE9 },  // ]
+/* 3800 */     { .cell = 0x33 },  // EXIT
+/* 3801 */     { .cell = 0x0 },
+/* 3802 */ { .ip = META_LINKNAME },
+/* 3803 */ { .ip = META_STARTNAME }, { .id = ";" }, { .handler = do_colon },
+/* 3806 */ { .ip = META_REFERENCE }, { .cell = 0x33  /* EXIT */ },
+/* 3808 */ { .ip = META_INTERPRET },
+/* 3809 */     { .cell = 0x42 },  // LITERAL
+/* 3810 */     { .cell = 0x0 },
+/* 3811 */ { .ip = META_COMPILE },
+/* 3812 */     { .cell = 0x40 },  // ,
+/* 3813 */     { .cell = 0x2 },   // ?dup
+/* 3814 */     { .cell = 0x0 },
+/* 3815 */ { .ip = META_INTERPRET },
+/* 3816 */     { .cell = 0x67 },  // IF
+/* 3817 */     { .cell = 0x0 },
+/* 3818 */ { .ip = META_COMPILE },
+/* 3819 */     { .cell = 0xAA },  // link-name
+/* 3820 */     { .cell = 0x0 },
+/* 3821 */ { .ip = META_INTERPRET },
+/* 3822 */     { .cell = 0x66 },  // THEN
+/* 3823 */     { .cell = 0x0 },
+/* 3824 */ { .ip = META_COMPILE },
+/* 3825 */     { .cell = 0xE8 },  // [
+/* 3826 */     { .cell = 0x33 },  // EXIT
+/* 3827 */     { .cell = 0x0 },
+/* 3828 */ { .ip = META_LINKNAME },
+/* 3829 */ { .ip = META_SETFLAGS }, { .cell = 0xC0 },
+/* 3831 */ { .ip = META_STARTNAME }, { .id = "CREATED?" }, { .handler = do_colon },
+/* 3834 */ { .ip = META_COMPILE },
+/* 3835 */     { .cell = 0x5 },   // dup
+/* 3836 */     { .cell = 0x22 },  // @
+/* 3837 */     { .cell = 0x0 },
+/* 3838 */ { .ip = DO_LITERAL }, { .handler = do_create },
+/* 3840 */ { .ip = META_INTERPRET },
+/* 3841 */     { .cell = 0x42 },  // LITERAL
+/* 3842 */     { .cell = 0x0 },
+/* 3843 */ { .ip = META_COMPILE },
+/* 3844 */     { .cell = 0x17 },  // =
+/* 3845 */     { .cell = 0x1A },  // invert
+/* 3846 */     { .cell = 0x0 },
+/* 3847 */ { .ip = META_INTERPRET },
+/* 3848 */     { .cell = 0x67 },  // IF
+/* 3849 */     { .cell = 0x0 },
+/* 3850 */ { .ip = DO_LITERAL }, { .cell = -0x1F },
+/* 3852 */ { .ip = META_INTERPRET },
+/* 3853 */     { .cell = 0x42 },  // LITERAL
+/* 3854 */     { .cell = 0x0 },
+/* 3855 */ { .ip = META_COMPILE },
+/* 3856 */     { .cell = 0xD8 },  // .error
+/* 3857 */     { .cell = 0x0 },
+/* 3858 */ { .ip = META_INTERPRET },
+/* 3859 */     { .cell = 0x66 },  // THEN
+/* 3860 */     { .cell = 0x0 },
+/* 3861 */ { .ip = META_COMPILE },
+/* 3862 */     { .cell = 0x33 },  // EXIT
+/* 3863 */     { .cell = 0x0 },
+/* 3864 */ { .ip = META_LINKNAME },
+/* 3865 */ { .ip = META_STARTNAME }, { .id = ">BODY" }, { .handler = do_colon },
+/* 3868 */ { .ip = META_COMPILE },
+/* 3869 */     { .cell = 0xF8 },  // created?
+/* 3870 */     { .cell = 0x0 },
+/* 3871 */ { .ip = DO_LITERAL }, { .cell = 0x2 },
+/* 3873 */ { .ip = META_INTERPRET },
+/* 3874 */     { .cell = 0x45 },  // cells
+/* 3875 */     { .cell = 0x42 },  // LITERAL
+/* 3876 */     { .cell = 0x0 },
+/* 3877 */ { .ip = META_COMPILE },
+/* 3878 */     { .cell = 0x12 },  // +
+/* 3879 */     { .cell = 0x33 },  // EXIT
+/* 3880 */     { .cell = 0x0 },
+/* 3881 */ { .ip = META_LINKNAME },
+/* 3882 */ { .ip = META_STARTNAME }, { .id = "CONSTANT" }, { .handler = do_colon },
+/* 3885 */ { .ip = DO_LITERAL }, { .handler = do_constant },
+/* 3887 */ { .ip = META_INTERPRET },
+/* 3888 */     { .cell = 0x42 },  // LITERAL
+/* 3889 */     { .cell = 0x0 },
+/* 3890 */ { .ip = META_COMPILE },
+/* 3891 */     { .cell = 0xF5 },  // create-name
+/* 3892 */     { .cell = 0x40 },  // ,
+/* 3893 */     { .cell = 0x33 },  // EXIT
+/* 3894 */     { .cell = 0x0 },
+/* 3895 */ { .ip = META_LINKNAME },
+/* 3896 */ { .ip = META_STARTNAME }, { .id = "DOES>" }, { .handler = do_colon },
+/* 3899 */ { .ip = META_COMPILE },
+/* 3900 */     { .cell = 0x7 },   // r>
+/* 3901 */     { .cell = 0xA9 },  // current-name
+/* 3902 */     { .cell = 0x9D },  // name>xt
+/* 3903 */     { .cell = 0xF8 },  // created?
+/* 3904 */     { .cell = 0x46 },  // cell+
+/* 3905 */     { .cell = 0x21 },  // !
+/* 3906 */     { .cell = 0x33 },  // EXIT
+/* 3907 */     { .cell = 0x0 },
+/* 3908 */ { .ip = META_LINKNAME },
+/* 3909 */ { .ip = META_SETFLAGS }, { .cell = 0x40 },
+/* 3911 */ { .ip = META_STARTNAME }, { .id = "CREATE" }, { .handler = do_colon },
+/* 3914 */ { .ip = DO_LITERAL }, { .handler = do_create },
+/* 3916 */ { .ip = META_INTERPRET },
+/* 3917 */     { .cell = 0x42 },  // LITERAL
+/* 3918 */     { .cell = 0x0 },
+/* 3919 */ { .ip = META_COMPILE },
+/* 3920 */     { .cell = 0xF5 },  // create-name
+/* 3921 */     { .cell = 0x0 },
+/* 3922 */ { .ip = DO_LITERAL }, { .cell = 0x0 },
+/* 3924 */ { .ip = META_INTERPRET },
+/* 3925 */     { .cell = 0x42 },  // LITERAL
+/* 3926 */     { .cell = 0x0 },
+/* 3927 */ { .ip = META_COMPILE },
+/* 3928 */     { .cell = 0x40 },  // ,
+/* 3929 */     { .cell = 0xFB },  // DOES>
+/* 3930 */     { .cell = 0x33 },  // EXIT
+/* 3931 */     { .cell = 0x0 },
+/* 3932 */ { .ip = META_LINKNAME },
+/* 3933 */ { .ip = META_STARTNAME }, { .id = "IMMEDIATE" }, { .handler = do_colon },
+/* 3936 */ { .ip = META_COMPILE },
+/* 3937 */     { .cell = 0x93 },  // nf-immediate
+/* 3938 */     { .cell = 0xA9 },  // current-name
+/* 3939 */     { .cell = 0xA2 },  // name-flags!
+/* 3940 */     { .cell = 0x33 },  // EXIT
+/* 3941 */     { .cell = 0x0 },
+/* 3942 */ { .ip = META_LINKNAME },
+/* 3943 */ { .ip = META_STARTNAME }, { .id = "COMPILE-ONLY" }, { .handler = do_colon },
+/* 3946 */ { .ip = META_COMPILE },
+/* 3947 */     { .cell = 0x92 },  // nf-compile-only
+/* 3948 */     { .cell = 0xA9 },  // current-name
+/* 3949 */     { .cell = 0xA2 },  // name-flags!
+/* 3950 */     { .cell = 0x33 },  // EXIT
+/* 3951 */     { .cell = 0x0 },
+/* 3952 */ { .ip = META_LINKNAME },
+/* 3953 */ { .ip = META_STARTNAME }, { .id = "COMPILE-SPECIAL" }, { .handler = do_colon },
+/* 3956 */ { .ip = META_COMPILE },
+/* 3957 */     { .cell = 0x94 },  // nf-compile-special
+/* 3958 */     { .cell = 0xA9 },  // current-name
+/* 3959 */     { .cell = 0xA2 },  // name-flags!
+/* 3960 */     { .cell = 0x33 },  // EXIT
+/* 3961 */     { .cell = 0x0 },
+/* 3962 */ { .ip = META_LINKNAME },
+/* 3963 */ { .ip = META_STARTNAME }, { .id = "VARIABLE" }, { .handler = do_colon },
+/* 3966 */ { .ip = DO_LITERAL }, { .handler = do_variable },
+/* 3968 */ { .ip = META_INTERPRET },
+/* 3969 */     { .cell = 0x42 },  // LITERAL
+/* 3970 */     { .cell = 0x0 },
+/* 3971 */ { .ip = META_COMPILE },
+/* 3972 */     { .cell = 0xF5 },  // create-name
+/* 3973 */     { .cell = 0x0 },
+/* 3974 */ { .ip = DO_LITERAL }, { .cell = 0x0 },
+/* 3976 */ { .ip = META_INTERPRET },
+/* 3977 */     { .cell = 0x42 },  // LITERAL
+/* 3978 */     { .cell = 0x0 },
+/* 3979 */ { .ip = META_COMPILE },
+/* 3980 */     { .cell = 0x40 },  // ,
+/* 3981 */     { .cell = 0x33 },  // EXIT
+/* 3982 */     { .cell = 0x0 },
+/* 3983 */ { .ip = META_LINKNAME },
+/* 3984 */ { .ip = META_STARTNAME }, { .id = ":NONAME" }, { .handler = do_colon },
+/* 3987 */ { .ip = META_COMPILE },
+/* 3988 */     { .cell = 0x4D },  // align
+/* 3989 */     { .cell = 0x3D },  // here
+/* 3990 */     { .cell = 0x0 },
+/* 3991 */ { .ip = DO_LITERAL }, { .cell = 0x0 },
+/* 3993 */ { .ip = META_INTERPRET },
+/* 3994 */     { .cell = 0x42 },  // LITERAL
+/* 3995 */     { .cell = 0x0 },
+/* 3996 */ { .ip = DO_LITERAL }, { .handler = do_colon },
+/* 3998 */ { .ip = META_INTERPRET },
+/* 3999 */     { .cell = 0x42 },  // LITERAL
+/* 4000 */     { .cell = 0x0 },
+/* 4001 */ { .ip = META_COMPILE },
+/* 4002 */     { .cell = 0x40 },  // ,
+/* 4003 */     { .cell = 0xE9 },  // ]
+/* 4004 */     { .cell = 0x33 },  // EXIT
+/* 4005 */     { .cell = 0x0 },
+/* 4006 */ { .ip = META_LINKNAME },
             /* ==== forth/common/core/comments.fth ==== */
-/* 4005 */ { .ip = META_STARTNAME }, { .id = "\\" }, { .handler = do_colon },
-/* 4008 */ { .ip = META_COMPILE },
-/* 4009 */     { .cell = 0xCA },  // source
-/* 4010 */     { .cell = 0xC6 },  // >in
-/* 4011 */     { .cell = 0x1F },  // !
-/* 4012 */     { .cell = 0x4 },   // drop
-/* 4013 */     { .cell = 0x31 },  // EXIT
-/* 4014 */     { .cell = 0x0 },
-/* 4015 */ { .ip = META_LINKNAME },
-/* 4016 */ { .ip = META_SETFLAGS }, { .cell = 0x80 },
-/* 4018 */ { .ip = META_STARTNAME }, { .id = "(" }, { .handler = do_colon },
-/* 4021 */ { .ip = DO_LITERAL }, { .cell = 0x29 },
-/* 4023 */ { .ip = META_INTERPRET },
-/* 4024 */     { .cell = 0x42 },  // LITERAL
-/* 4025 */     { .cell = 0x0 },
-/* 4026 */ { .ip = META_COMPILE },
-/* 4027 */     { .cell = 0xD5 },  // parse
-/* 4028 */     { .cell = 0x50 },  // 2drop
-/* 4029 */     { .cell = 0x31 },  // EXIT
-/* 4030 */     { .cell = 0x0 },
-/* 4031 */ { .ip = META_LINKNAME },
-/* 4032 */ { .ip = META_SETFLAGS }, { .cell = 0x80 },
-/* 4034 */ { .ip = META_STARTNAME }, { .id = ".(" }, { .handler = do_colon },
-/* 4037 */ { .ip = DO_LITERAL }, { .cell = 0x29 },
-/* 4039 */ { .ip = META_INTERPRET },
-/* 4040 */     { .cell = 0x42 },  // LITERAL
-/* 4041 */     { .cell = 0x0 },
-/* 4042 */ { .ip = META_COMPILE },
-/* 4043 */     { .cell = 0xD5 },  // parse
-/* 4044 */     { .cell = 0xB4 },  // type
-/* 4045 */     { .cell = 0x31 },  // EXIT
-/* 4046 */     { .cell = 0x0 },
-/* 4047 */ { .ip = META_LINKNAME },
-/* 4048 */ { .ip = META_SETFLAGS }, { .cell = 0x80 },
+/* 4007 */ { .ip = META_STARTNAME }, { .id = "\\" }, { .handler = do_colon },
+/* 4010 */ { .ip = META_COMPILE },
+/* 4011 */     { .cell = 0xCA },  // source
+/* 4012 */     { .cell = 0xC6 },  // >in
+/* 4013 */     { .cell = 0x21 },  // !
+/* 4014 */     { .cell = 0x4 },   // drop
+/* 4015 */     { .cell = 0x33 },  // EXIT
+/* 4016 */     { .cell = 0x0 },
+/* 4017 */ { .ip = META_LINKNAME },
+/* 4018 */ { .ip = META_SETFLAGS }, { .cell = 0x80 },
+/* 4020 */ { .ip = META_STARTNAME }, { .id = "(" }, { .handler = do_colon },
+/* 4023 */ { .ip = DO_LITERAL }, { .cell = 0x29 },
+/* 4025 */ { .ip = META_INTERPRET },
+/* 4026 */     { .cell = 0x42 },  // LITERAL
+/* 4027 */     { .cell = 0x0 },
+/* 4028 */ { .ip = META_COMPILE },
+/* 4029 */     { .cell = 0xD5 },  // parse
+/* 4030 */     { .cell = 0x50 },  // 2drop
+/* 4031 */     { .cell = 0x33 },  // EXIT
+/* 4032 */     { .cell = 0x0 },
+/* 4033 */ { .ip = META_LINKNAME },
+/* 4034 */ { .ip = META_SETFLAGS }, { .cell = 0x80 },
+/* 4036 */ { .ip = META_STARTNAME }, { .id = ".(" }, { .handler = do_colon },
+/* 4039 */ { .ip = DO_LITERAL }, { .cell = 0x29 },
+/* 4041 */ { .ip = META_INTERPRET },
+/* 4042 */     { .cell = 0x42 },  // LITERAL
+/* 4043 */     { .cell = 0x0 },
+/* 4044 */ { .ip = META_COMPILE },
+/* 4045 */     { .cell = 0xD5 },  // parse
+/* 4046 */     { .cell = 0xB4 },  // type
+/* 4047 */     { .cell = 0x33 },  // EXIT
+/* 4048 */     { .cell = 0x0 },
+/* 4049 */ { .ip = META_LINKNAME },
+/* 4050 */ { .ip = META_SETFLAGS }, { .cell = 0x80 },
             /* ==== forth/common/core/evaluate.fth ==== */
-/* 4050 */ { .ip = META_STARTNAME }, { .id = "EVALUATE" }, { .handler = do_colon },
-/* 4053 */ { .ip = DO_LITERAL }, { .cell = -0x1 },
-/* 4055 */ { .ip = META_INTERPRET },
-/* 4056 */     { .cell = 0x42 },  // LITERAL
-/* 4057 */     { .cell = 0x0 },
-/* 4058 */ { .ip = META_REFERENCE }, { .cell = 0xF2  /* interpret */ },
-/* 4060 */ { .ip = META_INTERPRET },
-/* 4061 */     { .cell = 0x42 },  // LITERAL
-/* 4062 */     { .cell = 0x0 },
-/* 4063 */ { .ip = META_COMPILE },
-/* 4064 */     { .cell = 0xD3 },  // with-input-source
-/* 4065 */     { .cell = 0x31 },  // EXIT
-/* 4066 */     { .cell = 0x0 },
-/* 4067 */ { .ip = META_LINKNAME },
-/* 4068 */ { .ip = META_REFERENCE }, { .cell = 0x105  /* EVALUATE */ },
-/* 4070 */ { .ip = EXIT },
+/* 4052 */ { .ip = META_STARTNAME }, { .id = "EVALUATE" }, { .handler = do_colon },
+/* 4055 */ { .ip = DO_LITERAL }, { .cell = -0x1 },
+/* 4057 */ { .ip = META_INTERPRET },
+/* 4058 */     { .cell = 0x42 },  // LITERAL
+/* 4059 */     { .cell = 0x0 },
+/* 4060 */ { .ip = META_REFERENCE }, { .cell = 0xF2  /* interpret */ },
+/* 4062 */ { .ip = META_INTERPRET },
+/* 4063 */     { .cell = 0x42 },  // LITERAL
+/* 4064 */     { .cell = 0x0 },
+/* 4065 */ { .ip = META_COMPILE },
+/* 4066 */     { .cell = 0xD3 },  // with-input-source
+/* 4067 */     { .cell = 0x33 },  // EXIT
+/* 4068 */     { .cell = 0x0 },
+/* 4069 */ { .ip = META_LINKNAME },
+/* 4070 */ { .ip = META_REFERENCE }, { .cell = 0x105  /* EVALUATE */ },
+/* 4072 */ { .ip = EXIT },
 };
 
 

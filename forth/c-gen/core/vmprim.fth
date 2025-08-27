@@ -20,15 +20,3 @@ prim: EXIT          x_exit         compile-only
 prim: DO-LITERAL    do_literal     compile-only
 prim: DO-S"         do_s_quote     compile-only
 prim: DO-C"         do_c_quote     compile-only
-
-prim: CLEAR         x_clear
-prim: RCLEAR        x_rclear
-
-\ prim: SP0
-\ prim: SP@
-\ prim: SP!
-\ : CLEAR sp0 sp! ;
-\ prim: RP0
-\ prim: RP@
-\ prim: RP!
-\ : RCLEAR rp0 rp! ;

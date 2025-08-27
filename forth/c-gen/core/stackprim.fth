@@ -19,6 +19,10 @@
 \  2R@                   6.2.0415 CORE EXT               50
 \  PICK                  6.2.2030 CORE EXT               55
 \  ROLL                  6.2.2150 CORE EXT               56
+\
+\ Supporting definitions for the following:
+\  ABORT                 6.1.0670 CORE
+\  QUIT                  6.1.2050 CORE
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
 prim: >R        x_to_r              compile-only
@@ -37,3 +41,19 @@ prim: 2R>       x_two_r_from        compile-only
 prim: 2R@       x_two_r_fetch       compile-only
 prim: PICK      x_pick
 prim: ROLL      x_roll
+
+\ CLEAR - empty the data stack, as for ABORT
+prim: CLEAR         x_clear
+\ CLEAR - empty the return stack, as for QUIT
+prim: RCLEAR        x_rclear
+
+\ Alternative primitives for the stack:
+\ prim: SP0
+\ prim: SP@
+\ prim: SP!
+\ : CLEAR sp0 sp! ;
+\ ... the below isn't quite right ...
+\ prim: RP0
+\ prim: RP@
+\ prim: RP!
+\ : RCLEAR rp0 rp! ;

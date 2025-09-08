@@ -9,28 +9,20 @@ HOST-MODE
 
 METADICT-HOST-MODE
 
-: INTERPRET-META-FILE
-    metadict-target-mode
-    begin refill if ['] interpret catch ?dup else 0 -1 then until
-    metadict-host-mode source-id close-file drop throw ;
 : COMPILE-META: ( "filename" -- )
-    open-source-file ['] interpret-meta-file with-input-source ;
+    open-source-file metadict-target-mode
+    ['] interpret ['] interpret-file catch
+    metadict-host-mode throw ;
 
 
 HOST-MODE
 
-: INTERPRET-TARGET-FILE
-    target-mode
-    begin refill if ['] interpret catch ?dup else 0 -1 then until
-    host-mode source-id close-file drop throw ;
 : COMPILE-TARGET: ( "filename" -- )
-    open-source-file ['] interpret-target-file with-input-source ;
+    open-source-file target-mode
+    ['] interpret ['] interpret-file catch
+    host-mode throw ;
 
 
-create SOURCE-LINE 256 dup chars allot 2 - constant LINE-SIZE
-: read-source-line ( fileid -- line #line flag )
-    >r source-line dup line-size r> read-line drop ;
+: WRITE-SOURCE-LINE  4 spaces source .c-string ',' emit cr ;
 : INCLUDE-SOURCE-TEXT: ( "filename" -- )
-    open-source-file begin dup read-source-line while
-	4 spaces .c-string ',' emit cr
-    repeat 2drop close-file drop ;
+    open-source-file ['] write-source-line interpret-file ;

@@ -15,11 +15,13 @@ static xt_ft references[];
 
 static
 vmcode_ft meta_dictionary[] = {
+            /* ==== forth/c-gen/core/vmprim.fth ==== */
 /*    0 */ { .handler = x_execute },
 /*    1 */ { .handler = x_exit },
 /*    2 */ { .handler = do_literal },
 /*    3 */ { .handler = do_s_quote },
 /*    4 */ { .handler = do_c_quote },
+            /* ==== forth/c-gen/core/control.fth ==== */
 /*    5 */ { .handler = do_skip },
 /*    6 */ { .handler = do_fskip },
 /*    7 */ { .handler = do_do },

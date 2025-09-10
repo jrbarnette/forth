@@ -4,6 +4,15 @@ only FORTH definitions
 : include-file: ( "filename" -- ) parse-name included ;
 
 HOST-MODE
+: OPEN-SOURCE-FILE ( "filename" -- fileid )
+    parse-name 12 spaces ." /* ==== " 2dup type ."  ==== */" cr
+    r/o open-file abort" failed to open file" ;
+
+METADICT-HOST-MODE
+: COMPILE-META:
+    open-source-file metadict-target-mode
+    ['] include-file catch metadict-host-mode throw ;
+
 TRANSCRIBE>
 #include <stddef.h>
 
@@ -17,27 +26,26 @@ static xt_ft references[];
 static
 vmcode_ft meta_dictionary[] = {
     FORTH>
-    METADICT-TARGET-MODE
-    include-file: forth/c-gen/core/vmprim.fth
-    include-file: forth/c-gen/core/control.fth
+    compile-meta: forth/c-gen/core/vmprim.fth
+    compile-meta: forth/c-gen/core/control.fth
 
-    \ The files below produce no output, but `meta-target.fth` depends
-    \ on the primitives defined above, and each file that follows
-    \ depends on its immediate predecessor.
-    HOST-MODE
-    include-file: forth/meta/meta-target.fth
-    METADICT-COMPILE-MODE
-    include-file: forth/common/internal/tokens.fth
-    METADICT-HOST-MODE
-    include-file: forth/common/internal/interpret.fth
-    include-file: forth/meta/compile-file.fth
-
-    METADICT-HOST-MODE
     compile-meta: forth/c-gen/core/stackprim.fth
     compile-meta: forth/c-gen/core/arithprim.fth
     compile-meta: forth/c-gen/core/memprim.fth
     compile-meta: forth/c-gen/core/multprim.fth
     compile-meta: forth/c-gen/exception/throwprim.fth
+
+    \ Build up INTERPRET in the meta-compiler's host dictionary, then
+    \ create a definition to apply it to compiling files.
+    include-file: forth/meta/meta-target.fth
+    METADICT-COMPILE-MODE
+    include-file: forth/common/internal/tokens.fth
+    METADICT-HOST-MODE
+    include-file: forth/common/internal/interpret.fth
+    : COMPILE-META: ( "filename" -- )
+	open-source-file metadict-target-mode
+	['] interpret ['] interpret-file catch
+	metadict-host-mode throw ;
 
     METADICT-COMPILE-MODE
     include-file: forth/common/internal/branches.fth
@@ -68,6 +76,16 @@ vmcode_ft meta_dictionary[] = {
     TRANSCRIBE>
 };
 FORTH>
+HOST-MODE
+: COMPILE-TARGET: ( "filename" -- )
+    open-source-file target-mode
+    ['] interpret ['] interpret-file catch
+    host-mode throw ;
+
+: WRITE-SOURCE-LINE  4 spaces source .c-string ',' emit cr ;
+: INCLUDE-SOURCE-TEXT: ( "filename" -- )
+    open-source-file ['] write-source-line interpret-file ;
+
 METADICT-HOST-MODE
 : .target-ref
     ." (&meta_dictionary[" >body @ .c-decimal ." ])" ;

@@ -19,21 +19,21 @@
     parse-name check-name-length name, ;
 : create-name ( hdlr "name" -- )  start-name link-name ;
 
-: : handler: do_colon start-name [compile] ] ;
+: : hdlr-colon start-name [compile] ] ;
 : ; postpone EXIT ?dup if link-name then [compile] [ ; compile-special
 
-: created? dup @ handler: do_create = invert if -31 .error then ;
+: created? dup @ hdlr-create <> if -31 .error then ;
 : >BODY ( xt -- a-addr ) created? [ 2 cells ] literal + ;
 
-: CONSTANT handler: do_constant create-name , ;
+: CONSTANT hdlr-constant create-name , ;
 
 : DOES> r> current-name name>xt created? cell+ ! ; compile-only
-: CREATE handler: do_create create-name 0 , DOES> ;
+: CREATE hdlr-create create-name 0 , DOES> ;
 
 : IMMEDIATE        nf-immediate        current-name name-flags! ;
 : COMPILE-ONLY     nf-compile-only     current-name name-flags! ;
 : COMPILE-SPECIAL  nf-compile-special  current-name name-flags! ;
 
-: VARIABLE handler: do_variable create-name 0 , ;
+: VARIABLE hdlr-variable create-name 0 , ;
 
-: :NONAME align here 0 handler: do_colon , [compile] ] ;
+: :NONAME align here 0 hdlr-colon , [compile] ] ;

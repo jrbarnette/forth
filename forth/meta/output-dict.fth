@@ -173,6 +173,7 @@ vmcode_ft initialize_forth[] = {
     compile-target: forth/common/internal/tokens.fth
     compile-target: forth/common/internal/interpret.fth
 
+    compile-target: forth/c-gen/core/handlers.fth
     compile-target: forth/common/core/definers.fth
 
     compile-target: forth/common/core/comments.fth

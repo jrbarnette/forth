@@ -79,7 +79,7 @@ also METADICT-DEFINERS definitions
     start-name s" do_variable" { .exec }{ 0 .cell } .end ;
 : CONSTANT
     start-name s" do_constant" { .exec }{ .cell } .end ;
-: ] metadict-target-wordlist metadict-special-wordlist 2 set-order ] ;
+: ] only metadict-target also metadict-special ] ;
 : : start-name s" do_colon" { .exec } .end expr-buffer expr-ptr ! here ] ;
 
 

@@ -1,3 +1,8 @@
+dnl  Copyright 2025, by J. Richard Barnette. All Rights Reserved.
+dnl
+dnl
+define(`CELL_SHIFT', `3')dnl
+include(`vm_common.m4')
 dnl  These can be clobbered if we call out to C code:
 dnl
 define(`TOS',   `x0')dnl
@@ -17,30 +22,16 @@ define(`VXSP',  `x22')dnl
 dnl
 dnl Utilities for VM operations
 dnl
-define(`CELLS', `* 8')dnl
-define(`PUSH',  `str	$1, [VSP, `#'-8]!')dnl
-define(`POP',   `ldr	$1, [VSP], `#'8')dnl
-define(`RPUSH', `str	$1, [VRSP, `#'-8]!')dnl
-define(`RPOP',  `ldr	$1, [VRSP], `#'8')dnl
+define(`PUSH',  `str	$1, [VSP, `#'-CELL_SIZE]!')dnl
+define(`POP',   `ldr	$1, [VSP], `#'CELL_SIZE')dnl
+define(`RPUSH', `str	$1, [VRSP, `#'-CELL_SIZE]!')dnl
+define(`RPOP',  `ldr	$1, [VRSP], `#'CELL_SIZE')dnl
 define(`EXECUTE',
-       `ldr	SCR0, [DP], #8
+       `ldr	SCR0, [DP], `#'CELL_SIZE
 	br	SCR0')dnl
 define(`NEXT',
-       `ldr	DP, [VIP], #8
+       `ldr	DP, [VIP], `#'CELL_SIZE
 	EXECUTE')dnl
-define(`CATCH',
-       `RPUSH(VIP)
-	RPUSH(VSP)
-	RPUSH(VXSP)
-	mov	VXSP, VRSP')dnl
-define(`DROP_CATCH',
-       `RPOP(VXSP),
-	add	VRSP, #(2 CELLS)')dnl
-define(`THROW',
-       `mov	VRSP, VXSP
-	RPOP(VXSP)
-	RPOP(VSP)
-	RPOP(VIP)')dnl
 define(`FLAG',
        `cmp	$2, TOS
 	csetm	TOS, $1')dnl

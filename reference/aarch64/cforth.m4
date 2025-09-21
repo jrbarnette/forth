@@ -1,7 +1,7 @@
 /*
  * Copyright 2024, by J. Richard Barnette. All Rights Reserved.
  */
-include(`constants.m4')dnl
+include(`c_defs.m4')dnl
 
 #ifndef CFORTH_H
 #define CFORTH_H
@@ -9,10 +9,6 @@ include(`constants.m4')dnl
 /*
  * C interface to invoke the Forth interpreter.  The interface is
  * independent of the implementation details of the underlying Forth VM.
- *
- * N.B.  These declarations are duplicated in any assembly file
- * implementing this interface.  Changes here will ripple out to all
- * those files.
  */
 
 #include "ftypes.h"
@@ -20,8 +16,6 @@ include(`constants.m4')dnl
 #define PRIM_HDLR(hdlr)		void hdlr(void)
 
 typedef PRIM_HDLR((*forth_handler_fn));
-
-#include "prim.h"
 
 `#define STACK_SIZE'	STACK_SIZE
 `#define RSTACK_SIZE'	RSTACK_SIZE

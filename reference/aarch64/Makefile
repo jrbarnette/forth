@@ -19,10 +19,10 @@ primtest: $(OBJECTS)
 
 primtest.o: primtest.c cforth.h
 
-cforth.h: cforth.m4 constants.m4
-	m4 cforth.m4 > $@
+$(ASM_FILES): vm.m4 vm_common.m4 c_defs.m4
 
-$(ASM_FILES): prim.m4 constants.m4
+cforth.h: cforth.m4 c_defs.m4
+	m4 cforth.m4 > $@
 
 clean:
 	rm -f $(ASM_FILES) $(OBJECTS) primtest cforth.h

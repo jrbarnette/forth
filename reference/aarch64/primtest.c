@@ -8,6 +8,7 @@
 #include <stdbool.h>
 
 #include "cforth.h"
+#include "prim.h"
 
 
 #define N(val)		{ .value = (val) },
@@ -18,12 +19,8 @@
 #define DEFINITION(nm, hdlr)	code_body_ft nm[] = { H(hdlr)
 #define END_DEF			};
 #define CODE(nm)		DEFINITION(nm, do_colon)
-#define DEF_PRIM(nm, hdlr)	DEFINITION(nm, hdlr) END_DEF
+#define PRIM(nm, hdlr)		DEFINITION(nm, hdlr) END_DEF
 #define END_CODE		X(EXIT) END_DEF
-
-DEF_PRIM(DO_LITERAL, do_literal)
-DEF_PRIM(EXECUTE, x_execute)
-DEF_PRIM(EXIT, x_exit)
 
 
 struct test_case {
@@ -43,6 +40,12 @@ struct test_suite {
  * Tests for stuff in execute.m4
  */
 
+PRIM(DO_LITERAL, do_literal)
+PRIM(EXECUTE, x_execute)
+PRIM(EXIT, x_exit)
+PRIM(DEPTH, x_depth)
+PRIM(CLEAR, x_clear)
+
 CODE(NO_OP) END_CODE
 CODE(TEST_LIT) L(F_TRUE) END_CODE
 DEFINITION(TEST_CON, do_constant) N(F_TRUE) END_DEF
@@ -50,11 +53,30 @@ CODE(TEST_EXECUTE) L((cell_ft) NO_OP) X(EXECUTE) END_CODE
 
 static struct test_case
 execute_tests[] = {
+    // This test will exercise NEXT, do_colon, and x_exit, because
+    // nothing much is useful without them.
     { "no-op", { 0 }, { 0 }, NO_OP },
+
+    // This test is meant to exercise argument copy-in/copy-out in
+    // forth_execute(), 'cause that'll be wrong the first time it's
+    // written.
+    { "true no-op", { 1, F_TRUE }, { 1, F_TRUE }, NO_OP },
+
     { "lit", { 0 }, { 1, F_TRUE }, TEST_LIT },
     { "con", { 0 }, { 1, F_TRUE }, TEST_CON },
     { "execute", { 0 }, { 0 }, TEST_EXECUTE },
-    { " true no-op", { 1, F_TRUE }, { 1, F_TRUE }, NO_OP },
+    { "depth", { 2, 0, 1 }, { 3, 0, 1, 2 }, DEPTH },
+    { "clear", { 2, 0, 1 }, { 0 }, CLEAR },
+
+    // Missing tests that are hard to write:
+    //   x_rclear
+    //   do_catch
+    //   drop_catch
+    //   x_throw
+    //   do_create
+    //   do_variable
+    //   do_s_quote
+    //   do_c_quote
     { NULL },
 };
 
@@ -65,21 +87,21 @@ execute_suite = { "execute", execute_tests };
 /*
  * Tests for stuff in arithops.m4
  */
-DEF_PRIM(PLUS, x_plus);
-DEF_PRIM(MINUS, x_minus);
-DEF_PRIM(TWO_STAR, x_two_star);
-DEF_PRIM(TWO_SLASH, x_two_slash);
-DEF_PRIM(LESS_THAN, x_less_than);
-DEF_PRIM(EQUALS, x_equals);
-DEF_PRIM(GREATER_THAN, x_greater_than);
-DEF_PRIM(AND, x_and);
-DEF_PRIM(INVERT, x_invert);
-DEF_PRIM(LSHIFT, x_lshift);
-DEF_PRIM(NEGATE, x_negate);
-DEF_PRIM(OR, x_or);
-DEF_PRIM(RSHIFT, x_rshift);
-DEF_PRIM(U_LESS, x_u_less);
-DEF_PRIM(XOR, x_xor);
+PRIM(PLUS, x_plus);
+PRIM(MINUS, x_minus);
+PRIM(TWO_STAR, x_two_star);
+PRIM(TWO_SLASH, x_two_slash);
+PRIM(LESS_THAN, x_less_than);
+PRIM(EQUALS, x_equals);
+PRIM(GREATER_THAN, x_greater_than);
+PRIM(AND, x_and);
+PRIM(INVERT, x_invert);
+PRIM(LSHIFT, x_lshift);
+PRIM(NEGATE, x_negate);
+PRIM(OR, x_or);
+PRIM(RSHIFT, x_rshift);
+PRIM(U_LESS, x_u_less);
+PRIM(XOR, x_xor);
 
 static struct test_case
 arithops_tests[] = {
@@ -115,20 +137,20 @@ arithops_suite = { "arithops", arithops_tests };
 /*
  * Tests for stuff in stackops.m4
  */
-DEF_PRIM(TO_R, x_to_r);
-DEF_PRIM(QUESTION_DUP, x_question_dup);
-DEF_PRIM(DROP, x_drop);
-DEF_PRIM(DUP, x_dup);
-DEF_PRIM(OVER, x_over);
-DEF_PRIM(R_FROM, x_r_from);
-DEF_PRIM(R_FETCH, x_r_fetch);
-DEF_PRIM(ROT, x_rot);
-DEF_PRIM(SWAP, x_swap);
-DEF_PRIM(TWO_TO_R, x_two_to_r);
-DEF_PRIM(TWO_R_FROM, x_two_r_from);
-DEF_PRIM(TWO_R_FETCH, x_two_r_fetch);
-DEF_PRIM(PICK, x_pick);
-DEF_PRIM(ROLL, x_roll);
+PRIM(TO_R, x_to_r);
+PRIM(QUESTION_DUP, x_question_dup);
+PRIM(DROP, x_drop);
+PRIM(DUP, x_dup);
+PRIM(OVER, x_over);
+PRIM(R_FROM, x_r_from);
+PRIM(R_FETCH, x_r_fetch);
+PRIM(ROT, x_rot);
+PRIM(SWAP, x_swap);
+PRIM(TWO_TO_R, x_two_to_r);
+PRIM(TWO_R_FROM, x_two_r_from);
+PRIM(TWO_R_FETCH, x_two_r_fetch);
+PRIM(PICK, x_pick);
+PRIM(ROLL, x_roll);
 
 CODE(TEST_RSTACK) X(TO_R) X(INVERT) X(R_FROM) END_CODE
 CODE(TEST_RFETCH) X(TO_R) X(R_FETCH) X(R_FROM) END_CODE

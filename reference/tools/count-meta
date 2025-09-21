@@ -12,7 +12,7 @@ awk '
 	starts[mode] += 1
     }
 
-    /    { \/\* .* \*\/ *.cell =/ {
+    /    { .cell = 0x.* }, *\/\/ / {
 	idents[mode] += 1
     }
 

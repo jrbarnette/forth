@@ -1,0 +1,110 @@
+arguments / return values
+    r0 - r7
+indirect result location (?)
+    r8
+scratch
+    r9 - r15
+reserved
+    r16 - IP0 (safe for scratch betwen calls)
+    r17 - IP1 (safe for scratch betwen calls)
+    r18 - platform specific (untouchable)
+callee saved
+    r19 - r28
+other
+    r29 - FP
+    r30 - LR
+    SP
+----
+
+registers:
+	TOS	x0	- because it's the return value 0
+	DP	x3	- not saved when calling C
+	SCR0	x1	- return value 1
+	SCR1	x2	- because not saved across C calls
+
+	VIP	x19	- preserved when calling out to C
+	VRSP	x20	- preserved when calling out to C
+	SP0	--	- line between stacks
+	VXSP	x22	- register for catch frame
+
+	VSP	sp	- shared with C calling conventions
+	LIMIT	fp	- return stack top limit
+
+NEXT
+	ldr	DP, [VIP], #4
+	ldr	pc, [DP], #4
+
+DOLIT
+	str	TOS, [SP, #-4]!		@ PUSH(TOS)
+	ldr	TOS, [VIP], #4
+	NEXT
+
+DOCOL
+	str	VIP, [VRSP, #-4]!	@ RPUSH(VIP)
+	mov	VIP, DP
+	NEXT
+
+DOCREATE
+	str	VIP, [VRSP, #-4]!	@ RPUSH(VIP)
+	str	TOS, [VSP, #-4]!	@ PUSH(TOS)
+	add	TOS, DP, #4
+	ldr	VIP, [DP]
+	NEXT
+
+DOVAR
+	str	TOS, [SP, #-4]!		@ PUSH(TOS)
+	mov	TOS, DP
+	NEXT
+
+DOCONS
+	str	TOS, [SP, #-4]!		@ PUSH(TOS)
+	ldr	TOS, [DP]
+	NEXT
+
+BRANCH
+	ldr	DP, [VIP]
+	add	VIP, DP
+	NEXT
+
+?BRANCH
+	ldr	DP, [VIP], #4
+	cmp	TOS, 0
+	addeq	VIP, DP, #-4
+	ldr	TOS, [SP], #4
+	NEXT
+
+EXECUTE
+	mov	DP, TOS
+	ldr	TOS, [SP], #4		@ POP(TOS)
+	ldr	pc, [DP], #4
+
+EXIT
+	ldr	VIP, [RSP], #4		@ RPOP(VIP)
+	NEXT
+
+DUP
+	str	TOS, [SP, #-4]!		@ PUSH(TOS)
+	NEXT
+
+OVER
+	str	TOS, [SP, #-4]!		@ PUSH(TOS)
+	ldr	TOS, [SP, #4]
+	NEXT
+
+DROP
+	ldr	TOS, [SP], #4		@ POP(TOS)
+	NEXT
+
+SWAP
+	ldr	DP, [SP]
+	str	TOS, [SP]
+	mov	TOS, DP
+	NEXT
+
+ROT
+	ldr	SCR0, [SP]
+	ldr	SCR1, [SP, #4]
+	str	TOS, [SP]
+	str	SCR0, [SP, #4]
+	mov	TOS, SCR1
+	NEXT

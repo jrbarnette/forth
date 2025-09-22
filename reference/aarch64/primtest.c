@@ -49,7 +49,10 @@ PRIM(CLEAR, x_clear)
 CODE(NO_OP) END_CODE
 CODE(TEST_LIT) L(F_TRUE) END_CODE
 DEFINITION(TEST_CON, do_constant) N(F_TRUE) END_DEF
+DEFINITION(TEST_VAR, do_variable) N(F_TRUE) END_DEF
 CODE(TEST_EXECUTE) L((cell_ft) NO_OP) X(EXECUTE) END_CODE
+
+#define VAR_ADDR	((cell_ft) (&TEST_VAR[1]))
 
 static struct test_case
 execute_tests[] = {
@@ -64,6 +67,7 @@ execute_tests[] = {
 
     { "lit", { 0 }, { 1, F_TRUE }, TEST_LIT },
     { "con", { 0 }, { 1, F_TRUE }, TEST_CON },
+    { "var", { 0 }, { 1, VAR_ADDR }, TEST_VAR },
     { "execute", { 0 }, { 0 }, TEST_EXECUTE },
     { "depth", { 2, 0, 1 }, { 3, 0, 1, 2 }, DEPTH },
     { "clear", { 2, 0, 1 }, { 0 }, CLEAR },
@@ -74,7 +78,6 @@ execute_tests[] = {
     //   drop_catch
     //   x_throw
     //   do_create
-    //   do_variable
     //   do_s_quote
     //   do_c_quote
     { NULL },
@@ -105,27 +108,27 @@ PRIM(XOR, x_xor);
 
 static struct test_case
 arithops_tests[] = {
-    { "+",    { 2, 1, 2 },     { 1, 3 },	PLUS },
-    { "-",    { 2, 3, 2 },     { 1, 1 },	MINUS },
-    { "2*",   { 1, 3 },        { 1, 6 },	TWO_STAR },
-    { "2/",   { 1, -2 },       { 1, -1 },	TWO_SLASH },
-    { "and",  { 2, 0xc, 0xa }, { 1, 0x8 },	AND },
-    { "or",   { 2, 0xc, 0xa }, { 1, 0xe },	OR },
-    { "xor",  { 2, 0xc, 0xa }, { 1, 0x6 },	XOR },
+    { "+",        { 2, 1, 2 },     { 1, 3 },		PLUS },
+    { "-",        { 2, 3, 2 },     { 1, 1 },		MINUS },
+    { "2*",       { 1, 3 },        { 1, 6 },		TWO_STAR },
+    { "2/",       { 1, -2 },       { 1, -1 },		TWO_SLASH },
+    { "and",      { 2, 0xc, 0xa }, { 1, 0x8 },		AND },
+    { "or",       { 2, 0xc, 0xa }, { 1, 0xe },		OR },
+    { "xor",      { 2, 0xc, 0xa }, { 1, 0x6 },		XOR },
 
-    { "invert", { 1, F_FALSE }, { 1, F_TRUE },	INVERT },
-    { "negate", { 1, 1 },       { 1, -1 },	NEGATE },
-    { "lshift", { 2, 3, 1 },    { 1, 6 },	LSHIFT },
-    { "rshift", { 2, 3, 1 },    { 1, 1 },	RSHIFT },
+    { "invert",   { 1, F_FALSE },  { 1, F_TRUE },	INVERT },
+    { "negate",   { 1, 1 },        { 1, -1 },		NEGATE },
+    { "lshift",   { 2, 3, 1 },     { 1, 6 },		LSHIFT },
+    { "rshift",   { 2, 3, 1 },     { 1, 1 },		RSHIFT },
 
-    { "< true",  { 2, 1, 2 },   { 1, F_TRUE },	LESS_THAN },
-    { "< false", { 2, 2, 1 },   { 1, F_FALSE },	LESS_THAN },
-    { "= true",  { 2, 1, 1 },   { 1, F_TRUE },	EQUALS },
-    { "= false", { 2, 1, 2 },   { 1, F_FALSE },	EQUALS },
-    { "> true",  { 2, 2, 1 },   { 1, F_TRUE },	GREATER_THAN },
-    { "> false", { 2, 1, 2 },   { 1, F_FALSE },	GREATER_THAN },
-    { "u< true", { 2, 0, -1 },  { 1, F_TRUE },	U_LESS },
-    { "u< false", { 2, -1, 0 }, { 1, F_FALSE },	U_LESS },
+    { "< true",   { 2, 1, 2 },     { 1, F_TRUE },	LESS_THAN },
+    { "< false",  { 2, 2, 1 },     { 1, F_FALSE },	LESS_THAN },
+    { "= true",   { 2, 1, 1 },     { 1, F_TRUE },	EQUALS },
+    { "= false",  { 2, 1, 2 },     { 1, F_FALSE },	EQUALS },
+    { "> true",   { 2, 0, -1 },    { 1, F_TRUE },	GREATER_THAN },
+    { "> false",  { 2, -1, 0 },    { 1, F_FALSE },	GREATER_THAN },
+    { "u< true",  { 2, 0, -1 },    { 1, F_TRUE },	U_LESS },
+    { "u< false", { 2, -1, 0 },    { 1, F_FALSE },	U_LESS },
 
     { NULL },
 };
@@ -178,7 +181,7 @@ stackops_tests[] = {
     { "?dup true", { 1, F_TRUE }, { 2, F_TRUE, F_TRUE },	QUESTION_DUP },
     { "?dup false", { 1, F_FALSE }, { 1, F_FALSE },		QUESTION_DUP },
 
-    { "pick", { 4, 1, 2, 3, 2 },     { 4, 1, 2, 3, 1 },		PICK },
+    { "pick",   { 4, 1, 2, 3, 2 },     { 4, 1, 2, 3, 1 },	PICK },
     { "3 roll", { 5, 1, 2, 3, 4, 3 },  { 4, 2, 3, 4, 1 },	ROLL },
     { "0 roll", { 5, 1, 2, 3, 4, 0 },  { 4, 1, 2, 3, 4 },	ROLL },
 

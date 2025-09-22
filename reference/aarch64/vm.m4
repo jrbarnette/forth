@@ -35,6 +35,7 @@ define(`NEXT',
 define(`FLAG',
        `cmp	$2, TOS
 	csetm	TOS, $1')dnl
+define(`CCALL', `bl	_$1')dnl
 define(`CDECL',
 `	.section	__TEXT,__text,regular,pure_instructions
 	.globl		_$1

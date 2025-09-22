@@ -183,12 +183,26 @@ stackops_tests[] = {
 };
 
 
-static struct test_suite
-all_suites[] = {
-    { "execute",   execute_tests },
-    { "arithops",  arithops_tests },
-    { "stackops",  stackops_tests },
+/*
+ * Tests for stuff in memops.m4
+ */
 
+PRIM(STORE, x_store)
+PRIM(FETCH, x_fetch)
+PRIM(C_STORE, x_c_store)
+PRIM(C_FETCH, x_c_fetch)
+
+CODE(CELL_MEM) L(1) X(TEST_VAR) X(STORE) X(TEST_VAR) X(FETCH) END_CODE
+CODE(CHAR_MEM) L('a') X(TEST_VAR) X(C_STORE) X(TEST_VAR) X(C_FETCH) END_CODE
+
+static struct test_case
+memops_tests[] = {
+    { "! @", { 0 }, { 1, 1 },		CELL_MEM },
+    { "C! C@", { 0 }, { 1, 'a' },	CHAR_MEM },
+
+    // Missing tests that are hard to write:
+    //   fill
+    //   move
     { NULL },
 };
 
@@ -250,6 +264,17 @@ run_suite(struct test_suite *suite)
     }
     putchar('\n');
 }
+
+
+static struct test_suite
+all_suites[] = {
+    { "execute",   execute_tests },
+    { "arithops",  arithops_tests },
+    { "stackops",  stackops_tests },
+    { "memops",    memops_tests },
+
+    { NULL },
+};
 
 
 int

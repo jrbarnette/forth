@@ -83,9 +83,6 @@ execute_tests[] = {
     { NULL },
 };
 
-static struct test_suite
-execute_suite = { "execute", execute_tests };
-
 
 /*
  * Tests for stuff in arithops.m4
@@ -132,9 +129,6 @@ arithops_tests[] = {
 
     { NULL },
 };
-
-static struct test_suite
-arithops_suite = { "arithops", arithops_tests };
 
 
 /*
@@ -188,8 +182,15 @@ stackops_tests[] = {
     { NULL },
 };
 
+
 static struct test_suite
-stackops_suite = { "stackops", stackops_tests };
+all_suites[] = {
+    { "execute",   execute_tests },
+    { "arithops",  arithops_tests },
+    { "stackops",  stackops_tests },
+
+    { NULL },
+};
 
 
 static bool
@@ -254,8 +255,12 @@ run_suite(struct test_suite *suite)
 int
 main(int argc, char *argv[])
 {
-    run_suite(&execute_suite);
-    run_suite(&arithops_suite);
-    run_suite(&stackops_suite);
+    struct test_suite *cur_suite = all_suites;
+
+    while (cur_suite->name != NULL) {
+	run_suite(cur_suite);
+	cur_suite++;
+    }
+
     return EXIT_SUCCESS;
 }

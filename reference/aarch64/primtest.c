@@ -220,24 +220,31 @@ print_stack(char *prefix, struct fargs *st)
 
 
 static void
+run_test(struct test_case *test)
+{
+    struct fargs args = test->input;
+    int except = forth_execute(&args, test->exec_token);
+    if (except != 0) {
+	printf("\nexception %s: %d\n", test->name, except);
+	print_stack("stack:", &args);
+    } else if (!results_match(&test->expect, &args)) {
+	printf("\nmismatch %s:\n", test->name);
+	print_stack("expected:", &test->expect);
+	print_stack("actual:", &args);
+    } else {
+	putchar('.');
+    }
+}
+
+
+static void
 run_suite(struct test_suite *suite)
 {
     struct test_case *cur_test = suite->test_list;
 
     printf("%s: ", suite->name);
     while (cur_test->name != NULL) {
-	struct fargs args = cur_test->input;
-	int except = forth_execute(&args, cur_test->exec_token);
-	if (except != 0) {
-	    printf("\nexception %s: %d\n", cur_test->name, except);
-	    print_stack("stack:", &args);
-	} else if (!results_match(&cur_test->expect, &args)) {
-	    printf("\nmismatch %s:\n", cur_test->name);
-	    print_stack("expected:", &cur_test->expect);
-	    print_stack("actual:", &args);
-	} else {
-	    putchar('.');
-	}
+	run_test(cur_test);
 	cur_test++;
     }
     putchar('\n');

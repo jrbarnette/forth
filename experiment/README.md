@@ -1,7 +1,9 @@
 This is a benchmark experiment to pick the fastest interface to the
-C code primitives in the forth interpreter.
+C code primitives in the forth interpreter.  It also allows directly
+measuring the performance of the VM.  In particular, there's a small
+assembly-based VM for AArch64 that can be measured.
 
-Ultimately, the choice was between two interpretation loops.
+For C primitives, the choice was between two interpretation loops.
 
 Option 1 - pass and return top-of-stack to primitives:
 
@@ -22,8 +24,8 @@ Option 2 - pass and return the virtual IP to primitives:
     }
 
 Option 2 is what's used in the current source.  It won because it's
-unambiguously faster on RISC processors and is faster for CISC
-(ia32/amd64) in at least some cases.
+unambiguously faster on RISC processors and is faster for some CISC
+(ia32/amd64) processors in at least some cases.
 
 Where "tos" is faster on CISC:
   * 1- and 2-argument arithmetic operators, like `+` and `0=`.
@@ -42,3 +44,4 @@ Cases I've tested at one time or another:
   * IA32 (Mac OS X)
   * AMD64 (Mac OS X)
   * 32-bit ARM (Raspberry Pi - Linux)
+  * 64-bit ARM (Apple M4)

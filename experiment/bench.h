@@ -27,6 +27,22 @@ extern unsigned long interpret(void);
 extern void compile_init(void);
 extern void compile_fini(void);
 
+#define STACK_SIZE	2048
+#define RSTACK_SIZE	64
+
+typedef struct vmstate *	vmstate_p;
+
+struct vmstate {
+    cell_ft *	ip;
+    cell_ft *	sp;
+    cell_ft *	rsp;
+    cell_ft	stack[STACK_SIZE];
+    cell_ft	rstack[RSTACK_SIZE];
+};
+
+extern unsigned long execute(vmstate_p vm, cell_ft *entry_xt);
+
+
 #define NOP()		(compile(prim_nop))
 #define LITERAL(n)	(compile(prim_literal, (n)))
 #define DUP()		(compile(prim_dup))

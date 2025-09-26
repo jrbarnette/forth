@@ -93,19 +93,22 @@ test5(cell_ft niter)
 static void
 measure(cell_ft niter, void (*func)(cell_ft), char *name)
 {
-    time_t	starttime;
-    time_t	elapsed;
-    unsigned long ninstr;
+    struct timespec starttime;
+    struct timespec endtime;
 
     compile_init();
     func(niter);
     compile_fini();
     (void) printf("measuring %s\n", name);
-    starttime = time(NULL);
-    ninstr = interpret();
-    elapsed = time(NULL) - starttime;
-    (void) printf("   %3lu sec, %9lu inst, %5.2f nsec/inst +/- %.2f\n",
-	    elapsed, ninstr, 1e9 * elapsed / ninstr, .5e9 / ninstr);
+    clock_gettime(CLOCK_REALTIME, &starttime);
+    unsigned long ninstr = interpret();
+    clock_gettime(CLOCK_REALTIME, &endtime);
+    unsigned long elapsed =
+	1000000000 * (endtime.tv_sec - starttime.tv_sec)
+	    + endtime.tv_nsec - starttime.tv_nsec;
+    double per_instr = 1.0 / ninstr;
+    (void) printf("   %3.6f sec, %9lu inst, %5.2f nsec/inst +/- %.2f\n",
+	    elapsed / 1e9, ninstr, elapsed * per_instr, 0.5e9 * per_instr);
 }
 
 

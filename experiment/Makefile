@@ -14,6 +14,8 @@ BENCH_OBJECTS = $(BENCH_SOURCES:.c=.o) ip.o tos.o
 CDIV_OBJECTS = $(CDIV_SOURCES:.c=.o)
 OBJECTS = $(BENCH_OBJECTS) thr.o $(CDIV_OBJECTS)
 
+THR_SOURCE = thr_$(shell uname -m).m4
+
 all: $(TARGETS)
 
 tos: $(TOS_OBJECTS)
@@ -28,10 +30,10 @@ thr: $(THR_OBJECTS)
 cdivbench: $(CDIV_OBJECTS)
 	$(CC) -o $@ $(CFLAGS) $^
 
-thr.s: thr_arm64.m4
-	m4 thr_arm64.m4 > $@
+thr.s: $(THR_SOURCE)
+	m4 $^ > $@
 
 $(BENCH_OBJECTS): bench.h
 
 clean:
-	rm -f $(TARGETS) $(OBJECTS)
+	rm -f $(TARGETS) $(OBJECTS) thr.s

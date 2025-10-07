@@ -88,7 +88,7 @@ also METADICT-DEFINERS definitions
 METADICT-HOST-MODE
 : parse-valid-name ( "name" -- nt )
     parse-name metadict-target-wordlist wid-lookup
-    dup 0= if -13 throw then ;
+    dup 0= if -13 .error then ;
 
 : ' ( "name" -- xt )  parse-valid-name name>xt ;
 

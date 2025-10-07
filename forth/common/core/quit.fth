@@ -81,6 +81,13 @@
 
 error-table: ans-error
 
+: .error ( -- )
+    source over swap type cr
+    >in-start @ chars over + swap ?do
+	i c@ 9 = if 9 emit else space then
+    [ 1 chars ] literal +loop
+    >in @ >in-start @ ?do '^' emit loop cr ;
+
 : .throw-code ( throw-code -- )
     dup -1 = if drop exit then
     dup ans-error ?dup if
@@ -102,7 +109,7 @@ error-table: ans-error
     [ ' ans-error >body -2 1+ over @ - 2* cells + ] literal 2! ;
 
 : handle-exception ( throw-code -- )
-    ?dup if .throw-code clear postpone [ then
+    ?dup if .error .throw-code clear postpone [ then
     [ -2 ans-error swap ] literal literal abort-message! ;
 
 : ABORT -1 throw ;

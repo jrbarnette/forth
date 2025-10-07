@@ -21,7 +21,7 @@
     2dup lookup ?dup if >r 2drop r> interpret-name exit then
     2dup number-token? if >r 2drop r> interpret-number exit then
     interpret-unknown if exit then
-    -13 .error
+    -13 throw
 ;
 
 : INTERPRET begin parse-name dup while interpret-token repeat 2drop ;

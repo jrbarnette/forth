@@ -160,7 +160,6 @@ vmcode_ft initialize_forth[] = {
     compile-target: forth/c-gen/file/modes.fth
     compile-target: forth/common/core/source.fth
     compile-target: forth/common/core/parse.fth
-    compile-target: forth/common/internal/error.fth
 
     compile-target: forth/c-gen/search/base.fth
     compile-target: forth/common/search/base.fth

@@ -13,10 +13,10 @@
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
 : parse-valid-name ( "name" -- nt )
-    parse-name lookup dup 0= if -13 .error then ;
+    parse-name lookup dup 0= if -13 throw then ;
 
 : ' ( "name" -- xt )  parse-valid-name name>xt ;
-: CHAR ( "name" -- char )  parse-name 0= if -16 .error then c@ ;
+: CHAR ( "name" -- char )  parse-name 0= if -16 throw then c@ ;
 
 : [COMPILE] ' compile, ; compile-special
 

@@ -20,7 +20,7 @@ variable nreference  1 nreference !
 ;
 : get-reference ( c-addr u -- ref# )
     target-names wid-lookup
-    dup 0= if cr -13 .error then
+    dup 0= if cr -13 throw then
     name>xt execute
 ;
 

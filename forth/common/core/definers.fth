@@ -13,8 +13,8 @@
 \ ------  ------  ------  ------  ------  ------  ------  ------
 
 : check-name-length ( u -- u )
-    dup 0= if -16 .error then
-    dup nf-length u> if -19 .error then ;
+    dup 0= if -16 throw then
+    dup nf-length u> if -19 throw then ;
 : start-name ( hdlr "name" -- name )
     parse-name check-name-length name, ;
 : create-name ( hdlr "name" -- )  start-name link-name ;
@@ -22,7 +22,7 @@
 : : hdlr-colon start-name [compile] ] ;
 : ; postpone EXIT ?dup if link-name then [compile] [ ; compile-special
 
-: created? dup @ hdlr-create <> if -31 .error then ;
+: created? dup @ hdlr-create <> if -31 throw then ;
 : >BODY ( xt -- a-addr ) created? [ 2 cells ] literal + ;
 
 : CONSTANT hdlr-constant create-name , ;

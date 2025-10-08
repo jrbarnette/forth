@@ -1,20 +1,15 @@
-union instruction_cell {
-    /* general purpose VM instructions */
-    xt_ft		xtok;
-    cell_ft		cell;
-    snumber_ft		offset;
-    char_ft		cdata[CELL_SIZE / CHAR_SIZE];
-    addr_unit_ft	data[CELL_SIZE];
+typedef union code_cell *vmcodeptr_ft;
 
-    /* direct execution only */
+typedef union code_cell {
     vmhdlr_fn		handler;
-    vmip_ft		ip;
+    cell_ft		cell;
+    vmcodeptr_ft	ip;
     char *		id;
-};
+} vmcode_ft;
 
 valid output forms:
 
-META-BUILDER
+METADICT-TARGET code
     { .handler = /* primitive name */ },
 
     { .handler = do_constant }, { .cell = /* number */ },
@@ -42,7 +37,7 @@ META-BUILDER
 	    { .cell = /* number */ },
 
 
-BUILDER code
+BUILDER-TARGET code
     { .ip = META_INITIALIZE },
 
     { .ip = META_INTERPRET },
@@ -54,10 +49,10 @@ BUILDER code
 	{ .cell = 0x0 },
 
     { .ip = META_STARTNAME },
-	{ .id = /* counted */ }, { .handler = /* name */ },
+	{ .id = /* string */ }, { .handler = /* primitive name */ },
 
     { .ip = META_ADDNAME },
-	{ .id = /* counted */ }, { .handler = /* name */ },
+	{ .id = /* string */ }, { .handler = /* primitive name */ },
 
     { .ip = META_LINKNAME },
     { .ip = META_SETFLAGS }, { .cell = /* flags */ },
@@ -70,12 +65,14 @@ BUILDER code
 	{ .cell = (cell_ft) (/* expr */) },
 
     { .ip = DO_LITERAL },
-	{ .handler = /* name */ },
+	{ .handler = /* primitive name */ },
 
-    { .ip = meta_literal },	// later
+    { .ip = COMMA },
 
     { .ip = EXIT },
 
+
+compilation transform rules:
 
 Meta-builder compile:
     For compiling meta-interpret/meta-compile, etc.
@@ -97,82 +94,86 @@ Meta-builder compile:
 	    { .ip = &meta_definitions[/* exit */] },
 
 
-TARGET source code forms:
-    <name>			( interpretation semantics )
-	{ .ip = META_INTERPRET },	// if not already in META_INTERPRET
-	    { .cell = /* name index */ },
-
-    <name>			( default compilation )
-	{ .ip = META_COMPILE },		// if not already in META_COMPILE
-	    { .cell = /* name index */ },
+BUILDER source code forms:
+    PRIM: <name> <handler>	( interpretation state )
+	{ .ip = META_ADDNAME },
+	    { .id = "<name>" }, { .handler = <handler> },
 
     : <name>			( interpretation state )
 	{ .ip = META_STARTNAME },
-	    { .id = /* name */ }, { .handler = do_colon },
+	    { .id = "<name>" }, { .handler = do_colon },
+
+    ;				( compilation state )
+	{ .ip = META_COMPILE },
+	    { .cell = /* EXIT ref# */ },
+	    { .cell = 0x0 },
+	{ .ip = META_LINKNAME },
 
     CONSTANT <name>		( interpretation state )
 	{ .ip = META_ADDNAME },
-	    { .id = /* name */ }, { .handler = do_constant },
+	    { .id = "<name>" }, { .handler = do_constant },
 
     VARIABLE <name>		( interpretation state )
 	{ .ip = META_ADDNAME },
-	    { .id = /* name */ }, { .handler = do_variable },
+	    { .id = "<name>" }, { .handler = do_variable },
 
-    PRIM: <name> <handler>	( interpretation state )
-	{ .ip = META_ADDNAME },
-	    { .id = /* name */ }, { .handler = /* handler */ },
+    <name>			( interpretation semantics )
+	{ .ip = META_INTERPRET },
+	    { .cell = /* <name> ref# */ },
+
+    <name>			( default compilation )
+	{ .ip = META_COMPILE },	
+	    { .cell = /* <name> ref# */ },
 
     POSTPONE <name>		( default semantics )
-	{ .ip = META_REFERENCE }, { .cell = /* name index */ },
-	{ .ip = META_INTERPRET },
-	    { .cell = /* LITERAL index */ },
-	    { .cell = 0x0 },
+	{ .ip = META_REFERENCE }, { .cell = /* <name> ref# */ },
+	compile builder literal
 	{ .ip = META_COMPILE },
-	    { .cell = /* COMPILE, index */ },
+	    { .cell = /* COMPILE, ref# */ },
 
     POSTPONE <name>		( non-default semantics )
 	{ .ip = META_COMPILE },
-	    { .cell = /* name index */ },
+	    { .cell = /* <name> ref# */ },
 
     [COMPILE] <name>		( compilation state )
 	{ .ip = META_COMPILE },
-	    { .cell = /* name index */ },
+	    { .cell = /* <name> ref# */ },
 
     ['] <name>			( compilation state )
-	{ .ip = META_REFERENCE }, { .cell = /* name index */ },
-	{ .ip = META_INTERPRET },
-	    { .cell = /* LITERAL index */ },
+	{ .ip = META_REFERENCE }, { .cell = /* <name> ref# */ },
+	compile builder literal
 
     [CHAR] <char>		( compilation state )
 	{ .ip = DO_LITERAL }, { .cell = /* char */ },
-	{ .ip = META_INTERPRET },
-	    { .cell = /* LITERAL index */ },
-
-    ;				( compilation state )
-	    { .cell = /* EXIT index */ },
-	    { .cell = 0x0 },
-	{ .ip = META_LINKNAME },
+	compile builder literal
 
     IMMEDIATE COMPILE-ONLY	( interpretation state )
 	{ .ip = META_SETFLAGS }, { .cell = /* flags */ },
 
     <number>			( interpretation state )
-	{ .ip = DO_LITERAL }, { .cell = /* number */ },
+	{ .ip = DO_LITERAL }, { .cell = <number> },
 
     <number>			( compilation state )
-	{ .ip = DO_LITERAL }, { .cell = /* number */ },
-	{ .ip = META_INTERPRET },
-	    { .cell = /* LITERAL index */ },
+	( as for interpretation state)
+	compile builder literal
 
-    <C> <C expression>		( interpretation state )
+    <C> <C expression>;		( interpretation state )
 	{ .ip = DO_LITERAL }, { .cell = /* C expression */ },
 
-    <C> <C expression>		( compilation state )
-	{ .ip = DO_LITERAL }, { .cell = /* C expression */ },
-	{ .ip = META_INTERPRET },
-	    { .cell = /* LITERAL index */ },
+    <C> <C expression>;		( compilation state )
+	( as for interpretation state)
+	compile builder literal
 
     handler: <handler>		( compilation state )
-	{ .ip = DO_LITERAL }, { .cell = /* handler */ },
+	{ .ip = DO_LITERAL }, { .handler = <handler> },
+	compile builder literal
+
+    compiler builder literal:
+    (option A)
 	{ .ip = META_INTERPRET },
-	    { .cell = /* LITERAL index */ },
+	    { .cell = /* LITERAL ref# */ },
+    (option B)
+	{ .ip = META_COMPILE },
+	    { .cell = /* DO-LITERAL ref# */ },
+	    { .cell = 0x0 },
+	{ .ip = COMMA },

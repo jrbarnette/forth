@@ -772,7 +772,7 @@ vmcode_ft initialize_forth[] = {
 /*  184 */ { .ip = META_ADDNAME }, { .id = "DO-CATCH" }, { .handler = do_catch },
 /*  187 */ { .ip = META_ADDNAME }, { .id = "DROP-CATCH" }, { .handler = drop_catch },
 /*  190 */ { .ip = META_ADDNAME }, { .id = "THROW" }, { .handler = x_throw },
-            /* ==== forth/c-gen/core/literal.fth ==== */
+            /* ==== forth/c-gen/core/preliteral.fth ==== */
 /*  193 */ { .ip = META_STARTNAME }, { .id = "+!" }, { .handler = do_colon },
 /*  196 */ { .ip = META_COMPILE },
 /*  197 */     { .cell = 0x5 },   // dup
@@ -901,6 +901,7 @@ vmcode_ft initialize_forth[] = {
 /*  345 */     { .cell = 0x0 },
 /*  346 */ { .ip = META_LINKNAME },
 /*  347 */ { .ip = META_SETFLAGS }, { .cell = 0x40 },
+            /* ==== forth/c-gen/core/literal.fth ==== */
 /*  349 */ { .ip = META_STARTNAME }, { .id = "LITERAL" }, { .handler = do_colon },
 /*  352 */ { .ip = META_COMPILE },
 /*  353 */     { .cell = 0x34 },  // do-literal

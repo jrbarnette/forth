@@ -16,4 +16,4 @@
 : ALIGN ( -- ) here aligned <C> &HERE; ! ;
 : , ( x -- ) here <C> CELL_SIZE; allot ! ;
 : C, ( char -- ) here <C> CHAR_SIZE; allot c! ;
-: COMPILE, ( xt -- ) , ;
+: COMPILE, ( xt -- ) , ; compile-only

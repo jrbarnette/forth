@@ -123,7 +123,7 @@ vmcode_ft initialize_forth[] = {
     \ Some constructs have implicit dependencies on LITERAL in the
     \ target dictionary, so get that done first.
     compile-target: forth/c-gen/core/preliteral.fth
-    compile-target: forth/c-gen/core/literal.fth
+    compile-target: forth/common/core/literal.fth
 
     \ The "dictops" depend on "memops", and these are lower-level, so
     \ do them early.

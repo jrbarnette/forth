@@ -901,7 +901,7 @@ vmcode_ft initialize_forth[] = {
 /*  345 */     { .cell = 0x0 },
 /*  346 */ { .ip = META_LINKNAME },
 /*  347 */ { .ip = META_SETFLAGS }, { .cell = 0x40 },
-            /* ==== forth/c-gen/core/literal.fth ==== */
+            /* ==== forth/common/core/literal.fth ==== */
 /*  349 */ { .ip = META_STARTNAME }, { .id = "LITERAL" }, { .handler = do_colon },
 /*  352 */ { .ip = META_COMPILE },
 /*  353 */     { .cell = 0x34 },  // do-literal

@@ -131,6 +131,7 @@ vmcode_ft initialize_forth[] = {
     compile-target: forth/common/core/memops.fth
     compile-target: forth/c-gen/core/dictops.fth
     compile-target: forth/common/core/dictops.fth
+    compile-target: forth/common/core/pad.fth
 
     \ We want "arithops" early, but that depends on "control", which
     \ in turn depends on "stackops".

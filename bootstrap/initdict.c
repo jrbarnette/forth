@@ -1045,6 +1045,7 @@ vmcode_ft initialize_forth[] = {
 /*  520 */     { .cell = 0x33 },  // EXIT
 /*  521 */     { .cell = 0x0 },
 /*  522 */ { .ip = META_LINKNAME },
+            /* ==== forth/common/core/pad.fth ==== */
 /*  523 */ { .ip = META_STARTNAME }, { .id = "PAD" }, { .handler = do_colon },
 /*  526 */ { .ip = META_COMPILE },
 /*  527 */     { .cell = 0x3D },  // here

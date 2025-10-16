@@ -1,0 +1,164 @@
+#define HDLR(h)		{ .handler = h },
+#define X(n)		{ .ip = &meta_dictionary[(n)] },
+#define ID(str)		{ .id = str },
+#define N(n)		{ .cell = (cell_ft)(n) },
+#define L(n)		{ X(DO_LITERAL) }, { N(n) },
+
+\ common to METADICT and BUILDER
+: { ."  { " ;
+: } ."  }," 1 offset +! ;
+: }{ } { ;
+
+: .handler  ." .handler = " type ;
+: .exec     ." .ip = &meta_dictionary[" .c-decimal ." ]" ;
+: .cell     ." .cell = " .c-hex ;
+: .expr     ." .cell = (cell_ft) (" type ." )" ;
+: .id       ." .id = " .c-string ;
+
+: .start ( state -- ) ." /* " offset @ 4 u.r ."  */" ;
+: .end ( -- ) cr ;
+: .indent 4 spaces ;
+
+\ METADICT-HOST
+: meta-create ( -- ) create offset @ , does> { @ .exec } ;
+\ METADICT-TARGET
+: prim: meta-create parse-name .start { .handler } .end ;
+
+compile-file: forth/c-gen/vmprim.fth
+compile-file: forth/c-gen/control.fth
+
+\ METADICT-HOST
+: operand>  cell+ dup @ ;
+: cell-operand  operand> { .cell } ;
+
+: cell-literal  [metadict] do-literal cell-operand ;
+: expr-literal  [metadict] do-literal operand> count { .expr } ;
+: xt-literal    [metadict] do-literal operand> execute ;
+
+\ METADICT-TARGET
+: <C>  ';' parse expr-ptr @ dup ['] expr-literal , ,
+    2dup c! char+ swap chars 2dup + expr-ptr !
+    move ; compile-special
+: LITERAL  ['] cell-literal , , ; compile-special
+
+\ ' in this context must search METADICT-TARGET
+: [']  ' ['] xt-literal , , ; compile-special
+
+: branch        [metadict] branch     cell-operand ;
+: ?branch       [metadict] ?branch    cell-operand ;
+
+\ definers [COMPILE] POSTPONE [ ] ;
+
+\ BUILDER-HOST
+variable build-state  0 build-state !
+: build-state! ( new-state -- )
+    dup build-state @ <> if
+	build-state @ ?dup if .start .indent { 0 .cell } .end then
+	dup if
+	    .start dup 1- if
+		[metadict] meta-compile
+	    else
+		[metadict] meta-interpret
+	    then .end
+	then build-state !
+    then ;
+
+: build-emit-ref ( nm refid -- )
+    .start .indent { .cell } ."  // " name>string type .end ;
+
+variable ref-id  1 ref-id !
+: next-ref ref-id @ dup 1+ ref-id ! ;
+: create-ref create current-name , next-ref ,
+    does> swap build-state! 2@ build-emit-ref ;
+
+: do-literal ( i*x xt -- ) .start [metadict] do-literal { execute } .end ;
+: cell-literal ( x -- ) ['] .cell do-literal ;
+: expr-literal ( c-addr u -- ) ['] .expr do-literal ;
+: handler-literal ( c-addr u -- ) ['] .exec do-literal ;
+
+: handler? ( c-addr u | 0 -- c-addr u ) ?dup 0= if parse-name then ;
+: do-name { .meta }{ create-reference .str }{ handler? .exec } ;
+: addname ( c-addr u | 0 -- ) s" META_ADDNAME" do-name ;
+: startname ( c-addr u | 0 -- ) s" META_STARTNAME" do-name ;
+: linkname ( -- ) { s" META_LINKNAME" .meta } ;
+: setflags ( flags -- ) { s" META_SETFLAGS" .meta }{ .cell } ;
+: direct-lookup ( c-addr u -- ) { s" META_REFERENCE" .meta }{ .ref } ;
+
+: INTERPRET-NAME ( i*x name -- j*x )
+    dup name>xt+flags state @ if
+	immediate? if 1 else 2 then
+    else
+	compile-only? if -14 throw then 1
+    then build-emit-ref ;
+
+: INTERPRET-NUMBER ( x -- )
+    [metadict] do-literal { .cell }
+    \ a version of LITERAL must be compiled into the meta-dictionary,
+    \ separate from the LITERAL in the META-TARGET vocabulary...
+    state @ if meta-literal then ;
+
+: <C> ';' parse expr-literal meta-literal ;
+
+\ --+----+
+\ various complete entry sequences:
+\ meta-dictionary target definition:
+\     does> { @ .exec }
+\ builder target reference:
+\     does> { @ .cell }
+\ literal:
+\     [metadict] do-literal { .cell }
+\ <C>:
+\     [metadict] do-literal { .expr }
+\ reference:
+\     dup name>xt execute ."   // " name>string type
+\ reference xt:
+\     meta-reference reference
+\     
+
+\ Level 2 - line format
+\ meta-dictionary and builder:
+\    .start <entries> .end
+\ builder (for meta-reference):
+\    .start [metadict] reference <reference> ."  // " <name> .end
+\    .start .indent <reference> ."  // " <name> .end
+\    .start .indent { 0 .cell } cr
+\ transition from emit-state 1 or 2:
+\ 
+
+
+\ builder meta-dictionary calls:
+\ emit-state 0 (after any transition):
+\     [metadict] addname { .id }{ parse-name .handler }
+\     [metadict] startname { .id }{ s" do_colon" .handler }
+\     [metadict] linkname
+\     [metadict] setflags { .cell }
+\     [metadict] reference { 2dup .ref } ."  // " type
+\     [metadict] exit
+\     [metadict] do-literal
+\     [metadict] literal
+\     ... others to interpret lines? ...
+\ emit-state 1 or 2 (after any transition):
+\     4 spaces { 2dup .ref } ."  // " type
+\ transition from emit-state 1 or 2:
+\     4 spaces { 0 .cell }
+\ ... then transition to emit-state 1:
+\     [metadict] meta-interpret
+\ ... then transition to emit-state 2:
+\     [metadict] meta-compile
+
+
+: reference build-state! .start .indent { 2dup .ref } ."  // " type .end ;
+: build-interpret 1 reference ;
+: build-compile 2 reference ;
+
+: handler? ( c-addr u | 0 -- c-addr u ) ?dup 0= if parse-name then ;
+: do-name { create-reference .id }{ handler? .exec } ;
+: addname 0 build-state! .start [metadict] addname do-name .end ;
+: startname 0 build-state! .start [metadict] startname do-name .end ;
+\     [metadict] startname { .id }{ s" do_colon" .handler }
+\     [metadict] linkname
+\     [metadict] setflags { .cell }
+\     [metadict] reference { 2dup .ref } ."  // " type
+\     [metadict] exit
+\     [metadict] do-literal
+\     [metadict] literal

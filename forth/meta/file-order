@@ -1,15 +1,3 @@
 # Copyright 2016, by J. Richard Barnette, All Rights Reserved.
 
-forth/meta/vocab.fth
-forth/c-gen/c-data.fth
-forth/c-gen/transcribe.fth
-forth/c-gen/entry.fth
-
-forth/meta/meta-host.fth
-forth/meta/host.fth
-forth/meta/target.fth
-
-forth/meta/target-tokens.fth
-forth/common/internal/interpret.fth
-
-forth/meta/output-dict.fth
+forth/meta/build-forth.fth

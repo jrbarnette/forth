@@ -1,10 +1,23 @@
-\  Copyright 2020, by J. Richard Barnette. All Rights Reserved.
+\  Copyright 2025, by J. Richard Barnette. All Rights Reserved.
 
-: entry: create , parse-name counted, does>
-    '.' emit dup cell+ count type ."  = " @ execute ;
+variable offset
+variable indent  0 indent !
+: start-entries  0 offset ! ;
+: next-entry 1 offset +! ;
+: .indent indent @ spaces 0 indent ! ;
 
-' type          entry: .exec handler ( c-addr u -- )
-' type          entry: .meta ip ( c-addr u -- )
-' .c-string     entry: .str id ( c-addr u -- )
-' .c-cell       entry: .expr cell ( c-addr u -- )
-' .c-hex        entry: .cell cell ( x -- )
+: { .indent ."  { " ;
+: } ."  }," next-entry ;
+: }{ } { ;
+
+: .handler  ." .handler = " type ;
+: .exec     ." .ip = &meta_dictionary[" .c-decimal ." ]" ;
+: .cell     ." .cell = " .c-hex ;
+: .expr     ." .cell = (cell_ft) (" type ." )" ;
+: .id       ." .id = " .c-string ;
+
+: .start ( state -- ) ." /* " offset @ 4 u.r ."  */" ;
+: .end ( -- ) cr 0 indent ! ;
+
+: //name ( np indent -- )  spaces ." // " name>string type ;
+: .meta dup >r space type 12 r> - indent ! next-entry ;

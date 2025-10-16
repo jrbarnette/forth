@@ -29,23 +29,22 @@
 \ Support for literals when compiling meta-dictionary source files
 
 METADICT-HOST-MODE
-: operand>  cell+ dup @ ; compile-only
-: cell-operand  operand> { .cell } ;
+: operand>  cell+ dup @ ;
+: cell-operand  { operand> .cell } ;
 
 : do-literal [ also METADICT-TARGET ] do-literal [ previous ] ;
 
-: xt-literal    do-literal operand> execute ; compile-only
-: expr-literal  do-literal operand> count { .expr } ; compile-only
-: cell-literal  do-literal cell-operand ; compile-only
+: xt-literal    do-literal operand> execute ;
+: expr-literal  do-literal { operand> count .expr } ;
+: cell-literal  do-literal cell-operand ;
 
 here 64 chars allot constant expr-buffer
 variable expr-ptr
 
 METADICT-DEFINITIONS
-: <C>  ';' parse expr-ptr @ dup >r
-    ( src u dst ) ( R: dst )
-    2dup c! char+ swap chars 2dup + expr-ptr !
-    move ['] expr-literal , r> , ; compile-special
+: <C>  ';' parse ['] expr-literal , expr-ptr @ dup ,
+    ( src u dst )
+    2dup c! char+ swap chars 2dup + expr-ptr ! move ; compile-special
 
 : LITERAL ['] cell-literal , , ; compile-special
 
@@ -70,17 +69,9 @@ previous
 \ sources
 
 METADICT-HOST-MODE
-: start-name
-    target-create 15 spaces ." // " current-name name>string type cr
-    .start ;
-
 also METADICT-DEFINERS definitions
-: VARIABLE
-    start-name s" do_variable" { .exec }{ 0 .cell } .end ;
-: CONSTANT
-    start-name s" do_constant" { .exec }{ .cell } .end ;
 : ] only metadict-target also metadict-special ] ;
-: : start-name s" do_colon" { .exec } .end expr-buffer expr-ptr ! here ] ;
+: : start-meta-colon expr-buffer expr-ptr ! ] ;
 
 
 \ Special words implemented for compiling meta-dictionary sources
@@ -88,7 +79,7 @@ also METADICT-DEFINERS definitions
 METADICT-HOST-MODE
 : parse-valid-name ( "name" -- nt )
     parse-name metadict-target-wordlist wid-lookup
-    dup 0= if -13 .error then ;
+    dup 0= if -13 throw then ;
 
 : ' ( "name" -- xt )  parse-valid-name name>xt ;
 
@@ -105,8 +96,7 @@ METADICT-DEFINITIONS
 
 also METADICT-SPECIAL
 : ;
-    postpone EXIT
-    here over ( start end cur )
+    postpone EXIT end-meta-colon here over ( start end cur )
     begin 2dup > while
 	.start dup @ execute .end cell+
     repeat drop - allot postpone [ ; compile-special

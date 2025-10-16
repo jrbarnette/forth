@@ -4,13 +4,13 @@ only FORTH definitions
 
 : INCLUDE-FILE: ( "filename" -- ) parse-name included ;
 
-include-file: forth/newmeta/modes.fth
+include-file: forth/meta/modes.fth
 
 HOST-MODE
 include-file: forth/c-gen/transcribe.fth
 include-file: forth/c-gen/c-data.fth
-include-file: forth/newmeta/entry.fth
-include-file: forth/newmeta/metadict.fth
+include-file: forth/c-gen/entry.fth
+include-file: forth/meta/metadict.fth
 
 HOST-MODE
 : OPEN-SOURCE-FILE ( "filename" -- fileid )
@@ -45,7 +45,7 @@ vmcode_ft meta_dictionary[] = {
     compile-file: forth/c-gen/core/multprim.fth
     compile-file: forth/c-gen/exception/throwprim.fth
 
-    include-file: forth/newmeta/meta-target.fth
+    include-file: forth/meta/meta-target.fth
 
     METADICT-SPECIAL-MODE
     include-file: forth/common/internal/branches.fth
@@ -83,7 +83,7 @@ vmcode_ft meta_dictionary[] = {
     compile-meta: forth/common/internal/dictionary.fth
     compile-meta: forth/common/internal/wordlists.fth
 
-    compile-meta: forth/newmeta/meta.fth
+    compile-meta: forth/meta/meta.fth
 
     TRANSCRIBE>
 };
@@ -91,7 +91,7 @@ vmcode_ft meta_dictionary[] = {
 FORTH>
 HOST-MODE
 
-include-file: forth/newmeta/builder.fth
+include-file: forth/meta/builder.fth
 
 BUILDER-HOST-MODE
 : meta-exit [metadict] exit ;
@@ -132,8 +132,8 @@ vmcode_ft initialize_forth[] = {
     compile-file: forth/c-gen/exception/throwprim.fth
 
     BUILDER-HOST-MODE
-    include-file: forth/newmeta/builder-target.fth
-    include-file: forth/newmeta/builder-tokens.fth
+    include-file: forth/meta/builder-target.fth
+    include-file: forth/meta/builder-tokens.fth
     include-file: forth/common/internal/interpret.fth
     : COMPILE-BUILDER: ( "filename" -- )
 	open-source-file builder-target-mode
@@ -145,7 +145,7 @@ vmcode_ft initialize_forth[] = {
     compile-builder: forth/common/core/memops.fth
 
     BUILDER-HOST-MODE
-    include-file: forth/newmeta/builder-postpone.fth
+    include-file: forth/meta/builder-postpone.fth
 
     compile-builder: forth/common/core/literal.fth
     compile-builder: forth/common/core/pad.fth

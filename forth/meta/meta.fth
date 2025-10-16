@@ -28,3 +28,10 @@ variable ref-index
     r> begin dup cell+ swap @ ?dup while ref@ compile, repeat >r ;
 
 : meta-reference ( -- ref ) r> dup @ ref@ swap cell+ >r ;
+
+: interpret-lines
+    ( eval-xt -- eval-xt )
+    >r <C> &init_forth_defs[0]; >r
+    begin 2r@ @ ?dup while ( eval-xt c-str ) ( R: eval-xt ptr )
+	dup strlen rot execute r> cell+ >r
+    repeat 2r> 2drop ;

@@ -129,10 +129,6 @@ initialize_dictionary(vmstate_ft *vm)
     assert(EMPTY(vm));
     assert(REMPTY(vm));
 
-    interpret_lines(eval, vm, init_forth_defs);
-    assert(EMPTY(vm));
-    assert(REMPTY(vm));
-
     return eval;
 }
 

@@ -12,6 +12,7 @@
 
 
 static xt_ft references[];
+static char *init_forth_defs[];
 
 static
 vmcode_ft meta_dictionary[] = {
@@ -683,6 +684,26 @@ vmcode_ft meta_dictionary[] = {
 /*  629 */ { .ip = &meta_dictionary[76] },
 /*  630 */ { .ip = &meta_dictionary[12] },
 /*  631 */ { .ip = &meta_dictionary[1] },
+               // INTERPRET-LINES
+/*  632 */ { .handler = do_colon },
+/*  633 */ { .ip = &meta_dictionary[12] },
+/*  634 */ { .ip = &meta_dictionary[2] }, { .cell = (cell_ft) (&init_forth_defs[0]) },
+/*  636 */ { .ip = &meta_dictionary[12] },
+/*  637 */ { .ip = &meta_dictionary[24] },
+/*  638 */ { .ip = &meta_dictionary[45] },
+/*  639 */ { .ip = &meta_dictionary[13] },
+/*  640 */ { .ip = &meta_dictionary[6] }, { .cell = 0xA },
+/*  642 */ { .ip = &meta_dictionary[16] },
+/*  643 */ { .ip = &meta_dictionary[550] },
+/*  644 */ { .ip = &meta_dictionary[20] },
+/*  645 */ { .ip = &meta_dictionary[0] },
+/*  646 */ { .ip = &meta_dictionary[18] },
+/*  647 */ { .ip = &meta_dictionary[76] },
+/*  648 */ { .ip = &meta_dictionary[12] },
+/*  649 */ { .ip = &meta_dictionary[5] }, { .cell = -0xD },
+/*  651 */ { .ip = &meta_dictionary[23] },
+/*  652 */ { .ip = &meta_dictionary[162] },
+/*  653 */ { .ip = &meta_dictionary[1] },
 };
 
 #define DO_LITERAL	 { .ip = &meta_dictionary[2] },
@@ -4159,10 +4180,12 @@ vmcode_ft initialize_forth[] = {
 /* 4133 */     { .cell = 0x0 },
 /* 4134 */ LINKNAME
 /* 4135 */ REFERENCE    { .cell = 0x108 }, // EVALUATE
-/* 4137 */ { .ip = &meta_dictionary[1] },
+/* 4137 */ { .ip = &meta_dictionary[632] },
+/* 4138 */ { .ip = &meta_dictionary[1] },
 };
 
 
+static
 char *init_forth_defs[] = {
             /* ==== forth/common/core/compile.fth ==== */
     "\\  Copyright 2019, by J. Richard Barnette. All Rights Reserved.",

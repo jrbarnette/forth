@@ -34,7 +34,5 @@ extern void execute(vmstate_ft *, xt_ft);
 extern void report_exception(int, vmstate_ft *, char *);
 
 extern vmcode_ft initialize_forth[];
-extern char *init_forth_defs[];
-
 
 #endif // FORTH_H

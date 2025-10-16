@@ -30,6 +30,7 @@ TRANSCRIBE>
 
 
 static xt_ft references[];
+static char *init_forth_defs[];
 
 static
 vmcode_ft meta_dictionary[] = {
@@ -198,6 +199,9 @@ vmcode_ft initialize_forth[] = {
 
     compile-builder: forth/common/core/evaluate.fth
     0 ref-mode ! ' EVALUATE execute
+    also METADICT-TARGET
+    .start interpret-lines .end
+    previous
     .start meta-exit .end
     TRANSCRIBE>
 };
@@ -211,6 +215,7 @@ HOST-MODE
 
 
 TRANSCRIBE>
+static
 char *init_forth_defs[] = {
     FORTH>
     include-source-text: forth/common/core/compile.fth

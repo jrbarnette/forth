@@ -6,31 +6,23 @@
 #define XTOKEN_H
 
 /*
- * Definition of execution tokens for VM interpretation.  An
- * execution token (XT) is just a pointer to a simple structure
- * containing a pointer to a handler function followed by one or
- * more parameter cells.
+ * Definition of execution tokens for VM interpretation.  An execution
+ * token (XT) is just a pointer to a simple structure containing a
+ * pointer to a handler function followed by one or more parameter
+ * cells.
  *
- * In indirect execution, a VM instruction pointer (IP) is a pointer
- * to an array of execution tokens.  For the XT at each IP,  the
- * handler function is called with three parameters:
+ * The VM uses indirect threading, where a VM instruction pointer (IP)
+ * is a pointer to an array of execution tokens.  For the XT at each IP,
+ * the handler function is called with three parameters:
  *   ip - A pointer to the next VM IP.
  *   vm - A pointer to the VM state to be operated on.
  *   arg_ptr - A pointer to the XT parameter cells.
  * The handlers return a pointer to the VM IP where execution should
- * continue.  Handlers that don't perform any kind of flow of
- * control change should just return the passed in IP.
- * Interpretation stops when a handler returns NULL.
+ * continue.  Handlers that don't perform any kind of flow of control
+ * change should just return the passed in IP.  Interpretation stops
+ * when a handler returns NULL.
  *
- * The function execute() implements the logic for indirect
- * execution.
- *
- * In direct execution, a VM instruction pointer (IP) is a pointer
- * to an array of XT handler functions.  Flow is analagous to
- * indirect interpretation, except that the handler functions are
- * invoked with arg_ptr NULL.
- *
- * The function direct_execute() implements the logic for direct
+ * The function forth_execute() implements the logic for indirect
  * execution.
  *
  * The actual C declarations are complicated because the underlying

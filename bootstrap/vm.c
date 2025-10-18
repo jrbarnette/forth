@@ -35,33 +35,39 @@
 #ifdef STACKPROFILE
 #include <stdio.h>
 
+static cell_ft stack_maximum;
+static cell_ft rstack_maximum;
+
 cell_ft
 probe_push(vmstate_ft *vm, cell_ft n)
 {
     cell_ft depth = MAXPOP(vm) + n;
-    if (depth > vm->stack_maximum) {
-	vm->stack_maximum = depth;
+    if (depth > stack_maximum) {
+	stack_maximum = depth;
     }
     return n > MAXPUSH(vm);
 }
+
 
 cell_ft
 probe_rpush(vmstate_ft *vm, cell_ft n)
 {
     cell_ft depth = RSTACK_SIZE - MAXRPUSH(vm) + n;
-    if (depth > vm->rstack_maximum) {
-	vm->rstack_maximum = depth;
+    if (depth > rstack_maximum) {
+	rstack_maximum = depth;
     }
     return n > MAXRPUSH(vm);
 }
 
+
 void
-stacks_report(vmstate_ft *vm)
+stacks_report(void)
 {
-    fprintf(stderr, "stack  max %4lu\n", vm->stack_maximum);
-    fprintf(stderr, "rstack max %4lu\n", vm->rstack_maximum);
+    fprintf(stderr, "stack  max %4lu\n", stack_maximum);
+    fprintf(stderr, "rstack max %4lu\n", rstack_maximum);
 }
 #endif
+
 
 static inline vmip_ft
 xtcall(xt_ft xtok, vmstate_ft *vm, vmip_ft ip)
@@ -70,14 +76,42 @@ xtcall(xt_ft xtok, vmstate_ft *vm, vmip_ft ip)
 }
 
 
-void
-execute(vmstate_ft *vm, xt_ft entry_xt)
+int
+forth_execute(vmcodeptr_ft xt, struct fargs *args)
 {
-    vmip_ft ip = xtcall(entry_xt, vm, NULL);
+    vmstate_ft vmstate;
+    vmstate_ft *vm = &vmstate;
 
-    while (ip != NULL) {
-	ip = xtcall(ip->xtok, vm, ip + 1);
+    CLEAR_STACK(vm);
+    CLEAR_RSTACK(vm);
+
+    cell_ft depth = 0;
+    while (depth < args->depth) {
+	PUSH(vm, args->stack[depth]);
+	depth++;
     }
+
+    int throwcode;
+    if ((throwcode = CATCH(vm)) == 0) {
+	vmip_ft ip = xtcall((xt_ft) xt, vm, NULL);
+
+	while (ip != NULL) {
+	    ip = xtcall(ip->xtok, vm, ip + 1);
+	}
+    }
+    assert(REMPTY(vm));
+
+    args->depth = MAXPOP(vm);
+    depth = args->depth;
+    if (depth >= FARGS_LEN) {
+	depth = FARGS_LEN;
+    }
+    while (depth > 0) {
+	depth--;
+	args->stack[depth] = POP(vm);
+    }
+
+    return throwcode;
 }
 
 

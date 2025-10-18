@@ -29,10 +29,6 @@
 #define FILE_MODE_W_O	((cell_ft) 03)
 #define FILE_MODE_BIN	((cell_ft) 04)
 
-extern void execute(vmstate_ft *, xt_ft);
-
-extern void report_exception(int, vmstate_ft *, char *);
-
-extern vmcode_ft initialize_forth[];
+extern void report_exception(int, char *);
 
 #endif // FORTH_H

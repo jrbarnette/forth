@@ -55,8 +55,10 @@ VM design for AMD64 and ARM32 are in
   printing the last source line, with a **^^^** indicator for the token
   at the failure.  But, that goes to `stdout`.  Then, the exception is
   raised, and the exception message goes to `stderr`.
-  + ... But this seems to matter only for errors from `interpret_lines()`,
-    meaning primarily initialization code in `init_forth_defs`.
+  + ... But this seems to matter only for errors from
+    `interpret_lines()`, which only happens when interpreting
+    `dictionary_stats`.
+  + Could also happen if there's a bug in how QUIT catches exceptions.
   + ... And this problem can be fixed by moving the relevant
     initialization from C to Forth.
 
@@ -64,26 +66,20 @@ VM design for AMD64 and ARM32 are in
   `:` definition.  I think mostly that means roll back the dictionary
   to the point prior to the start of the definition and the partial
   definition. (I think name space isn't modified at that point...)
+    + Consider how this is similar to `MARKER` (and `FORGET`).
 
 - We are ready to get rid of `file-order`, by using `INCLUDE-FILE` and
   other code to load directly from source.  (But do we want to?)
 
-- `gen-dict` takes a target name (e.g. `meta`) as an argument.  That was
-  useful for experimenting with different meta-compiler strategies, but
-  maybe doesn't make sense any more.  At some point, we'll want to
-  simplify it a bit.
-
 - Consider making `ONLY` a real Root vocabulary.
 
-- Need to implement `ENVIRONMENT?`
+- Missing standard definitions from CORE:
+  + `ENVIRONMENT?`
+  + `RECURSE`
 
-- Need to implement `RECURSE`
-
-- Should implement `VALUE` and `TO`
-
-- Should implement `MARKER`
-
-- Consider implementing the DOUBLE Word Set
+- Missing standard definitions from CORE EXT:
+  + `VALUE` and `TO`
+  + `MARKER`
 
 - Should finish the FILE Word Set:
   * `DELETE-FILE`
@@ -92,3 +88,5 @@ VM design for AMD64 and ARM32 are in
   * `FILE-STATUS`  - EXT (What should this even mean?)
   * `FLUSH-FILE`  - EXT
   * `RENAME-FILE`  - EXT
+
+- Consider implementing the DOUBLE Word Set

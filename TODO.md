@@ -11,13 +11,15 @@ There are experimental versions in assembly for amd64 in
 [reference/amd64](reference/amd64/).  Similar code for ARM aarch64 is
 in [reference/aarch64](reference/aarch64/).
 
-To get to a working set of primitives in assembly, we need the following
-changes (roughly in this order):
-  * Convert `bootstrap` to use the new `forth_execute()` interface in
-    place of the current interface.  The initial implementation should
-    be a wrapper around the existing C primitves.
-  * Adjust the build system to support multiple targets, and add the
-    assembly primitives as a second target
+We've converted [bootstrap/forth.c](bootstrap/forth.c) to use
+`forth_execute()`, so that we can choose (at compile time) what
+VM implementation we want.
+
+To get to a working VM with primitives in assembly, all that's left
+is (probably mostly) to adjust the build system to support multiple
+targets, and add the assembly primitives as a second target.  We should
+also extend the build to support building the `primtest` code that is
+used to test the assembly primitives.
 
 #### Cleanup
 The dictionary still has some data that's laid out statically, not

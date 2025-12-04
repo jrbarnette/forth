@@ -24,11 +24,6 @@
 #include "prim.h"
 #include "cforth.h"
 
-#define FILE_MODE_R_O	((cell_ft) 01)
-#define FILE_MODE_R_W	((cell_ft) 02)
-#define FILE_MODE_W_O	((cell_ft) 03)
-#define FILE_MODE_BIN	((cell_ft) 04)
-
 extern void report_exception(int, char *);
 
 #endif // FORTH_H

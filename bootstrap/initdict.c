@@ -9,6 +9,7 @@
 #include "forth.h"
 #include "cforth.h"
 #include "dictionary.h"
+#include "fileio.h"
 
 
 static xt_ft references[];

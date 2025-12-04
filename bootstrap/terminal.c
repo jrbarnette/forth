@@ -36,7 +36,7 @@ PRIM_HDLR(x_emit)
 }
 
 
-/* ( c-addr u prompt -- flag len ) */
+/* ( c-addr u prompt -- len flag ) */
 PRIM_HDLR(x_prompt_accept)
 {
     CHECK_POP(vm, 3);

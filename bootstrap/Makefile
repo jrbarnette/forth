@@ -6,6 +6,7 @@ C_SOURCES =			\
 	    control.c		\
 	    definers.c		\
 	    exception.c		\
+	    fileio.c		\
 	    fileops.c		\
 	    forth.c		\
 	    initdict.c		\
@@ -24,6 +25,9 @@ SOURCES = $(C_SOURCES) $(H_SOURCES)
 
 # everything depending on cmdline.h
 CMDLINE_DEP = cmdline.o exception.o forth.o terminal.o
+
+# everything depending on fileio.h
+FILEIO_DEP = fileio.o fileops.o initdict.o
 
 # everything depending only on forth.h and its constituents
 PRIM_DEP =      arithops.o	control.o	definers.o	\
@@ -53,6 +57,7 @@ LDFLAGS = -lreadline
 all: forth tags
 
 $(CMDLINE_DEP): cmdline.h
+$(FILEIO_DEP): fileio.h
 $(PRIM_DEP): $(PRIM_HDRS)
 $(DICT_DEP): $(PRIM_HDRS) dictionary.h
 

@@ -1,0 +1,45 @@
+If an error occurs after ':' starts, and before ';' completes, what do
+we need to do to restore state?
+  * Reset HERE back to its prior value.
+  * Anything else?
+
+
+variable defn-reset
+: start-name ( hdlr "name" -- name )
+    parse-name check-name-length
+    here dup defn-reset ! aligned
+    header, ;
+
+
+: : here defn-reset ! handler: do_colon start-name ] ;
+
+: reset-dict defn-reset @ here - allot ;
+
+How do we determine when we need to do this?
+  * Basically, if QUIT gets control after an exception.
+  * ? is that really the long and short
+
+... Ties in with RECURSE: need to be able to find the current definition
+unambiguously (not from the stack).
+  * In RECURSE, we just compile he current definition.
+  * For an error, need to check if the current definition is still open.
+  * Need to have ; mark that the current definition is closed.
+
+So
+
+variable curdef
+0 curdef !
+
+: : hdlr-colon start-name curdef ! ] ;
+: ; postpone EXIT curdef @ ?dup if link-name 0 curdef ! then
+    [compile] [ ; compile-special
+: RECURSE curdef @ name>xt compile, ;
+: :NONAME align here hdlr-colon , [compile] ] ;
+
+... :NONAME wouldn't work w/ RECURSE as shown above; need two
+different variables:
+  * start of current definition's name
+  * xt of current defintion
+
+... all of the existing code that assumes there's something on
+the stack during :-definition needs to be adjusted :-(

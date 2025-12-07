@@ -98,20 +98,35 @@ char *forth_exceptions[] =
 /* -58 */	"[IF], [ELSE], or [THEN] exception",
 };
 
+#define NEXCEPTIONS	((sizeof (forth_exceptions)) \
+			    / (sizeof (forth_exceptions[0])))
 
-static void
-report_exception(int throwcode, char *filename)
+
+static bool
+interpret_xt(vmcodeptr_ft xt, struct fargs *args, char *filename)
 {
-    char *excdesc = forth_exceptions[~throwcode];
+    int throwcode = forth_execute(xt, args);
+    if (throwcode == 0) {
+	return true;
+    }
 
     if (filename != NULL) {
 	fprintf(stderr, "error in %s, line %zu\n", filename, DICT.lineno);
     } else if (DICT.input != NULL && !IS_INTERACTIVE(DICT.input)) {
 	fprintf(stderr, "error at line %zu\n", DICT.lineno);
     }
+
+    char *excdesc = NULL;
+    if (~throwcode < NEXCEPTIONS) {
+	excdesc = forth_exceptions[~throwcode];
+    }
+
     if (excdesc != NULL) {
 	fprintf(stderr, "%s\n", excdesc);
+    } else {
+	fprintf(stderr, "exception %d\n", throwcode);
     }
+    return false;
 }
 
 
@@ -125,21 +140,17 @@ interpret_lines(vmcodeptr_ft eval, char **lines)
 	args.stack[args.depth] = (cell_ft) s;
 	args.stack[args.depth + 1] = strlen(s);
 	args.depth += 2;
-	int throwcode = forth_execute(eval, &args);
-	if (throwcode != 0) {
-	    report_exception(throwcode, NULL);
+	if (!interpret_xt(eval, &args, NULL)) {
 	    return;
 	}
     }
 
-    assert(args.depth <= FARGS_LEN - 2);
+    assert(args.depth == 0);
     char getstate[] = "STATE @";
-    args.stack[args.depth] = (cell_ft) getstate;
-    args.stack[args.depth + 1] = sizeof (getstate) - 1;
-    args.depth += 2;
-    int throwcode = forth_execute(eval, &args);
-    if (throwcode != 0) {
-	report_exception(throwcode, NULL);
+    args.stack[0] = (cell_ft) getstate;
+    args.stack[1] = sizeof (getstate) - 1;
+    args.depth = 2;
+    if (!interpret_xt(eval, &args, NULL)) {
 	return;
     }
     assert(args.depth == 1);
@@ -152,9 +163,7 @@ quit(vmcodeptr_ft eval, char *filename)
 {
     char quit_cmd[] = "QUIT";
     FARGS2(args, quit_cmd, sizeof (quit_cmd) - 1);
-    int throwcode = forth_execute(eval, &args);
-    if (throwcode != 0) {
-	report_exception(throwcode, filename);
+    if (!interpret_xt(eval, &args, filename)) {
 	fprintf(stderr, "QUIT failed to handle an exception\n");
 	return EXIT_FAILURE;
     }
@@ -206,7 +215,10 @@ static vmcodeptr_ft
 initialize_dictionary(void)
 {
     FARGS0(args);
-    forth_execute(initialize_forth, &args);
+    if (!interpret_xt(initialize_forth, &args, NULL)) {
+	fprintf(stderr, "Exception in initialize_forth\n");
+	abort();
+    }
     assert(args.depth == 1);
     return (vmcodeptr_ft) args.stack[0];
 }

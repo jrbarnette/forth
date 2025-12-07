@@ -98,6 +98,9 @@ forth_execute(vmcodeptr_ft xt, struct fargs *args)
 	while (ip != NULL) {
 	    ip = xtcall(ip->xtok, vm, ip + 1);
 	}
+    } else {
+	CLEAR_STACK(vm);
+	CLEAR_RSTACK(vm);
     }
     assert(REMPTY(vm));
 

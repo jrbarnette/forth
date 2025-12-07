@@ -23,11 +23,8 @@ used to test the assembly primitives.
 
 #### Cleanup
 The dictionary still has some data that's laid out statically, not
-by the builder (see [bootstrap/dictionary.h](bootstrap/dictionary.h)).
-It would be nice to get rid of it.  The `lineno` and `input` fields
-are used only by primitives, and could just be global variables.
-Getting rid of the storage for `HERE` and `FORTH-WORDLIST` is a bit more
-work.
+by the builder (see [bootstrap/initdict.c](bootstrap/initdict.c)).
+It would be nice to get rid of it.
 
 When starting up an interactive interpreter session, we run a small
 snippet to print dictionary size statistics.  We should move the source
@@ -67,6 +64,8 @@ VM design for AMD64 and ARM32 are in
   to the point prior to the start of the definition and the partial
   definition. (I think name space isn't modified at that point...)
     + Consider how this is similar to `MARKER` (and `FORGET`).
+    + Also, there's some tie-in to RECURSE, see
+      [doc/colon-reset.txt](doc/colon-reset.txt)
 
 - We are ready to get rid of `file-order`, by using `INCLUDE-FILE` and
   other code to load directly from source.  (But do we want to?)
@@ -81,6 +80,9 @@ VM design for AMD64 and ARM32 are in
   + `VALUE` and `TO`
   + `MARKER`
 
+- Missing standard definitions from SEARCH EXT:
+  + `ORDER`
+
 - Should finish the FILE Word Set:
   * `DELETE-FILE`
   * `RESIZE-FILE`
@@ -90,3 +92,5 @@ VM design for AMD64 and ARM32 are in
   * `RENAME-FILE`  - EXT
 
 - Consider implementing the DOUBLE Word Set
+
+- Consider implementing (more of) the TOOLS Word Set

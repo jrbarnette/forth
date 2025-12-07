@@ -5,7 +5,6 @@ C_SOURCES =			\
 	    cmdline.c		\
 	    control.c		\
 	    definers.c		\
-	    exception.c		\
 	    fileio.c		\
 	    fileops.c		\
 	    forth.c		\
@@ -24,7 +23,7 @@ H_SOURCES =	cmdline.h	dictionary.h	forth.h		\
 SOURCES = $(C_SOURCES) $(H_SOURCES)
 
 # everything depending on cmdline.h
-CMDLINE_DEP = cmdline.o exception.o forth.o terminal.o
+CMDLINE_DEP = cmdline.o forth.o terminal.o
 
 # everything depending on fileio.h
 FILEIO_DEP = fileio.o fileops.o initdict.o
@@ -35,8 +34,7 @@ PRIM_DEP =      arithops.o	control.o	definers.o	\
 		stackops.o	vm.o
 
 # everything depending on dictionary.h
-DICT_DEP =	exception.o	forth.o		initdict.o	\
-		terminal.o
+DICT_DEP =	forth.o		initdict.o	terminal.o
 
 PRIM_HDRS = forth.h ftypes.h vmstate.h xtoken.h vmcheck.h prim.h cforth.h
 

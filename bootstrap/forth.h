@@ -24,6 +24,4 @@
 #include "prim.h"
 #include "cforth.h"
 
-extern void report_exception(int, char *);
-
 #endif // FORTH_H

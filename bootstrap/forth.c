@@ -14,7 +14,7 @@
 #include <time.h>
 
 #include "forth.h"
-#include "dictionary.h"
+#include "cforth.h"
 #include "cmdline.h"
 #include "terminal.h"
 
@@ -22,8 +22,6 @@
  * forth.c - Initialization and main() for bootstrap Forth interpreter.
  */
 
-
-union dict dictionary;
 
 struct options forth_options;
 

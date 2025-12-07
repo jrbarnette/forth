@@ -6,6 +6,7 @@
 #include <stddef.h>
 
 #include "forth.h"
+#include "cforth.h"
 
 /*
  * vm.c - Forth primitives and other C code for inner VM operation.

@@ -11,6 +11,7 @@
  */
 
 #include "ftypes.h"
+#include "vmstate.h"
 #include "xtoken.h"
 
 typedef union code_cell vmcode_ft;

@@ -22,6 +22,5 @@
 #include "xtoken.h"
 #include "vmcheck.h"
 #include "prim.h"
-#include "cforth.h"
 
 #endif // FORTH_H

@@ -17,9 +17,10 @@ C_SOURCES =			\
 	    vm.c
 
 OBJECTS =  $(C_SOURCES:.c=.o)
-H_SOURCES =	cmdline.h	dictionary.h	forth.h		\
-		ftypes.h	prim.h		vmcheck.h	\
-		vmstate.h	xtoken.h
+H_SOURCES =	cforth.h	cmdline.h	fileio.h	\
+		forth.h		ftypes.h	prim.h		\
+		terminal.h	vmcheck.h	vmstate.h	\
+		xtoken.h
 
 SOURCES = $(C_SOURCES) $(H_SOURCES)
 
@@ -29,18 +30,20 @@ CMDLINE_DEP = cmdline.o forth.o
 # everything depending on fileio.h
 FILEIO_DEP = fileio.o fileops.o initdict.o
 
+# everything depending on cforth.h
+CFORTH_DEP = forth.o initdict.o vm.o
+
 # everything depending on terminal.h
 TERMINAL_DEP = forth.o terminal.o termops.o
 
-# everything depending only on forth.h and its constituents
-PRIM_DEP =      arithops.o	control.o	definers.o	\
-		memops.o	multops.o	stackops.o	\
-		vm.o
+# everything depending on forth.h and its constituents
+PRIM_DEP =	arithops.c	control.c	definers.c	\
+		fileio.c	fileops.c	forth.c		\
+		initdict.c	memops.c	multops.c	\
+		stackops.c	terminal.c	termops.c	\
+		vm.c
 
-# everything depending on dictionary.h
-DICT_DEP = forth.o  initdict.o terminal.o termops.o
-
-PRIM_HDRS = forth.h ftypes.h vmstate.h xtoken.h vmcheck.h prim.h cforth.h
+PRIM_HDRS = forth.h ftypes.h vmstate.h xtoken.h vmcheck.h prim.h
 
 CHECKENABLE = CHECK
 CHECKDISABLE = NOCHECK
@@ -60,9 +63,9 @@ all: forth tags
 
 $(CMDLINE_DEP): cmdline.h
 $(FILEIO_DEP): $(PRIM_HDRS) fileio.h
-$(TERMIO_DEP): terminal.h
+$(CFORTH_DEP): ftypes.h vmstate.h xtoken.h cforth.h
+$(TERMINAL_DEP): terminal.h
 $(PRIM_DEP): $(PRIM_HDRS)
-$(DICT_DEP): $(PRIM_HDRS) dictionary.h
 
 forth: $(OBJECTS)
 	$(CC) -o $@ $(OBJECTS) $(LDFLAGS)

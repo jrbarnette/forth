@@ -8,8 +8,31 @@
 
 #include "forth.h"
 #include "cforth.h"
-#include "dictionary.h"
 #include "fileio.h"
+
+
+/*
+ * For ALIGN to produce an aligned data space pointer, the
+ * dictionary space must be cell-aligned.  To prevent ALIGN from
+ * overflowing the dictionary space, DICTSPACE_SIZE must also be a
+ * multiple of CELL_SIZE.
+ */
+
+#define DICTSPACE_SIZE		(0x10000 XCELLS)
+
+static union dict {
+    struct {
+	addr_ft		here;		    /* HERE */
+	addr_ft		forth_wordlist;	    /* FORTH-WORDLIST */
+    } dict_static_data;
+    addr_unit_ft	dict_space[DICTSPACE_SIZE];
+} dictionary;
+
+#define DICT			(dictionary.dict_static_data)
+#define DICTSPACE_START		(dictionary.dict_space)
+#define DICTSPACE_END		(dictionary.dict_space + DICTSPACE_SIZE)
+#define HERE			(DICT.here)
+#define FORTH_WORDLIST		(DICT.forth_wordlist)
 
 
 static xt_ft references[];

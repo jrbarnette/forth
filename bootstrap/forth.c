@@ -16,6 +16,7 @@
 #include "forth.h"
 #include "dictionary.h"
 #include "cmdline.h"
+#include "terminal.h"
 
 /*
  * forth.c - Initialization and main() for bootstrap Forth interpreter.
@@ -111,9 +112,11 @@ interpret_xt(vmcodeptr_ft xt, struct fargs *args, char *filename)
     }
 
     if (filename != NULL) {
-	fprintf(stderr, "error in %s, line %zu\n", filename, DICT.lineno);
-    } else if (DICT.input != NULL && !IS_INTERACTIVE(DICT.input)) {
-	fprintf(stderr, "error at line %zu\n", DICT.lineno);
+	fprintf(stderr, "error in %s, line %zu\n",
+		filename, termconfig.lineno);
+    } else if (termconfig.input != NULL
+		&& !IS_INTERACTIVE(termconfig.input)) {
+	fprintf(stderr, "error at line %zu\n", termconfig.lineno);
     }
 
     char *excdesc = NULL;
@@ -175,7 +178,7 @@ quit(vmcodeptr_ft eval, char *filename)
 static int
 interpret_file(vmcodeptr_ft eval, char *filename)
 {
-    DICT.lineno = 0;
+    termconfig.lineno = 0;
     if (filename != NULL) {
 	FILE *input = fopen(filename, "r");
 	if (input == NULL) {
@@ -184,15 +187,15 @@ interpret_file(vmcodeptr_ft eval, char *filename)
 		    (char *) filename, strerror(errno));
 	    return EXIT_FAILURE;
 	}
-	DICT.input = input;
+	termconfig.input = input;
     } else {
-	DICT.input = stdin;
+	termconfig.input = stdin;
     }
 
     int exit_status = quit(eval, filename);
 
     if (filename != NULL) {
-	fclose(DICT.input);
+	fclose(termconfig.input);
     }
     return exit_status;
 }
@@ -237,11 +240,10 @@ main(int argc, char *argv[])
     long end = 1000000000 * curtime.tv_sec + curtime.tv_nsec;
 
     if (forth_options.startup_file != NULL) {
-	bool saved_interactive = forth_options.is_interactive;
-	forth_options.is_interactive = false;
+	termconfig.is_interactive = false;
 	interpret_file(eval, forth_options.startup_file);
-	forth_options.is_interactive = saved_interactive;
     }
+    termconfig.is_interactive = forth_options.is_interactive;
 
     int status;
     if (forth_options.argc > 0) {

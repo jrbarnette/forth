@@ -30,9 +30,6 @@ extern union dict {
     struct {
 	addr_ft		here;		    /* HERE */
 	name_ft		forth_wordlist;	    /* FORTH-WORDLIST */
-
-	size_t		lineno;
-	FILE *		input;
     } dict_static_data;
     addr_unit_ft	dict_space[DICTSPACE_SIZE];
 } dictionary;

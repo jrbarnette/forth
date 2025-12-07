@@ -5,6 +5,8 @@
 #ifndef FILEIO_H
 #define FILEIO_H
 
+#include <stdio.h>
+
 #include "forth.h"
 
 #define FILE_MODE_R_O		((cell_ft) 001)

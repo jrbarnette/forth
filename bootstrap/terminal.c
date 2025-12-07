@@ -7,56 +7,48 @@
 #include <string.h>
 #include <stdlib.h>
 
+/* IEEE 1003 (POSIX) */
+#include <unistd.h>
+
 /* 3rd party library */
 #include <readline/readline.h>
 #include <readline/history.h>
 
 #include "forth.h"
-#include "dictionary.h"
-#include "cmdline.h"
+#include "terminal.h"
 
+struct terminal_config termconfig;
 
-/*
- * terminal.c - Standard Forth words for user terminal I/O.
- */
-
-/*------  ------  ------  ------  ------  ------  ------  ------
- * EMIT                  6.1.1320 CORE                   38
- * ACCEPT                6.1.0695 CORE                   33
- *------  ------  ------  ------  ------  ------  ------  ------
- */
+bool
+term_is_interactive(FILE *fp)
+{
+    return termconfig.is_interactive || isatty(fileno(fp)) != 0;
+}
 
 
 /* ( x -- ) */
-PRIM_HDLR(x_emit)
+void
+term_emit(char c)
 {
-    CHECK_POP(vm, 1);
-    putc((char_ft) POP(vm), stdout);
-    return ip;
+    putc(c, stdout);
 }
 
 
 /* ( c-addr u prompt -- len flag ) */
-PRIM_HDLR(x_prompt_accept)
+cell_ft
+term_readline(char *prompt, char *buff, size_t *buff_len)
 {
-    CHECK_POP(vm, 3);
-
-    cell_ft *sp = SP(vm);
-    char *buff = (char *) PICK(sp, 2);
-    cell_ft buff_len = PICK(sp, 1);
-    char *prompt = (char *) PICK(sp, 0);
-
     cell_ft have_more = F_FALSE;
     size_t len = 0;
 
-    if (IS_INTERACTIVE(DICT.input)) {
-	rl_instream = DICT.input;
+    if (IS_INTERACTIVE(termconfig.input)) {
+	rl_instream = termconfig.input;
 	char *line = readline(prompt);
 	if (line != NULL) {
 	    len = strlen(line);
 	    if (len > 0) {
-		if (len > buff_len) {
-		    len = buff_len;
+		if (len > *buff_len) {
+		    len = *buff_len;
 		    line[len] = '\0';
 		}
 		add_history(line);
@@ -64,15 +56,14 @@ PRIM_HDLR(x_prompt_accept)
 	    }
 	    free(line);
 	    have_more = F_TRUE;
+	    termconfig.lineno++;
 	}
-    } else if (fgets(buff, (int) buff_len, DICT.input) != NULL) {
+    } else if (fgets(buff, (int) *buff_len, termconfig.input) != NULL) {
 	len = strlen(buff);
 	len -= (buff[len-1] == '\n');
 	have_more = F_TRUE;
+	termconfig.lineno++;
     }
-    DICT.lineno -= have_more;
-    PICK(sp, 2) = len;
-    PICK(sp, 1) = have_more;
-    SET_SP(vm, sp, 1);
-    return ip;
+    *buff_len = len;
+    return have_more;
 }

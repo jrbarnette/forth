@@ -13,6 +13,7 @@ C_SOURCES =			\
 	    multops.c		\
 	    stackops.c		\
 	    terminal.c		\
+	    termops.c		\
 	    vm.c
 
 OBJECTS =  $(C_SOURCES:.c=.o)
@@ -23,18 +24,21 @@ H_SOURCES =	cmdline.h	dictionary.h	forth.h		\
 SOURCES = $(C_SOURCES) $(H_SOURCES)
 
 # everything depending on cmdline.h
-CMDLINE_DEP = cmdline.o forth.o terminal.o
+CMDLINE_DEP = cmdline.o forth.o
 
 # everything depending on fileio.h
 FILEIO_DEP = fileio.o fileops.o initdict.o
 
+# everything depending on terminal.h
+TERMINAL_DEP = forth.o terminal.o termops.o
+
 # everything depending only on forth.h and its constituents
 PRIM_DEP =      arithops.o	control.o	definers.o	\
-		fileops.o	memops.o	multops.o	\
-		stackops.o	vm.o
+		memops.o	multops.o	stackops.o	\
+		vm.o
 
 # everything depending on dictionary.h
-DICT_DEP =	forth.o		initdict.o	terminal.o
+DICT_DEP = forth.o  initdict.o terminal.o termops.o
 
 PRIM_HDRS = forth.h ftypes.h vmstate.h xtoken.h vmcheck.h prim.h cforth.h
 
@@ -55,7 +59,8 @@ LDFLAGS = -lreadline
 all: forth tags
 
 $(CMDLINE_DEP): cmdline.h
-$(FILEIO_DEP): fileio.h
+$(FILEIO_DEP): $(PRIM_HDRS) fileio.h
+$(TERMIO_DEP): terminal.h
 $(PRIM_DEP): $(PRIM_HDRS)
 $(DICT_DEP): $(PRIM_HDRS) dictionary.h
 

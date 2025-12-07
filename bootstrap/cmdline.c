@@ -38,9 +38,3 @@ process_args(int argc, char *argv[], struct options *optptr)
     optptr->argc = argc - optind;
     optptr->argv = &argv[optind];
 }
-
-bool
-is_interactive(FILE *fp, struct options *optptr)
-{
-    return optptr->is_interactive || isatty(fileno(fp)) != 0;
-}

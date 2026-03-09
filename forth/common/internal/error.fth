@@ -1,10 +1,12 @@
 \ Copyright 2019, by J. Richard Barnette. All Rights Reserved.
 
-\ THROW requires that we restore the input source back to its state prior
-\ to calling CATCH.  We want to print error information about the source
-\ line that caused an error before that happens.  Hence this definition.
+\ THROW requires that we restore the input source back to its state
+\ prior to returning to our CATCH.  That involves resetting the values
+\ of >IN and >IN-START.  We want to print error information about where
+\ in the source line the error occurred before THROW clobbers those
+\ variables.  Hence this definition.
 
-\ Ideally, we'd push this printing up the change to someplace around the
+\ Ideally, we'd push this printing up the chain to someplace around the
 \ CATCH, so that we didn't force printing if a handler wants to override
 \ default exception behavior, but that would require more work. :-(
 

@@ -52,11 +52,8 @@ VM design for AMD64 and ARM32 are in
   printing the last source line, with a **^^^** indicator for the token
   at the failure.  But, that goes to `stdout`.  Then, the exception is
   raised, and the exception message goes to `stderr`.
-  + ... But this seems to matter only for errors from
-    `interpret_lines()`, which only happens when interpreting
-    `dictionary_stats`.
-  + Could also happen if there's a bug in how QUIT catches exceptions.
-  + ... And this problem can be fixed by moving the relevant
+  + This only happens if there's an exception during initialization.
+  + The problem might reasonably be fixed by moving the relevant
     initialization from C to Forth.
 
 - Need better recovery when there's an error while compiling a

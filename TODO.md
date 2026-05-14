@@ -46,6 +46,13 @@ VM design for AMD64 and ARM32 are in
 
 ## New Features/Bugs/Flaws
 
+- The initialization code relating to the terminal is a bit disjointed.
+  We need a real interface that allows configuration of the terminal
+  input in one of two specific ways:
+  + Open an ordinary file by filename.  `is_interactive` is false.
+  + Use stdin.  `is_interactive` depends on the combination of the
+    command line option and `isatty()`.
+
 - `WORD` is supposed to skip leading delimiters.  It doesn't.
 
 - Error handling at initialization is dodgy.  Errors get flagged by

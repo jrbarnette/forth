@@ -5,6 +5,7 @@
 /* ISO/IEC standard */
 #include <stdio.h>
 #include <string.h>
+#include <stdbool.h>
 #include <stdlib.h>
 
 /* IEEE 1003 (POSIX) */
@@ -20,9 +21,35 @@
 struct terminal_config termconfig;
 
 bool
-term_is_interactive(FILE *fp)
+term_open(char *filename)
 {
-    return termconfig.is_interactive || isatty(fileno(fp)) != 0;
+    termconfig.input = fopen(filename, "r");
+    if (termconfig.input == NULL) {
+	return false;
+    }
+    termconfig.filename = filename;
+    termconfig.lineno = 0;
+    termconfig.is_interactive = false;
+    return true;
+}
+
+
+void
+term_close(void)
+{
+    termconfig.filename = NULL;
+    fclose(termconfig.input);
+}
+
+
+void
+term_set_input(FILE *fp, bool is_interactive)
+{
+    termconfig.input = fp;
+    termconfig.filename = NULL;
+    termconfig.lineno = 0;
+    termconfig.is_interactive = is_interactive
+	|| isatty(fileno(termconfig.input)) != 0;
 }
 
 
@@ -41,7 +68,7 @@ term_readline(char *prompt, char *buff, size_t *buff_len)
     cell_ft have_more = F_FALSE;
     size_t len = 0;
 
-    if (IS_INTERACTIVE(termconfig.input)) {
+    if (termconfig.is_interactive) {
 	rl_instream = termconfig.input;
 	char *line = readline(prompt);
 	if (line != NULL) {

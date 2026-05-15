@@ -23,8 +23,6 @@
  */
 
 
-struct options forth_options;
-
 static char *dictionary_stats[] = {
     "allot-bounds                            ( unused+1 -inuse )",
     "negate swap 1- 2dup +                   ( inuse unused total )",
@@ -102,18 +100,19 @@ char *forth_exceptions[] =
 
 
 static bool
-interpret_xt(vmcodeptr_ft xt, struct fargs *args, char *filename)
+interpret_xt(vmcodeptr_ft xt, struct fargs *args)
 {
     int throwcode = forth_execute(xt, args);
     if (throwcode == 0) {
 	return true;
     }
 
-    if (filename != NULL) {
+    if (termconfig.filename != NULL) {
 	fprintf(stderr, "error in %s, line %zu\n",
-		filename, termconfig.lineno);
-    } else if (termconfig.input != NULL
-		&& !IS_INTERACTIVE(termconfig.input)) {
+		termconfig.filename, termconfig.lineno);
+    // `termconfig.input == NULL` means "in initialize_dictionary()"
+    } else if (termconfig.input != NULL &&
+	       !termconfig.is_interactive) {
 	fprintf(stderr, "error at line %zu\n", termconfig.lineno);
     }
 
@@ -141,7 +140,7 @@ interpret_lines(vmcodeptr_ft eval, char **lines)
 	args.stack[args.depth] = (cell_ft) s;
 	args.stack[args.depth + 1] = strlen(s);
 	args.depth += 2;
-	if (!interpret_xt(eval, &args, NULL)) {
+	if (!interpret_xt(eval, &args)) {
 	    return;
 	}
     }
@@ -151,7 +150,7 @@ interpret_lines(vmcodeptr_ft eval, char **lines)
     args.stack[0] = (cell_ft) getstate;
     args.stack[1] = sizeof (getstate) - 1;
     args.depth = 2;
-    if (!interpret_xt(eval, &args, NULL)) {
+    if (!interpret_xt(eval, &args)) {
 	return;
     }
     assert(args.depth == 1);
@@ -160,11 +159,11 @@ interpret_lines(vmcodeptr_ft eval, char **lines)
 
 
 static int
-quit(vmcodeptr_ft eval, char *filename)
+quit(vmcodeptr_ft eval)
 {
     char quit_cmd[] = "QUIT";
     FARGS2(args, quit_cmd, sizeof (quit_cmd) - 1);
-    if (!interpret_xt(eval, &args, filename)) {
+    if (!interpret_xt(eval, &args)) {
 	fprintf(stderr, "QUIT failed to handle an exception\n");
 	return EXIT_FAILURE;
     }
@@ -176,25 +175,17 @@ quit(vmcodeptr_ft eval, char *filename)
 static int
 interpret_file(vmcodeptr_ft eval, char *filename)
 {
-    termconfig.lineno = 0;
-    if (filename != NULL) {
-	FILE *input = fopen(filename, "r");
-	if (input == NULL) {
-	    fprintf(stderr,
-		    "Can't open %s for reading: %s\n",
-		    (char *) filename, strerror(errno));
-	    return EXIT_FAILURE;
-	}
-	termconfig.input = input;
-    } else {
-	termconfig.input = stdin;
+    if (!term_open(filename)) {
+	fprintf(stderr,
+		"Can't open %s for reading: %s\n",
+		(char *) filename, strerror(errno));
+	return EXIT_FAILURE;
     }
 
-    int exit_status = quit(eval, filename);
+    int exit_status = quit(eval);
 
-    if (filename != NULL) {
-	fclose(termconfig.input);
-    }
+    term_close();
+
     return exit_status;
 }
 
@@ -216,7 +207,7 @@ static vmcodeptr_ft
 initialize_dictionary(void)
 {
     FARGS0(args);
-    if (!interpret_xt(initialize_forth, &args, NULL)) {
+    if (!interpret_xt(initialize_forth, &args)) {
 	fprintf(stderr, "Exception in initialize_forth\n");
 	abort();
     }
@@ -228,6 +219,7 @@ initialize_dictionary(void)
 int
 main(int argc, char *argv[])
 {
+    struct options forth_options;
     process_args(argc, argv, &forth_options);
 
     struct timespec curtime;
@@ -238,10 +230,8 @@ main(int argc, char *argv[])
     long end = 1000000000 * curtime.tv_sec + curtime.tv_nsec;
 
     if (forth_options.startup_file != NULL) {
-	termconfig.is_interactive = false;
 	interpret_file(eval, forth_options.startup_file);
     }
-    termconfig.is_interactive = forth_options.is_interactive;
 
     int status;
     if (forth_options.argc > 0) {
@@ -249,13 +239,14 @@ main(int argc, char *argv[])
 				     forth_options.argc,
 				     forth_options.argv);
     } else {
-	if (IS_INTERACTIVE(stdin)) {
+	term_set_input(stdin, forth_options.is_interactive);
+	if (termconfig.is_interactive) {
 	    long elapsed = end - start + 50000;
 	    fprintf(stderr, "initialization: %ld.%ld ms\n",
 		    elapsed / 1000000, (elapsed % 1000000) / 100000);
 	    interpret_lines(eval, dictionary_stats);
 	}
-	status = interpret_file(eval, NULL);
+	status = quit(eval);
     }
 
 #ifdef STACKPROFILE

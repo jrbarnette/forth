@@ -7,7 +7,7 @@
 
 #include <stdio.h>
 
-#include "forth.h"
+#include "cforth.h"
 
 #define FILE_MODE_R_O		((cell_ft) 001)
 #define FILE_MODE_R_W		((cell_ft) 002)

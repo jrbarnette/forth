@@ -11,11 +11,10 @@
  */
 
 #include "ftypes.h"
-#include "vmstate.h"
 #include "xtoken.h"
 
-typedef union code_cell vmcode_ft;
-typedef union code_cell *vmcodeptr_ft;
+typedef union code_cell		vmcode_ft;
+typedef union code_cell *	vmcodeptr_ft;
 
 union code_cell {
     vmhdlr_fn		handler;
@@ -27,8 +26,8 @@ union code_cell {
 #define FARGS_LEN	7
 
 struct fargs {
-    cell_ft depth;
-    cell_ft stack[FARGS_LEN];
+    cell_ft		depth;
+    cell_ft		stack[FARGS_LEN];
 };
 
 #define FARGS(a)		struct fargs a

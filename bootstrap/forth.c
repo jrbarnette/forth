@@ -13,7 +13,6 @@
 /* IEEE 1003 (POSIX) */
 #include <time.h>
 
-#include "forth.h"
 #include "cforth.h"
 #include "cmdline.h"
 #include "terminal.h"

@@ -15,7 +15,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-#include "forth.h"
+#include "cforth.h"
 #include "terminal.h"
 
 struct terminal_config termconfig;

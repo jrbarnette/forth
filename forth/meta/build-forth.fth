@@ -24,8 +24,8 @@ METADICT-HOST-MODE
 TRANSCRIBE>
 #include <stddef.h>
 
-#include "forth.h"
 #include "cforth.h"
+#include "prim.h"
 #include "fileio.h"
 
 

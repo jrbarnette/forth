@@ -5,6 +5,8 @@
 #ifndef XTOKEN_H
 #define XTOKEN_H
 
+#include "vmstate.h"
+
 /*
  * Definition of execution tokens for VM interpretation.  An execution
  * token (XT) is just a pointer to a simple structure containing a

@@ -20,19 +20,6 @@ define(`MAKE_SENTINEL',
 	movk	$1, `#'((SENTINEL >> 32) & 0xffff), lsl `#'32
 	movk	$1, `#'((SENTINEL >> 48) & 0xffff), lsl `#'48')dnl
 define(`LSL_CELL', `lsl `#'CELL_SHIFT')dnl
-define(`CATCH',
-       `RPUSH(VIP)
-	RPUSH(VSP)
-	RPUSH(VXSP)
-	mov	VXSP, VRSP')dnl
-define(`DROP_CATCH',
-       `RPOP(VXSP),
-	add	VRSP, `#'(2 CELLS)')dnl
-define(`THROW',
-       `mov	VRSP, VXSP
-	RPOP(VXSP)
-	RPOP(VSP)
-	RPOP(VIP)')dnl
 define(`DEPTH',
        `add	$1, sp, `#'((BUFFER_SIZE+STACK_SIZE) CELLS)
 	sub	$1, $1, VSP			// # bytes on stack
@@ -96,17 +83,17 @@ CDECL(forth_execute):
 	add	x29, sp, `#'SAVE_REGS
 
 	// At entry:
-	//   ARG0 = x0 = args
-	//   ARG1 = x1 = xt
+	//   ARG0 = x0 = xt
+	//   ARG1 = x1 = args
 	// Scratch (unused args + return values):
 	//   x2-x7
 
 	MAKE_SENTINEL(x4)
 
-	// N.B.  We're saving x0 (the args param) in cell 3 of the
+	// N.B.  We're saving x1 (the args param) in cell 3 of the
 	// buffer, not the sentinel.  We recover it at finish, below.
 	stp	x4, x4, [sp, `#'-(4 CELLS)]!
-	stp	x4, x0, [sp, `#'(2 CELLS)]
+	stp	x4, x1, [sp, `#'(2 CELLS)]
 	mov	VRSP, sp
 
 	sub	sp, sp, `#'(RSTACK_SIZE CELLS)
@@ -124,17 +111,17 @@ CDECL(forth_execute):
 	mov	VXSP, 0
 	adrp	VIP, exception_vip@PAGE
 	add	VIP, VIP, exception_vip@PAGEOFF
-	CATCH()
+	CATCH
 
 	// Start initializing the caller-saved VM registers.  When this
 	// is done, register references should only use the VM-designated
 	// names.
 
-	mov	DP, x1
-	ldr	SCR0, [x0]			// arg count
-	add	SCR1, x0, SCR0, LSL_CELL	// arg pointer
+	mov	DP, x0
+	ldr	x5, [x1]			// arg count
+	add	SCR1, x1, x5, LSL_CELL		// arg pointer
 	mov	TOS, x4
-	negs	SCR0, SCR0
+	negs	SCR0, x5
 	b.eq	start_forth
 
 	// From this point forward, use VM-designated register names and
@@ -153,8 +140,8 @@ start_forth:
 	// exception and successful begin the transition back from using
 	// VM-designated names to using the standard register names.
 exception:
-	mov	x0, TOS		// Exception code (return value)
-	POP(x1)			// TOS for args vector
+					// x0 is exception code
+	ldr	x1, [VSP]		// TOS for args vector
 	b	finish
 
 successful:
@@ -220,7 +207,7 @@ PRIM(x_execute):
 	EXECUTE
 
 PRIM(do_catch):
-	CATCH()
+	CATCH
 	PUSH(TOS)
 	mov	TOS, 0
 	NEXT
@@ -234,8 +221,7 @@ PRIM(x_throw):
 	POP(TOS)
 	NEXT
 thrown:
-	THROW()
-	NEXT
+	THROW
 
 PRIM(do_colon):
 	RPUSH(VIP)

@@ -32,6 +32,19 @@ define(`EXECUTE',
 define(`NEXT',
        `ldr	DP, [VIP], `#'CELL_SIZE
 	EXECUTE')dnl
+define(`CATCH',
+       `RPUSH(VIP)
+	RPUSH(VSP)
+	RPUSH(VXSP)
+	mov	VXSP, VRSP')dnl
+define(`DROP_CATCH',
+       `ldr	VXSP, [VRSP], `#'XFRAME_SIZE')dnl
+define(`THROW',
+       `mov	VRSP, VXSP
+	RPOP(VXSP)
+	RPOP(VSP)
+	RPOP(VIP)
+	NEXT')dnl
 define(`FLAG',
        `cmp	$2, TOS
 	csetm	TOS, $1')dnl

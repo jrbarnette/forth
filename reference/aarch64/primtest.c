@@ -11,12 +11,12 @@
 #include "prim.h"
 
 
-#define N(val)		{ .value = (val) },
-#define X(tok)		{ .xt = tok },
+#define N(val)		{ .cell = (val) },
+#define X(tok)		{ .ip = tok },
 #define H(hdlr)		{ .handler = hdlr },
 #define L(n)		X(DO_LITERAL) N(n)
 
-#define DEFINITION(nm, hdlr)	code_body_ft nm[] = { H(hdlr)
+#define DEFINITION(nm, hdlr)	vmcode_ft nm[] = { H(hdlr)
 #define END_DEF			};
 #define CODE(nm)		DEFINITION(nm, do_colon)
 #define PRIM(nm, hdlr)		DEFINITION(nm, hdlr) END_DEF
@@ -28,7 +28,7 @@ struct test_case {
     struct fargs	input;
     int			exception;
     struct fargs	expect;
-    xt_ft		exec_token;
+    vmcodeptr_ft	exec_token;
 };
 
 struct test_suite {
@@ -60,27 +60,27 @@ static struct test_case
 execute_tests[] = {
     // This test will exercise NEXT, do_colon, and x_exit, because
     // nothing much is useful without them.
-    { "no-op", { 0 }, 0, { 0 }, NO_OP },
+    { "no-op", FS0, 0, FS0, NO_OP },
 
     // This test is meant to exercise argument copy-in/copy-out in
-    // forth_execute(), 'cause that'll be wrong the first time it's
-    // written.  Probably wrong the second time, too...
-    { "true no-op", { 1, F_TRUE }, 0, { 1, F_TRUE }, NO_OP },
+    // forth_execute(), 'cause that'll be wrong the first time you write
+    // it for a new CPU.  Probably wrong the second time, too...
+    { "true no-op", FS1(F_TRUE), 0, FS1(F_TRUE), NO_OP },
 
-    { "lit", { 0 }, 0, { 1, F_TRUE }, TEST_LIT },
-    { "con", { 0 }, 0, { 1, F_TRUE }, TEST_CON },
-    { "var", { 0 }, 0, { 1, VAR_ADDR }, TEST_VAR },
-    { "execute", { 0 }, 0, { 0 }, TEST_EXECUTE },
-    { "depth", { 2, 0, 1 }, 0, { 3, 0, 1, 2 }, DEPTH },
-    { "clear", { 2, 0, 1 }, 0, { 0 }, CLEAR },
-    { "1 throw", { 1, 1 }, 1, { 0 }, THROW },
-    { "2 1 throw", { 2, 2, 1 }, 1, { 0 }, THROW },
+    { "lit", FS0, 0, FS1(F_TRUE), TEST_LIT },
+    { "con", FS0, 0, FS1(F_TRUE), TEST_CON },
+    { "var", FS0, 0, FS1(VAR_ADDR), TEST_VAR },
+    { "execute", FS0, 0, FS0, TEST_EXECUTE },
+    { "depth", FS2(0, 1), 0, FS3(0, 1, 2), DEPTH },
+    { "clear", FS2(0, 1), 0, FS0, CLEAR },
+    { "1 throw", FS1(1), 1, FS0, THROW },
+    { "2 1 throw", FS2(2, 1), 1, FS0, THROW },
+    { "2 0 throw", FS2(2, 0), 0, FS1(2), THROW },
 
-    // Missing tests that are hard to write:
+    // Missing tests that are harder to write:
     //   x_rclear
     //   do_catch
     //   drop_catch
-    //   x_throw
     //   do_create
     //   do_s_quote
     //   do_c_quote
@@ -109,27 +109,27 @@ PRIM(XOR, x_xor);
 
 static struct test_case
 arithops_tests[] = {
-    { "+",        { 2, 1, 2 },     0, { 1, 3 },		PLUS },
-    { "-",        { 2, 3, 2 },     0, { 1, 1 },		MINUS },
-    { "2*",       { 1, 3 },        0, { 1, 6 },		TWO_STAR },
-    { "2/",       { 1, -2 },       0, { 1, -1 },	TWO_SLASH },
-    { "and",      { 2, 0xc, 0xa }, 0, { 1, 0x8 },	AND },
-    { "or",       { 2, 0xc, 0xa }, 0, { 1, 0xe },	OR },
-    { "xor",      { 2, 0xc, 0xa }, 0, { 1, 0x6 },	XOR },
+    { "+",        FS2(1, 2),     0, FS1(3),		PLUS },
+    { "-",        FS2(3, 2),     0, FS1(1),		MINUS },
+    { "2*",       FS1(3),        0, FS1(6),		TWO_STAR },
+    { "2/",       FS1(-2),       0, FS1(-1),		TWO_SLASH },
+    { "and",      FS2(0xc, 0xa), 0, FS1(0x8),		AND },
+    { "or",       FS2(0xc, 0xa), 0, FS1(0xe),		OR },
+    { "xor",      FS2(0xc, 0xa), 0, FS1(0x6),		XOR },
 
-    { "invert",   { 1, F_FALSE },  0, { 1, F_TRUE },	INVERT },
-    { "negate",   { 1, 1 },        0, { 1, -1 },	NEGATE },
-    { "lshift",   { 2, 3, 1 },     0, { 1, 6 },		LSHIFT },
-    { "rshift",   { 2, 3, 1 },     0, { 1, 1 },		RSHIFT },
+    { "invert",   FS1(F_FALSE),  0, FS1(F_TRUE),	INVERT },
+    { "negate",   FS1(1),        0, FS1(-1),		NEGATE },
+    { "lshift",   FS2(3, 1),     0, FS1(6),		LSHIFT },
+    { "rshift",   FS2(3, 1),     0, FS1(1),		RSHIFT },
 
-    { "< true",   { 2, 1, 2 },     0, { 1, F_TRUE },	LESS_THAN },
-    { "< false",  { 2, 2, 1 },     0, { 1, F_FALSE },	LESS_THAN },
-    { "= true",   { 2, 1, 1 },     0, { 1, F_TRUE },	EQUALS },
-    { "= false",  { 2, 1, 2 },     0, { 1, F_FALSE },	EQUALS },
-    { "> true",   { 2, 0, -1 },    0, { 1, F_TRUE },	GREATER_THAN },
-    { "> false",  { 2, -1, 0 },    0, { 1, F_FALSE },	GREATER_THAN },
-    { "u< true",  { 2, 0, -1 },    0, { 1, F_TRUE },	U_LESS },
-    { "u< false", { 2, -1, 0 },    0, { 1, F_FALSE },	U_LESS },
+    { "< true",   FS2(1, 2),     0, FS1(F_TRUE),	LESS_THAN },
+    { "< false",  FS2(2, 1),     0, FS1(F_FALSE),	LESS_THAN },
+    { "= true",   FS2(1, 1),     0, FS1(F_TRUE),	EQUALS },
+    { "= false",  FS2(1, 2),     0, FS1(F_FALSE),	EQUALS },
+    { "> true",   FS2(0, -1),    0, FS1(F_TRUE),	GREATER_THAN },
+    { "> false",  FS2(-1, 0),    0, FS1(F_FALSE),	GREATER_THAN },
+    { "u< true",  FS2(0, -1),    0, FS1(F_TRUE),	U_LESS },
+    { "u< false", FS2(-1, 0),    0, FS1(F_FALSE),	U_LESS },
 
     { NULL },
 };
@@ -163,25 +163,25 @@ END_CODE
 
 static struct test_case
 stackops_tests[] = {
-    { "drop", { 1, 1 },       0, { 0 },			DROP },
-    { "dup",  { 1, 1 },       0, { 2, 1, 1 },		DUP },
-    { "over", { 2, 1, 2 },    0, { 3, 1, 2, 1 },	OVER },
-    { "rot",  { 3, 1, 2, 3 }, 0, { 3, 2, 3, 1 },	ROT },
-    { "swap", { 2, 1, 2 },    0, { 2, 2, 1 },		SWAP },
+    { "drop", FS1(1),       0, FS0,			DROP },
+    { "dup",  FS1(1),       0, FS2(1, 1),		DUP },
+    { "over", FS2(1, 2),    0, FS3(1, 2, 1),		OVER },
+    { "rot",  FS3(1, 2, 3), 0, FS3(2, 3, 1),		ROT },
+    { "swap", FS2(1, 2),    0, FS2(2, 1),		SWAP },
 
-    { "2>r",  { 2, 1, 2 },    0, { 2, 2, 1 },		TEST_TWO_TO_R },
-    { "2r>",  { 2, 1, 2 },    0, { 2, 2, 1 },		TEST_TWO_R_FROM },
-    { "2r@",  { 2, 1, 2 },    0, { 2, 1, 2 },		TEST_TWO_R_FETCH },
+    { "2>r",  FS2(1, 2),    0, FS2(2, 1),		TEST_TWO_TO_R },
+    { "2r>",  FS2(1, 2),    0, FS2(2, 1),		TEST_TWO_R_FROM },
+    { "2r@",  FS2(1, 2),    0, FS2(1, 2),		TEST_TWO_R_FETCH },
 
-    { "rstack", { 2, F_FALSE, F_TRUE}, 0, { 2, F_TRUE, F_TRUE},	TEST_RSTACK },
-    { "r@", { 1, 1 }, 0, { 2, 1, 1 },				TEST_RFETCH },
+    { ">r r>",  FS2(F_FALSE, F_TRUE), 0, FS2(F_TRUE, F_TRUE),	TEST_RSTACK },
+    { "r@",     FS1(1),               0, FS2(1, 1),		TEST_RFETCH },
 
-    { "?dup true", { 1, F_TRUE }, 0, { 2, F_TRUE, F_TRUE },	QUESTION_DUP },
-    { "?dup false", { 1, F_FALSE }, 0, { 1, F_FALSE },		QUESTION_DUP },
+    { "?dup true",  FS1(F_TRUE),  0, FS2(F_TRUE, F_TRUE),	QUESTION_DUP },
+    { "?dup false", FS1(F_FALSE), 0, FS1(F_FALSE),		QUESTION_DUP },
 
-    { "pick",   { 4, 1, 2, 3, 2 },     0, { 4, 1, 2, 3, 1 },	PICK },
-    { "3 roll", { 5, 1, 2, 3, 4, 3 },  0, { 4, 2, 3, 4, 1 },	ROLL },
-    { "0 roll", { 5, 1, 2, 3, 4, 0 },  0, { 4, 1, 2, 3, 4 },	ROLL },
+    { "pick",   FS4(1, 2, 3, 2),     0, FS4(1, 2, 3, 1),	PICK },
+    { "3 roll", FS5(1, 2, 3, 4, 3),  0, FS4(2, 3, 4, 1),	ROLL },
+    { "0 roll", FS5(1, 2, 3, 4, 0),  0, FS4(1, 2, 3, 4),	ROLL },
 
     { NULL },
 };
@@ -201,12 +201,50 @@ CODE(CHAR_MEM) L('a') X(TEST_VAR) X(C_STORE) X(TEST_VAR) X(C_FETCH) END_CODE
 
 static struct test_case
 memops_tests[] = {
-    { "! @", { 0 }, 0, { 1, 1 },	CELL_MEM },
-    { "C! C@", { 0 }, 0, { 1, 'a' },	CHAR_MEM },
+    { "! @", FS0, 0, FS1(1),		CELL_MEM },
+    { "C! C@", FS0, 0, FS1('a'),	CHAR_MEM },
 
     // Missing tests that are hard to write:
     //   fill
     //   move
+    { NULL },
+};
+
+
+/*
+ * Tests for stuff in multops.m4
+ */
+
+PRIM(STAR, x_star)
+PRIM(SLASH, x_slash)
+PRIM(MOD, x_mod)
+PRIM(SLASH_MOD, x_slash_mod)
+PRIM(M_STAR, x_m_star)
+PRIM(U_M_STAR, x_u_m_star)
+
+static struct test_case
+multops_tests[] = {
+    { "2 3 *",     FS2(2, 3),   0, FS1(6),		STAR },
+    { "7 3 /",     FS2(7, 3),   0, FS1(2),		SLASH },
+    { "7 3 mod",   FS2(7, 3),   0, FS1(1),		MOD },
+    { "7 3 /mod",  FS2(7, 3),   0, FS2(1, 2),		SLASH_MOD },
+    { "7 0 /",     FS2(7, 0), -10, FS0,			SLASH },
+    { "7 0 mod",   FS2(7, 0), -10, FS0,			MOD },
+    { "7 0 /mod",  FS2(7, 0), -10, FS0,			SLASH_MOD },
+    { "7 0 /mod",  FS2(7, 0), -10, FS0,			SLASH_MOD },
+    { "-1 1 m*",   FS2(-1, 1),  0, FS2(-1, -1),		M_STAR },
+    { "-1 -1 m*",  FS2(-1, -1), 0, FS2(1, 0),		M_STAR },
+    { "-1 -1 um*", FS2(-1, -1), 0, FS2(1, -2),		U_M_STAR },
+    { "-1 2 um*",  FS2(-1, 2),  0, FS2(-2, 1),		U_M_STAR },
+
+    // Missing tests that we aren't yet ready for
+    //   M*
+    //   UM*
+    //   */
+    //   */MOD
+    //   FM/MOD
+    //   SM/REM
+    //   UM/MOD
     { NULL },
 };
 
@@ -242,7 +280,7 @@ static void
 run_test(struct test_case *test)
 {
     struct fargs args = test->input;
-    int except = forth_execute(&args, test->exec_token);
+    int except = forth_execute(test->exec_token, &args);
     if (except != test->exception) {
 	printf("\nexception %s: ", test->name);
 	if (test->exception != 0) {
@@ -280,6 +318,7 @@ all_suites[] = {
     { "arithops",  arithops_tests },
     { "stackops",  stackops_tests },
     { "memops",    memops_tests },
+    { "multops",   multops_tests },
 
     { NULL },
 };

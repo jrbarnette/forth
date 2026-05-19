@@ -1,6 +1,7 @@
 H_FILES =	cforth.h ftypes.h prim.h
 M4_INCLUDES =	vm.m4 vm_common.m4 c_defs.m4
-SOURCES =	arithops.m4	execute.m4	stackops.m4	memops.m4
+SOURCES =	arithops.m4	execute.m4	stackops.m4	memops.m4 \
+		multops.m4
 # SOURCES =	control.m4	fileops.m4 \
 # 		multops.m4	terminal.m4
 

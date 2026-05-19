@@ -10,7 +10,7 @@ define(`CELLS', `* 'eval(1 << CELL_SHIFT))dnl
 define(`CELL_SIZE', eval(1 CELLS))dnl
 define(`CELL_BITS', eval(8 * (1 CELLS)))dnl
 define(`SENTINEL32', `0xdeadbeef')dnl
-define(`SENTINEL64', `(0xfeedface<<32)+SENTINEL32')dnl
+define(`SENTINEL64', `((0xfeedface<<32)+SENTINEL32)')dnl
 define(`SENTINEL', `SENTINEL'CELL_BITS)dnl
 dnl
 define(`XFRAME_VXSP',  `0')dnl

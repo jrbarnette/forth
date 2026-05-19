@@ -26,6 +26,7 @@
 struct test_case {
     char *		name;
     struct fargs	input;
+    int			exception;
     struct fargs	expect;
     xt_ft		exec_token;
 };
@@ -45,6 +46,7 @@ PRIM(EXECUTE, x_execute)
 PRIM(EXIT, x_exit)
 PRIM(DEPTH, x_depth)
 PRIM(CLEAR, x_clear)
+PRIM(THROW, x_throw)
 
 CODE(NO_OP) END_CODE
 CODE(TEST_LIT) L(F_TRUE) END_CODE
@@ -58,19 +60,21 @@ static struct test_case
 execute_tests[] = {
     // This test will exercise NEXT, do_colon, and x_exit, because
     // nothing much is useful without them.
-    { "no-op", { 0 }, { 0 }, NO_OP },
+    { "no-op", { 0 }, 0, { 0 }, NO_OP },
 
     // This test is meant to exercise argument copy-in/copy-out in
     // forth_execute(), 'cause that'll be wrong the first time it's
-    // written.
-    { "true no-op", { 1, F_TRUE }, { 1, F_TRUE }, NO_OP },
+    // written.  Probably wrong the second time, too...
+    { "true no-op", { 1, F_TRUE }, 0, { 1, F_TRUE }, NO_OP },
 
-    { "lit", { 0 }, { 1, F_TRUE }, TEST_LIT },
-    { "con", { 0 }, { 1, F_TRUE }, TEST_CON },
-    { "var", { 0 }, { 1, VAR_ADDR }, TEST_VAR },
-    { "execute", { 0 }, { 0 }, TEST_EXECUTE },
-    { "depth", { 2, 0, 1 }, { 3, 0, 1, 2 }, DEPTH },
-    { "clear", { 2, 0, 1 }, { 0 }, CLEAR },
+    { "lit", { 0 }, 0, { 1, F_TRUE }, TEST_LIT },
+    { "con", { 0 }, 0, { 1, F_TRUE }, TEST_CON },
+    { "var", { 0 }, 0, { 1, VAR_ADDR }, TEST_VAR },
+    { "execute", { 0 }, 0, { 0 }, TEST_EXECUTE },
+    { "depth", { 2, 0, 1 }, 0, { 3, 0, 1, 2 }, DEPTH },
+    { "clear", { 2, 0, 1 }, 0, { 0 }, CLEAR },
+    { "1 throw", { 1, 1 }, 1, { 0 }, THROW },
+    { "2 1 throw", { 2, 2, 1 }, 1, { 0 }, THROW },
 
     // Missing tests that are hard to write:
     //   x_rclear
@@ -105,27 +109,27 @@ PRIM(XOR, x_xor);
 
 static struct test_case
 arithops_tests[] = {
-    { "+",        { 2, 1, 2 },     { 1, 3 },		PLUS },
-    { "-",        { 2, 3, 2 },     { 1, 1 },		MINUS },
-    { "2*",       { 1, 3 },        { 1, 6 },		TWO_STAR },
-    { "2/",       { 1, -2 },       { 1, -1 },		TWO_SLASH },
-    { "and",      { 2, 0xc, 0xa }, { 1, 0x8 },		AND },
-    { "or",       { 2, 0xc, 0xa }, { 1, 0xe },		OR },
-    { "xor",      { 2, 0xc, 0xa }, { 1, 0x6 },		XOR },
+    { "+",        { 2, 1, 2 },     0, { 1, 3 },		PLUS },
+    { "-",        { 2, 3, 2 },     0, { 1, 1 },		MINUS },
+    { "2*",       { 1, 3 },        0, { 1, 6 },		TWO_STAR },
+    { "2/",       { 1, -2 },       0, { 1, -1 },	TWO_SLASH },
+    { "and",      { 2, 0xc, 0xa }, 0, { 1, 0x8 },	AND },
+    { "or",       { 2, 0xc, 0xa }, 0, { 1, 0xe },	OR },
+    { "xor",      { 2, 0xc, 0xa }, 0, { 1, 0x6 },	XOR },
 
-    { "invert",   { 1, F_FALSE },  { 1, F_TRUE },	INVERT },
-    { "negate",   { 1, 1 },        { 1, -1 },		NEGATE },
-    { "lshift",   { 2, 3, 1 },     { 1, 6 },		LSHIFT },
-    { "rshift",   { 2, 3, 1 },     { 1, 1 },		RSHIFT },
+    { "invert",   { 1, F_FALSE },  0, { 1, F_TRUE },	INVERT },
+    { "negate",   { 1, 1 },        0, { 1, -1 },	NEGATE },
+    { "lshift",   { 2, 3, 1 },     0, { 1, 6 },		LSHIFT },
+    { "rshift",   { 2, 3, 1 },     0, { 1, 1 },		RSHIFT },
 
-    { "< true",   { 2, 1, 2 },     { 1, F_TRUE },	LESS_THAN },
-    { "< false",  { 2, 2, 1 },     { 1, F_FALSE },	LESS_THAN },
-    { "= true",   { 2, 1, 1 },     { 1, F_TRUE },	EQUALS },
-    { "= false",  { 2, 1, 2 },     { 1, F_FALSE },	EQUALS },
-    { "> true",   { 2, 0, -1 },    { 1, F_TRUE },	GREATER_THAN },
-    { "> false",  { 2, -1, 0 },    { 1, F_FALSE },	GREATER_THAN },
-    { "u< true",  { 2, 0, -1 },    { 1, F_TRUE },	U_LESS },
-    { "u< false", { 2, -1, 0 },    { 1, F_FALSE },	U_LESS },
+    { "< true",   { 2, 1, 2 },     0, { 1, F_TRUE },	LESS_THAN },
+    { "< false",  { 2, 2, 1 },     0, { 1, F_FALSE },	LESS_THAN },
+    { "= true",   { 2, 1, 1 },     0, { 1, F_TRUE },	EQUALS },
+    { "= false",  { 2, 1, 2 },     0, { 1, F_FALSE },	EQUALS },
+    { "> true",   { 2, 0, -1 },    0, { 1, F_TRUE },	GREATER_THAN },
+    { "> false",  { 2, -1, 0 },    0, { 1, F_FALSE },	GREATER_THAN },
+    { "u< true",  { 2, 0, -1 },    0, { 1, F_TRUE },	U_LESS },
+    { "u< false", { 2, -1, 0 },    0, { 1, F_FALSE },	U_LESS },
 
     { NULL },
 };
@@ -159,25 +163,25 @@ END_CODE
 
 static struct test_case
 stackops_tests[] = {
-    { "drop", { 1, 1 },       { 0 },			DROP },
-    { "dup",  { 1, 1 },       { 2, 1, 1 },		DUP },
-    { "over", { 2, 1, 2 },    { 3, 1, 2, 1 },		OVER },
-    { "rot",  { 3, 1, 2, 3 }, { 3, 2, 3, 1 },		ROT },
-    { "swap", { 2, 1, 2 },    { 2, 2, 1 },		SWAP },
+    { "drop", { 1, 1 },       0, { 0 },			DROP },
+    { "dup",  { 1, 1 },       0, { 2, 1, 1 },		DUP },
+    { "over", { 2, 1, 2 },    0, { 3, 1, 2, 1 },	OVER },
+    { "rot",  { 3, 1, 2, 3 }, 0, { 3, 2, 3, 1 },	ROT },
+    { "swap", { 2, 1, 2 },    0, { 2, 2, 1 },		SWAP },
 
-    { "2>r",  { 2, 1, 2 },    { 2, 2, 1 },		TEST_TWO_TO_R },
-    { "2r>",  { 2, 1, 2 },    { 2, 2, 1 },		TEST_TWO_R_FROM },
-    { "2r@",  { 2, 1, 2 },    { 2, 1, 2 },		TEST_TWO_R_FETCH },
+    { "2>r",  { 2, 1, 2 },    0, { 2, 2, 1 },		TEST_TWO_TO_R },
+    { "2r>",  { 2, 1, 2 },    0, { 2, 2, 1 },		TEST_TWO_R_FROM },
+    { "2r@",  { 2, 1, 2 },    0, { 2, 1, 2 },		TEST_TWO_R_FETCH },
 
-    { "rstack", { 2, F_FALSE, F_TRUE}, { 2, F_TRUE, F_TRUE},	TEST_RSTACK },
-    { "r@", { 1, 1 }, { 2, 1, 1 },				TEST_RFETCH },
+    { "rstack", { 2, F_FALSE, F_TRUE}, 0, { 2, F_TRUE, F_TRUE},	TEST_RSTACK },
+    { "r@", { 1, 1 }, 0, { 2, 1, 1 },				TEST_RFETCH },
 
-    { "?dup true", { 1, F_TRUE }, { 2, F_TRUE, F_TRUE },	QUESTION_DUP },
-    { "?dup false", { 1, F_FALSE }, { 1, F_FALSE },		QUESTION_DUP },
+    { "?dup true", { 1, F_TRUE }, 0, { 2, F_TRUE, F_TRUE },	QUESTION_DUP },
+    { "?dup false", { 1, F_FALSE }, 0, { 1, F_FALSE },		QUESTION_DUP },
 
-    { "pick",   { 4, 1, 2, 3, 2 },     { 4, 1, 2, 3, 1 },	PICK },
-    { "3 roll", { 5, 1, 2, 3, 4, 3 },  { 4, 2, 3, 4, 1 },	ROLL },
-    { "0 roll", { 5, 1, 2, 3, 4, 0 },  { 4, 1, 2, 3, 4 },	ROLL },
+    { "pick",   { 4, 1, 2, 3, 2 },     0, { 4, 1, 2, 3, 1 },	PICK },
+    { "3 roll", { 5, 1, 2, 3, 4, 3 },  0, { 4, 2, 3, 4, 1 },	ROLL },
+    { "0 roll", { 5, 1, 2, 3, 4, 0 },  0, { 4, 1, 2, 3, 4 },	ROLL },
 
     { NULL },
 };
@@ -197,8 +201,8 @@ CODE(CHAR_MEM) L('a') X(TEST_VAR) X(C_STORE) X(TEST_VAR) X(C_FETCH) END_CODE
 
 static struct test_case
 memops_tests[] = {
-    { "! @", { 0 }, { 1, 1 },		CELL_MEM },
-    { "C! C@", { 0 }, { 1, 'a' },	CHAR_MEM },
+    { "! @", { 0 }, 0, { 1, 1 },	CELL_MEM },
+    { "C! C@", { 0 }, 0, { 1, 'a' },	CHAR_MEM },
 
     // Missing tests that are hard to write:
     //   fill
@@ -239,8 +243,12 @@ run_test(struct test_case *test)
 {
     struct fargs args = test->input;
     int except = forth_execute(&args, test->exec_token);
-    if (except != 0) {
-	printf("\nexception %s: %d\n", test->name, except);
+    if (except != test->exception) {
+	printf("\nexception %s: ", test->name);
+	if (test->exception != 0) {
+	    printf("expected %d actual ", test->exception);
+	}
+	printf("%d\n", except);
 	print_stack("stack:", &args);
     } else if (!results_match(&test->expect, &args)) {
 	printf("\nmismatch %s:\n", test->name);

@@ -26,6 +26,7 @@
 
 
 #define HIGH_BIT	(~(~(cell_ft) 0 >> 1))
+#define CELL_SHIFT	(8 XCELLS)
 #define HALF_SHIFT	(4 XCELLS)
 #define HI(x)		((cell_ft) (x) >> HALF_SHIFT)
 #define HALF_MASK	HI(~(cell_ft) 0)
@@ -75,7 +76,7 @@ ddivide(cell_ft *sp, cell_ft d_hi, cell_ft d_lo, cell_ft v)
 	u = JOIN(rem, LO(d_lo));
 	rem = u % v;
 	quot = JOIN(quot, u / v);
-    } else if (v > HIGH_BIT) {
+    } else {
 	// This is Algorithm D from Knuth Vol. 2, "Seminumerical
 	// Algorithms".  We're using "digits" of a half cell,
 	// meaning the algorithm parameters are:
@@ -85,28 +86,51 @@ ddivide(cell_ft *sp, cell_ft d_hi, cell_ft d_lo, cell_ft v)
 	//
 	// The code is specialized for things that are known at
 	// compile time:
-	//  a) The condition v > HIGH_BIT means that v1 > b / 2, so
-	//     we can skip steps D1 and D8 (normalize/unnormalize).
-	//  b) Since n = 2, a number of intermediate results can be
+	//  a) Because n = 2, a number of intermediate results can be
 	//     stored as single-cell values.
-	//  c) The value of qhat will be exact when n = 2, so we
-	//     skip steps D5 and D6 (test remainder and add back).
-	//  d) Since we only return a single cell for the quotient,
+	//  b) Because n = 2, the formula for adjustment to `qhat` in
+	//     step D3 is the same as the formula for steps D4, D5 and
+	//     D6 (multiply and subtract, test remainder and add back),
+	//     so we combine those in a single loop.
+	//  c) Since we only return a single cell for the quotient,
 	//     we throw away the first quotient digit by starting
 	//     with rem = d_hi % v.
+
+	// Step D1 - Normalize
+	d_hi %= v;
+	cell_ft scale = 0;
+	if (v < HIGH_BIT) {
+	    do {
+		v <<= 1;
+		scale++;
+	    } while (v < HIGH_BIT);
+	    d_hi = (d_hi << scale) | (d_lo >> (CELL_SHIFT - scale));
+	    d_lo <<= scale;
+	}
+
+	// Steps D2, D7 - Loop initialization and termination test
+	//
+	// At the start of every loop iteration, `rem` is the two-digit
+	// (i.e. single cell) combination of the two most significant
+	// digits of the remaining dividend value.  At the end of the
+	// loop, `rem` is the remainder, and `qhat` is the next quotient
+	// digit.
+	//
+	// Because `rem` is the first two dividend digits, the quotient
+	// digit `u[i]` is the same as digit `u[j+2]` in Knuth's
+	// description.
+
 	rem = d_hi;
 	quot = 0;
-	if (rem >= v) {
-	    rem -= v;
-	}
 	cell_ft v_hi = HI(v);
 	cell_ft v_lo = LO(v);
 	cell_ft u[] = { HI(d_lo), LO(d_lo) };
 	for (int i = 0; i < sizeof (u) / sizeof (u[0]); i++) {
+	    // Step D3 - Calculate qhat
 	    cell_ft rhat;
 	    cell_ft qhat;
 	    // N.B. If HI(rem) = v_hi = HALF_MASK, then qhat must be
-	    // HALF_MASK, and the calculation of qv_total below would
+	    // HALF_MASK, but the calculation of qv_total below would
 	    // overflow a single cell.  So, we handle that case
 	    // specially.
 	    if (HI(rem) >= v_hi) {
@@ -121,6 +145,10 @@ ddivide(cell_ft *sp, cell_ft d_hi, cell_ft d_lo, cell_ft v)
 		rhat = rem % v_hi;
 		qhat = rem / v_hi;
 	    }
+
+	    // Combine the rest of step D3 with D4, D5, and D6.
+	    // Steps D4, D5, D6 - Multiply and subtract, then add back
+	    // until qhat is right.
 	    cell_ft qv_lo = qhat * v_lo;
 	    cell_ft qv_total = JOIN(rhat, u[i]);
 	    while (qv_lo > qv_total) {
@@ -131,15 +159,8 @@ ddivide(cell_ft *sp, cell_ft d_hi, cell_ft d_lo, cell_ft v)
 	    rem = qv_total - qv_lo;
 	    quot = JOIN(quot, qhat);
 	}
-    } else {
-	// To use Knuth's Algorithm D in this case would require the
-	// normalize/unnormalize steps.  That's kind of expensive, so
-	// here's a formula that works so long as (v <= HIGH_BIT).
-	cell_ft r_hi = d_hi % v;
-	cell_ft rem_part = d_lo % v + r_hi * ((HIGH_BIT % v) << 1);
-	cell_ft q_part = d_lo / v + r_hi * ((HIGH_BIT / v) << 1);
-	rem = rem_part % v;
-	quot = q_part + rem_part / v;
+	// Step D8 - Unnormalize
+	rem >>= scale;
     }
     PICK(sp, 1) = rem;
     PICK(sp, 0) = quot;

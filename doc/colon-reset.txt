@@ -1,61 +1,52 @@
-If an error occurs after ':' starts, and before ';' completes, what do
-we need to do to restore state?
-  * Reset HERE back to its prior value.
-  * Anything else?
+While compiling a definition, we can need up to three distinct values
+associated with the definition:
+  * The value of `HERE` prior to starting the definition.  We need this
+    to know where to reset if there's an error during the definiton, and
+    we want to roll back.
+  * The name pointer of the definition, for linking when we get to the
+    end of the definition.  For `:NONAME`, we use 0 to indicate that
+    there's no name to link.
+  * The actual XT of the definition, for use by `RECURSE`.
 
 
-variable defn-reset
-: start-name ( hdlr "name" -- name )
-    parse-name check-name-length
-    here dup defn-reset ! aligned
-    header, ;
+The values are distinct but interrelated: if we know the saved `HERE`
+value and one other, we can calculate the third.
 
+... It would also be nice to have a way for `;` to check whether there's
+a definition open, in order to report an error.
 
-: : here defn-reset ! handler: do_colon start-name ] ;
+Assume we put all of the data into a structure:
+    variable DEFINITION-DATA 2 cells allot
+    0 definition-data !
 
-: reset-dict defn-reset @ here - allot ;
+We'll need these helpers:
+    : open-definition
+	rot definition-data !
+	[ definition-data cell+ ] literal 2! postpone ] ;
+    : close-definition 0 definition-data ! postpone [ ;
+    : definition-xt [ definition-data cell+ ] literal @ ;
+    : definition-name [ definition-data 2 cells + ] literal @ ;
+    : rollback-definition
+	definition-data @ ?dup if here - allot then
+	close-definition ;
 
-How do we determine when we need to do this?
-  * Basically, if QUIT gets control after an exception.
-  * ? is that really the long and short
+And the CORE functions would look like this:
+    : : here hdlr-colon start-name dup name>xt open-definition ;
+    : ; postpone EXIT
+	definition-name ?dup if link-name else definition-xt then
+	close-definition ; compile-special
+    : RECURSE definition-xt compile, ;
 
-... Ties in with RECURSE: need to be able to find the current definition
-unambiguously (not from the stack).
-  * In RECURSE, we just compile he current definition.
-  * For an error, need to check if the current definition is still open.
-  * Need to have ; mark that the current definition is closed.
+    : :NONAME here align 0 here hdlr-colon , open-definition ;
 
-So
+Then when we need to roll back a failed definition, we do the following:
+    : handle-exception ( throw-code -- )
+	.throw-code clear rollback-definition ;
 
-variable curdef
-0 curdef !
+(Question: is this all we have to do to roll back a failed definition?)
+(Note: roll back only happens if `QUIT` sees an exception _and_ there's
+an open definition.)
 
-: : hdlr-colon start-name curdef ! ] ;
-: ; postpone EXIT curdef @ ?dup if link-name 0 curdef ! then
-    [compile] [ ; compile-special
-: RECURSE curdef @ name>xt compile, ;
-: :NONAME align here hdlr-colon , [compile] ] ;
-
-... :NONAME wouldn't work w/ RECURSE as shown above; need several
-different locations:
-    variable SAVED-HERE
-    variable NEXT-NAME
-    variable CURXT
-when starting a defintion:
-    here saved-here !
-    start-name dup next-name !
-    dup name>xt curxt !
-when starting :NONAME
-    here saved-here !
-    0 next-name !
-    align here curxt !
-
-For error recovery, do this
-    saved-here @ here - allot
-For RECURSE:
-    : RECURSE curxt @ compile,
-In ;
-    next-name @ link-name
-
-... all of the existing code that assumes there's something on
-the stack during :-definition needs to be adjusted :-(
+... The changes above will require that all of the existing code that
+assumes there's something on the stack during :-definition needs to be
+adjusted :-(

@@ -1,4 +1,4 @@
-\  Copyright 2020, by J. Richard Barnette. All Rights Reserved.
+\ Copyright 2020, by J. Richard Barnette. All Rights Reserved.
 
 : escape '\' emit ;
 : escape? ( char quote -- )

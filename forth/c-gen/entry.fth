@@ -1,4 +1,4 @@
-\  Copyright 2025, by J. Richard Barnette. All Rights Reserved.
+\ Copyright 2025, by J. Richard Barnette. All Rights Reserved.
 
 variable offset
 variable indent  0 indent !

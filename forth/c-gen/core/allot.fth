@@ -1,4 +1,4 @@
-\  Copyright 2023, by J. Richard Barnette. All Rights Reserved.
+\ Copyright 2023, by J. Richard Barnette. All Rights Reserved.
 
 \ arith operations
 : +! ( x a-addr -- ) dup >r @ + r> ! ;

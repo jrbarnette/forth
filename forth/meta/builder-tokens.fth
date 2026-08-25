@@ -1,5 +1,5 @@
-\  Copyright 2025, by J. Richard Barnette, All Rights Reserved.
-\  Builder mode token handling
+\ Copyright 2025, by J. Richard Barnette, All Rights Reserved.
+\ Builder mode token handling
 
 BUILDER-HOST-MODE
 

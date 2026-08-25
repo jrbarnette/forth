@@ -1,4 +1,4 @@
-\  Copyright 2019, by J. Richard Barnette. All Rights Reserved.
+\ Copyright 2019, by J. Richard Barnette. All Rights Reserved.
 
 \ ------  ------  ------  ------  ------  ------  ------  ------
 \  DEFINITIONS        16.6.1.1180 SEARCH

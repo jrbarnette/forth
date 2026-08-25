@@ -1,4 +1,4 @@
-\  Copyright 2019, by J. Richard Barnette. All Rights Reserved.
+\ Copyright 2019, by J. Richard Barnette. All Rights Reserved.
 
 \ ------  ------  ------  ------  ------  ------  ------  ------
 \  '                     6.1.0070 CORE

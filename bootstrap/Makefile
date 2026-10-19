@@ -1,22 +1,31 @@
 # Copyright 2010, by J. Richard Barnette
 
-C_SOURCES =			\
+PRIM_SOURCES =			\
 	    arithops.c		\
-	    cmdline.c		\
 	    control.c		\
 	    definers.c		\
-	    fileio.c		\
-	    fileops.c		\
-	    forth.c		\
-	    initdict.c		\
 	    memops.c		\
 	    multops.c		\
 	    stackops.c		\
-	    terminal.c		\
-	    termops.c		\
 	    vm.c
 
-OBJECTS =  $(C_SOURCES:.c=.o)
+VM_SOURCES = 			\
+	    cmdline.c		\
+	    fileio.c		\
+	    fileops.c		\
+	    initdict.c		\
+	    terminal.c		\
+	    termops.c
+
+TEST_SOURCES = primtest.c $(PRIM_SOURCES)
+FORTH_SOURCES =	forth.c $(PRIM_SOURCES) $(VM_SOURCES)
+
+TEST_OBJECTS =  $(TEST_SOURCES:.c=.o)
+FORTH_OBJECTS =  $(FORTH_SOURCES:.c=.o)
+
+C_SOURCES = primtest.c forth.c $(VM_SOURCES) $(PRIM_SOURCES)
+OBJECTS = $(C_SOURCES:.c=.o)
+
 H_SOURCES =	cforth.h	cmdline.h	fileio.h	\
 		forth.h		ftypes.h	prim.h		\
 		terminal.h	vmcheck.h	vmstate.h	\
@@ -59,7 +68,7 @@ OPT_FLAG = -O2 -g
 CFLAGS = $(OPT_FLAG) $(CHECKFLAG) -Wall $(OTHER_FLAGS)
 LDFLAGS = -lreadline
 
-all: forth tags
+all: primtest forth tags
 
 $(CMDLINE_DEP): cmdline.h
 $(FILEIO_DEP): $(PRIM_HDRS) fileio.h
@@ -67,11 +76,15 @@ $(CFORTH_DEP): ftypes.h vmstate.h xtoken.h cforth.h
 $(TERMINAL_DEP): terminal.h
 $(PRIM_DEP): $(PRIM_HDRS)
 
-forth: $(OBJECTS)
-	$(CC) -o $@ $(OBJECTS) $(LDFLAGS)
+primtest: $(TEST_OBJECTS) $(CFORTH_DEP)
+	$(CC) -o $@ $(TEST_OBJECTS) $(LDFLAGS)
+	./$@
+
+forth: $(FORTH_OBJECTS)
+	$(CC) -o $@ $(FORTH_OBJECTS) $(LDFLAGS)
 
 tags: $(SOURCES)
 	ctags -w $(SOURCES)
 
 clean:
-	rm -f forth tags $(OBJECTS)
+	rm -f primtest forth tags $(OBJECTS)

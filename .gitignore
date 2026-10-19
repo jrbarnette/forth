@@ -4,7 +4,7 @@
 tmp/
 tags
 bootstrap/forth
-bootstrap/direct_test
+bootstrap/primtest
 experiment/ip
 experiment/tos
 experiment/thr
